@@ -13,16 +13,6 @@ Skills are instructional multi-step workflows embedded in a schema. Unlike Promp
 
 How a skill is resolved and executed at runtime:
 
-```mermaid
-flowchart LR
-    A[User Input] --> B[Skill Content]
-    B --> C[Replace Placeholders]
-    C --> D[LLM Execution]
-    D --> E["Step 1: Call {{tool:X}}"]
-    E --> F["Step 2: Call {{tool:Y}}"]
-    F --> G[Structured Output]
-```
-
 The skill's `content` is a template. Placeholders like `{{input:tokenSymbol}}` are replaced with user-provided values, and `{{tool:computeRSI}}` references tell the LLM which tool to call at each step.
 
 ## Defining Skills

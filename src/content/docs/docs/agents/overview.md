@@ -13,21 +13,6 @@ This page covers the practical guide for building agents. For the full specifica
 
 An agent manifest (`agent.mjs`) declares everything the agent needs: which tools to use, which model to target, how the agent should behave, and how to verify it works.
 
-```mermaid
-flowchart LR
-    A[agent.mjs] --> B[Tool Selection]
-    A --> C[Model Binding]
-    A --> D[System Prompt]
-    A --> E[Prompts]
-    A --> F[Skills]
-    A --> G[Resources]
-    A --> H[Tests]
-
-    B --> I["coingecko-com/tool/simplePrice"]
-    B --> J["etherscan-io/tool/getContractAbi"]
-    B --> K["defillama-com/tool/getProtocolTvl"]
-```
-
 ## Agent Manifest
 
 Each agent is defined by an `agent.mjs` file with `export const agent`:

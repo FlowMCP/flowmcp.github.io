@@ -20,7 +20,7 @@ node --version
 The core library provides schema validation, API execution, and MCP server activation.
 
 ```bash
-npm install flowmcp-core
+npm install github:FlowMCP/flowmcp-core
 ```
 
 ```javascript
@@ -146,7 +146,7 @@ For a new project using FlowMCP, a minimal `package.json` looks like this:
     "version": "1.0.0",
     "type": "module",
     "dependencies": {
-        "flowmcp-core": "latest",
+        "flowmcp-core": "github:FlowMCP/flowmcp-core",
         "@modelcontextprotocol/sdk": "latest"
     }
 }

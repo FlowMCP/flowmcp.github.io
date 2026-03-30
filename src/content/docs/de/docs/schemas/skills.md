@@ -13,16 +13,6 @@ Skills sind instruktive mehrstufige Workflows, die in ein Schema eingebettet sin
 
 Wie ein Skill zur Laufzeit aufgeloest und ausgefuehrt wird:
 
-```mermaid
-flowchart LR
-    A[User-Eingabe] --> B[Skill Content]
-    B --> C[Platzhalter ersetzen]
-    C --> D[LLM-Ausfuehrung]
-    D --> E["Schritt 1: {{tool:X}} aufrufen"]
-    E --> F["Schritt 2: {{tool:Y}} aufrufen"]
-    F --> G[Strukturierter Output]
-```
-
 Der `content` des Skills ist ein Template. Platzhalter wie `{{input:tokenSymbol}}` werden durch User-bereitgestellte Werte ersetzt, und `{{tool:computeRSI}}`-Referenzen sagen dem LLM, welches Tool bei jedem Schritt aufzurufen ist.
 
 ## Skills definieren

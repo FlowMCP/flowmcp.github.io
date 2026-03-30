@@ -13,18 +13,6 @@ Instead of writing custom server code for each API, you declare schemas and Flow
 
 How FlowMCP bridges AI clients and APIs:
 
-```mermaid
-flowchart LR
-    A[AI Client] -->|MCP Protocol| B[FlowMCP MCP Server]
-    B --> C[Schema 1: CoinGecko]
-    B --> D[Schema 2: Etherscan]
-    B --> E[Schema 3: DeFi Llama]
-
-    C --> F[CoinGecko API]
-    D --> G[Etherscan API]
-    E --> H[DeFi Llama API]
-```
-
 The AI client sends tool calls over the MCP protocol. FlowMCP resolves the correct schema, validates parameters, calls the upstream API, and returns the result.
 
 ## Starting the Server

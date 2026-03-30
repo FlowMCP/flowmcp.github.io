@@ -13,18 +13,6 @@ Anstatt fuer jede API eigenen Server-Code zu schreiben, deklarierst du Schemas u
 
 So verbindet FlowMCP KI-Clients und APIs:
 
-```mermaid
-flowchart LR
-    A[KI-Client] -->|MCP-Protokoll| B[FlowMCP MCP Server]
-    B --> C[Schema 1: CoinGecko]
-    B --> D[Schema 2: Etherscan]
-    B --> E[Schema 3: DeFi Llama]
-
-    C --> F[CoinGecko API]
-    D --> G[Etherscan API]
-    E --> H[DeFi Llama API]
-```
-
 Der KI-Client sendet Tool-Aufrufe ueber das MCP-Protokoll. FlowMCP loest das richtige Schema auf, validiert Parameter, ruft die Upstream-API auf und gibt das Ergebnis zurueck.
 
 ## Server starten

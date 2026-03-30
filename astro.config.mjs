@@ -98,6 +98,15 @@ export default defineConfig({
                     ],
                 },
                 {
+                    label: 'Roadmap',
+                    items: [
+                        { label: 'Overview', translations: { de: 'Uebersicht' }, slug: 'roadmap/overview' },
+                        { label: 'Integration', slug: 'roadmap/integration' },
+                        { label: 'Community Hub', slug: 'roadmap/community' },
+                        { label: 'Team', slug: 'roadmap/team' },
+                    ],
+                },
+                {
                     label: 'Docs',
                     translations: { de: 'Dokumentation' },
                     collapsed: true,
@@ -165,15 +174,6 @@ export default defineConfig({
                                 { label: 'x402', slug: 'docs/ecosystem/x402' },
                             ],
                         },
-                    ],
-                },
-                {
-                    label: 'Roadmap',
-                    items: [
-                        { label: 'Overview', translations: { de: 'Uebersicht' }, slug: 'roadmap/overview' },
-                        { label: 'Integration', slug: 'roadmap/integration' },
-                        { label: 'Community Hub', slug: 'roadmap/community' },
-                        { label: 'Team', slug: 'roadmap/team' },
                     ],
                 },
             ],

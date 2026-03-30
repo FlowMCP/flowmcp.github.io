@@ -15,16 +15,6 @@ FlowMCP is a **schema-driven normalization layer** that transforms any data sour
 
 No custom server code. No boilerplate. One schema per provider.
 
-```mermaid
-flowchart LR
-    E[REST API] --> A
-    F[SQLite DB] --> A
-    G[Workflow] --> A
-    A[Schema .mjs] --> B[FlowMCP Runtime]
-    B --> C[MCP Server]
-    C --> D[AI Agent]
-```
-
 ## Four Primitives
 
 FlowMCP v3.0.0 supports four primitives in a single schema file:

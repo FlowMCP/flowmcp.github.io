@@ -13,15 +13,6 @@ npm install -g flowmcp
 
 Die CLI folgt einem Drei-Schritte-Muster: Tools entdecken, aktivieren, dann aufrufen.
 
-```mermaid
-flowchart LR
-    A[flowmcp search] --> B[Tools finden]
-    B --> C[flowmcp add]
-    C --> D[Tool aktivieren]
-    D --> E[flowmcp call]
-    E --> F[Tool ausfuehren]
-```
-
 ## Kernbefehle
 
 | Befehl | Beschreibung |

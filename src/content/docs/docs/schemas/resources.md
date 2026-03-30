@@ -68,13 +68,6 @@ export const main = {
 
 The `origin` field determines where the runtime looks for the `.db` file:
 
-```mermaid
-flowchart TD
-    A["origin: 'global'"] --> B["~/.flowmcp/data/companies.db"]
-    C["origin: 'project'"] --> D[".flowmcp/data/companies.db"]
-    E["origin: 'inline'"] --> F["./data/companies.db (relative to schema)"]
-```
-
 | Origin | Path Resolution | Best For |
 |--------|----------------|----------|
 | `global` | `~/.flowmcp/data/{database}` | Shared datasets used across projects |

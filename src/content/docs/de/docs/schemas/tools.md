@@ -13,19 +13,6 @@ Diese Seite konzentriert sich auf die praktische Tool-Erstellung. Siehe [Schema-
 
 Eine Schema-Datei besteht aus zwei Teilen: dem deklarativen `main` Export, der beschreibt was Tools tun, und dem optionalen `handlers` Export, der Requests und Responses transformiert.
 
-```mermaid
-flowchart TD
-    A[export const main] --> B[namespace + name + root]
-    A --> C[tools]
-    C --> D[method + path]
-    C --> E[parameters]
-    C --> F[description]
-
-    A --> G[export const handlers]
-    G --> H[preRequest]
-    G --> I[postRequest]
-```
-
 ## Der `main` Export
 
 Der `main` Export ist ein statisches, JSON-serialisierbares Objekt. Keine Funktionen, keine dynamischen Werte, keine Imports.

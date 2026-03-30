@@ -13,21 +13,6 @@ Diese Seite behandelt die praktische Anleitung zum Erstellen von Agents. Fuer di
 
 Ein Agent-Manifest (`agent.mjs`) deklariert alles, was der Agent braucht: welche Tools verwendet werden, welches Modell angesteuert wird, wie sich der Agent verhalten soll und wie seine Funktion verifiziert wird.
 
-```mermaid
-flowchart LR
-    A[agent.mjs] --> B[Tool-Auswahl]
-    A --> C[Model Binding]
-    A --> D[System Prompt]
-    A --> E[Prompts]
-    A --> F[Skills]
-    A --> G[Resources]
-    A --> H[Tests]
-
-    B --> I["coingecko-com/tool/simplePrice"]
-    B --> J["etherscan-io/tool/getContractAbi"]
-    B --> K["defillama-com/tool/getProtocolTvl"]
-```
-
 ## Agent-Manifest
 
 Jeder Agent wird durch eine `agent.mjs`-Datei mit `export const agent` definiert:

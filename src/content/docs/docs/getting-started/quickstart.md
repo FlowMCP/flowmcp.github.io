@@ -18,7 +18,7 @@ description: "Create your first FlowMCP schema and call an API in 5 minutes"
    mkdir my-flowmcp-project
    cd my-flowmcp-project
    npm init -y
-   npm install flowmcp-core
+   npm install github:FlowMCP/flowmcp-core
    ```
 
    Add `"type": "module"` to your `package.json` for ES module support.

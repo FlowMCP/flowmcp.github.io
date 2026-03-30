@@ -13,19 +13,6 @@ This page focuses on practical tool creation. See [Schema Format](/docs/specific
 
 A schema file has two parts: the declarative `main` export that describes what tools do, and the optional `handlers` export that transforms requests and responses.
 
-```mermaid
-flowchart TD
-    A[export const main] --> B[namespace + name + root]
-    A --> C[tools]
-    C --> D[method + path]
-    C --> E[parameters]
-    C --> F[description]
-
-    A --> G[export const handlers]
-    G --> H[preRequest]
-    G --> I[postRequest]
-```
-
 ## The `main` Export
 
 The `main` export is a static, JSON-serializable object. No functions, no dynamic values, no imports.
