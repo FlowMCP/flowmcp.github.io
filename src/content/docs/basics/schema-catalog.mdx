@@ -1,0 +1,87 @@
+---
+title: Schema Catalog
+description: Available schemas by provider — with tools, resources, and prompts.
+---
+
+export const SCHEMAS_URL = 'https://raw.githubusercontent.com/flowmcp/flowmcp-schemas-public/main/schemas.json'
+export const GITHUB_BASE = 'https://github.com/flowmcp/flowmcp-schemas-public/tree/main/schemas'
+
+export const SHOW_PROVIDERS = ['brightsky', 'transportrest', 'dbris', 'nextbike', 'nominatim', 'overpass', 'vlocker', 'infravelo', 'datetimeutils']
+
+export const fetchSchemas = async () => {
+    try {
+        const res = await fetch(SCHEMAS_URL)
+        return await res.json()
+    } catch (e) {
+        return { providers: [], totalProviders: 0, totalTools: 0, totalSchemas: 0 }
+    }
+}
+
+export const data = await fetchSchemas()
+export const filtered = (data.providers || []).filter(p => SHOW_PROVIDERS.includes(p.folder))
+
+**{filtered.length} Providers** with **{filtered.reduce((s, p) => s + p.toolCount, 0)} tools** from **{filtered.reduce((s, p) => s + p.schemas.length, 0)} schemas**. More in the [repository](https://github.com/flowmcp/flowmcp-schemas-public).
+
+## Overview
+
+<table>
+<thead>
+<tr><th>Provider</th><th>Schemas</th><th>Tools</th><th>API Key</th><th>GitHub</th></tr>
+</thead>
+<tbody>
+{filtered.map((p) => (
+<tr key={p.folder}>
+<td><strong>{p.folder}</strong></td>
+<td>{p.schemas.length}</td>
+<td>{p.toolCount}</td>
+<td>{p.schemas.some(s => s.requiresApiKey) ? 'Yes' : 'No'}</td>
+<td><a href={`${GITHUB_BASE}/${p.folder}/`}>Folder →</a></td>
+</tr>
+))}
+</tbody>
+</table>
+
+---
+
+## Details
+
+{filtered.map((p) => (
+<div key={p.folder} style="margin-bottom: 2.5rem;">
+
+<h3 id={p.folder}>{p.folder}</h3>
+
+{p.schemas.map((s) => (
+<div key={s.file} style="margin-bottom: 1.5rem;">
+
+<p><strong>{s.name}</strong></p>
+<p style="color: #8b949e; margin-top: -0.5rem; font-size: 0.9rem;">{s.description}</p>
+
+{s.tools.length > 0 && (
+<table>
+<thead>
+<tr><th>Tool</th><th>Description</th></tr>
+</thead>
+<tbody>
+{s.tools.map((tool) => (
+<tr key={tool.name}>
+<td><code>{tool.name}</code></td>
+<td>{tool.description}</td>
+</tr>
+))}
+</tbody>
+</table>
+)}
+
+</div>
+))}
+
+<p style="font-size: 0.85rem;"><a href={`${GITHUB_BASE}/${p.folder}/`}>View on GitHub →</a></p>
+
+</div>
+))}
+
+---
+
+**Source:** Auto-generated from the [schema repository](https://github.com/flowmcp/flowmcp-schemas-public).
+
+**Contribute schemas:** [Community Hub →](/roadmap/community/)

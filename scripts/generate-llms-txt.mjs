@@ -1,5 +1,6 @@
 import { readdir, readFile, writeFile, cp } from 'node:fs/promises'
-import { join } from 'node:path'
+import { join, relative } from 'node:path'
+import diagramDescriptions from './diagram-descriptions.mjs'
 
 const DOCS_DIR = 'src/content/docs'
 const OUTPUT_PATH = 'public/llm/llms.txt'
@@ -19,15 +20,16 @@ FlowMCP Spec: https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/llms
 `
 
 const SIDEBAR_ORDER = [
-    'ueber-das-projekt',
-    'fuer-llms',
-    'schemas-und-tools',
-    'agents',
-    'nutzungsarchitekturen',
-    'was-ist-flowmcp',
-    'mcp-clients',
-    'roadmap',
-    'team',
+    'introduction/about',
+    'introduction/why',
+    'introduction/for-llms',
+    'basics/schemas-and-tools',
+    'basics/agents',
+    'basics/clients',
+    'roadmap/overview',
+    'roadmap/community',
+    'roadmap/integration',
+    'roadmap/team',
 ]
 
 const stripFrontmatter = (content) => {
@@ -35,8 +37,13 @@ const stripFrontmatter = (content) => {
     return match ? content.slice(match[0].length).trim() : content.trim()
 }
 
-const stripImages = (content) =>
-    content.replace(/!\[.*?\]\(.*?\)/g, '')
+const replaceImages = (content) =>
+    content.replace(/!\[.*?\]\((.*?)\)/g, (match, url) => {
+        const filename = url.split('/').pop().replace(/\.\w+$/, '')
+        const mermaid = diagramDescriptions[filename]
+        if (mermaid) return '\n```mermaid\n' + mermaid + '\n```\n'
+        return ''
+    })
 
 const stripLinks = (content) =>
     content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => {
@@ -50,19 +57,33 @@ const extractTitle = (content) => {
     return match ? match[1].trim() : null
 }
 
-const slugFromFile = (filename) =>
-    filename.replace(/\.(md|mdx)$/, '')
+const collectMdFiles = async (dir, baseDir) => {
+    const entries = await readdir(dir, { withFileTypes: true })
+    const results = await Promise.all(
+        entries.map(async (entry) => {
+            const fullPath = join(dir, entry.name)
+            if (entry.isDirectory() && entry.name !== 'de') {
+                return collectMdFiles(fullPath, baseDir)
+            }
+            if (entry.isFile() && entry.name.endsWith('.md') && entry.name !== 'index.mdx') {
+                const rel = relative(baseDir, fullPath)
+                const slug = rel.replace(/\.(md|mdx)$/, '')
+                return [{ path: fullPath, slug }]
+            }
+            return []
+        })
+    )
+    return results.flat()
+}
 
 const run = async () => {
-    const files = await readdir(DOCS_DIR)
-    const mdFiles = files.filter(f => f.endsWith('.md') && f !== 'index.mdx')
+    const mdFiles = await collectMdFiles(DOCS_DIR, DOCS_DIR)
 
     const pages = await Promise.all(
-        mdFiles.map(async (file) => {
-            const raw = await readFile(join(DOCS_DIR, file), 'utf-8')
-            const slug = slugFromFile(file)
+        mdFiles.map(async ({ path: filePath, slug }) => {
+            const raw = await readFile(filePath, 'utf-8')
             const title = extractTitle(raw)
-            const body = stripLinks(stripImages(stripFrontmatter(raw)))
+            const body = stripLinks(replaceImages(stripFrontmatter(raw)))
             return { slug, title, body }
         })
     )
