@@ -1,0 +1,922 @@
+# FlowMCP — llms.txt
+
+> Normalize any data source and make it usable for AI agents.
+> Build your own agent in 5 minutes.
+
+Docs: https://flowmcp.github.io/
+GitHub: https://github.com/flowmcp
+License: MIT — Open Source, free for everyone.
+
+FlowMCP Docs: https://docs.flowmcp.org/llms.txt
+FlowMCP Spec: https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/llms.txt
+
+---
+
+# Agents and Architectures
+/agents
+
+## How Tools Are Selected
+
+From the schema catalog, individual tools are selected and assembled into a **Tool Set**. Not all tools are needed — only those relevant to the specific use case.
+
+
+
+## What is an Agent?
+
+
+
+An agent is more than a simple tool query. While a tool asks a single question to a data source ("What's the weather in Berlin?"), an agent can **combine multiple tools, reason, and independently decide** what information it still needs.
+
+The key difference: an agent has its **own language model (LLM)** that thinks for it. It's not just a program executing commands, but an expert that understands questions, selects tools, and formulates answers.
+
+An agent consists of:
+
+- **Its own LLM** — the language model the agent uses to think and decide
+- **A system prompt** — defines behavior: "You are a mobility expert. Answer questions about connections, weather, and sharing options."
+- **Tool references** — the agent selects tools from various provider schemas. It doesn't take all of them, only the relevant ones.
+- **Tests** — verify that the combination of LLM, prompt, and tools actually works
+
+**Example:** A Mobility Agent combines tools from the DB schedule schema (getConnections), the OpenWeather schema (getWeather), and the nextbike schema (findStations). It uses Claude Haiku as its LLM and knows from its system prompt that it should answer mobility questions.
+
+## The Agentic Loop
+
+An agent works not linearly, but in **loops**. This is the central difference from a simple tool call:
+
+1. **Understand the question** — What does the user want to know?
+2. **Select a tool** — What data do I need?
+3. **Call the tool** — Query the data
+4. **Evaluate the result** — Is this enough? Do I have everything?
+5. **Decide** — Done → formulate answer. Or: need another tool → back to step 2.
+
+The loop runs until the answer is complete — or a configured maximum of iterations is reached.
+
+**Why this matters:** When someone asks "Should I bike or take the S-Bahn tomorrow?", the agent must:
+- First check the weather (Tool 1)
+- Then query S-Bahn connections (Tool 2)
+- Then check if there are bike stations nearby (Tool 3)
+- Only then formulate a recommendation
+
+A simple tool call could only do one of these steps. The agentic loop does all of them — and thinks in between.
+
+**The tradeoff:** The agent needs its own LLM. That costs compute. But the answer quality is significantly better than individual tool calls.
+
+## Three Usage Architectures
+
+Not every request needs a full agent. There are three levels — from simple to complex:
+
+
+
+### Level 1: Tools Only
+
+The simplest level. The user's AI calls individual tools directly — no agent, no loops, no additional LLM.
+
+- **How it works:** The user asks "What's the weather in Berlin?", the AI recognizes the right tool and calls it
+- **Result:** Raw data that the user's AI interprets itself
+- **Advantage:** Fast, cheap, works with **108+ MCP clients**
+- **Disadvantage:** No combining multiple data sources, no loops
+
+### Level 2: Sub-Agent
+
+A specialized agent with its own LLM. It has its own tools, its own logic, and can use the agentic loop.
+
+- **How it works:** The request goes to an expert agent that independently selects and combines the right tools
+- **Result:** An interpreted, prepared answer — not just raw data
+- **Advantage:** Better answer quality, combining multiple data sources
+- **Disadvantage:** Needs an additional LLM, costs more compute
+
+### Level 3: Orchestration
+
+The most complex level. A **coordinator agent** distributes requests to multiple **sub-agents**. Each sub-agent is an expert in its domain.
+
+- **How it works:** The coordinator understands the question, decides which experts need to be consulted, collects their answers, and formulates an overall response
+- **Result:** A combined, optimized answer from multiple domains
+- **Advantage:** Complex questions can be answered that no single agent could handle alone
+- **Disadvantage:** Multiple LLMs run in parallel — highest compute cost
+
+## Elicitation: When the Agent Asks Back
+
+Not every question can be answered immediately. "How do I get to the train station?" — Which station? From where? On foot or by bus?
+
+**Elicitation** allows the agent to ask **structured follow-up questions** before answering. This is a feature of the MCP protocol and works from Level 2 onward.
+
+Examples of follow-up questions:
+- "What location do you want to start from?"
+- "Do you mean today or tomorrow?"
+- "Should I also consider sharing options?"
+- "Do you mean Berlin Hauptbahnhof or Berlin Suedkreuz?"
+
+**Why this matters so much:** Without elicitation, the agent has to guess or work with incomplete information. With elicitation, it asks — and the answer becomes significantly better. The difference is often between a useful and a useless response.
+
+**Not all clients support elicitation.** Currently, 16 MCP clients do — including Claude Desktop, OpenClaw, and Codex. Clients without elicitation still work with Level 2 and 3 — the agent just can't ask follow-up questions and works with what it has.
+
+Which clients support what: Clients and Compatibility →
+
+### Example: Level 3 in Practice
+
+A typical Level 3 implementation uses a coordinator agent that routes requests
+to specialized sub-agents. Each sub-agent has access to specific schemas and tools.
+
+For example, a travel planning system might use:
+- A **Schedule Agent** (train connections, flight data)
+- A **Weather Agent** (forecasts, alerts)
+- A **Location Agent** (geocoding, points of interest)
+
+The coordinator decides which agents to involve based on the user's question.
+This pattern works across any domain where multiple data sources need to be combined.
+
+## Learn More
+
+- **Agent manifests and configuration:** docs.flowmcp.org (https://docs.flowmcp.org)
+- **FlowMCP Specification:** FlowMCP Spec v3.0.0 (https://github.com/FlowMCP/flowmcp-spec)
+- **MCP Clients:** modelcontextprotocol.io/clients (https://modelcontextprotocol.io/clients)
+
+---
+
+# Clients and Compatibility
+/mcp-clients
+
+## MCP — The Connecting Protocol
+
+The **Model Context Protocol (MCP)** is the standard through which AI clients access tools. It defines how tools are described, called, and how results are returned. Over 100 clients support MCP already — from Claude to ChatGPT to Cursor.
+
+Our schemas are based on MCP and work with any compatible client. You are not locked into any specific provider.
+
+
+
+## Compatibility Table
+
+Not every client can do everything. Capabilities depend on which MCP features the client supports:
+
+| Level | What is supported | Number of Clients | Examples |
+|-------|------------------|------------------|----------|
+| **Level 1: Tools** | Individual tool calls, Resources, Prompts | 46+ clients | Claude, ChatGPT, Cursor, VS Code Copilot, Cline, Continue |
+| **Level 2+3: Elicitation** | Everything from Level 1 + Agent can ask follow-up questions | 16 clients | Claude Code, Claude Desktop, OpenClaw, Codex, Cursor, Postman |
+| **Custom CLI** | Command-line interfaces for direct access | FlowMCP CLI, OpenClaw Plugin | For developers and automation |
+
+What the levels mean: Agents and Architectures →
+
+**As of:** March 2026. Current list: modelcontextprotocol.io/clients (https://modelcontextprotocol.io/clients)
+
+## Clients with Elicitation (Level 2+3)
+
+These 16 clients support Elicitation — the agent can ask follow-up questions for better answers:
+
+1. AIQL TUUI
+2. Claude Code
+3. Codex
+4. Cursor
+5. fast-agent
+6. Glama
+7. goose
+8. Joey
+9. mcp-agent
+10. mcp-use
+11. MCPJam
+12. Memgraph Lab
+13. Postman
+14. Tambo
+15. VS Code GitHub Copilot
+16. VT Code
+
+Why elicitation matters: Agents and Architectures → Elicitation
+
+## CLI — Command-Line Interfaces
+
+Besides graphical clients, there are command-line interfaces that are particularly relevant for developers and automation.
+
+### FlowMCP CLI
+
+The fastest way for developers to find schemas and try tools:
+
+- `flowmcp list` — Show all available schemas
+- `flowmcp search <query>` — Search schemas by keyword
+- `flowmcp add <schema>` — Activate a schema
+- `flowmcp call <tool> '{...}'` — Call a tool directly
+
+Documentation: docs.flowmcp.org (https://docs.flowmcp.org)
+
+### OpenClaw
+
+OpenClaw (https://docs.openclaw.ai) is an open-source AI assistant gateway with a plugin system. The special feature: **Cron Jobs** — recurring queries that run automatically. For example, a daily mobility recommendation every morning at 7:30 AM.
+
+More: Integration →
+
+## Which Client for Whom?
+
+| You are... | Recommended Client | Why |
+|-----------|-------------------|-----|
+| **Individual** | OpenClaw (WhatsApp, Telegram, Slack) or Claude Desktop | Where you already are, Cron Jobs for automation |
+| **Developer** | Claude Code, Cursor, or FlowMCP CLI | Direct control, fast testing, IDE integration |
+| **Enterprise** | NemoClaw (enterprise security) | Deny-by-default policies, sandbox isolation, audit trail |
+
+Details on enterprise integration: Integration → NemoClaw
+
+---
+
+# Roadmap
+/roadmap
+
+## Public Schemas ✅
+
+**Status: Available**
+
+FlowMCP schemas are publicly available — curated, validated, and open source.
+Currently covering transportation, weather, geocoding, and infrastructure data.
+
+- [x] **14 public schemas** across 9 data providers
+- [x] **Automated schema catalog** with JSON generation
+- [x] **Schema validation** and test infrastructure
+- [ ] Expand to additional domains (environment, administration, health)
+
+Schema Catalog →
+
+---
+
+## Integration 🔄
+
+**Status: In Progress**
+
+Integration into existing MCP clients — not standalone, but embedded in platforms
+that developers already use.
+
+- [ ] CLI-first approach with FlowMCP CLI
+- [ ] OpenClaw integration
+- [ ] Documentation and getting-started guides
+
+Details →
+
+---
+
+## Community Hub ⏳
+
+**Status: Planned**
+
+A community-driven schema ecosystem where anyone can contribute, review,
+and validate schemas through a structured pipeline.
+
+- [ ] 5-stage contribution pipeline
+- [ ] Automated validation and scoring
+- [ ] Community governance process
+
+Details →
+
+---
+
+## Get Involved
+
+- **Use schemas** — Schema Catalog →
+- **Contribute schemas** — Community Hub →
+- **Follow development** — GitHub (https://github.com/flowmcp)
+
+---
+
+# Team
+/team
+
+The FlowMCP project is maintained as open source (MIT License) on GitHub (https://github.com/flowmcp).
+
+*More details coming soon.*
+
+---
+
+# About the Project
+/about
+
+## The Problem
+
+There is a vast amount of open data in Germany and Europe — transit schedules, weather data, government records, geodata, environmental data. But it is scattered across hundreds of portals and interfaces, in different formats, with varying quality and behind different access methods.
+
+For a human, finding and using the right data is tedious. For an AI, it is nearly impossible — without prior preparation.
+
+## Our Solution
+
+We make open data usable for AI agents through a schema system. Each schema describes how to access a data source — and brings it to a common standard.
+
+
+
+**We do not change the data sources.** We adapt to them. The schema translates between the data source and the agent.
+
+## The Goal
+
+> **Build your own agent in 5 minutes.**
+
+We provide validated schemas. You combine them into an agent that answers your questions with real data. Open source, self-hostable, accessible to everyone.
+
+That is our challenge — and we are working to make it a reality. Our schemas lay the foundation. The AI can adapt them and the user can develop them further for their needs.
+
+## Who is this for?
+
+| Audience | Description |
+|----------|-------------|
+| **Individuals** | Decision support with real data — e.g. route planning, weather, local information |
+| **Government and public sector** | A starting point for making open data structurally accessible — not a finished product, but a foundation to build on |
+| **Developers** | Build your own agents, customize schemas, contribute to the ecosystem |
+
+## Why Schemas?
+
+An AI without prior knowledge would have to analyze each data source from scratch — an enormous token cost and energy expenditure on every call. Our schema preparation is a **one-time investment**: once described, usable by every AI. This saves energy and costs — by a **factor of 10**.
+
+More about this and our convictions: Why We Do This →
+
+## A Fast-Growing Market
+
+AI agents are developing rapidly. OpenClaw (https://docs.openclaw.ai) — an open-source AI assistant gateway — has existed only since November 2025 and has already reached over 330,000 GitHub stars, overtaking the Linux operating system (225,000 stars) in less than four months.
+
+The industry is working on security guidelines so that companies and government agencies can also work with AI agents. Our contribution: preparing and validating datasets so AI agents can use them.
+
+## Technical Openness
+
+Our software is **model-agnostic**: It runs with any LLM. We optimize agents for one model (a necessary decision for the best possible quality), but operation on other models is easily possible.
+
+It is also **client-agnostic**: Any MCP-compatible client or CLI can use our schemas — you have free choice. More at MCP Clients & CLI.
+
+## Where does this come from?
+
+FlowMCP started as a way to make public data sources accessible to AI agents. Today, it provides a complete framework — from schema definition to agent integration. More at Schemas and Tools
+
+---
+
+# Community Hub (Coming Soon)
+/community
+
+:::caution[In Planning]
+The Community Hub describes our vision for the next phase. Technical implementation has not started yet — but the architecture and processes are thought through and documented.
+:::
+
+## The Idea
+
+Public data belongs to everyone. But preparing this data for AI systems is expensive. When every AI does this work on its own — reading API documentation, guessing endpoints, figuring out parameters — enormous compute is wasted. And results are inconsistent because every AI takes a different path.
+
+Our solution: **A schema is created once, validated once, and can then be used by every AI.** This saves energy, creates consistency, and makes data reliably accessible. We call this principle **"Validated once, for all"**.
+
+The Community Hub is where this principle becomes reality. It is not a central service or a backend — it is a **GitHub repository** that grows through community processes.
+
+## GitHub as Primary Platform
+
+We deliberately use GitHub as the platform for the hub:
+
+- **Schemas without API keys need no backend.** No secrets, no server security. Everything can be public.
+- **GitHub provides everything we need:** Issues for submissions, Pull Requests for reviews, Actions for automated tests, Discussions for questions.
+- **Traceability:** Every change is versioned and transparent. Who contributed what and when is permanently verifiable.
+- **No backend** means: less maintenance, less attack surface, lower cost.
+
+**Honestly:** GitHub is a company, and not everyone has or wants an account. That is a bottleneck. Long-term, we are thinking about a minimal intermediary service that enables participation without a GitHub profile. But for the start, GitHub is the best solution with the least overhead — and for an open-source project, a GitHub account is reasonable.
+
+### Schemas With and Without API Keys
+
+| Type | In Hub? | Note |
+|------|---------|------|
+| **Without API key** | Yes, fully | Can run completely via GitHub — no backend needed |
+| **With API key** | Yes, but separate scope | User must register with the provider themselves. Clearly marked to avoid surprises |
+
+## Two Ways to Use the Project
+
+Not everyone needs to contribute. Most users will simply use schemas — and that is perfectly fine.
+
+### 1. Use Schemas (Default)
+
+Load validated schemas via OpenClaw or CLI and query data. No GitHub account needed, no contribution expected. The schemas are there, they work, you use them.
+
+### 2. Contribute Schemas (Opt-in)
+
+You can additionally create and submit schemas yourself. Maybe you work at an organization that provides public data. Maybe you have a Swagger file and an AI that can turn it into a schema. The path: your AI creates the schema according to our spec, you submit it as an issue, the community reviews it.
+
+**The special part:** The compute for schema creation comes from the user — their AI does the work. The spec — the rules for how a schema must look — comes from FlowMCP (https://docs.flowmcp.org). Without correct spec compliance, nothing gets accepted. But when it passes, the entire community benefits.
+
+This is real crowdsourcing: not just giving feedback, but making productive contributions. Every user with an AI is theoretically also a developer.
+
+## The Feedback Loop
+
+
+
+The vision is a self-reinforcing cycle: an AI discovers a new data source, creates a schema draft, submits it as an issue, the community reviews — and if accepted, the schema is available to everyone. Through usage, more data sources are discovered, and the cycle begins again.
+
+## The Schema Pipeline: 5 Stages
+
+Every new schema goes through the same pipeline. No exceptions — not even for us as the project team. This process ensures that only quality-checked schemas end up in the hub.
+
+
+
+### Stage 1: Submission
+
+A user creates an **Issue** in the schema repository with the tag `NewSchema`. The issue follows a fixed template — machine- and human-readable:
+
+- **Top:** Provider description, available routes, license information
+- **Middle:** Arguments from the submitting AI — why this schema, license proof, plausibility assessment
+- **Bottom:** The actual schema code as a Markdown code block
+
+The entire process is designed so that unknown AI systems can make understandable submissions.
+
+### Stage 2: Automatic Validation
+
+A GitHub Action is triggered by the `NewSchema` tag and checks deterministically:
+
+- Is the schema parseable and FlowMCP spec compliant?
+- Do described routes match the actual schema?
+- Do runtime tests pass? (real API calls)
+- Does the output match the defined output schema?
+- Does each route have at least 3 tests?
+
+**If anything fails here, the schema is immediately rejected** — with automatic feedback directly in the issue. No human effort for obviously flawed submissions.
+
+### Stage 3: AI Review and Plausibility
+
+What automated tests cannot catch, an AI reviews:
+
+- **Legal concerns:** Is the license clear and verifiable? Just because someone writes "MIT License" does not mean the data is actually freely available. Similar to consumer protection law: if something sounds too good to be true, there is a duty to verify.
+- **Moral concerns:** Are there problematic contents?
+- **Quality:** Are descriptions meaningful? Naming conventions followed? Do returned data match the description?
+
+The submitting AI can have arguments prepared — for example: "The data are official government publications and therefore in the public domain. Here is the link to the original source."
+
+This review follows a **scoring system** (see below).
+
+### Stage 4: Human Approval
+
+A maintainer gives final approval. The entire process so far — automated tests, AI evaluation, arguments — is documented in the issue history. The human checks what neither tests nor AI can reliably judge: Does this schema fit the project? Is the data source trustworthy?
+
+**The human has the final word — always.**
+
+### Stage 5: Integration
+
+The schema is merged. The issue ID is referenced in the commit so that the origin of every schema is traceable. The registry is automatically updated. From this moment on, every user can use the schema.
+
+## Quality Standards and Scoring
+
+
+
+Each schema is evaluated in Stage 3 across five criteria, each rated 0 to 5 stars:
+
+| Criterion | What is evaluated |
+|-----------|------------------|
+| **Legality** | License clear and plausible? Data origin verifiable? |
+| **Quality** | Descriptions understandable? Naming conventions followed? |
+| **Test Coverage** | Enough tests? Edge cases considered? |
+| **Usefulness** | Relevant data source? Reliable? Demand exists? |
+| **Documentation** | Issue thorough? Arguments traceable? Sources linked? |
+
+**Thresholds:**
+- The average across all five criteria must reach at least **3.0 stars**
+- **No single criterion may have 0 stars** — if any area completely fails, the schema is rejected
+- Borderline cases allow the submitter to improve and resubmit
+
+This scoring system is a first draft. Criteria and thresholds will be iteratively refined as real submissions come in. What matters: the process is traceable, transparent, and documented in the issue history.
+
+## Open Questions — Honestly Named
+
+We know this approach brings challenges for which there is no perfect solution yet:
+
+- **Not everyone has GitHub:** About 90% of OpenClaw users do not have a GitHub profile today. Long-term, we plan a minimal intermediary service so that users without GitHub can also contribute. For the start, we use GitHub Issue Templates as the lowest barrier.
+- **Fraud and quality:** When any AI can submit schemas, flawed or malicious submissions will come in. That is why we have the 5-stage pipeline: automated tests catch the obvious, AI review uncovers subtleties, and a human decides in the end.
+- **Scaling:** How many submissions can a small team review? That depends on how well automated stages 2 and 3 work. The better the automation, the more the community can grow.
+
+We communicate these open points deliberately and transparently. A project that claims to have all the answers is not credible. One that asks the right questions and works on solutions is.
+
+## Get Involved
+
+There are several ways to contribute to the project:
+
+- **Become a data partner:** You have access to public data and want to make it accessible for AI systems? Meet the team →
+- **Contribute schemas:** You have an AI and a data source? Create a schema following the FlowMCP Spec (https://docs.flowmcp.org) and submit it as an issue.
+- **Give feedback:** Something is not working? A data source is missing? Issues on GitHub (https://github.com/flowmcp/flowmcp-schemas-public/issues) are the right place.
+
+Schema repository: github.com/flowmcp/flowmcp-schemas-public (https://github.com/flowmcp/flowmcp-schemas-public)
+
+---
+
+# Frequently Asked Questions
+/faq
+
+## Do you provide data?
+
+No. We create **schemas** that make existing public data easier to reach for AI systems. The data stays with the provider — we store nothing, host nothing, change nothing. We build the adapter between the data source and the AI.
+
+## Why do you need so many data sources?
+
+Because real questions in everyday life are never simple.
+
+"Should I bike tomorrow?" sounds like a simple question. But to answer it well, the AI needs:
+- **Weather data** — Will it rain tomorrow?
+- **Route data** — How far is it?
+- **Sharing data** — Is there a bike nearby?
+- **Calendar data** — Do I even have an appointment outside?
+
+A single data source delivers a single answer. Only the combination makes the answer truly useful. That is exactly what our schemas make possible.
+
+Concrete examples: Use Cases →
+
+## Do I need an API key?
+
+For most of our schemas, no. We deliberately start with data sources that are **freely accessible without an API key** — weather data, public transit schedules, geocoding, bike sharing, and more.
+
+Schemas that require an API key are clearly marked.
+
+## What is a schema?
+
+A schema describes how to query a data source — structured and standardized. It is like an **adapter** between the data provider's API and the AI.
+
+One schema per data provider. Multiple tools (individual queries) per schema. The AI does not need to read the API documentation itself — the schema has already done that work.
+
+More: Schemas and Tools →
+
+## Can I use your schemas without OpenClaw?
+
+Yes. Our schemas work with **any MCP-compatible client** — over 100 applications, including Claude, ChatGPT, Cursor, VS Code Copilot, and many more. OpenClaw is just one of many options.
+
+Which client for whom: Clients and Compatibility →
+
+## Is this free?
+
+Yes. Everything is **open source under MIT license** — the schemas, the tools, the code, the documentation. Free to use for everyone, without restrictions.
+
+## Do you store my data?
+
+No. We have **no backend**. The schemas run locally on your device or through the client of your choice. We see no requests, store no data, have no access to your queries.
+
+---
+
+# For LLMs
+/for-llms
+
+## Documentation for AI Agents
+
+We provide our complete documentation as a compact text file — optimized for AI agents and LLMs.
+
+Copy the following block into your AI chat to load all relevant context files:
+
+```
+# FlowMCP — Complete documentation for LLMs
+https://flowmcp.github.io/llm/llms.txt
+
+# FlowMCP Framework — Technical foundation (Schemas, Agents, MCP Server)
+https://docs.flowmcp.org/llms.txt
+
+# FlowMCP Specification v3.0.0
+https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/spec/v3.0.0/llms.txt
+```
+
+## What is llms.txt?
+
+An **llms.txt** file is a compact summary of documentation in a machine-readable format. It allows AI agents to capture the entire documentation in one step — without visiting each page individually.
+
+## Why three files?
+
+| File | Content |
+|------|---------|
+| **FlowMCP llms.txt** | Project overview, vision, all docs pages with brief description |
+| **FlowMCP Docs llms.txt** | Technical details on schemas, agents, MCP servers |
+| **FlowMCP Spec llms.txt** | Formal specification of the schema format (v3.0.0) |
+
+For deeper technical details, we recommend the FlowMCP documentation (https://docs.flowmcp.org).
+
+---
+
+# Integration (Coming Soon)
+/integration
+
+:::caution[In Planning]
+This page describes the planned next phase. The architecture is designed, technical implementation has not started yet.
+:::
+
+## From Demo to Real Usage
+
+FlowMCP schemas work end-to-end — from data source to AI agent response. But a standalone app is not the goal. Most people do not want to install yet another app. They want answers where they already are: in WhatsApp, Telegram, Slack, or their preferred AI assistant.
+
+That is exactly what this phase is about: integrating our schemas and agents into **existing clients** — not as an island, but as a building block in a larger ecosystem.
+
+## Why CLI-first?
+
+When we designed the first architecture in October 2025, the plan was: everything via MCP servers. The Model Context Protocol was the standard, and it worked. But since then, something has changed.
+
+In practice, AI agents work most reliably with **command-line interfaces**. The reasons are technical: session initialization with MCP is error-prone, state management across protocol boundaries is complicated, and instant updates work better with CLI.
+
+**This does not mean MCP is dead.** MCP remains as a second channel — for clients that prefer it. FlowMCP supports both. But for the primary integration path, we choose CLI because it works most reliably today.
+
+## OpenClaw: Why This Project?
+
+OpenClaw (https://docs.openclaw.ai) is an open-source AI assistant gateway under MIT license. It has existed only since November 2025 and has already reached over 330,000 GitHub stars — more than Linux, Kubernetes, and Blender combined. It is the fastest-growing software project on GitHub.
+
+For us, OpenClaw is the right partner for several reasons:
+
+**Cron jobs change everything.** Most AI interactions are reactive: the user asks, the AI responds. With OpenClaw, we can set up **proactive** queries. A cron job runs automatically — for example every morning at 7:30 AM — and delivers results without the user doing anything. This is not possible with pure MCP servers or MCPUI.
+
+**Multi-channel, not multi-app.** OpenClaw delivers answers via WhatsApp, Telegram, Slack, Discord, and more. The user decides where to receive the data — not us. Our schemas work identically in every channel.
+
+**No gatekeeper.** On other platforms (e.g., OpenAI MCPUI), you need approval to be visible. Not with OpenClaw. Open source means: anyone can install and use our plugin — immediately, without approval.
+
+## Three Integration Levels
+
+Integration is not a single step but a staged model. Each level brings our schemas closer to users:
+
+| Level | What happens | For whom | Status |
+|-------|-------------|----------|--------|
+| **Level 1: MCP Server** | Our schemas are embedded directly as an MCP server in OpenClaw. All three usage architectures work: individual tools, sub-agents with their own intelligence, or full orchestration with a coordinator. | Developers using MCP clients | Possible |
+| **Level 2: OpenClaw Plugin** | An npm package that registers each schema as a tool. Publishable on ClawHub, installable with one command. The fastest path for end users. | All OpenClaw users | Planned |
+| **Level 3: NemoClaw Policy Preset** | A YAML file bundling all API endpoints of our schemas. Enterprise customers can unlock instantly — with the security policies their organization requires. | Companies and government agencies | Planned |
+
+### Enterprise Security with NemoClaw
+
+For use in companies and government agencies, open source alone is not enough. You need security policies, sandbox isolation, and controlled release processes.
+
+NVIDIA NemoClaw (https://docs.nvidia.com/nemoclaw/) is the enterprise security layer for OpenClaw (Apache 2.0, Alpha since March 2026). It offers deny-by-default network policies, sandbox isolation, and a blueprint system. A policy preset would bundle all API endpoints of our schemas — so a security officer could enable access to all open data sources with a single approval.
+
+This matters because: public data is public, but access to it within an organization still needs to be regulated. NemoClaw makes this possible without us having to run enterprise infrastructure ourselves.
+
+## Open and Free: Local Operation
+
+Not everyone wants or can use cloud services. That is why we are working in parallel on a fully local solution:
+
+- **llama.cpp** as a local LLM — no API key, no costs, full control over your own data
+- Running on a **Raspberry Pi** — a device for under 100 euros, completely independent from cloud services
+- Ideal for **individuals** who do not want to send their data to third parties, for **schools** working on limited budgets, and for **organizations** with strict data privacy requirements
+
+Our schemas work locally just as they do in the cloud. That is the principle of open protocols: data and preparation are separate from the operating model. If you want to work locally, you can — without limitations.
+
+## Example: Multi-Source Data Integration
+
+A practical integration combines multiple FlowMCP schemas through a single MCP server.
+For instance, a travel planning system could load schedule, weather, and location schemas —
+giving any connected AI client access to all three data sources through one endpoint.
+
+The same pattern works for any domain: environmental monitoring, public administration,
+financial data, or any combination of structured data sources.
+
+## Pilot Program
+
+In parallel with technical integration, we are looking for **data partners** who want to co-develop AI connections for public data. We are not looking for money or labor — we are looking for data sources and the willingness to review a finished connection.
+
+**Meet the team →**
+
+## Next Steps
+
+This phase is in preparation. Specifically, we are working on:
+
+1. **Validation** of existing schemas with real data partners — do they work in everyday use?
+2. **Optimization** based on real-world usage — better answer quality, better error handling
+3. **OpenClaw integration** — the plugin that makes schemas available as tools
+4. **Local operation** — testing with llama.cpp on Raspberry Pi
+
+More on the timeline: Roadmap
+
+---
+
+# Schemas and Tools
+/schemas-and-tools
+
+## What is a Schema?
+
+A schema is the complete blueprint for accessing a data source. It describes a single data provider — for example the German Weather Service, Deutsche Bahn, or a bike-sharing system like nextbike.
+
+**One schema per data provider. Multiple tools per schema.**
+
+The schema does not change the data source itself. It translates between the provider's API and the AI — so the AI can query the data in a structured way without having to read and interpret the API documentation itself.
+
+## What's Inside a Schema?
+
+A schema contains four sections. Only Tools are required — the other three are optional and come into play with more complex data sources.
+
+
+
+### Tools (Required)
+
+Tools are the core building blocks. Each tool is a single query to the data provider's API. A schema can contain multiple tools — typically between 2 and 8.
+
+Each tool defines:
+
+| Component | What it does |
+|-----------|-------------|
+| **method** | HTTP method (GET, POST) |
+| **path** | The API endpoint (e.g., `/weather/:city`) |
+| **parameters** | What goes in — with validation (type, required, limits) |
+| **modifiers** | Pre- and post-processing of data |
+| **tests** | At least 3 test cases per tool — ensuring it works |
+| **output** | What comes back — as a structured schema so the AI understands the response |
+
+### Resources (Optional)
+
+Local data that doesn't come from an API but is delivered directly with the schema. For example, a SQLite database with reference data or a Markdown file with explanations.
+
+### Prompts (Optional)
+
+Guidance for the AI on how to best use this provider's tools. Formulated model-neutrally — they help any AI, not just a specific one.
+
+### Skills (Optional)
+
+Step-by-step instructions for complex workflows combining multiple tools. For example: "First find the station, then query connections, then compare prices."
+
+## Example: Bright Sky (German Weather Service)
+
+The Bright Sky schema makes DWD weather data accessible. It contains two tools:
+
+- **getWeather** — Current weather for a location (Parameters: latitude, longitude, date → Result: temperature, precipitation, wind, cloud cover)
+- **getForecast** — 7-day forecast for a location (Parameters: latitude, longitude → Result: forecast per day)
+
+```
+Data source:  https://api.brightsky.dev
+Tool:         getWeather
+Call:         GET /weather?lat=52.52&lon=13.41&date=2026-03-28
+Result:       { temperature: 14.2, precipitation: 0, wind_speed: 12.5 }
+```
+
+The AI sees this tool and knows: "I can query weather with this." It doesn't need to know the DWD's API documentation — the schema has already done that work.
+
+## How Does a Schema Become Usable?
+
+A schema starts as a `.mjs` file — a description in code. For the tools it contains to become available to AI clients, a server needs to provide them.
+
+That's what FlowMCP (https://docs.flowmcp.org) does — an open-source framework that loads schemas, validates the structure, runs the tests, and exposes the tools via the **Model Context Protocol (MCP)**. Over 100 AI clients already support MCP — from Claude to ChatGPT to Cursor.
+
+The result: a tool defined in a schema can be called by any MCP-compatible AI. Described once, usable everywhere.
+
+## How Are Schemas Created?
+
+Schemas are created and maintained by the community and the FlowMCP team — based on publicly accessible API documentation and in collaboration with data partners. Each schema is tested (at least 3 tests per tool), validated, and documented before it becomes available.
+
+The community can contribute schemas through a 5-stage pipeline with automatic validation, AI review, and human approval. The principle: **"Validated once, for all."** What has been carefully reviewed once is available to everyone afterward.
+
+## Create Your Own Schemas
+
+Schemas follow the FlowMCP Specification v3.0.0:
+
+- **Documentation:** docs.flowmcp.org (https://docs.flowmcp.org)
+- **Specification:** FlowMCP Spec v3.0.0 (https://github.com/FlowMCP/flowmcp-spec)
+- **How to contribute:** Community Hub →
+- **Schema repository:** github.com/flowmcp/flowmcp-schemas-public (https://github.com/flowmcp/flowmcp-schemas-public)
+
+---
+
+# Use Cases
+/use-cases
+
+## How It Works
+
+The user enters a sentence in natural language. The agent automatically creates a workflow — with cron jobs, calendar integration, and multiple data sources. No programming, no configuration.
+
+---
+
+## Use Case 1: Dentist Appointment
+
+### The Prompt
+
+> Whenever there is a dentist appointment in my calendar: send me a message the day before at 6 PM with the expected weather and which transport option works best. On the morning of the appointment, by 7:30 AM at the latest, give me the exact route.
+
+### What the Agent Does
+
+The agent automatically creates a cron job that checks the calendar daily. When it finds a dentist appointment, it schedules two briefings.
+
+**Evening before (6:00 PM):**
+
+1. **Calendar** → Dentist appointment tomorrow 10:00 AM, Musterstrasse 5
+2. **Weather** → 8°C, light rain from 11 AM
+3. **Recommendation via chat:** "Tomorrow light rain from 11 AM. Biking to the appointment is fine (dry), return trip better by public transit."
+
+**Morning of the appointment (7:30 AM):**
+
+1. **Weather update** → Rain postponed to noon
+2. **Public transit** → S-Bahn running on schedule, no disruptions
+3. **Bike sharing** → nextbike at starting location: 3 bikes available
+4. **Route** → Bike: 18 min (depart 9:40), Public transit: 25 min (depart 9:30)
+5. **Recommendation via chat:** "Bike recommended (18 min, dry). nextbike Alexanderplatz, 3 bikes free. Return: S-Bahn recommended — rain expected from noon."
+
+### Which Data Sources Are Combined?
+
+| Data Source | What It Provides |
+|-------------|-----------------|
+| **Calendar** (Google/iCal via OpenClaw) | Appointment, time, address |
+| **Bright Sky** (German Weather Service) | Weather, forecast, rain probability |
+| **Deutsche Bahn** (transport.rest) | S-Bahn/U-Bahn connections, disruptions |
+| **VBB** (transport.rest) | Regional public transit Berlin-Brandenburg |
+| **nextbike** | Bike availability nearby |
+| **Nominatim** (OpenStreetMap) | Convert address to coordinates |
+
+**6 data sources for one answer.** None of them alone could fully answer the question. Only the combination makes the difference — the agent knows that biking there and taking the train back is the best option because it will rain in the afternoon.
+
+---
+
+## Use Case 2: Business Trip
+
+### The Prompt
+
+> When there is an appointment with the keyword "business trip" in my calendar: two days before, summarize the train connections to the destination, check the weather there, and show me the nearest stop to the meeting point. On the travel day at 7 AM, give me the current connection with real-time data.
+
+### What the Agent Does
+
+**2 days before the trip:**
+
+1. **Calendar** → "Business trip Berlin → Munich", Meeting Leopoldstrasse 10
+2. **Train connections** → ICE 8:05 Berlin Hbf (arrival 12:17), ICE 10:05 (arrival 14:13)
+3. **Weather Munich** → 15°C, sunny, no rain
+4. **Geocoding** → Leopoldstrasse 10 → coordinates → nearest stop: U-Bahn Giselastrasse (300m)
+5. **Summary via chat:** "ICE 8:05 recommended (4h12). Munich sunny, 15°C. From station U3 direction Moosach → Giselastrasse, 300m to meeting."
+
+**Travel day (7:00 AM):**
+
+1. **Real-time** → ICE 8:05 on schedule, platform 7
+2. **Alternative** → If missed: ICE 10:05
+3. **Recommendation via chat:** "ICE 8:05 from Berlin Hbf, platform 7, on schedule. Arrival Munich Hbf 12:17. U3 Giselastrasse 300m from meeting. Weather: 15°C, sunny."
+
+### Which Data Sources Are Combined?
+
+| Data Source | What It Provides |
+|-------------|-----------------|
+| **Calendar** (Google/iCal via OpenClaw) | Appointment, destination, meeting address |
+| **Deutsche Bahn** (transport.rest) | Long-distance connections, real-time data, platform |
+| **Bright Sky** (German Weather Service) | Weather at destination |
+| **Nominatim** (OpenStreetMap) | Meeting address to coordinates, nearest stop |
+
+**4 data sources.** The agent plans the entire trip — from train connection through weather to the last mile to the meeting. On the travel day, it updates with real-time data.
+
+---
+
+## What These Examples Show
+
+Both use cases share something:
+
+1. **A single prompt** is enough — the agent creates the complete workflow
+2. **Multiple data sources** are combined automatically — the user does not need to know where the data comes from
+3. **Cron jobs** make it automatic — the agent works in the background, the user gets the result at the right time
+4. **Calendar integration** makes it personal — the agent knows when and where
+
+**One data source = one answer. Many data sources = a useful answer.**
+
+Our schemas make this combination possible — and any developer can build their own use cases with them.
+
+## Beyond Mobility
+
+These examples show mobility as one domain — but FlowMCP works wherever data needs to be aggregated and made accessible to AI agents. The same pattern applies to environmental data, public administration, health, finance, or any other domain with structured data sources. Every schema-based integration follows the same approach.
+
+- **Environment:** Air quality + weather + pollen count → "Should I go jogging outside today?"
+- **Government:** Tenders + business registry + federal gazette → "Are there new relevant tenders in my field?"
+- **Health:** Counseling centers + geocoding + public transit → "Which free counseling is near me and how do I get there?"
+- **Education:** School holidays + events + weather → "What can I do with the kids during the break?"
+
+---
+
+All schemas used: Schema Catalog →
+
+Contribute schemas: Community Hub →
+
+---
+
+# Why We Do This
+/warum
+
+## From the Web Browser Internet to the AI Internet
+
+For decades, the browser internet was dominant — people visit websites, click links, fill out forms. Alongside it existed the "hacker internet," where technically skilled users access data through APIs and scripts.
+
+With powerful language models, a third picture is now emerging: an **AI internet** that lives at its core in a chat interface. You talk to an AI — and the AI interacts with data sources and interfaces in the background. The user sees only the result.
+
+This is exactly where we come in: as a bridge between people and public data sources in this new AI internet. Publicly funded data should not only be used by large platforms, but directly benefit the people who paid for it.
+
+## Open Protocols Instead of Closed Platforms
+
+Our project builds on an open protocol, not a closed platform. In practice, this means: the schemas we create are not tied to any specific provider. Other projects or government agencies can develop their own implementations and still use the same schema set.
+
+If an implementation fails, it can be replaced — without changing schemas or clients. This creates independence and resilience. It also means: we are not building a proprietary platform, but reusable infrastructure.
+
+## Democratic Participation
+
+Those who make their data available help shape the basis on which AI systems make recommendations. Without structured connections, public data is left out of AI decisions — and the AI relies instead on sources the user does not control.
+
+We want citizens to be able to ask questions through an AI of their choice — with answers based on official open data sources. For example:
+
+- "What is the air quality in my neighborhood?" — The AI retrieves real measurement data and explains it in everyday language
+- "Which free counseling centers are near me?" — The AI lists centers with contact information
+- "What did my city council decide about bike lanes?" — The AI evaluates council information
+
+The user decides which sources the AI uses — not the platform. This is a fundamental difference from closed systems.
+
+## Why Many Data Sources?
+
+A single data source answers a single question. But real questions in everyday life are never simple.
+
+"Should I bike to the dentist tomorrow?" needs weather, route, bike availability, and the calendar. None of these sources alone can answer the question. Only the combination makes the answer useful.
+
+**One data source = one answer. Many data sources = a useful answer.**
+
+Our schemas make this combination possible — without the user needing to know where the data comes from. Concrete examples: Use Cases →
+
+## Energy Efficiency: Prepare Once, Use Forever
+
+
+
+Without a schema, every AI would have to read and interpret the API documentation of a data source from scratch with every request. This costs thousands of tokens per request — and results are inconsistent because the AI takes different approaches depending on randomness factors.
+
+Our schema preparation is a **one-time investment**: we analyze the data source, describe it in a structured way, and every AI can then use it efficiently. A single request with a schema requires only a fraction of the tokens. Across hundreds of users and thousands of requests, this adds up to savings by a **factor of 10**.
+
+This is due to several effects: without a schema, the AI must reinterpret the API documentation with every new session. Over time, knowledge is lost through compression and must be re-researched. Additionally, without a schema, the AI takes different paths each day depending on randomness (temperature) — with a schema, access is deterministic and always the same.
+
+The principle behind it: **"Validated once, for all."** What has been carefully prepared once is available to everyone afterward — consistent, deterministic, and energy-efficient. This principle also becomes the core of our Community Hub, where the community itself can contribute and validate schemas.
+
+## Security Through Transparency
+
+Preparation happens **publicly** — as open source. This makes it auditable and verifiable for everyone. Anyone can see how a schema accesses a data source, which parameters are used, and what comes back. This meets modern security standards and builds trust.
+
+The default path is designed to be hard to use wrong — security by design, not by documentation.
+
+## Digital Sovereignty
+
+Users retain control: which data sources are active, which schemas are loaded. No lock-in to any single platform. The protocol is open — alternative implementations can be used if needed, without changing schemas or clients.
+
+This also applies to operations: those who want to can run our schemas on a local server — completely independent from cloud services. More at Integration.

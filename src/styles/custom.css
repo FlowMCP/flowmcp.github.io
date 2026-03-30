@@ -1,0 +1,354 @@
+/* Custom Theme — matching FlowMCP Website */
+
+/* Hide theme selector — force dark */
+starlight-theme-select {
+    display: none !important;
+}
+
+/* ============ COLOR TOKENS ============ */
+
+:root,
+[data-theme="light"],
+[data-theme="dark"] {
+    --sl-color-accent-low: #0a2a15;
+    --sl-color-accent: #4ade80;
+    --sl-color-accent-high: #bbf7d0;
+    --sl-color-white: #ffffff;
+    --sl-color-gray-1: #e0e0e0;
+    --sl-color-gray-2: #bbbbbb;
+    --sl-color-gray-3: #888888;
+    --sl-color-gray-4: #555555;
+    --sl-color-gray-5: #333333;
+    --sl-color-gray-6: #242424;
+    --sl-color-black: #0f0f0f;
+    --sl-color-bg: #0f0f0f;
+    --sl-color-bg-nav: #1a1a1a;
+    --sl-color-bg-sidebar: #1a1a1a;
+    --sl-color-bg-inline-code: #242424;
+    --sl-color-hairline-light: #333333;
+    --sl-color-hairline: #333333;
+    --sl-color-hairline-shade: #242424;
+    --sl-color-text: #e0e0e0;
+    --sl-color-text-accent: #4ade80;
+    --sl-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Force dark mode */
+html {
+    color-scheme: dark;
+}
+
+/* ============ HEADER ============ */
+
+header.header {
+    background: #1a1a1a;
+    border-bottom: 1px solid #333;
+}
+
+/* ============ SIDEBAR ============ */
+
+nav.sidebar {
+    background: #1a1a1a;
+    border-right: 1px solid #333;
+}
+
+/* Sidebar links: default = readable gray */
+.sidebar-content a {
+    color: #b0b0b0 !important;
+}
+
+/* Sidebar: active page = green with dark background */
+.sidebar-content a[aria-current="page"] {
+    background: #242424;
+    color: #4ade80 !important;
+    border-radius: 4px;
+}
+
+/* Sidebar: hover = lighter gray */
+.sidebar-content a:hover {
+    color: #e0e0e0 !important;
+}
+
+/* Sidebar group labels = readable */
+.sidebar-content .group-label span {
+    color: #999 !important;
+}
+
+/* ============ RIGHT SIDEBAR (On this page) ============ */
+
+.right-sidebar a {
+    color: #888 !important;
+}
+
+.right-sidebar a:hover {
+    color: #e0e0e0 !important;
+}
+
+.right-sidebar a[aria-current="true"] {
+    color: #4ade80 !important;
+}
+
+.right-sidebar h2 {
+    color: #666 !important;
+}
+
+/* ============ CONTENT ============ */
+
+.content-panel {
+    background: #0f0f0f;
+}
+
+/* Smaller headings — Starlight defaults are too large */
+.sl-markdown-content h1 {
+    font-size: 1.8rem !important;
+}
+
+.sl-markdown-content h2 {
+    font-size: 1.4rem !important;
+}
+
+.sl-markdown-content h3 {
+    font-size: 1.15rem !important;
+}
+
+/* Content links: green (only in main content area) */
+.sl-markdown-content a {
+    color: #4ade80;
+}
+
+.sl-markdown-content a:hover {
+    color: #22c55e;
+}
+
+/* All other links: inherit (not green) */
+a {
+    color: inherit;
+}
+
+/* ============ CARDS ============ */
+
+.card {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+}
+
+/* ============ ADMONITIONS ============ */
+
+/* Dark mode admonitions — override light backgrounds */
+.starlight-aside {
+    background: #1a1a1a !important;
+    border-left-width: 3px !important;
+}
+
+.starlight-aside--caution {
+    border-left-color: #f59e0b !important;
+}
+
+.starlight-aside--tip {
+    border-left-color: #4ade80 !important;
+}
+
+.starlight-aside--note {
+    border-left-color: #3b82f6 !important;
+}
+
+.starlight-aside--danger {
+    border-left-color: #ef4444 !important;
+}
+
+.starlight-aside .starlight-aside__title {
+    color: #e0e0e0 !important;
+}
+
+.starlight-aside p {
+    color: #b0b0b0 !important;
+}
+
+/* ============ CODE ============ */
+
+pre {
+    background: #1a1a1a !important;
+    border: 1px solid #333;
+    border-radius: 8px;
+}
+
+code {
+    background: #242424;
+    border-radius: 4px;
+}
+
+/* Dark mode copy button in code blocks */
+.copy-button,
+button[data-copy],
+pre button {
+    background: #333 !important;
+    color: #b0b0b0 !important;
+    border: 1px solid #444 !important;
+}
+
+.copy-button:hover,
+button[data-copy]:hover,
+pre button:hover {
+    background: #444 !important;
+}
+
+/* ============ TABLES ============ */
+
+table {
+    border-collapse: collapse;
+}
+
+th {
+    background: #1a1a1a;
+    border-bottom: 1px solid #333;
+    color: #888;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+td {
+    border-bottom: 1px solid #242424;
+}
+
+/* ============ BLOCKQUOTES ============ */
+
+blockquote {
+    border-left: 3px solid #4ade80;
+    background: #1a1a1a;
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+}
+
+/* ============ HERO ============ */
+
+/* Hero: show full diagram next to text */
+.hero {
+    padding-bottom: 3rem;
+}
+
+.hero img {
+    object-fit: contain !important;
+    max-height: 400px !important;
+    width: auto !important;
+    border-radius: 12px;
+    border: none;
+    background: transparent;
+    padding: 0;
+}
+
+/* Hero buttons — primary green with BLACK text for contrast */
+.hero .action.primary,
+.hero a.action.primary,
+.hero .sl-flex a:first-child {
+    background: #4ade80 !important;
+    color: #000000 !important;
+    border: none !important;
+    font-weight: 700 !important;
+}
+
+.hero .action.primary *,
+.hero a.action.primary *,
+.hero .sl-flex a:first-child * {
+    color: #000000 !important;
+}
+
+/* Hero secondary button */
+.hero .action.minimal,
+.hero a.action.minimal {
+    color: #e0e0e0 !important;
+    border: 1px solid #333 !important;
+}
+
+/* Hero image: show full diagram, don't crop */
+.hero img {
+    object-fit: contain !important;
+    border-radius: 12px;
+    border: none;
+}
+
+/* ============ FOOTER ============ */
+
+footer,
+.footer {
+    background: #0f0f0f !important;
+    border-top: 1px solid #333 !important;
+}
+
+/* Hide Starlight default footer content (gray bar) */
+footer .meta {
+    background: #0f0f0f !important;
+}
+
+/* Footer container */
+.page > footer,
+.main-frame > footer {
+    background: #0f0f0f !important;
+}
+
+/* ============ ROADMAP CUSTOM STYLES ============ */
+
+/* Roadmap checklist items: dark cards with left border */
+.sl-markdown-content ul:has(input[type="checkbox"]) {
+    list-style: none !important;
+    padding-left: 0 !important;
+}
+
+.sl-markdown-content li:has(input[type="checkbox"]) {
+    background: #1a1a1a;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    border-left: 3px solid #555;
+}
+
+/* Checked items: green left border */
+.sl-markdown-content li:has(input[type="checkbox"]:checked) {
+    border-left-color: #4ade80;
+    opacity: 0.8;
+}
+
+/* Checkbox styling */
+.sl-markdown-content input[type="checkbox"] {
+    accent-color: #4ade80;
+    margin-right: 8px;
+}
+
+/* ============ NAVIGATION BUTTONS ============ */
+
+/* Prev/Next buttons at bottom of docs */
+.pagination-links a {
+    color: #e0e0e0 !important;
+    border-color: #333 !important;
+    background: #1a1a1a !important;
+}
+
+.pagination-links a:hover {
+    border-color: #4ade80 !important;
+    background: #242424 !important;
+}
+
+/* ALL gray bars/stripes in footer area */
+.meta.sl-flex,
+.content-panel ~ *,
+.main-pane > footer,
+.main-pane > *:last-child {
+    background: #0f0f0f !important;
+}
+
+/* Horizontal rules between content and pagination */
+hr,
+.content-panel hr,
+.main-frame hr {
+    border-color: #333 !important;
+    background: transparent !important;
+    opacity: 0.5;
+}
+
+/* The separator lines above pagination */
+.pagination-links {
+    border-top: none !important;
+    margin-top: 0 !important;
+    padding-top: 16px !important;
+}

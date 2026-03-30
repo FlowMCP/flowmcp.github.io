@@ -1,0 +1,91 @@
+import { readdir, readFile, writeFile, cp } from 'node:fs/promises'
+import { join } from 'node:path'
+
+const DOCS_DIR = 'src/content/docs'
+const OUTPUT_PATH = 'public/llm/llms.txt'
+const OUTPUT_ROOT = 'public/llms.txt'
+
+const HEADER = `# FlowMCP — llms.txt
+
+> Normalize any data source and make it usable for AI agents.
+> Build your own agent in 5 minutes.
+
+Docs: https://flowmcp.github.io/
+GitHub: https://github.com/flowmcp
+License: MIT — Open Source, free for everyone.
+
+FlowMCP Docs: https://docs.flowmcp.org/llms.txt
+FlowMCP Spec: https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/llms.txt
+`
+
+const SIDEBAR_ORDER = [
+    'ueber-das-projekt',
+    'fuer-llms',
+    'schemas-und-tools',
+    'agents',
+    'nutzungsarchitekturen',
+    'was-ist-flowmcp',
+    'mcp-clients',
+    'roadmap',
+    'team',
+]
+
+const stripFrontmatter = (content) => {
+    const match = content.match(/^---\n[\s\S]*?\n---\n/)
+    return match ? content.slice(match[0].length).trim() : content.trim()
+}
+
+const stripImages = (content) =>
+    content.replace(/!\[.*?\]\(.*?\)/g, '')
+
+const stripLinks = (content) =>
+    content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => {
+        if (url.startsWith('http')) return `${text} (${url})`
+        if (url.startsWith('/')) return text
+        return text
+    })
+
+const extractTitle = (content) => {
+    const match = content.match(/^title:\s*(.+)$/m)
+    return match ? match[1].trim() : null
+}
+
+const slugFromFile = (filename) =>
+    filename.replace(/\.(md|mdx)$/, '')
+
+const run = async () => {
+    const files = await readdir(DOCS_DIR)
+    const mdFiles = files.filter(f => f.endsWith('.md') && f !== 'index.mdx')
+
+    const pages = await Promise.all(
+        mdFiles.map(async (file) => {
+            const raw = await readFile(join(DOCS_DIR, file), 'utf-8')
+            const slug = slugFromFile(file)
+            const title = extractTitle(raw)
+            const body = stripLinks(stripImages(stripFrontmatter(raw)))
+            return { slug, title, body }
+        })
+    )
+
+    const ordered = SIDEBAR_ORDER
+        .map(slug => pages.find(p => p.slug === slug))
+        .filter(Boolean)
+
+    const unordered = pages.filter(p => !SIDEBAR_ORDER.includes(p.slug))
+    const allPages = [...ordered, ...unordered]
+
+    const sections = allPages.map(({ slug, title, body }) =>
+        `---\n\n# ${title || slug}\n/${slug}\n\n${body}`
+    )
+
+    const output = HEADER + '\n' + sections.join('\n\n') + '\n'
+
+    await writeFile(OUTPUT_PATH, output, 'utf-8')
+    await writeFile(OUTPUT_ROOT, output, 'utf-8')
+
+    console.log(`llms.txt generated: ${allPages.length} pages, ${output.length} chars`)
+    console.log(`  → ${OUTPUT_PATH}`)
+    console.log(`  → ${OUTPUT_ROOT}`)
+}
+
+run()
