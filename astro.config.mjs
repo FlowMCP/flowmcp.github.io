@@ -43,32 +43,26 @@ export default defineConfig({
                             var activeColor = 'color:var(--sl-color-text-accent)!important;';
                             var inactiveColor = 'color:var(--sl-color-gray-2)!important;';
                             var isHome = path === '/' || path === '/de' || path === '/de/';
+                            var isAbout = path.indexOf('/introduction') !== -1 || path.indexOf('/basics') !== -1;
+                            var isDocs = path.indexOf('/docs/') !== -1;
                             var isRoadmap = path.indexOf('/roadmap') !== -1;
-                            var isDocs = !isHome && !isRoadmap;
-                            var existingDocs = rg.querySelector('a[href*="/introduction/about"]');
-                            var existingRm = rg.querySelector('a[href*="/roadmap"]');
-                            if (!existingDocs) {
-                                var docsLink = document.createElement('a');
-                                docsLink.href = prefix + '/introduction/about/';
-                                docsLink.textContent = 'Docs';
-                                docsLink.className = 'header-nav-link';
-                                rg.appendChild(docsLink);
-                                existingDocs = docsLink;
-                            } else {
-                                existingDocs.href = prefix + '/introduction/about/';
-                            }
-                            if (!existingRm) {
-                                var rmLink = document.createElement('a');
-                                rmLink.href = prefix + '/roadmap/overview/';
-                                rmLink.textContent = 'Roadmap';
-                                rmLink.className = 'header-nav-link';
-                                rg.appendChild(rmLink);
-                                existingRm = rmLink;
-                            } else {
-                                existingRm.href = prefix + '/roadmap/overview/';
-                            }
-                            existingDocs.style.cssText = baseStyle + (isDocs ? activeColor : inactiveColor);
-                            existingRm.style.cssText = baseStyle + (isRoadmap ? activeColor : inactiveColor);
+                            var links = [
+                                { text: 'About', href: prefix + '/introduction/about/', active: isAbout },
+                                { text: 'Docs', href: prefix + '/docs/getting-started/what-is-flowmcp/', active: isDocs },
+                                { text: 'Roadmap', href: prefix + '/roadmap/overview/', active: isRoadmap }
+                            ];
+                            links.forEach(function(link) {
+                                var sel = 'a.header-nav-' + link.text.toLowerCase();
+                                var el = rg.querySelector(sel);
+                                if (!el) {
+                                    el = document.createElement('a');
+                                    el.textContent = link.text;
+                                    el.className = 'header-nav-link header-nav-' + link.text.toLowerCase();
+                                    rg.appendChild(el);
+                                }
+                                el.href = link.href;
+                                el.style.cssText = baseStyle + (link.active ? activeColor : inactiveColor);
+                            });
                         }
                         document.addEventListener('DOMContentLoaded', function() { addHeaderLinks(); });
                         document.addEventListener('astro:page-load', function() { addHeaderLinks(); });
