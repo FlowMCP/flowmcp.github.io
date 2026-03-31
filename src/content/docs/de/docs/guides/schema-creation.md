@@ -11,7 +11,7 @@ Bevor du ein Schema erstellst, brauchst du:
 - Die API-Dokumentation des Services, den du wrappen moechtest
 - Einen API-Schluessel, falls der Service Authentifizierung erfordert
 - Node.js 18+ installiert
-- FlowMCP CLI installiert (`npm install -g flowmcp-cli`)
+- FlowMCP CLI installiert (`npm install -g github:FlowMCP/flowmcp-cli`)
 
 ## Erstellungsprozess
 

@@ -2101,7 +2101,7 @@ import { FlowMCP } from 'flowmcp-core'
 The CLI provides interactive access to the full schema catalog from the command line.
 
 ```bash
-npm install -g flowmcp-cli
+npm install -g github:FlowMCP/flowmcp-cli
 ```
 
 Verify the installation:
@@ -2455,7 +2455,7 @@ Most schemas only need the `main` export. An optional `handlers` export is avail
 1. **Install FlowMCP**
 
    ```bash
-   npm install -g flowmcp
+   npm install -g github:FlowMCP/flowmcp-cli
    ```
 
 2. **Search available schemas**
@@ -2955,7 +2955,7 @@ Before creating a schema, you need:
 - The API documentation for the service you want to wrap
 - An API key if the service requires authentication
 - Node.js 18+ installed
-- FlowMCP CLI installed (`npm install -g flowmcp-cli`)
+- FlowMCP CLI installed (`npm install -g github:FlowMCP/flowmcp-cli`)
 
 ## Creation Process
 
@@ -3542,7 +3542,7 @@ The FlowMCP CLI is a command-line tool for developing, validating, and managing 
 ## Installation
 
 ```bash
-npm install -g flowmcp-cli
+npm install -g github:FlowMCP/flowmcp-cli
 ```
 
 Or clone and link locally:
@@ -5841,7 +5841,7 @@ This example demonstrates: fixed parameters (`module`, `action`), user parameter
 ## Installation
 
 ```bash
-npm install -g flowmcp
+npm install -g github:FlowMCP/flowmcp-cli
 ```
 
 ## CLI Workflow

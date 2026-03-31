@@ -69,7 +69,7 @@ Die meisten Schemas benoetigen nur den `main` Export. Ein optionaler `handlers` 
 1. **FlowMCP installieren**
 
    ```bash
-   npm install -g flowmcp
+   npm install -g github:FlowMCP/flowmcp-cli
    ```
 
 2. **Verfuegbare Schemas durchsuchen**

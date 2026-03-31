@@ -6,7 +6,7 @@ description: FlowMCP-Tools von der Kommandozeile aus suchen, hinzufuegen und auf
 ## Installation
 
 ```bash
-npm install -g flowmcp
+npm install -g github:FlowMCP/flowmcp-cli
 ```
 
 ## CLI-Workflow

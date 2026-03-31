@@ -38,7 +38,7 @@ import { FlowMCP } from 'flowmcp-core'
 The CLI provides interactive access to the full schema catalog from the command line.
 
 ```bash
-npm install -g flowmcp-cli
+npm install -g github:FlowMCP/flowmcp-cli
 ```
 
 Verify the installation:

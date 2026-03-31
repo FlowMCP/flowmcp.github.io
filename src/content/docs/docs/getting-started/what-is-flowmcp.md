@@ -69,7 +69,7 @@ Most schemas only need the `main` export. An optional `handlers` export is avail
 1. **Install FlowMCP**
 
    ```bash
-   npm install -g flowmcp
+   npm install -g github:FlowMCP/flowmcp-cli
    ```
 
 2. **Search available schemas**

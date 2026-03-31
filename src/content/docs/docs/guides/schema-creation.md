@@ -11,7 +11,7 @@ Before creating a schema, you need:
 - The API documentation for the service you want to wrap
 - An API key if the service requires authentication
 - Node.js 18+ installed
-- FlowMCP CLI installed (`npm install -g flowmcp-cli`)
+- FlowMCP CLI installed (`npm install -g github:FlowMCP/flowmcp-cli`)
 
 ## Creation Process
 

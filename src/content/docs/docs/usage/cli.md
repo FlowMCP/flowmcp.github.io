@@ -6,7 +6,7 @@ description: Search, add, and call FlowMCP tools from the command line
 ## Installation
 
 ```bash
-npm install -g flowmcp
+npm install -g github:FlowMCP/flowmcp-cli
 ```
 
 ## CLI Workflow

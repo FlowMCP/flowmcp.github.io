@@ -8,7 +8,7 @@ Die FlowMCP CLI ist ein Kommandozeilen-Tool fuer die Entwicklung, Validierung un
 ## Installation
 
 ```bash
-npm install -g flowmcp-cli
+npm install -g github:FlowMCP/flowmcp-cli
 ```
 
 Oder lokal klonen und verlinken:
