@@ -202,4 +202,4 @@ Schemas that fail validation or testing will not be merged. Run both `flowmcp va
 
 - **Schema Browser**: [flowmcp.github.io/flowmcp-schemas](https://flowmcp.github.io/flowmcp-schemas/)
 - **GitHub**: [FlowMCP/flowmcp-schemas](https://github.com/FlowMCP/flowmcp-schemas)
-- **FlowMCP Spec**: [Specification v2.0.0](/docs/reference/specification)
+- **FlowMCP Spec**: [Specification Overview](/docs/specification/overview/)

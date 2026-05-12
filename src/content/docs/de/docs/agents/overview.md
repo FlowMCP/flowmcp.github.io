@@ -6,7 +6,7 @@ description: Tools mehrerer Provider zu zweckgerichteten KI-Agents mit System-Pr
 Agents sind zweckgerichtete Kompositionen, die Tools mehrerer Provider in einer einzigen, testbaren Einheit buendeln. Waehrend einzelne Schemas eine einzelne API wrappen, kombinieren Agents die richtigen Tools fuer eine bestimmte Aufgabe -- zum Beispiel koennte ein Crypto-Research-Agent gleichzeitig von CoinGecko, Etherscan und DeFi Llama abrufen.
 
 :::note
-Diese Seite behandelt die praktische Anleitung zum Erstellen von Agents. Fuer die vollstaendige Spezifikation und Validierungsregeln siehe [Agents-Spezifikation](/specification/agents).
+Diese Seite behandelt die praktische Anleitung zum Erstellen von Agents. Fuer die vollstaendige Spezifikation und Validierungsregeln siehe [Agents-Spezifikation](/docs/specification/agents/).
 :::
 
 ## Uebersicht
