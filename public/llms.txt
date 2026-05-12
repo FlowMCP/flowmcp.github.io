@@ -1679,7 +1679,7 @@ Schemas that fail validation or testing will not be merged. Run both `flowmcp va
 
 - **Schema Browser**: flowmcp.github.io/flowmcp-schemas (https://flowmcp.github.io/flowmcp-schemas/)
 - **GitHub**: FlowMCP/flowmcp-schemas (https://github.com/FlowMCP/flowmcp-schemas)
-- **FlowMCP Spec**: Specification v2.0.0
+- **FlowMCP Spec**: Specification Overview
 
 ---
 
@@ -5832,6 +5832,3318 @@ This example demonstrates: fixed parameters (`module`, `action`), user parameter
 | Root URL protocol | `https://` | HTTP is not allowed. |
 | Root URL trailing slash | Forbidden | `root` must not end with `/`. |
 | Schema file imports | Zero | All dependencies are injected via the `handlers` factory. |
+
+---
+
+# "Agents"
+/docs/specification/agents
+
+Agents are purpose-driven tool compositions that bundle tools from multiple providers for a specific task. They replace the simpler "Groups" concept from v2.0.0 with full manifest definitions including model binding, system prompts, and testable behavior.
+
+:::note
+This page documents the v3.0.0 Agent system. For the full specification, see 06-agents.md (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/06-agents.md).
+:::
+
+## Agent vs Provider
+
+| Aspect | Provider | Agent |
+|--------|----------|-------|
+| **Scope** | Single API source | Multiple providers combined |
+| **Prompts** | Model-neutral | Model-specific with `testedWith` |
+| **Model** | None (any model can use) | Bound to specific LLM |
+| **Purpose** | Expose data | Accomplish tasks |
+| **Tests** | Per-tool deterministic | Tool selection + content assertions |
+
+## Manifest Format
+
+Each agent is defined by a `manifest.json` file in the catalog's `agents/` directory.
+
+```json
+{
+    "name": "crypto-research",
+    "version": "flowmcp/3.0.0",
+    "description": "Cross-provider crypto analysis agent",
+    "model": "anthropic/claude-sonnet-4-5-20250929",
+    "systemPrompt": "You are a crypto research analyst...",
+    "tools": [
+        "coingecko-com/tool/simplePrice",
+        "etherscan/tool/getContractAbi",
+        "defillama/tool/getProtocolTvl"
+    ],
+    "tests": [
+        {
+            "_description": "Basic token lookup",
+            "input": "What is the current price of Ethereum?",
+            "expectedTools": ["coingecko-com/tool/simplePrice"],
+            "expectedContent": ["price", "USD"]
+        }
+    ]
+}
+```
+
+## Required Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | string | Agent name (kebab-case) |
+| `description` | string | Human-readable purpose |
+| `version` | string | Must be `"flowmcp/3.0.0"` |
+| `model` | string | Target LLM (OpenRouter format with `/`) |
+| `systemPrompt` | string | Agent persona and behavioral instructions |
+| `tools` | string[] | Tool IDs in `namespace/type/name` format |
+| `tests` | array | Minimum 3 test cases |
+
+## Optional Fields
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `maxRounds` | number | 10 | Maximum LLM interaction rounds |
+| `maxTokens` | number | 4096 | Maximum tokens per response |
+| `prompts` | string[] | [] | Relative paths to prompt files |
+| `sharedLists` | string[] | [] | Required shared list names |
+| `inputSchema` | object | — | JSON Schema for agent input |
+
+## Agent Tests
+
+Each agent must have at least 3 tests. Tests validate tool selection (deterministic) and optionally content assertions.
+
+```json
+{
+    "_description": "Cross-provider DeFi analysis",
+    "input": "Compare TVL of Aave on Ethereum vs Arbitrum",
+    "expectedTools": ["defillama/tool/getProtocolTvl"],
+    "expectedContent": ["TVL", "Ethereum", "Arbitrum"]
+}
+```
+
+- **`expectedTools`** — Deterministic: the agent must call exactly these tools
+- **`expectedContent`** — Partial: the response should contain these strings
+
+## Validation Rules
+
+| Code | Rule |
+|------|------|
+| AGT001 | `manifest.json` must exist and be valid JSON |
+| AGT002 | `name` must be kebab-case |
+| AGT003 | `version` must be `"flowmcp/3.0.0"` |
+| AGT004 | `model` must use OpenRouter format (contains `/`) |
+| AGT005 | `tools[]` must not be empty |
+| AGT006 | Each tool ID must be valid (`namespace/type/name`) |
+| AGT007 | `tests[]` must have minimum 3 entries |
+| AGT008 | Each test must have `_description`, `input`, `expectedTools` |
+
+## CLI Commands
+
+```bash
+# Import an agent from a catalog
+flowmcp import-agent crypto-research
+
+# The agent's tools are activated locally
+flowmcp list
+```
+
+---
+
+# "Catalog"
+/docs/specification/catalog
+
+A Catalog is the top-level organizational unit in FlowMCP v3. It is a named directory containing a `registry.json` manifest that describes all shared lists, provider schemas, and agent definitions.
+
+:::note
+For the full specification, see 15-catalog.md (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/15-catalog.md).
+:::
+
+## Catalog Structure
+
+```
+flowmcp-community/
+├── registry.json           # Catalog manifest
+├── _lists/                 # Shared lists (root level)
+├── _shared/                # Shared helpers (root level)
+├── providers/              # Provider schemas
+│   ├── coingecko-com/
+│   │   ├── simplePrice.mjs
+│   │   └── prompts/
+│   └── etherscan/
+│       └── contracts.mjs
+└── agents/                 # Agent definitions
+    ├── crypto-research/
+    │   ├── manifest.json
+    │   └── prompts/
+    └── defi-monitor/
+        └── manifest.json
+```
+
+## Registry Manifest
+
+The `registry.json` file declares everything the catalog contains:
+
+```json
+{
+    "name": "flowmcp-community",
+    "version": "3.0.0",
+    "description": "Official FlowMCP community catalog",
+    "schemaSpec": "3.0.0",
+    "shared": [
+        { "file": "_lists/evm-chains.mjs", "name": "evmChains" }
+    ],
+    "schemas": [
+        {
+            "namespace": "coingecko-com",
+            "file": "providers/coingecko-com/simplePrice.mjs",
+            "name": "CoinGecko Simple Price",
+            "requiredServerParams": [],
+            "hasHandlers": false,
+            "sharedLists": []
+        }
+    ],
+    "agents": [
+        {
+            "name": "crypto-research",
+            "description": "Cross-provider crypto analysis",
+            "manifest": "agents/crypto-research/manifest.json"
+        }
+    ]
+}
+```
+
+## Multiple Catalogs
+
+Multiple catalogs can coexist side by side. Each is fully self-contained with no cross-catalog dependencies.
+
+```
+schemas/v3.0.0/
+├── flowmcp-community/     # Official catalog
+├── my-company-tools/      # Company-internal
+└── experimental/          # Personal experiments
+```
+
+## Import Flow
+
+```bash
+# Phase 1: Download catalog
+flowmcp import-registry https://example.com/registry.json
+
+# Phase 2: Activate an agent
+flowmcp import-agent crypto-research
+```
+
+## Validation
+
+```bash
+flowmcp validate-catalog <catalog-directory>
+```
+
+| Code | Rule |
+|------|------|
+| CAT001 | `registry.json` must exist |
+| CAT002 | `name` must match directory name |
+| CAT003 | All `shared[].file` paths must resolve |
+| CAT004 | All `schemas[].file` paths must resolve |
+| CAT005 | All `agents[].manifest` paths must resolve |
+| CAT006 | Orphaned files reported as warnings |
+| CAT007 | `schemaSpec` must be valid version |
+
+---
+
+# "Groups & Skills"
+/docs/specification/groups-prompts
+
+Groups let you create named collections of specific tools, resources, and skills from across multiple schemas. Skills attach reusable AI agent workflows to groups, guiding AI agents through multi-step tasks.
+
+:::note
+This page combines the Groups and Group Skills sections from the formal specification (https://github.com/FlowMCP/flowmcp-spec). In v3.0.0, "Group Prompts" have been renamed to "Group Skills" to align with MCP terminology.
+:::
+
+## Groups
+
+A typical FlowMCP installation has hundreds of schemas with thousands of tools. Most projects only need a handful of specific tools. Groups solve this by letting you:
+
+1. **Select specific tools and resources** from any schema
+2. **Name the collection** for reuse
+3. **Verify integrity** with cryptographic hashes
+4. **Share collections** across projects and teams
+
+### Group Definition
+
+Groups are defined in `.flowmcp/groups.json`:
+
+```json
+{
+    "specVersion": "3.0.0",
+    "groups": {
+        "my-crypto-monitor": {
+            "description": "Crypto price and TVL monitoring tools",
+            "tools": [
+                "etherscan/contracts.mjs::tool::getContractAbi",
+                "coingecko/coins.mjs::tool::getSimplePrice",
+                "coingecko/coins.mjs::tool::getCoinMarkets",
+                "defillama/protocols.mjs::tool::getTvlProtocol",
+                "etherscan/contracts.mjs::resource::verifiedContracts"
+            ],
+            "hash": "sha256:a1b2c3d4e5f6...",
+            "includeSchemaSkills": true
+        }
+    }
+}
+```
+
+### Type Discriminator Syntax
+
+In v3.0.0, tool references use type discriminators to distinguish between tools, resources, and skills:
+
+| Discriminator | Format | Example |
+|---------------|--------|---------|
+| `::tool::` | `namespace/file.mjs::tool::name` | `etherscan/contracts.mjs::tool::getContractAbi` |
+| `::resource::` | `namespace/file.mjs::resource::name` | `etherscan/contracts.mjs::resource::verifiedContracts` |
+| `::skill::` | `namespace/file.mjs::skill::name` | `etherscan/contracts.mjs::skill::contract-audit` |
+
+For backward compatibility, the v2 format `namespace/file.mjs::routeName` (without type discriminator) is still accepted and is treated as `::tool::`.
+
+### `includeSchemaSkills`
+
+When `includeSchemaSkills` is set to `true`, the group automatically includes all skills from schemas whose tools are already in the group.
+
+### Hash Verification
+
+Integrity hashes ensure group definitions haven't changed unexpectedly.
+
+**Per-tool hash** — calculated from the `main` block only (no handler code):
+
+```
+toolHash = SHA-256( JSON.stringify( {
+    namespace, version, tool: { name, method, path, parameters, output },
+    sharedListRefs: [ { ref, version } ]
+} ) )
+```
+
+**Per-group hash** — calculated from sorted tool references and their individual hashes:
+
+```
+groupHash = SHA-256( JSON.stringify(
+    tools.sort().map( ( toolRef ) => ({ ref: toolRef, hash: getToolHash( toolRef ) }) )
+) )
+```
+
+### Verification CLI
+
+```bash
+flowmcp group verify my-crypto-monitor
+```
+
+```bash
+# Success
+Group "my-crypto-monitor": 4 tools, all hashes valid
+
+# Hash Mismatch
+Group "my-crypto-monitor": HASH MISMATCH
+  - etherscan/contracts.mjs::tool::getContractAbi: expected sha256:abc... got sha256:def...
+```
+
+### Group Operations
+
+| Operation | Command | Description |
+|-----------|---------|-------------|
+| Create | `flowmcp group create <name>` | Create empty group |
+| Add tool | `flowmcp group add <name> <tool-ref>` | Add tool and recalculate hash |
+| Remove tool | `flowmcp group remove <name> <tool-ref>` | Remove tool and recalculate hash |
+| Verify | `flowmcp group verify <name>` | Check all hashes |
+| List | `flowmcp group list` | Show all groups |
+| Export | `flowmcp group export <name>` | Export as shareable JSON |
+| Import | `flowmcp group import <file>` | Import from JSON (verifies hashes) |
+
+### Group Constraints
+
+| Constraint | Value |
+|------------|-------|
+| Name pattern | `^[a-z][a-z0-9-]*$` (lowercase, hyphens allowed) |
+| Max tools per group | 50 |
+| All tools must be resolvable | Schema + tool must exist |
+| No duplicate tool references | Within a group |
+
+---
+
+## Group Skills
+
+Skills bridge the deterministic tool layer with non-deterministic AI orchestration. Groups define **which** tools are available; skills define **how** to use them together.
+
+### Separation of Concerns
+
+| Layer | Nature | Responsibility |
+|-------|--------|----------------|
+| Schema | Deterministic | Defines individual tool behavior |
+| Group | Deterministic | Defines which tools are available |
+| Skill | Non-deterministic | Defines how tools compose into workflows |
+
+### Skill File Format
+
+Group-level skills are stored as `.md` files in `.flowmcp/skills/`:
+
+```
+.flowmcp/
+├── groups.json
+├── skills/
+│   ├── token-analysis.md
+│   └── portfolio-snapshot.md
+└── tools/
+```
+
+:::note
+Group-level skills (`.md` files in `.flowmcp/skills/`) are different from schema-level skills (`.mjs` files alongside the schema). Group-level skills are project-specific workflows. Schema-level skills are part of the schema's MCP Prompts. See Skills for schema-level skill documentation.
+:::
+
+### Required Sections
+
+| Section | Heading | Required | Description |
+|---------|---------|----------|-------------|
+| Title | `# <title>` | Yes | First line of the file |
+| Description | `## Description` | No | 1-3 sentences about the skill |
+| Input | `## Input` | No | Parameters the user provides |
+| Workflow | `## Workflow` | Yes | Step-by-step instructions referencing tools |
+| Output | `## Output` | No | Final artifact description |
+
+### Example Skill File
+
+```markdown
+# Standard Token Analysis
+
+## Description
+Generate a comprehensive technical analysis report for any financial instrument.
+
+## Input
+- `tokenName` (string, required): Name or ticker symbol of the instrument
+
+## Workflow
+### Step 1: Symbol Resolution
+Search for `{tokenName}` using `searchSymbol`.
+
+### Step 2: Fetch Price Data
+Call `getOhlcv` with interval: 1d, period1: 200 days ago.
+
+### Step 3: Compute Indicators
+Compute `getRelativeStrengthIndex`, `getSimpleMovingAverage`, `getMovingAverageConvergenceDivergence`.
+
+### Step 4: Generate Charts
+Call `generateCandlestickChart` and `generateLineChart`.
+
+### Step 5: Report
+Produce a Markdown document with indicator summary and embedded charts.
+
+## Output
+- Markdown document with embedded base64 chart images
+- Indicator summary with BUY/SELL/HOLD signals
+```
+
+### Skill CLI Commands
+
+| Command | Description |
+|---------|-------------|
+| `flowmcp skill list` | List all skills across all groups |
+| `flowmcp skill search <query>` | Search skills by title or description |
+| `flowmcp skill show <group>/<name>` | Display full skill content |
+| `flowmcp skill add <group> <name> --file <path>` | Add skill to a group |
+| `flowmcp skill remove <group> <name>` | Remove skill from group |
+
+### Skill Validation Rules
+
+| Code | Rule |
+|------|------|
+| PRM001 | Skill name must match `^[a-z][a-z0-9-]*$` |
+| PRM002 | File must exist at declared path |
+| PRM003 | File must have `# Title` (first line) |
+| PRM004 | File must have `## Workflow` section |
+| PRM005 | Tool references must resolve in group (warning) |
+| PRM006 | Group must have at least one tool |
+| PRM007 | No duplicate skill names within a group |
+| PRM008 | Filename must match skill name |
+
+---
+
+# "ID Schema"
+/docs/specification/id-schema
+
+FlowMCP v3.0.0 introduces a unified ID format for referencing any element in the catalog: tools, resources, prompts, and lists.
+
+:::note
+For the full specification, see 16-id-schema.md (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/16-id-schema.md).
+:::
+
+## Format
+
+```
+namespace/resourceType/name
+```
+
+| Component | Pattern | Examples |
+|-----------|---------|----------|
+| `namespace` | `[a-z][a-z0-9-]*` | `coingecko-com`, `etherscan`, `defillama` |
+| `resourceType` | `tool`, `resource`, `prompt`, `list` | — |
+| `name` | `[a-zA-Z][a-zA-Z0-9]*` | `simplePrice`, `getContractAbi` |
+
+## Examples
+
+| Full Form | Short Form | Context |
+|-----------|------------|---------|
+| `coingecko-com/tool/simplePrice` | `coingecko-com/simplePrice` | Tool reference |
+| `etherscan/resource/contracts` | `etherscan/contracts` | Resource reference |
+| `crypto-research/prompt/token-deep-dive` | — | Prompt reference |
+| `shared/list/evmChains` | `shared/evmChains` | Shared list |
+
+## Short Form
+
+The short form `namespace/name` is allowed when the resource type is unambiguous:
+
+- In `manifest.tools[]` — always means `tool`
+- In `manifest.sharedLists[]` — always means `list`
+- In `prompt.dependsOn[]` for Agent-Prompts — always means `tool`
+
+## Usage in Placeholders
+
+In prompt content, `[[...]]` with `/` is resolved as an ID reference:
+
+```
+Use [[coingecko-com/tool/simplePrice]] to get the price of [[tokenId]].
+```
+
+- `[[coingecko-com/tool/simplePrice]]` — Reference (resolved via ID schema)
+- `[[tokenId]]` — Parameter (user input, no `/`)
+
+## Validation Rules
+
+| Code | Rule |
+|------|------|
+| ID001 | ID must contain at least one `/` separator |
+| ID002 | Namespace must match `[a-z][a-z0-9-]*` |
+| ID003 | Resource type (if present) must be `tool`, `resource`, `prompt`, or `list` |
+| ID004 | Name must match `[a-zA-Z][a-zA-Z0-9]*` |
+| ID005 | Short form allowed only in unambiguous contexts |
+| ID006 | Reserved namespace `shared` for shared lists only |
+
+---
+
+# "Migration Guide"
+/docs/specification/migration
+
+This guide covers migrating schemas between FlowMCP versions. Both migration paths are documented below.
+
+:::note
+The full migration specification is maintained at github.com/FlowMCP/flowmcp-spec (https://github.com/FlowMCP/flowmcp-spec). This page provides a practical walkthrough.
+:::
+
+## v2 to v3 Migration
+
+The v3.0.0 release renames `routes` to `tools` and adds two new MCP primitives: **Resources** (SQLite-based read-only data) and **Skills** (reusable AI agent instructions).
+
+### What Changed
+
+| v2 | v3 | Description |
+|----|-----|-------------|
+| `main.routes` | `main.tools` | Primary key rename — `routes` accepted as deprecated alias |
+| `version: '2.0.0'` | `version: '3.0.0'` | Version field update |
+| `namespace/file.mjs::routeName` | `namespace/file.mjs::tool::routeName` | Type discriminator in group references |
+| `prompts` (in groups) | `skills` (in groups) | Group prompts renamed to group skills |
+| — | `main.resources` | New: SQLite-based read-only data |
+| — | `main.skills` | New: AI agent instruction files |
+| — | `includeSchemaSkills` | New: Auto-include schema skills in groups |
+
+### Automated Migration
+
+```bash
+# Migrate a single schema
+flowmcp migrate ./schemas/coingecko/Ping.mjs
+
+# Migrate all schemas in a directory
+flowmcp migrate --all ./schemas/
+
+# Preview changes without writing (dry run)
+flowmcp migrate --dry-run ./schemas/coingecko/Ping.mjs
+```
+
+:::tip
+Use `--dry-run` first to preview what changes will be made without modifying any files.
+:::
+
+### Manual Migration Steps
+
+1. **Rename routes to tools** — The primary change: rename the `routes` key to `tools` and update `version: '3.0.0'`.
+
+   ```javascript
+   // Before (v2)
+   export const main = {
+       namespace: 'coingecko',
+       version: '2.0.0',
+       routes: { ping: { method: 'GET', path: '/ping', description: 'Check API status', parameters: [] } }
+   }
+
+   // After (v3)
+   export const main = {
+       namespace: 'coingecko',
+       version: '3.0.0',
+       tools: { ping: { method: 'GET', path: '/ping', description: 'Check API status', parameters: [] } }
+   }
+   ```
+
+2. **Update version field** — Change `version: '2.0.0'` to `version: '3.0.0'`.
+
+3. **Update group references** — If your project uses groups in `.flowmcp/groups.json`, add type discriminators:
+
+   ```json
+   // Before
+   "tools": [ "etherscan/contracts.mjs::getContractAbi" ]
+
+   // After
+   "tools": [ "etherscan/contracts.mjs::tool::getContractAbi" ]
+   ```
+
+4. **Add resources (optional)** — If your schema benefits from local data lookups, see Resources.
+
+5. **Add skills (optional)** — If your schema benefits from AI agent workflows, see Skills.
+
+6. **Run validation** — `flowmcp validate <schema-path>`
+
+### Deprecation Timeline
+
+| Version | `routes` Behavior |
+|---------|-------------------|
+| **v3.0.0** | `routes` accepted as silent alias for `tools` |
+| **v3.1.0** | `routes` accepted with loud deprecation warning |
+| **v3.2.0** | `routes` rejected with error |
+
+---
+
+## v1 to v2 Migration
+
+### Schema Categories
+
+| Category | % of Schemas | Migration Effort | Description |
+|----------|-------------|-----------------|-------------|
+| **Pure declarative** | ~60% | Automatic | No handlers, no imports. |
+| **With handlers** | ~30% | Semi-automatic | Has handlers but no imports. |
+| **With imports** | ~10% | Manual review | Imports shared data that must become shared list references. |
+
+### Migration Steps
+
+1. **Wrap existing fields in main block** — The biggest structural change:
+
+   ```javascript
+   // Before (v1.2.0)
+   export const schema = {
+       namespace: 'etherscan',
+       flowMCP: '1.2.0',
+       root: 'https://api.etherscan.io/v2/api',
+       routes: { /* ... */ },
+       handlers: { /* ... */ }
+   }
+
+   // After (v2.0.0)
+   export const main = {
+       namespace: 'etherscan',
+       version: '2.0.0',
+       root: 'https://api.etherscan.io/v2/api',
+       requiredLibraries: [],
+       routes: { /* ... */ }
+   }
+
+   export const handlers = ( { sharedLists, libraries } ) => ({
+       /* ... */
+   })
+   ```
+
+2. **Update version field** — `flowMCP: '1.2.0'` becomes `version: '2.0.0'` inside `main`.
+
+3. **Convert imports to shared list references**:
+
+   ```javascript
+   // Before (v1.2.0) — has import
+   import { evmChains } from '../_shared/evm-chains.mjs'
+   // ...handlers use evmChains directly
+
+   // After (v2.0.0) — no import, uses injection
+   export const main = {
+       sharedLists: [ { ref: 'evmChains', version: '1.0.0' } ],
+       // ...
+   }
+   export const handlers = ( { sharedLists } ) => ({
+       toolName: {
+           preRequest: async ( { struct, payload } ) => {
+               const chain = sharedLists.evmChains.find( c => c.alias === payload.chainName )
+               return { struct, payload }
+           }
+       }
+   })
+   ```
+
+4. **Add output schemas (optional)** — New in v2.0.0. See Output Schema.
+
+5. **Run validation** — `flowmcp validate <schema-path>`
+
+### Common Migration Issues
+
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| `SEC001: Forbidden pattern "import"` | Import statement still present | Convert to `sharedLists` reference |
+| `VAL003: "flowMCP" is not a valid field` | Old version field | Change to `version` inside `main` |
+| `DEP001: main.routes is deprecated` | v2 schema on v3 runtime | Rename `routes` to `tools` |
+
+### Migration Checklist
+
+**v1 to v2:**
+- [ ] Fields wrapped in `main` block
+- [ ] `flowMCP: '1.2.0'` changed to `version: '2.0.0'` inside `main`
+- [ ] `handlers` at top level (sibling of `main`)
+- [ ] All `import` statements removed
+- [ ] Imported data converted to `sharedLists` references
+- [ ] `requiredLibraries` declared (can be empty `[]`)
+- [ ] Full validation passes (`flowmcp validate`)
+
+**v2 to v3:**
+- [ ] `routes` renamed to `tools`
+- [ ] `version` changed from `2.x.x` to `3.0.0`
+- [ ] Group references updated with type discriminators (optional in v3.0.0)
+- [ ] Full validation passes (`flowmcp validate`)
+
+---
+
+# "Output Schema"
+/docs/specification/output-schema
+
+Output schemas make tool responses predictable. AI clients can know in advance what shape the data will have, enabling structured reasoning without parsing guesswork.
+
+:::note
+This page covers output schemas from the formal specification (https://github.com/FlowMCP/flowmcp-spec). See Route Tests for how output schemas are generated from captured responses.
+:::
+
+## Purpose
+
+Without output schemas, an AI client calling a FlowMCP tool receives an opaque blob of JSON. Output schemas solve this by declaring the expected response shape at the route level:
+
+- **AI clients** can pre-allocate structured reasoning about response fields
+- **Schema validators** can verify handler output matches the declaration
+- **Documentation generators** can produce accurate response tables automatically
+
+## Route-Level Output Definition
+
+Each route can optionally define an `output` field:
+
+```javascript
+routes: {
+    getTokenPrice: {
+        method: 'GET',
+        path: '/simple/price',
+        description: 'Get current token price',
+        parameters: [ /* ... */ ],
+        output: {
+            mimeType: 'application/json',
+            schema: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string', description: 'Token identifier' },
+                    symbol: { type: 'string', description: 'Token symbol' },
+                    price: { type: 'number', description: 'Current price in USD' },
+                    marketCap: { type: 'number', description: 'Market capitalization', nullable: true },
+                    volume24h: { type: 'number', description: 'Trading volume (24h)' }
+                }
+            }
+        }
+    }
+}
+```
+
+## Output Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `mimeType` | `string` | Yes | Response content type |
+| `schema` | `object` | Yes | Simplified JSON Schema describing the `data` field |
+
+## Supported MIME Types
+
+| MIME Type | Description | Schema `type` |
+|-----------|-------------|---------------|
+| `application/json` | JSON response (default) | `object` or `array` |
+| `image/png` | PNG image, base64-encoded | `string` with `format: 'base64'` |
+| `text/plain` | Plain text response | `string` |
+
+## Standard Response Envelope
+
+Every FlowMCP tool response is wrapped in a standard envelope:
+
+```javascript
+// Success Response
+{
+    status: true,
+    messages: [],
+    data: { /* described by output.schema */ }
+}
+
+// Error Response
+{
+    status: false,
+    messages: [ 'E001 getTokenPrice: API returned 404' ],
+    data: null
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `status` | `boolean` | `true` on success, `false` on error |
+| `messages` | `array` | Empty on success, error descriptions on failure |
+| `data` | `object` or `null` | Response payload on success, `null` on error |
+
+:::tip
+The `output.schema` describes **only the `data` field** when `status: true`. Schema authors do not declare the envelope — it is implicit and standardized.
+:::
+
+## Supported JSON Schema Subset
+
+FlowMCP uses a deliberately constrained subset of JSON Schema:
+
+### Supported Keywords
+
+| Keyword | Description | Example |
+|---------|-------------|---------|
+| `type` | Value type | `'string'`, `'number'`, `'boolean'`, `'object'`, `'array'` |
+| `properties` | Object properties | `{ name: { type: 'string' } }` |
+| `items` | Array item schema | `{ type: 'object', properties: {...} }` |
+| `description` | Human-readable description | `'Current price in USD'` |
+| `nullable` | Can be `null` | `true` |
+| `enum` | Allowed values | `['active', 'inactive']` |
+| `format` | Special format hint | `'base64'`, `'date-time'`, `'uri'` |
+
+### Intentionally Excluded Keywords
+
+- `$ref` — no schema references; output schemas are self-contained
+- `oneOf`, `anyOf`, `allOf` — no union types
+- `required` — all declared properties are informational
+- `additionalProperties` — APIs may return extra fields
+- `pattern`, `minimum`, `maximum` — no regex or range validation on output
+
+## Response Examples
+
+### Object Response
+
+```javascript
+output: {
+    mimeType: 'application/json',
+    schema: {
+        type: 'object',
+        properties: {
+            id: { type: 'string', description: 'Token identifier' },
+            price: { type: 'number', description: 'Current price in USD' },
+            marketCap: { type: 'number', description: 'Market cap', nullable: true }
+        }
+    }
+}
+```
+
+### Array Response
+
+```javascript
+output: {
+    mimeType: 'application/json',
+    schema: {
+        type: 'array',
+        items: {
+            type: 'object',
+            properties: {
+                name: { type: 'string', description: 'Protocol name' },
+                tvl: { type: 'number', description: 'Total value locked in USD' }
+            }
+        }
+    }
+}
+```
+
+### Image Response
+
+```javascript
+output: {
+    mimeType: 'image/png',
+    schema: {
+        type: 'string',
+        format: 'base64',
+        description: 'Chart image as base64-encoded PNG'
+    }
+}
+```
+
+## Nullable Fields
+
+Fields that may be `null` in a successful response must declare `nullable: true`:
+
+```javascript
+properties: {
+    marketCap: { type: 'number', description: 'Market cap', nullable: true },
+    website: { type: 'string', description: 'Project URL', nullable: true }
+}
+```
+
+## Non-Blocking Validation
+
+Output schema validation is **non-blocking**. A mismatch produces a validation **warning**, not an error. The response is still delivered.
+
+```mermaid
+flowchart TD
+    A[Handler returns data] --> B{Schema declared?}
+    B -->|No| C[Pass through]
+    B -->|Yes| D{Data matches schema?}
+    D -->|Yes| E[Return data]
+    D -->|No| F[Log warning]
+    F --> G[Return data anyway]
+```
+
+---
+
+# "Overview"
+/docs/specification/overview
+
+FlowMCP is a deterministic normalization layer that converts heterogeneous web data sources into uniform, AI-consumable tools. The v3.0.0 specification defines how schemas, shared lists, groups, resources, skills, and security constraints work together to produce reliable, verifiable tool catalogs.
+
+:::note
+This documentation adapts the formal specification for practical use. The full specification is maintained at github.com/FlowMCP/flowmcp-spec (https://github.com/FlowMCP/flowmcp-spec).
+:::
+
+## Problem
+
+Web data sources are organized by **provider** — Etherscan exposes smart contract endpoints, CoinGecko exposes market data, DeFi Llama exposes TVL metrics. Each source has its own interface style, authentication scheme, URL structure, response format, and error handling.
+
+AI agents need tools organized by **application domain** — token prices, contract ABIs, TVL data, wallet balances. An agent answering a question about a token's market cap should not need to know whether the answer comes from CoinGecko, CoinCap, or DeFi Llama.
+
+Manual integration per source is unsustainable at scale. With 187+ schemas across dozens of providers, the combinatorial complexity makes hand-written integrations fragile and expensive to maintain.
+
+## Solution
+
+FlowMCP introduces a **schema-driven normalization layer** between web data sources and AI clients. Each schema is a `.mjs` file that declaratively defines:
+
+- **Input parameters** with Zod-based validation (type, constraints, enum values)
+- **URL construction rules** (path templates, query parameters, body payloads)
+- **Response transformation** (optional handlers for pre/post processing)
+- **Security constraints** (no imports, no filesystem access, no eval)
+
+The runtime reads these schemas and exposes them as MCP tools. The AI client sees a flat catalog of tools with typed inputs and predictable outputs — the underlying source complexity is completely abstracted away.
+
+```mermaid
+flowchart LR
+    A[Web Data Sources] --> B[FlowMCP Schemas]
+    B --> C[Core Runtime]
+    C --> D[MCP Server]
+    D --> E[AI Client]
+    F[Shared Lists] --> C
+    G[Security Scan] --> B
+    H[SQLite DBs] --> C
+    I[Skill Files] --> C
+```
+
+## Three MCP Primitives
+
+FlowMCP v3.0.0 supports all three MCP primitives in a single schema:
+
+| Primitive | Schema Key | MCP Concept | Description |
+|-----------|-----------|-------------|-------------|
+| **Tools** | `tools` | Tools | HTTP endpoints — deterministic API calls with parameter validation |
+| **Resources** | `resources` | Resources | SQLite-based read-only data lookups — fast, local, no network |
+| **Skills** | `skills` | Prompts | Reusable AI agent instructions — compose tools and resources into workflows |
+
+Tools are the core primitive and the only one required. Resources and skills are optional additions that enhance what a schema can offer.
+
+## Positioning
+
+FlowMCP is the **deterministic anchor** in a system that pairs it with non-deterministic AI.
+
+| Layer | Nature | Responsibility |
+|-------|--------|----------------|
+| AI Client (Skills) | Non-deterministic | Decides *which* tool to use, *how* to interpret results |
+| FlowMCP | Deterministic | Guarantees the tool itself behaves identically every time |
+| Web Data Sources | External | Provides the raw data (uncontrolled) |
+
+FlowMCP guarantees that:
+- The same input parameters always produce the same API call
+- Parameter validation is enforced before any network request
+- Response transformations are consistent and reproducible
+- Security constraints are verified at load-time, not runtime
+
+## Terminology
+
+| Term | Definition |
+|------|-----------|
+| **Schema** | A `.mjs` file with two named exports: `main` (static) and optionally `handlers` (factory function). Defines tools, resources, and/or skills. |
+| **Tool** | An API endpoint within a schema. Maps to one web data source endpoint. Each tool has parameters, a method, a path, and optional handlers. |
+| **Resource** | A SQLite-based read-only data lookup within a schema. Uses `sql.js` for query execution. |
+| **Skill** | A reusable AI agent instruction file (`.mjs`) that composes tools and resources into multi-step workflows. Maps to MCP Prompts. |
+| **Namespace** | Provider identifier, lowercase letters only (e.g. `etherscan`, `coingecko`). Groups schemas by data source. |
+| **Handler** | An async function returned by the `handlers` factory. Performs pre- or post-processing for a tool. Receives dependencies via injection. |
+| **Modifier** | Handler subtype: `preRequest` transforms input before the API call, `postRequest` transforms output after. |
+| **Shared List** | A reusable, versioned value list (e.g. EVM chain identifiers) referenced by schemas and injected at load-time. |
+| **Group** | A named collection of cherry-picked tools, resources, and skills with an integrity hash. Used for project-level activation. |
+| **Main Export** | `export const main = {...}` — the declarative, JSON-serializable part of a schema. Hashable for integrity verification. |
+| **Handlers Export** | `export const handlers = ({ sharedLists, libraries }) => ({...})` — factory function receiving injected dependencies. |
+
+## Design Principles
+
+### 1. Deterministic over clever
+
+Same input always produces the same API call. No randomness, no caching heuristics, no adaptive behavior inside the schema layer.
+
+### 2. Declare over code
+
+Maximize the `main` block, minimize handlers. Every field that can be expressed declaratively must live in `main`. Handlers exist only for transformations that cannot be expressed as static data.
+
+### 3. Inject over import
+
+Schemas receive data through dependency injection, never import. A handler that needs EVM chain data receives `sharedLists.evmChains` via the factory function. Libraries are declared in `requiredLibraries` and injected by the runtime from an allowlist.
+
+### 4. Hash over trust
+
+Integrity verification through SHA-256 hashes. The `main` block is hashable because it is pure JSON-serializable data. Groups store hashes of their member tools.
+
+### 5. Constrain over permit
+
+Security by default, explicit opt-in for capabilities. Schema files have zero import statements. The security scanner rejects schemas with forbidden patterns at load-time.
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0.0 | 2025-06 | Initial schema format. Flat structure with inline parameters. |
+| 1.2.0 | 2025-11 | Added handlers, Zod-based parameter validation, modifier pattern. |
+| 2.0.0 | 2026-02 | Two-export format (`main` + `handlers` factory). Dependency injection. Shared lists. Output schemas. Zero-import security. Groups with integrity hashes. Max routes reduced to 8. |
+| 3.0.0 | 2026-03 | `routes` renamed to `tools`. Resources (SQLite). Skills (MCP Prompts). Type discriminators. `includeSchemaSkills`. Migration CLI. |
+
+## What's New in v3.0.0
+
+The v3.0.0 release extends FlowMCP from a tool-only framework to support all three MCP primitives:
+
+- **`routes` renamed to `tools`** — aligns with MCP terminology. `routes` is accepted as a deprecated alias with a defined sunset timeline (v3.0.0: alias, v3.1.0: loud warning, v3.2.0: error)
+- **Resources** — SQLite-based read-only data access via `sql.js`. Declared in the `resources` key with prepared statements and SQL security enforcement
+- **Skills** — reusable AI agent instructions stored as `.mjs` files. Declared in the `skills` key. Maps to MCP Prompts with placeholder system (`{{tool:x}}`, `{{resource:x}}`, `{{input:x}}`)
+- **Type discriminators** — `::tool::name`, `::resource::name`, `::skill::name` for unambiguous references in groups
+- **`includeSchemaSkills`** — groups can auto-include all skills from member schemas
+- **`flowmcp migrate`** — automated v2 to v3 migration via CLI
+- **New validation rules** — RES001-RES023 for resources, SKL001-SKL025 for skills, DEP001-DEP004 for deprecation warnings
+
+## Specification Document Index
+
+| Document | Description |
+|----------|-------------|
+| Schema Format | File structure, main/handlers split, tool definitions, naming conventions |
+| Parameters | Position block, Z block validation, shared list interpolation, API key injection |
+| Shared Lists | List format, versioning, field definitions, filtering, resolution lifecycle |
+| Output Schema | Response type declarations, field mapping, validation rules |
+| Security Model | Zero-import policy, library allowlist, static scan, dependency injection |
+| Resources | SQLite-based read-only data, query definitions, SQL security |
+| Skills | AI agent instructions, placeholder system, versioning |
+| Groups & Skills | Cherry-pick groups, integrity hashes, skill workflows |
+| Tests | Test format, response capture lifecycle, output schema generation |
+| Preload | Cache configuration, TTL guidelines, runtime behavior |
+| Validation Rules | Validation rules across categories with severity levels |
+| Migration Guide | Step-by-step migration guides for v1-to-v2 and v2-to-v3 |
+
+---
+
+# "Parameters"
+/docs/specification/parameters
+
+Each parameter in a FlowMCP tool describes **where** a value is placed in the API request (`position`) and **how** it is validated (`z`). Both blocks are required.
+
+:::note
+This page covers parameters from the formal specification (https://github.com/FlowMCP/flowmcp-spec). See Shared Lists for list interpolation details.
+:::
+
+## Parameter Structure
+
+```javascript
+{
+    position: {
+        key: 'address',
+        value: '{{USER_PARAM}}',
+        location: 'query'
+    },
+    z: {
+        primitive: 'string()',
+        options: [ 'min(42)', 'max(42)' ]
+    }
+}
+```
+
+## Position Block
+
+The `position` block controls where the parameter's value is placed in the HTTP request.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `key` | `string` | Yes | Parameter name. For user-facing parameters, this is the input field name exposed to the AI client. |
+| `value` | `string` | Yes | `{{USER_PARAM}}` for user input, `{{SERVER_PARAM:KEY_NAME}}` for server params, or a fixed string. |
+| `location` | `string` | Yes | Where the value is placed: `insert`, `query`, or `body`. |
+
+### Location Types
+
+| Location | Description | Example |
+|----------|-------------|---------|
+| `insert` | Inserted into the URL path at the `{{key}}` placeholder | `/api/v1/{{address}}/txs` becomes `/api/v1/0xABC.../txs` |
+| `query` | Added as a URL query parameter | `?address=0xABC...&module=contract` |
+| `body` | Added to the JSON request body | `{ "address": "0xABC..." }` |
+
+### Location Rules
+
+1. **`insert` parameters** require a matching `{{key}}` placeholder in the tool's `path`.
+2. **`query` parameters** are appended to the URL in array order.
+3. **`body` parameters** are only valid for `POST` and `PUT` tools. A `body` parameter on a `GET` or `DELETE` tool causes a load-time error.
+4. **Multiple locations** in the same tool are valid.
+
+### Value Types
+
+| Value Pattern | Description | Visible to User |
+|---------------|-------------|-----------------|
+| `{{USER_PARAM}}` | Value provided by the user at call-time | Yes |
+| `{{SERVER_PARAM:KEY_NAME}}` | Value injected from server environment | No |
+| Any other string | Fixed value, sent automatically | No |
+
+## Z Block (Validation)
+
+The `z` block defines validation constraints enforced before the API request is made. The name references Zod, the validation library used by the runtime.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `primitive` | `string` | Yes | Base type declaration with optional inline values. |
+| `options` | `string[]` | Yes | Array of validation constraints. Can be empty `[]`. |
+
+### Primitive Types
+
+| Primitive | Description | Zod Equivalent | Example |
+|-----------|-------------|----------------|---------|
+| `string()` | Any string value | `z.string()` | `'string()'` |
+| `number()` | Numeric value | `z.number()` | `'number()'` |
+| `boolean()` | True or false | `z.boolean()` | `'boolean()'` |
+| `enum(A,B,C)` | One of the listed values | `z.enum(['A','B','C'])` | `'enum(mainnet,testnet)'` |
+| `array()` | Array of values | `z.array()` | `'array()'` |
+| `object()` | Nested object | `z.object()` | `'object()'` |
+
+:::caution
+Enum values are comma-separated with **no spaces** around commas. `enum(GET,POST)` is valid; `enum(GET, POST)` is not. At least one value is required.
+:::
+
+### Validation Options
+
+Options are applied in array order after the primitive type check:
+
+| Option | Description | Applies To | Example |
+|--------|-------------|------------|---------|
+| `min(n)` | Minimum value or minimum length | `number`, `string` | `'min(1)'` |
+| `max(n)` | Maximum value or maximum length | `number`, `string` | `'max(100)'` |
+| `length(n)` | Exact length or exact item count | `string`, `array` | `'length(42)'` |
+| `optional()` | Parameter is not required | all | `'optional()'` |
+| `default(value)` | Default value when omitted (implies `optional()`) | all | `'default(100)'` |
+
+**Option rules:**
+- `min()` and `max()` constrain the numeric value for `number()`, or string length for `string()`.
+- Multiple options combine with AND logic: `[ 'min(1)', 'max(100)' ]` means value must be >= 1 AND <= 100.
+- Regular expressions are intentionally excluded — type-level validation with `min()`/`max()`/`length()` covers most use cases.
+
+## Resource Parameters
+
+Resource query parameters use a simplified format compared to tool parameters. Since resources are local SQLite queries (not HTTP requests), there is no `location` field in the `position` block:
+
+```javascript
+resources: {
+    verifiedContracts: {
+        source: 'sqlite',
+        database: 'contracts.db',
+        queries: {
+            byAddress: {
+                description: 'Find contract by address',
+                sql: 'SELECT * FROM contracts WHERE address = ?',
+                parameters: [
+                    { key: 'address', type: 'string', description: 'Contract address', required: true }
+                ]
+            }
+        }
+    }
+}
+```
+
+Resource parameters have a flat structure with `key`, `type`, `description`, and `required` fields. They do not use the `position`/`z` blocks because there is no HTTP request to construct.
+
+## Skill Input Format
+
+Skills define their input parameters with a similar flat format:
+
+```javascript
+input: [
+    { key: 'address', type: 'string', description: 'Ethereum contract address', required: true },
+    { key: 'chain', type: 'string', description: 'Chain name', required: false }
+]
+```
+
+Skill inputs are used as template variables in the skill content via `{{input:key}}` placeholders.
+
+## Shared List Interpolation
+
+When a parameter's enum values come from a shared list, use the `{{listName:fieldName}}` syntax inside `enum()`:
+
+```javascript
+{
+    position: {
+        key: 'chainName',
+        value: '{{USER_PARAM}}',
+        location: 'query'
+    },
+    z: {
+        primitive: 'enum({{evmChains:etherscanAlias}})',
+        options: []
+    }
+}
+```
+
+At load-time, the runtime resolves `{{evmChains:etherscanAlias}}` by:
+
+1. Finding the shared list named `evmChains` (declared in `main.sharedLists`)
+2. Applying any filter defined in the shared list reference
+3. Extracting the `etherscanAlias` field from each entry
+4. Replacing the placeholder with comma-separated values
+
+The result at runtime is equivalent to:
+
+```javascript
+primitive: 'enum(ETHEREUM_MAINNET,POLYGON_MAINNET,ARBITRUM_MAINNET,OPTIMISM_MAINNET)'
+```
+
+### Interpolation Rules
+
+1. `{{listName:fieldName}}` is **only allowed inside `enum()`**. Using it in other primitives is an error.
+2. The referenced list must be declared in `main.sharedLists`.
+3. If the shared list reference has a `filter`, only matching entries are used.
+4. The `fieldName` must exist in the list's `meta.fields`.
+5. Interpolation happens at **load-time**, not call-time. Shared list updates require a schema reload.
+6. **Mixed static and interpolated values** are allowed: `enum(custom,{{evmChains:etherscanAlias}})`.
+
+## Fixed Parameters
+
+Parameters with a fixed `value` (not `{{USER_PARAM}}` and not `{{SERVER_PARAM:...}}`) are invisible to the user and sent automatically:
+
+```javascript
+{
+    position: {
+        key: 'module',
+        value: 'contract',
+        location: 'query'
+    },
+    z: {
+        primitive: 'string()',
+        options: []
+    }
+}
+```
+
+Fixed parameters are common for APIs that use query parameters for routing (like Etherscan's `module` and `action` parameters).
+
+:::tip
+Fixed parameters let a single `root` + `path` combination serve multiple tools differentiated by fixed query values.
+:::
+
+## API Key Injection
+
+API keys are injected via the `{{SERVER_PARAM:KEY_NAME}}` syntax:
+
+```javascript
+{
+    position: {
+        key: 'apikey',
+        value: '{{SERVER_PARAM:ETHERSCAN_API_KEY}}',
+        location: 'query'
+    },
+    z: {
+        primitive: 'string()',
+        options: []
+    }
+}
+```
+
+### Injection Rules
+
+1. The `KEY_NAME` must be declared in `main.requiredServerParams`.
+2. Server parameters are **invisible to the AI client**.
+3. The runtime resolves the value from the environment variable. If unset, the tool is hidden.
+4. Server parameter values are **never logged**.
+
+## Parameter Visibility Summary
+
+| Value Pattern | Visible to AI Client | Appears in Input Schema | Source |
+|---------------|---------------------|------------------------|--------|
+| `{{USER_PARAM}}` | Yes | Yes | User provides at call-time |
+| `{{SERVER_PARAM:KEY}}` | No | No | Environment variable |
+| Fixed string | No | No | Hardcoded in schema |
+
+## Complete Examples
+
+### Query Parameter with Length Validation
+
+```javascript
+{
+    position: { key: 'contractAddress', value: '{{USER_PARAM}}', location: 'query' },
+    z: { primitive: 'string()', options: [ 'min(42)', 'max(42)' ] }
+}
+```
+
+### Enum with Shared List and Default
+
+```javascript
+{
+    position: { key: 'chain', value: '{{USER_PARAM}}', location: 'query' },
+    z: { primitive: 'enum({{evmChains:slug}})', options: [ 'default(ethereum)' ] }
+}
+```
+
+### Body Parameter with Optional Limit
+
+```javascript
+[
+    {
+        position: { key: 'version', value: '2', location: 'body' },
+        z: { primitive: 'string()', options: [] }
+    },
+    {
+        position: { key: 'query', value: '{{USER_PARAM}}', location: 'body' },
+        z: { primitive: 'object()', options: [] }
+    },
+    {
+        position: { key: 'limit', value: '{{USER_PARAM}}', location: 'body' },
+        z: { primitive: 'number()', options: [ 'optional()', 'default(100)', 'min(1)', 'max(1000)' ] }
+    }
+]
+```
+
+---
+
+# "Preload"
+/docs/specification/preload
+
+The optional `preload` field on routes signals that the response is static or slow-changing and that the runtime may cache it locally. This avoids redundant API calls for data that rarely changes.
+
+:::note
+This page covers preload and caching from the formal specification (https://github.com/FlowMCP/flowmcp-spec). Preload is an optimization — tools work identically with or without caching.
+:::
+
+## Motivation
+
+Some API endpoints return complete, rarely changing datasets (e.g. all hospitals in Germany, all memorial stones in Berlin). Fetching these on every call wastes bandwidth and time. The `preload` field lets schema authors declare caching intent.
+
+## The `preload` Field
+
+`preload` is an optional object on route level:
+
+```javascript
+routes: {
+    getLocations: {
+        method: 'GET',
+        path: '/locations.json',
+        description: 'All hospital locations in Germany',
+        parameters: [],
+        preload: {
+            enabled: true,
+            ttl: 604800,
+            description: 'All hospital locations in Germany (~760KB)'
+        },
+        output: { /* ... */ },
+        tests: [ /* ... */ ]
+    }
+}
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `enabled` | `boolean` | Yes | Whether caching is allowed. Must be `true` to activate. |
+| `ttl` | `number` | Yes | Cache time-to-live in seconds. Must be a positive integer. |
+| `description` | `string` | No | Human-readable note shown on cache hit. |
+
+### TTL Guidelines
+
+| TTL | Duration | Use Case |
+|-----|----------|----------|
+| `3600` | 1 hour | Frequently updated data |
+| `86400` | 1 day | Daily snapshots |
+| `604800` | 1 week | Weekly releases, semi-static data |
+| `2592000` | 30 days | Static reference data |
+
+```mermaid
+flowchart TD
+    A[How often does this data change?] --> B{Daily or more?}
+    B -->|Yes| C["ttl: 3600-86400"]
+    B -->|No| D{Weekly?}
+    D -->|Yes| E["ttl: 604800"]
+    D -->|No| F{Monthly or less?}
+    F -->|Yes| G["ttl: 2592000"]
+    F -->|No| H["Don't use preload"]
+```
+
+## Cache Key Strategy
+
+When a route has parameters, the cache key must include parameter values:
+
+```
+# With parameters
+{namespace}/{routeName}/{paramHash}.json
+
+# Without parameters (or all optional and omitted)
+{namespace}/{routeName}.json
+```
+
+## Runtime Behavior
+
+### Cache Storage
+
+Recommended cache directory: `~/.flowmcp/cache/`. Each cached response is stored as JSON with metadata:
+
+```json
+{
+    "meta": {
+        "fetchedAt": "2026-02-17T12:00:00.000Z",
+        "expiresAt": "2026-02-24T12:00:00.000Z",
+        "ttl": 604800,
+        "size": 760123,
+        "paramHash": null
+    },
+    "data": { }
+}
+```
+
+### Cache Flow
+
+```mermaid
+flowchart TD
+    A["flowmcp call tool-name"] --> B{"preload.enabled?"}
+    B -->|No| C[Normal fetch]
+    B -->|Yes| D{Cache file exists?}
+    D -->|No| E[Fetch + store in cache]
+    D -->|Yes| F{Cache expired?}
+    F -->|No| G[Return cached response]
+    F -->|Yes| E
+    E --> H[Return fresh response]
+```
+
+### User Overrides
+
+| Flag | Behavior |
+|------|----------|
+| `--no-cache` | Skip cache entirely, always fetch fresh |
+| `--refresh` | Fetch fresh and update cache |
+
+### Cache Management
+
+| Command | Description |
+|---------|-------------|
+| `cache status` | List all cached responses with size, age, expiry |
+| `cache clear` | Remove all cached responses |
+| `cache clear {namespace}` | Remove cached responses for a specific namespace |
+
+## When to Use Preload
+
+**Good candidates:**
+- The endpoint returns a complete, static or slow-changing dataset
+- The response is larger than ~10KB
+- The data doesn't change based on time-of-day or real-time events
+- Multiple calls with the same parameters return identical results
+
+**Bad candidates:**
+- The data changes frequently (live prices, real-time feeds)
+- The response depends on authentication state
+- The endpoint has rate limits that make caching counterproductive
+
+## Interaction with Other Features
+
+### Handlers
+
+Handlers (`preRequest`, `postRequest`) still execute on cached data. The cache stores the raw API response before `postRequest` transformation.
+
+:::tip
+Some runtimes may alternatively cache the final transformed response after `postRequest`, avoiding re-running handlers on every cache hit. Check your runtime's documentation for which approach is used.
+:::
+
+### Tests
+
+Route tests always bypass the cache to ensure they test the live API. The `--no-cache` flag is implied during test execution.
+
+## Validation Rules
+
+| Code | Severity | Rule |
+|------|----------|------|
+| VAL060 | error | If `preload` is present, it must be a plain object |
+| VAL061 | error | `preload.enabled` must be a boolean |
+| VAL062 | error | `preload.ttl` must be a positive integer (> 0) |
+| VAL063 | warning | `preload.description` if present must be a string |
+| VAL064 | info | Routes with `preload.enabled: true` and no parameters are ideal cache candidates |
+| VAL065 | warning | Routes with `preload.enabled: true` and required parameters should document caching behavior |
+
+---
+
+# "Prompt Architecture"
+/docs/specification/prompt-architecture
+
+FlowMCP v3.0.0 introduces a two-tier prompt architecture that separates model-neutral guidance from model-specific workflows. This replaces the simpler "Group Prompts" system from v2.
+
+:::note
+For the full specification, see 12-prompt-architecture.md (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/12-prompt-architecture.md).
+:::
+
+## Two Prompt Types
+
+| Aspect | Provider-Prompt | Agent-Prompt |
+|--------|----------------|--------------|
+| **Scope** | Single namespace | Multiple providers |
+| **Model** | Model-neutral | Model-specific (`testedWith`) |
+| **Field** | `namespace` | `agent` |
+| **`dependsOn`** | Bare names (`getPrice`) | Full IDs (`ns/tool/name`) |
+| **Location** | `providers/{ns}/prompts/` | `agents/{name}/prompts/` |
+
+## Provider-Prompt Example
+
+```javascript
+export const prompt = {
+    name: 'price-comparison',
+    version: 'flowmcp-prompt/1.0.0',
+    namespace: 'coingecko-com',
+    description: 'Compare prices across multiple tokens',
+    dependsOn: ['simplePrice', 'getCoinMarkets'],
+    content: `Compare the prices of [[tokenList]] using...`
+}
+```
+
+## Agent-Prompt Example
+
+```javascript
+export const prompt = {
+    name: 'token-deep-dive',
+    version: 'flowmcp-prompt/1.0.0',
+    agent: 'crypto-research',
+    testedWith: 'anthropic/claude-sonnet-4-5-20250929',
+    description: 'Deep token analysis across providers',
+    dependsOn: [
+        'coingecko-com/tool/simplePrice',
+        'etherscan/tool/getContractAbi'
+    ],
+    content: `Analyze [[tokenSymbol]] by first checking...`
+}
+```
+
+## Placeholder Syntax
+
+Prompts use `[[...]]` placeholders for dynamic content:
+
+| Pattern | Type | Example |
+|---------|------|---------|
+| `[[name]]` (no `/`) | Parameter (user input) | `[[tokenSymbol]]`, `[[chainId]]` |
+| `[[ns/tool/name]]` (with `/`) | Reference (resolved via ID) | `[[coingecko-com/tool/simplePrice]]` |
+
+## Composable References
+
+Prompts can reference other prompts via the `references[]` field (maximum 1 level deep):
+
+```javascript
+export const prompt = {
+    name: 'full-analysis',
+    references: [
+        'coingecko-com/prompt/price-comparison'
+    ],
+    content: `First, [[coingecko-com/prompt/price-comparison]]. Then...`
+}
+```
+
+## Validation Rules
+
+| Code | Rule |
+|------|------|
+| PRM001 | `version` must be `"flowmcp-prompt/1.0.0"` |
+| PRM002 | Provider-Prompt must have `namespace`, must NOT have `agent` or `testedWith` |
+| PRM003 | Agent-Prompt must have `agent` and `testedWith`, must NOT have `namespace` |
+| PRM004 | `dependsOn` tools must use bare names in Provider-Prompts |
+| PRM005 | `dependsOn` tools must use full IDs in Agent-Prompts |
+| PRM006 | `references[]` limited to 1 level deep |
+
+---
+
+# "Resources"
+/docs/specification/resources
+
+Resources provide fast, local read-only data access through SQLite databases. Unlike tools that make HTTP requests to external APIs, resources query local `.db` files using `sql.js` (a pure JavaScript/WASM SQLite implementation). Resources are the second MCP primitive supported by FlowMCP v3.0.0.
+
+:::note
+Resources are optional. Most schemas only need tools. Add resources when your schema benefits from fast local data lookups that do not require network calls.
+:::
+
+## When to Use Resources
+
+| Use Case | Tool or Resource? |
+|----------|-------------------|
+| Fetch live data from an API | Tool |
+| Look up static reference data (chain IDs, token lists) | Resource |
+| Query historical data that changes infrequently | Resource |
+| Perform calculations on cached data | Resource |
+| Call external services | Tool |
+
+Resources are ideal for data that is bundled with the schema and updated only when the schema version changes.
+
+## Schema Format
+
+Resources are declared in the `resources` key of the `main` export:
+
+```javascript
+export const main = {
+    namespace: 'etherscan',
+    name: 'ContractExplorer',
+    version: '3.0.0',
+    root: 'https://api.etherscan.io',
+    tools: { /* ... */ },
+    resources: {
+        verifiedContracts: {
+            description: 'Lookup verified contracts by address or name',
+            source: 'sqlite',
+            database: 'contracts.db',
+            queries: {
+                byAddress: {
+                    description: 'Find a verified contract by its address',
+                    sql: 'SELECT name, compiler, optimization, source_code FROM contracts WHERE address = ?',
+                    parameters: [
+                        { key: 'address', type: 'string', description: 'Contract address (0x...)', required: true }
+                    ]
+                },
+                byName: {
+                    description: 'Search contracts by name pattern',
+                    sql: 'SELECT address, name, compiler FROM contracts WHERE name LIKE ? LIMIT 20',
+                    parameters: [
+                        { key: 'pattern', type: 'string', description: 'Name search pattern (use % as wildcard)', required: true }
+                    ]
+                }
+            }
+        }
+    }
+}
+```
+
+## Resource Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `description` | `string` | Yes | What data this resource provides. Visible to AI clients. |
+| `source` | `string` | Yes | Must be `'sqlite'`. Only SQLite is supported in v3.0.0. |
+| `database` | `string` | Yes | Path to the `.db` file, relative to the schema file. Must end in `.db`. |
+| `queries` | `object` | Yes | Named queries with SQL and parameters. Max 4 queries per resource. |
+
+## Query Fields
+
+Each query is a named entry in the `queries` object:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `description` | `string` | Yes | What this query returns. Used by AI clients for query selection. |
+| `sql` | `string` | Yes | SQL query string with `?` placeholders. Must start with `SELECT`. |
+| `parameters` | `array` | No | Query parameters corresponding to `?` placeholders. Can be empty `[]`. |
+| `tests` | `array` | No | Test cases with example parameter values. |
+
+## Query Parameters
+
+Resource query parameters use a simplified flat format (no `position`/`z` blocks):
+
+```javascript
+parameters: [
+    { key: 'address', type: 'string', description: 'Contract address', required: true },
+    { key: 'limit', type: 'number', description: 'Max results', required: false }
+]
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `key` | `string` | Yes | Parameter name (camelCase). Maps to a `?` placeholder in order. |
+| `type` | `string` | Yes | Must be `string`, `number`, or `boolean`. |
+| `description` | `string` | Yes | What this parameter controls. |
+| `required` | `boolean` | Yes | Whether the parameter must be provided. |
+
+The number of parameters must match the number of `?` placeholders in the SQL query.
+
+## SQL Security Enforcement
+
+Resources enforce strict read-only access. The following patterns are **blocked** at validation time:
+
+| Blocked Pattern | Reason |
+|-----------------|--------|
+| `INSERT`, `UPDATE`, `DELETE`, `DROP` | Write operations not allowed |
+| `CREATE TABLE`, `ALTER TABLE` | Schema modifications not allowed |
+| `ATTACH DATABASE` | Cross-database access not allowed |
+| `LOAD_EXTENSION` | Extension loading not allowed |
+| `PRAGMA` (most) | Configuration changes not allowed |
+| String interpolation | All values must use `?` placeholders |
+| Subqueries with writes | Nested write operations not allowed |
+
+```javascript
+// Valid — SELECT with prepared statement
+sql: 'SELECT * FROM contracts WHERE address = ?'
+
+// Valid — JOIN query
+sql: 'SELECT c.name, t.symbol FROM contracts c JOIN tokens t ON c.token_id = t.id WHERE c.chain_id = ?'
+
+// Invalid — not a SELECT statement
+sql: 'INSERT INTO contracts VALUES (?)'
+
+// Invalid — uses string interpolation instead of ?
+sql: `SELECT * FROM contracts WHERE address = '${address}'`
+
+// Invalid — blocked pattern
+sql: 'ATTACH DATABASE "other.db" AS other'
+```
+
+:::caution
+All SQL queries must start with `SELECT` and use `?` placeholders for all dynamic values. String interpolation, template literals, and concatenation in SQL strings are forbidden.
+:::
+
+## Runtime
+
+Resources use `sql.js`, a pure JavaScript/WASM implementation of SQLite. This means:
+
+- **No native dependencies** — works on any platform that supports WASM
+- **No SQLite installation required** — everything is bundled
+- **Read-only mode** — databases are opened in read-only mode by default
+- **Memory-safe** — each query runs in an isolated context
+
+## Constraints
+
+| Constraint | Value | Rationale |
+|------------|-------|-----------|
+| Max resources per schema | 2 | Resources are supplementary, not primary output |
+| Max queries per resource | 4 | Keeps resource scope focused |
+| Source type | `sqlite` only | Future versions may add other sources |
+| Database file extension | `.db` | Standard SQLite extension |
+| SQL must start with | `SELECT` | Read-only enforcement |
+| Parameter placeholders | `?` only | Prevents SQL injection |
+| Parameter types | `string`, `number`, `boolean` | Simple types only |
+
+## Validation Rules
+
+Resources are validated by rules RES001-RES023. Key rules include:
+
+| Code | Rule |
+|------|------|
+| RES003 | Maximum 2 resources per schema |
+| RES005 | Source must be `'sqlite'` |
+| RES006 | Database path must end in `.db` |
+| RES008 | Maximum 4 queries per resource |
+| RES012 | SQL must start with `SELECT` |
+| RES013 | SQL must not contain blocked patterns |
+| RES014 | SQL must use `?` placeholders |
+| RES015 | Placeholder count must match parameter count |
+
+See Validation Rules for the complete list.
+
+---
+
+# "Tests"
+/docs/specification/route-tests
+
+Tests are executable examples embedded in each tool and resource definition. They serve three purposes: documenting what a tool can do, providing input data to capture real API responses, and generating accurate output schemas from those responses.
+
+:::note
+This page covers tests from the formal specification (https://github.com/FlowMCP/flowmcp-spec). See Output Schema for how generated schemas are used.
+:::
+
+## Purpose
+
+```mermaid
+flowchart LR
+    A[Tests] --> B[Learning: what is possible]
+    A --> C[Execution: call real API]
+    C --> D[Capture: store response]
+    D --> E[Generate: output schema]
+```
+
+- **Learning instrument** — a developer or AI agent reading tests should understand the tool's capabilities by reading tests alone
+- **Output schema source** — tests provide parameter values for real API calls, and captured responses are fed into the `OutputSchemaGenerator`
+
+## Tool Test Format
+
+Tests are defined as an array inside each tool definition, alongside `method`, `path`, `description`, and `parameters`:
+
+```javascript
+tools: {
+    getSimplePrice: {
+        method: 'GET',
+        path: '/simple/price',
+        description: 'Fetch current price for one or more coins',
+        parameters: [
+            {
+                position: { key: 'ids', value: '{{USER_PARAM}}', location: 'query' },
+                z: { primitive: 'array()', options: [] }
+            },
+            {
+                position: { key: 'vs_currencies', value: '{{USER_PARAM}}', location: 'query' },
+                z: { primitive: 'string()', options: [] }
+            }
+        ],
+        tests: [
+            {
+                _description: 'Single coin in single currency',
+                ids: ['bitcoin'],
+                vs_currencies: 'usd'
+            },
+            {
+                _description: 'Multiple coins in multiple currencies',
+                ids: ['bitcoin', 'ethereum', 'solana'],
+                vs_currencies: 'usd,eur,gbp'
+            }
+        ]
+    }
+}
+```
+
+## Resource Query Tests
+
+Resources can also have tests. Since resources use SQL queries instead of HTTP requests, test values correspond to query parameters:
+
+```javascript
+resources: {
+    verifiedContracts: {
+        source: 'sqlite',
+        database: 'contracts.db',
+        queries: {
+            byAddress: {
+                description: 'Find contract by address',
+                sql: 'SELECT * FROM contracts WHERE address = ?',
+                parameters: [
+                    { key: 'address', type: 'string', description: 'Contract address', required: true }
+                ],
+                tests: [
+                    {
+                        _description: 'Known verified contract (USDC)',
+                        address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+                    }
+                ]
+            }
+        }
+    }
+}
+```
+
+## Test Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `_description` | `string` | Yes | What this specific test demonstrates |
+| `{paramKey}` | matches parameter type | Yes (per required param) | Value for each `{{USER_PARAM}}` parameter (tools) or query parameter (resources) |
+
+### Writing Good Descriptions
+
+```javascript
+// Good — explains the specific scenario
+{ _description: 'ERC-20 token on Ethereum mainnet', ... }
+{ _description: 'Native token on Layer 2 chain (Arbitrum)', ... }
+{ _description: 'Wallet with high transaction volume', ... }
+
+// Bad — generic, uninformative
+{ _description: 'Test getTokenPrice', ... }
+{ _description: 'Basic test', ... }
+```
+
+## Design Principles
+
+### 1. Express the Breadth
+
+Tests should cover the **range of what is possible**:
+
+```javascript
+// Good — shows breadth of chains and token types
+tests: [
+    { _description: 'ERC-20 token on Ethereum', chain_id: 1, contract: '0x6982...' },
+    { _description: 'Native token on Polygon', chain_id: 137, contract: '0x0000...' },
+    { _description: 'Stablecoin on Arbitrum', chain_id: 42161, contract: '0xaf88...' }
+]
+```
+
+### 2. Teach Through Examples
+
+Each test should teach one capability or variation.
+
+### 3. No Personal Data
+
+:::caution
+Tests must never contain personal data. All test values must be publicly known, verifiable, and non-sensitive.
+:::
+
+| Allowed | Not Allowed |
+|---------|-------------|
+| Public smart contract addresses | Private wallet addresses |
+| Well-known token contracts (USDC, WETH) | Personal wallet addresses |
+| Public blockchain data (block numbers, tx hashes) | Email addresses, names |
+| Standard chain IDs (1, 137, 42161) | API keys, tokens, passwords |
+
+### 4. Reproducible Results
+
+Prefer well-established tokens/contracts over newly deployed ones, and historical data queries over latest-block queries when possible.
+
+## Test Count Guidelines
+
+| Scenario | Minimum | Recommended |
+|----------|---------|-------------|
+| No parameters | 1 | 1 |
+| 1-2 parameters | 1 | 2-3 |
+| Enum/chain parameters | 1 | 2-4 (different enum values) |
+| Multiple optional parameters | 1 | 2-3 (with/without optionals) |
+| Resource queries | 1 | 1-2 |
+
+Minimum 1 test per tool is required (validation error TST001 if missing).
+
+## Response Capture Lifecycle
+
+```mermaid
+flowchart TD
+    A[1. Read tests from tool] --> B[2. Resolve server params from env]
+    B --> C[3. Execute API call per test]
+    C --> D[4. Record full response with metadata]
+    D --> E[5. Feed response to OutputSchemaGenerator]
+    E --> F[6. Write output schema to tool definition]
+```
+
+1. **Read Tests** — Extract parameter values from each test object.
+2. **Resolve Server Params** — Load `requiredServerParams` from environment variables.
+3. **Execute API Call** — Construct the full request and execute. A delay between calls (default: 1s) prevents rate limiting.
+4. **Record Response** — Store full response with metadata (namespace, toolName, testIndex, timestamp, responseTime).
+5. **Generate Output Schema** — The `OutputSchemaGenerator` analyzes `response.data` structure and produces a schema definition.
+6. **Write Output Schema** — Generated schema is written to the tool's `output` field. Existing schemas can be validated against reality.
+
+### Captured Response Format
+
+```javascript
+{
+    namespace: 'coingecko',
+    toolName: 'getSimplePrice',
+    testIndex: 0,
+    _description: 'Single coin in USD',
+    userParams: { ids: ['bitcoin'], vs_currencies: 'usd' },
+    responseTime: 234,
+    timestamp: '2026-02-17T10:30:00Z',
+    response: {
+        status: true,
+        messages: [],
+        data: { /* actual API response after handler transformation */ }
+    }
+}
+```
+
+:::tip
+The `response.data` contains data **after handler transformation**. This is critical because the output schema describes the final shape, not the raw API response.
+:::
+
+### Capture File Structure
+
+```
+capture/
+└── {timestamp}/
+    └── {namespace}/
+        ├── {toolName}-0.json
+        ├── {toolName}-1.json
+        └── metrics.json
+```
+
+## Test Execution Modes
+
+| Mode | Description | Use Case |
+|------|-------------|----------|
+| **Capture** | Execute against real API, store responses | Schema development, output schema generation |
+| **Validation** | Execute and compare against declared `output.schema` | Verify schemas remain accurate over time |
+| **Dry-Run** | Validate test definitions without API calls | During `flowmcp validate` |
+
+## Validation Rules
+
+| Code | Severity | Rule |
+|------|----------|------|
+| TST001 | error | Each tool must have at least 1 test |
+| TST002 | error | Each test must have a `_description` field of type string |
+| TST003 | error | Each test must provide values for all required `{{USER_PARAM}}` parameters |
+| TST004 | error | Test parameter values must pass the corresponding `z` validation |
+| TST005 | error | Test objects must be JSON-serializable |
+| TST006 | error | Test objects must only contain keys matching `{{USER_PARAM}}` parameter keys or `_description` |
+| TST007 | warning | Tools with enum parameters should test multiple enum values |
+| TST008 | info | Consider adding tests that demonstrate optional parameter usage |
+
+---
+
+# "Schema Format"
+/docs/specification/schema-format
+
+A FlowMCP schema is a `.mjs` file with **two separate named exports**: a static `main` block and an optional `handlers` factory function. This separation enables integrity hashing, security scanning, and dependency injection.
+
+:::note
+This page covers the schema format from the formal specification (https://github.com/FlowMCP/flowmcp-spec). See Parameters for parameter details and Security Model for security constraints.
+:::
+
+## The Two-Export Pattern
+
+```javascript
+// main export (required)
+// Static, declarative, JSON-serializable — hashable without execution
+export const main = {
+    namespace: 'provider',
+    name: 'SchemaName',
+    description: 'What this schema does',
+    version: '3.0.0',
+    root: 'https://api.provider.com',
+    tools: { /* ... */ },
+    resources: { /* ... */ },   // optional
+    skills: [ /* ... */ ]       // optional
+}
+
+// handlers export (optional)
+// Factory function — receives injected dependencies
+export const handlers = ( { sharedLists, libraries } ) => ({
+    toolName: {
+        preRequest: async ( { struct, payload } ) => {
+            return { struct, payload }
+        },
+        postRequest: async ( { response, struct, payload } ) => {
+            return { response }
+        }
+    }
+})
+```
+
+### Why Two Separate Exports
+
+- **`main` can be hashed without calling any function.** The runtime reads the static export, serializes it via `JSON.stringify()`, and computes its hash.
+- **Handlers receive all dependencies through injection.** Schema files have zero `import` statements.
+- **`requiredLibraries` declares what npm packages the schema needs.** The runtime loads them from a security allowlist and injects them.
+
+## The `main` Export
+
+All fields in `main` must be JSON-serializable. No functions, no dynamic values, no imports.
+
+### Required Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `namespace` | `string` | Provider identifier, lowercase letters only (`/^[a-z]+$/`). |
+| `name` | `string` | Schema name in PascalCase (e.g. `SmartContractExplorer`). |
+| `description` | `string` | What this schema does, 1-2 sentences. |
+| `version` | `string` | Must match `3.\d+.\d+` (semver, major must be `3`). |
+| `root` | `string` | Base URL for all tools. Must start with `https://` (no trailing slash). |
+| `tools` | `object` | Tool definitions. Keys are camelCase tool names. Maximum 8 tools. |
+
+### Optional Fields
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `docs` | `string[]` | `[]` | Documentation URLs for the API provider. |
+| `tags` | `string[]` | `[]` | Categorization tags for tool discovery. |
+| `requiredServerParams` | `string[]` | `[]` | Environment variable names needed at runtime. |
+| `requiredLibraries` | `string[]` | `[]` | npm packages needed by handlers (must be on allowlist). |
+| `headers` | `object` | `{}` | Default HTTP headers applied to all tools. |
+| `sharedLists` | `object[]` | `[]` | Shared list references. See Shared Lists. |
+| `resources` | `object` | `{}` | SQLite-based read-only data resources. See Resources. |
+| `skills` | `array` | `[]` | AI agent skill references. See Skills. |
+
+:::note
+The key `routes` is accepted as a deprecated alias for `tools`. Schemas using `routes` will work in v3.0.0 but will produce warnings in v3.1.0 and errors in v3.2.0. Use `flowmcp migrate` to update automatically.
+:::
+
+### Field Details
+
+#### `namespace`
+
+Only lowercase ASCII letters. No numbers, hyphens, or underscores:
+
+```javascript
+// Valid
+namespace: 'etherscan'
+namespace: 'coingecko'
+
+// Invalid
+namespace: 'defi-llama'    // hyphen not allowed
+namespace: 'CoinGecko'     // uppercase not allowed
+```
+
+#### `root`
+
+Must use HTTPS with no trailing slash:
+
+```javascript
+// Valid
+root: 'https://api.etherscan.io'
+root: 'https://pro-api.coingecko.com/api/v3'
+
+// Invalid
+root: 'http://api.etherscan.io'     // must be HTTPS
+root: 'https://api.etherscan.io/'   // no trailing slash
+```
+
+## Tool Definition
+
+Each key in `tools` is the tool name in camelCase.
+
+### Tool Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `method` | `string` | Yes | HTTP method: `GET`, `POST`, `PUT`, `DELETE`. |
+| `path` | `string` | Yes | URL path appended to `root`. May contain `{{key}}` placeholders. |
+| `description` | `string` | Yes | What this tool does. Appears in tool description. |
+| `parameters` | `array` | Yes | Input parameter definitions. Can be empty `[]`. |
+| `tests` | `array` | Yes | Executable test cases. At least 1 per tool. |
+| `output` | `object` | No | Output schema. See Output Schema. |
+| `preload` | `object` | No | Cache configuration. See Preload. |
+
+### Path Templates
+
+The path supports `{{key}}` placeholders that are replaced by `insert` parameters:
+
+```javascript
+// Static path
+path: '/api'
+
+// Single placeholder
+path: '/api/v1/{{address}}/transactions'
+
+// Multiple placeholders
+path: '/api/v1/{{chainId}}/address/{{address}}/balances'
+```
+
+## The `handlers` Export
+
+The `handlers` export is a factory function receiving injected dependencies:
+
+```javascript
+export const handlers = ( { sharedLists, libraries } ) => {
+    const { ethers } = libraries
+
+    return {
+        getContractAbi: {
+            preRequest: async ( { struct, payload } ) => {
+                const checksummed = ethers.getAddress( payload.address )
+                return { struct, payload: { ...payload, address: checksummed } }
+            }
+        }
+    }
+}
+```
+
+### Handler Types
+
+| Handler | When | Input | Must Return |
+|---------|------|-------|-------------|
+| `preRequest` | Before the API call | `{ struct, payload }` | `{ struct, payload }` |
+| `postRequest` | After the API call | `{ response, struct, payload }` | `{ response }` |
+
+### Handler Rules
+
+1. **Handlers are optional.** Tools without handlers make direct API calls.
+2. **Zero import statements.** All dependencies are injected through the factory function.
+3. **No restricted globals.** `fetch`, `fs`, `process`, `eval`, `Function`, `setTimeout` are forbidden.
+4. **`sharedLists` is read-only.** Deep-frozen via `Object.freeze()`. Mutations throw `TypeError`.
+5. **Handlers must be pure transformations.** No side effects, no state mutations, no logging.
+
+## Runtime Loading Sequence
+
+```mermaid
+flowchart TD
+    A[Read schema file as string] --> B[Static security scan]
+    B --> C[Dynamic import]
+    C --> D[Extract main export]
+    D --> E[Validate main block]
+    E --> F[Resolve sharedLists]
+    F --> G[Load requiredLibraries from allowlist]
+    G --> H{handlers export exists?}
+    H -->|Yes| I["Call handlers( { sharedLists, libraries } )"]
+    H -->|No| J[Direct API call mode]
+    I --> K[Register tools as MCP tools]
+    J --> K
+    K --> L{resources defined?}
+    L -->|Yes| M[Load SQLite databases]
+    L -->|No| N{skills defined?}
+    M --> N
+    N -->|Yes| O[Load skill .mjs files]
+    N -->|No| P[Ready]
+    O --> P
+```
+
+## Naming Conventions
+
+| Element | Convention | Pattern | Example |
+|---------|-----------|---------|---------|
+| Namespace | Lowercase letters only | `^[a-z]+$` | `etherscan` |
+| Schema name | PascalCase | `^[A-Z][a-zA-Z0-9]*$` | `SmartContractExplorer` |
+| Schema filename | PascalCase `.mjs` | `^[A-Z][a-zA-Z0-9]*\.mjs$` | `SmartContractExplorer.mjs` |
+| Tool name | camelCase | `^[a-z][a-zA-Z0-9]*$` | `getContractAbi` |
+| Parameter key | camelCase | `^[a-z][a-zA-Z0-9]*$` | `contractAddress` |
+| Tag | lowercase with hyphens | `^[a-z][a-z0-9-]*$` | `smart-contracts` |
+
+## Constraints
+
+| Constraint | Value | Rationale |
+|------------|-------|-----------|
+| Max tools per schema | 8 | Keeps schemas focused. Split large APIs into multiple schemas. |
+| Max resources per schema | 2 | Resources are supplementary data, not primary output. |
+| Max skills per schema | 4 | Skills compose tools; keep schemas focused. |
+| Version major | `3` | Must match `3.\d+.\d+`. |
+| Namespace pattern | `^[a-z]+$` | Letters only. No numbers, hyphens, or underscores. |
+| Root URL protocol | `https://` | HTTP is not allowed. |
+| `main` export | JSON-serializable | Must survive `JSON.parse( JSON.stringify() )` roundtrip. |
+| Schema file imports | Zero | All dependencies are injected. |
+
+## Complete Example
+
+```javascript
+export const main = {
+    namespace: 'etherscan',
+    name: 'SmartContractExplorer',
+    description: 'Explore verified smart contracts on EVM-compatible chains via Etherscan APIs',
+    version: '3.0.0',
+    root: 'https://api.etherscan.io',
+    docs: [ 'https://docs.etherscan.io/api-endpoints/contracts' ],
+    tags: [ 'smart-contracts', 'evm', 'abi' ],
+    requiredServerParams: [ 'ETHERSCAN_API_KEY' ],
+    requiredLibraries: [],
+    headers: { 'Accept': 'application/json' },
+    sharedLists: [
+        { ref: 'evmChains', version: '1.0.0', filter: { key: 'etherscanAlias', exists: true } }
+    ],
+    tools: {
+        getContractAbi: {
+            method: 'GET',
+            path: '/api',
+            description: 'Returns the Contract ABI of a verified smart contract',
+            parameters: [
+                { position: { key: 'module', value: 'contract', location: 'query' }, z: { primitive: 'string()', options: [] } },
+                { position: { key: 'action', value: 'getabi', location: 'query' }, z: { primitive: 'string()', options: [] } },
+                { position: { key: 'address', value: '{{USER_PARAM}}', location: 'query' }, z: { primitive: 'string()', options: [ 'min(42)', 'max(42)' ] } },
+                { position: { key: 'apikey', value: '{{SERVER_PARAM:ETHERSCAN_API_KEY}}', location: 'query' }, z: { primitive: 'string()', options: [] } }
+            ]
+        }
+    }
+}
+
+export const handlers = ( { sharedLists } ) => ({
+    getContractAbi: {
+        postRequest: async ( { response } ) => {
+            const [ first ] = response.result
+            return { response: { contractName: first.ContractName, sourceCode: first.SourceCode } }
+        }
+    }
+})
+```
+
+:::tip
+This example demonstrates: two separate exports, fixed parameters, user parameters, server parameter injection, a shared list reference, and a `postRequest` handler that flattens the response.
+:::
+
+---
+
+# "Security Model"
+/docs/specification/security
+
+FlowMCP enforces a layered security model that prevents schema files from accessing the network, filesystem, or process environment. All potentially dangerous operations are restricted to the trusted core runtime. Dependencies are injected through a factory function pattern, and external libraries are gated by an allowlist.
+
+:::note
+This page covers the security model from the formal specification (https://github.com/FlowMCP/flowmcp-spec). Security is enforced at multiple levels — static scan, runtime constraints, and API key isolation.
+:::
+
+## Trust Boundary
+
+FlowMCP enforces a strict trust boundary between the core runtime and schema handlers:
+
+```mermaid
+flowchart LR
+    subgraph trusted ["TRUSTED ZONE - flowmcp-core"]
+        A[Static scan]
+        B[Validate main block]
+        C[Resolve shared lists]
+        D[Load libraries from allowlist]
+        E[Execute fetch]
+        F[Validate input/output]
+    end
+
+    subgraph restricted ["RESTRICTED ZONE - Schema Handlers"]
+        G["Receives: struct, payload"]
+        H["Receives: sharedLists, libraries"]
+        I["sharedLists is frozen"]
+        K["NO: import, require, eval, fs, process"]
+        L["CAN: use injected libs and sharedLists"]
+    end
+
+    A --> B --> C --> D --> E --> F
+    D --> H
+    E --> G
+```
+
+**Trusted Zone (flowmcp-core):**
+- Reads schema file as raw string and runs static security scan
+- Loads and validates the `main` export
+- Resolves shared list references and deep-freezes the data
+- Loads libraries from the allowlist
+- Executes HTTP fetch (handlers never fetch directly)
+- Validates input parameters and output schema
+
+**Restricted Zone (schema handlers):**
+- Receives `sharedLists` and `libraries` through the factory function
+- Receives `struct`, `payload`, and `response` per-call
+- Transforms data (restructure, filter, compute)
+- Cannot access network, filesystem, process, or global scope
+
+## Static Security Scan
+
+Before a schema is loaded, the **raw file content** is scanned for forbidden patterns. This happens before `import()` to prevent code execution.
+
+:::caution
+Since all dependencies are injected through the factory function, schema files must have **zero import statements**. Any occurrence of `import ` in the file content causes rejection.
+:::
+
+### Forbidden Patterns
+
+| Pattern | Reason |
+|---------|--------|
+| `import ` | No imports — all dependencies are injected |
+| `require(` | No CommonJS imports |
+| `eval(` | Code injection |
+| `Function(` | Code injection |
+| `new Function` | Code injection |
+| `fs.` | Filesystem access |
+| `node:fs` | Filesystem access |
+| `fs/promises` | Filesystem access |
+| `process.` | Process access |
+| `child_process` | Shell execution |
+| `globalThis.` | Global scope access |
+| `global.` | Global scope access |
+| `__dirname` | Path leaking |
+| `__filename` | Path leaking |
+| `setTimeout` | Async side effects |
+| `setInterval` | Async side effects |
+
+### Scan Sequence
+
+```
+1. Read file as raw string (before import)
+2. Scan entire file for all forbidden patterns
+3. If any pattern matches -> reject file with error message(s)
+4. If clean -> proceed with dynamic import()
+```
+
+The entire file is scanned uniformly — no distinction between main and handler regions.
+
+## Library Allowlist
+
+The runtime maintains an allowlist of approved npm packages. Only these packages can be declared in `requiredLibraries` and injected into handlers.
+
+### Default Allowlist
+
+```javascript
+const DEFAULT_ALLOWLIST = [
+    'ethers',
+    'moment',
+    'indicatorts',
+    '@erc725/erc725.js',
+    'ccxt',
+    'axios'
+]
+```
+
+### User-Extended Allowlist
+
+Users can extend the allowlist in `.flowmcp/config.json`:
+
+```json
+{
+    "security": {
+        "allowedLibraries": [ "custom-lib", "another-lib" ]
+    }
+}
+```
+
+The effective allowlist is the union of default and user-extended lists.
+
+### Library Loading Sequence
+
+```mermaid
+flowchart TD
+    A[Read main.requiredLibraries] --> B{Each library on allowlist?}
+    B -->|Yes| C["Load via dynamic import()"]
+    B -->|No| D[Reject schema - SEC013]
+    C --> E[Package into libraries object]
+    E --> F["Inject into handlers()"]
+```
+
+1. **Read requiredLibraries** — Extract the list of declared packages from the main block.
+2. **Check allowlist** — Every entry must appear in the default or user-extended allowlist.
+3. **Load approved libraries** — Each approved library is loaded via dynamic `import()`.
+4. **Inject into factory** — The `libraries` object is passed to `handlers( { sharedLists, libraries } )`.
+
+## Shared List File Restrictions
+
+Shared list files have an **even stricter** scan:
+
+| Allowed | Forbidden |
+|---------|-----------|
+| `export const list = { meta: {...}, entries: [...] }` | Any function definition |
+| String/number/boolean/null values | `async`, `await`, `function`, `=>` |
+| Arrays and objects | Any schema forbidden patterns |
+| Comments (`//`, `/* */`) | Template literals with expressions |
+
+Shared lists are pure data. No logic, no transformations, no computed values.
+
+## Handler Runtime Constraints
+
+Even after passing the static scan, handlers are constrained:
+
+1. **No `fetch` access** — the runtime executes fetch and passes the response to `postRequest`
+2. **No side effects** — receive data, return data. No logging, no file writes
+3. **`sharedLists` is read-only** — deep-frozen via `Object.freeze()`. Mutations throw `TypeError`
+4. **Only allowlisted packages** — non-injected packages are not in scope
+5. **Return value required** — must return the expected shape
+
+### Handler Function Signatures
+
+```javascript
+// preRequest — modify the request before fetch
+preRequest: async ( { struct, payload } ) => {
+    // struct: the request structure (url, headers, body)
+    // payload: resolved route parameters
+    // sharedLists + libraries: available via factory closure
+    return { struct, payload }
+}
+
+// postRequest — transform the response after fetch
+postRequest: async ( { response, struct, payload } ) => {
+    // response: parsed JSON from the API
+    // sharedLists + libraries: available via factory closure
+    return { response }
+}
+```
+
+## API Key Protection
+
+:::caution
+API keys are **never exposed to handler code**. They are injected by the runtime into URL/headers only.
+:::
+
+```mermaid
+flowchart LR
+    A[".env: ETHERSCAN_API_KEY=abc123"] --> B[Core Runtime]
+    B --> C["URL: ?apikey=abc123"]
+    B -.->|NOT passed| D[Handler Factory]
+    B -.->|NOT passed| F[Handler Per-Call]
+```
+
+- `requiredServerParams` values are injected into URL/headers by the runtime
+- The `handlers()` factory receives `sharedLists` and `libraries` only
+- Per-call handlers receive `struct`, `payload`, and `response` only
+- Key values are never logged
+
+### Key Injection Flow
+
+```
+1. Schema declares requiredServerParams: [ 'ETHERSCAN_API_KEY' ]
+2. Runtime reads ETHERSCAN_API_KEY from .env
+3. Parameter template: '{{SERVER_PARAM:ETHERSCAN_API_KEY}}'
+4. Runtime substitutes into URL: '?apikey=abc123'
+5. Handler receives response — never sees the key value
+```
+
+## Threat Model
+
+| Threat | Mitigation |
+|--------|------------|
+| Schema imports a module | Static scan blocks `import`/`require` |
+| Schema requests unapproved library | Blocked by allowlist (SEC013) |
+| Schema reads filesystem | Static scan blocks `fs`, `node:fs` |
+| Schema executes shell commands | Static scan blocks `child_process` |
+| Schema accesses environment | Static scan blocks `process.` |
+| Schema exfiltrates data via fetch | Handlers cannot call `fetch()` |
+| Schema modifies global state | Static scan blocks `globalThis`/`global.` |
+| Handler mutates shared list data | `sharedLists` is deep-frozen |
+| Shared list contains executable code | Stricter scan blocks all functions/arrows |
+| Schema leaks API keys | Keys never passed to factory or handlers |
+| Schema uses eval | Static scan blocks `eval(`, `Function(` |
+
+## Security Error Codes
+
+### SEC001-SEC099 — Static Scan Failures
+
+| Code | Description |
+|------|-------------|
+| SEC001 | Forbidden `import` statement found |
+| SEC002 | Forbidden `require()` call found |
+| SEC003 | Forbidden `eval()` call found |
+| SEC004 | Forbidden `Function()` constructor found |
+| SEC005 | Forbidden filesystem access |
+| SEC006 | Forbidden `process.` access |
+| SEC007 | Forbidden `child_process` access |
+| SEC008 | Forbidden global scope access |
+| SEC009 | Forbidden path variable |
+| SEC010 | Forbidden `new Function` |
+| SEC011 | Forbidden timer (`setTimeout`/`setInterval`) |
+| SEC013 | Unapproved library in `requiredLibraries` |
+
+### SEC100-SEC199 — Runtime Constraint Violations
+
+| Code | Description |
+|------|-------------|
+| SEC100 | Handler attempted to call `fetch()` |
+| SEC101 | Handler returned invalid shape |
+| SEC102 | Handler attempted to mutate frozen `sharedLists` |
+| SEC103 | Library loading failed for approved package |
+| SEC104 | Factory function `handlers()` threw during initialization |
+
+### SEC200-SEC299 — Shared List Scan Failures
+
+| Code | Description |
+|------|-------------|
+| SEC200 | Function definition found in shared list |
+| SEC201 | Arrow function found in shared list |
+| SEC202 | Async/await keyword found in shared list |
+| SEC203 | Template literal with expression found |
+| SEC204 | Forbidden pattern found in shared list |
+
+All violations in a single file are reported together — the scan does not stop at the first match.
+
+---
+
+# "Shared Lists"
+/docs/specification/shared-lists
+
+Shared lists eliminate duplication of common value sets across schemas. Instead of every Etherscan schema maintaining its own chain list, they reference a single `evmChains` shared list that is injected at load-time.
+
+:::note
+This page covers shared lists from the formal specification (https://github.com/FlowMCP/flowmcp-spec). See Parameters for how schemas use shared list interpolation.
+:::
+
+## Purpose
+
+Many schemas across different providers need the same sets of values — EVM chain identifiers, fiat currency codes, token standards. Without shared lists, each schema duplicates these values inline, leading to:
+
+- **Inconsistency** — one schema uses `'eth'`, another uses `'ETH'`, a third uses `'ethereum'`
+- **Maintenance burden** — adding a new chain means updating dozens of schemas
+- **No single source of truth** — no way to verify which values are canonical
+
+```mermaid
+flowchart LR
+    A[Shared List: evmChains] --> B[etherscan/contracts.mjs]
+    A --> C[moralis/tokens.mjs]
+    A --> D[defillama/protocols.mjs]
+    B --> E["filter: etherscanAlias exists"]
+    C --> F["filter: moralisChainSlug exists"]
+    D --> G["filter: defillamaSlug exists"]
+```
+
+A single shared list feeds multiple schemas. Each schema applies its own filter to extract only the entries relevant to that provider.
+
+## List Definition Format
+
+A shared list is a `.mjs` file that exports a `list` object with two top-level keys: `meta` and `entries`.
+
+```javascript
+export const list = {
+    meta: {
+        name: 'evmChains',
+        version: '1.0.0',
+        description: 'Unified EVM chain registry with provider-specific aliases',
+        fields: [
+            { key: 'alias', type: 'string', description: 'Canonical chain alias' },
+            { key: 'chainId', type: 'number', description: 'EVM chain ID' },
+            { key: 'name', type: 'string', description: 'Human-readable chain name' },
+            { key: 'etherscanAlias', type: 'string', optional: true, description: 'Etherscan API chain parameter' },
+            { key: 'moralisChainSlug', type: 'string', optional: true, description: 'Moralis chain slug' },
+            { key: 'defillamaSlug', type: 'string', optional: true, description: 'DeFi Llama chain identifier' },
+            { key: 'coingeckoPlatformId', type: 'string', optional: true, description: 'CoinGecko asset platform ID' }
+        ],
+        dependsOn: []
+    },
+    entries: [
+        {
+            alias: 'ETHEREUM_MAINNET',
+            chainId: 1,
+            name: 'Ethereum Mainnet',
+            etherscanAlias: 'ETH',
+            moralisChainSlug: 'eth',
+            defillamaSlug: 'Ethereum',
+            coingeckoPlatformId: 'ethereum'
+        },
+        {
+            alias: 'POLYGON_MAINNET',
+            chainId: 137,
+            name: 'Polygon Mainnet',
+            etherscanAlias: 'POLYGON',
+            moralisChainSlug: 'polygon',
+            defillamaSlug: 'Polygon',
+            coingeckoPlatformId: 'polygon-pos'
+        }
+        // ... more entries
+    ]
+}
+```
+
+:::caution
+The file must export exactly one `list` constant. No other exports, no imports, no function definitions, no dynamic expressions. Shared lists are pure data.
+:::
+
+## Meta Block
+
+The `meta` block describes the list identity and structure.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | `string` | Yes | Unique list identifier (camelCase) |
+| `version` | `string` | Yes | Semver version |
+| `description` | `string` | Yes | What this list contains |
+| `fields` | `array` | Yes | Field definitions for entries |
+| `dependsOn` | `array` | No | Dependencies on other lists |
+
+### Naming Convention
+
+List names use camelCase and must be globally unique. The name should describe the collection, not a single entry:
+
+- `evmChains` (not `evmChain`)
+- `fiatCurrencies` (not `fiatCurrency`)
+- `isoCountryCodes` (not `countryCode`)
+
+### Versioning
+
+Lists follow strict semver:
+
+| Bump | When |
+|------|------|
+| **Patch** (`1.0.1`) | Correcting a typo, fixing a wrong value |
+| **Minor** (`1.1.0`) | Adding new entries, adding new optional fields |
+| **Major** (`2.0.0`) | Removing entries, removing fields, renaming fields, changing types |
+
+Schemas pin to a specific version. A major version bump requires all referencing schemas to update.
+
+## Field Definitions
+
+Each entry in `meta.fields` describes one field that entries can or must contain.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `key` | `string` | Yes | Field name |
+| `type` | `string` | Yes | `string`, `number`, or `boolean` |
+| `description` | `string` | Yes | What this field represents |
+| `optional` | `boolean` | No | If `true`, entries may omit this field |
+
+Only three primitive types are supported — no objects, arrays, or nested structures. Lists are flat by design.
+
+### Required vs Optional Fields
+
+Fields without `optional: true` are required in every entry. Optional fields may be omitted or set to `null`. This enables provider-specific columns — `etherscanAlias` is optional because not every chain has an Etherscan explorer.
+
+## Dependencies Between Lists
+
+Lists can declare dependencies on other lists using `meta.dependsOn`:
+
+```javascript
+meta: {
+    name: 'germanBundeslaender',
+    version: '1.0.0',
+    description: 'German federal states',
+    fields: [
+        { key: 'name', type: 'string', description: 'State name' },
+        { key: 'code', type: 'string', description: 'State code' },
+        { key: 'countryRef', type: 'string', description: 'Reference to parent country' }
+    ],
+    dependsOn: [
+        { ref: 'isoCountryCodes', version: '1.0.0', condition: { field: 'alpha2', value: 'DE' } }
+    ]
+}
+```
+
+### Dependency Rules
+
+1. **`ref` must resolve** — the referenced list name must exist in the registry
+2. **Version pinning** — `version` pins the dependency to a specific semver version
+3. **`condition` is optional** — when present, it filters the parent list
+4. **No circular dependencies** — A depends on B means B cannot depend on A
+5. **Maximum depth: 3 levels** — prevents resolution complexity
+
+```mermaid
+flowchart TD
+    A[isoCountryCodes] --> B[germanBundeslaender]
+    A --> C[usStates]
+    B --> D[germanLandkreise]
+    D -.->|"FORBIDDEN: depth 4"| E[germanGemeinden]
+```
+
+## Referencing from Schemas
+
+Schemas reference shared lists in the `main.sharedLists` array:
+
+```javascript
+main: {
+    sharedLists: [
+        {
+            ref: 'evmChains',
+            version: '1.0.0',
+            filter: { key: 'etherscanAlias', exists: true }
+        }
+    ]
+}
+```
+
+### Reference Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `ref` | `string` | Yes | List name to reference |
+| `version` | `string` | Yes | Required list version |
+| `filter` | `object` | No | Filter entries before injection |
+
+### Filter Types
+
+| Filter | Description | Example |
+|--------|-------------|---------|
+| `{ key, exists: true }` | Only entries where field exists and is not `null` | `{ key: 'etherscanAlias', exists: true }` |
+| `{ key, value }` | Only entries where field equals value | `{ key: 'mainnet', value: true }` |
+| `{ key, in: [...] }` | Only entries where field is in the list | `{ key: 'chainId', in: [1, 137, 42161] }` |
+
+When `filter` is omitted, all entries are injected.
+
+## Runtime Injection Lifecycle
+
+```mermaid
+flowchart TD
+    A[Schema declares sharedLists] --> B[Resolve list by name + version]
+    B --> C{List found?}
+    C -->|No| D[Load error: list not found]
+    C -->|Yes| E{Version matches?}
+    E -->|No| F[Load error: version mismatch]
+    E -->|Yes| G[Apply filter]
+    G --> H[Inject into sharedLists for factory]
+    H --> I[Build reverse-lookup index]
+```
+
+1. **Resolve** — The runtime looks up each `ref` in the list registry. If not found, the schema fails to load.
+2. **Version Check** — The runtime verifies the registry version matches. A mismatch is a hard error.
+3. **Filter** — If a `filter` is declared, the runtime applies it. Otherwise all entries pass through.
+4. **Inject** — Filtered entries are passed to the `handlers` factory as `sharedLists`:
+
+```javascript
+export const handlers = ( { sharedLists } ) => ({
+    getGasOracle: {
+        preRequest: async ( { struct, payload } ) => {
+            const chain = sharedLists.evmChains
+                .find( ( entry ) => entry.etherscanAlias === payload.chainName )
+            return { struct, payload }
+        }
+    }
+})
+```
+
+## List Registry
+
+All shared lists are tracked in `_lists/_registry.json`:
+
+```json
+{
+    "specVersion": "2.0.0",
+    "lists": [
+        {
+            "name": "evmChains",
+            "version": "1.0.0",
+            "file": "_lists/evm-chains.mjs",
+            "entryCount": 15,
+            "hash": "sha256:def456..."
+        }
+    ]
+}
+```
+
+### Registry Invariants
+
+- Every `.mjs` file in `_lists/` must have a registry entry
+- Every registry entry must point to an existing file
+- The `hash` must match the current file content
+- Validate with `flowmcp validate-lists`
+
+## File Conventions
+
+```
+_lists/
+    _registry.json
+    evm-chains.mjs
+    fiat-currencies.mjs
+    iso-country-codes.mjs
+```
+
+- File names use kebab-case: `evm-chains.mjs`
+- List names use camelCase: `evmChains`
+- One list per file
+
+---
+
+# "Skills"
+/docs/specification/skills
+
+Skills are reusable AI agent instructions that compose tools and resources into multi-step workflows. They map to the MCP **Prompts** primitive and are declared in the `skills` key of a schema's `main` export. Each skill is stored as a separate `.mjs` file alongside the schema.
+
+:::note
+Skills are optional. Most schemas only need tools. Add skills when your schema has tools that work together in a predictable workflow that benefits from step-by-step guidance.
+:::
+
+## When to Use Skills
+
+| Use Case | Skill Needed? |
+|----------|---------------|
+| Single tool call (get price, check status) | No |
+| Multi-step workflow (fetch data, transform, report) | Yes |
+| Common combination of tools that agents should know about | Yes |
+| Simple tool with clear description | No |
+
+Skills are most valuable when:
+- Multiple tools from the schema work together in a specific sequence
+- The workflow requires context about how to interpret intermediate results
+- AI agents would benefit from structured guidance on tool composition
+
+## Schema Declaration
+
+Skills are referenced in the `main` export's `skills` array:
+
+```javascript
+export const main = {
+    namespace: 'etherscan',
+    name: 'ContractExplorer',
+    version: '3.0.0',
+    root: 'https://api.etherscan.io',
+    tools: {
+        getContractAbi: { /* ... */ },
+        getSourceCode: { /* ... */ }
+    },
+    skills: [
+        {
+            name: 'full-contract-audit',
+            file: 'full-contract-audit.mjs',
+            description: 'Retrieve ABI and source code for a comprehensive contract audit'
+        }
+    ]
+}
+```
+
+### Skill Reference Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | `string` | Yes | Skill identifier. Must match `^[a-z][a-z0-9-]*$` (lowercase, hyphens). |
+| `file` | `string` | Yes | Path to the `.mjs` skill file, relative to the schema. Must end in `.mjs`. |
+| `description` | `string` | Yes | What this skill does. Visible to AI clients. |
+
+## Skill File Format
+
+Each skill is a `.mjs` file that exports a `skill` object:
+
+```javascript
+const content = `
+## Instructions
+
+You are performing a comprehensive smart contract audit.
+
+### Step 1: Retrieve ABI
+Call {{tool:getContractAbi}} with the provided {{input:address}}.
+Parse the ABI to identify all public functions, events, and modifiers.
+
+### Step 2: Retrieve Source Code
+Call {{tool:getSourceCode}} with the same {{input:address}}.
+Analyze the Solidity source for:
+- Reentrancy vulnerabilities
+- Access control patterns
+- Gas optimization opportunities
+
+### Step 3: Cross-Reference
+Compare the ABI with the source code to verify:
+- All public functions are documented
+- Event emissions match expected patterns
+- Modifier usage is consistent
+
+### Step 4: Report
+Produce a Markdown report with:
+- Function summary table
+- Security findings (Critical / Warning / Info)
+- Gas optimization suggestions
+`
+
+export const skill = {
+    name: 'full-contract-audit',
+    version: 'flowmcp-skill/1.0.0',
+    description: 'Retrieve ABI and source code for a comprehensive contract audit.',
+    requires: {
+        tools: [ 'getContractAbi', 'getSourceCode' ],
+        resources: [],
+        external: []
+    },
+    input: [
+        { key: 'address', type: 'string', description: 'Ethereum contract address (0x...)', required: true }
+    ],
+    output: 'Markdown report with ABI summary, security findings, and optimization suggestions.',
+    content
+}
+```
+
+## Skill Object Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | `string` | Yes | Must match the `name` in the schema's `skills` array entry. |
+| `version` | `string` | Yes | Must be `'flowmcp-skill/1.0.0'`. |
+| `description` | `string` | Yes | What this skill does. |
+| `requires` | `object` | Yes | Dependencies: `tools`, `resources`, and `external` arrays. |
+| `input` | `array` | No | User-provided input parameters. |
+| `output` | `string` | No | Description of what the skill produces. |
+| `content` | `string` | Yes | The instruction text with placeholders. |
+
+### `requires` Object
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `tools` | `string[]` | Tool names from the schema that this skill uses. Must match tool names in `main.tools`. |
+| `resources` | `string[]` | Resource names from the schema that this skill uses. Must match names in `main.resources`. |
+| `external` | `string[]` | External capabilities not provided by the schema (for documentation purposes). |
+
+### `input` Array
+
+Each input parameter:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `key` | `string` | Parameter name (camelCase). Referenced in content as `{{input:key}}`. |
+| `type` | `string` | Must be `string`, `number`, or `boolean`. |
+| `description` | `string` | What this input parameter is for. |
+| `required` | `boolean` | Whether the user must provide this value. |
+
+## Placeholder System
+
+The `content` field supports four types of placeholders:
+
+| Placeholder | Syntax | Resolves To | Example |
+|-------------|--------|-------------|---------|
+| Tool reference | `{{tool:name}}` | Tool name from `requires.tools` | `{{tool:getContractAbi}}` |
+| Resource reference | `{{resource:name}}` | Resource name from `requires.resources` | `{{resource:verifiedContracts}}` |
+| Skill reference | `{{skill:name}}` | Another skill in the same schema | `{{skill:quick-check}}` |
+| Input reference | `{{input:key}}` | User-provided input value | `{{input:address}}` |
+
+### Placeholder Rules
+
+1. `{{tool:x}}` — `x` should be listed in `requires.tools`
+2. `{{resource:x}}` — `x` should be listed in `requires.resources`
+3. `{{skill:x}}` — `x` must reference another skill in the same schema (no circular references)
+4. `{{input:x}}` — `x` should match an `input[].key`
+
+Unresolved placeholders produce validation warnings (not errors), except for `{{skill:x}}` which must resolve.
+
+## Versioning
+
+All skills use the version string `'flowmcp-skill/1.0.0'`. This version identifies the skill format, not the skill's content version. When the skill format changes, this version will be updated.
+
+```javascript
+version: 'flowmcp-skill/1.0.0'
+```
+
+## Constraints
+
+| Constraint | Value | Rationale |
+|------------|-------|-----------|
+| Max skills per schema | 4 | Skills compose tools; keep schemas focused |
+| Skill name pattern | `^[a-z][a-z0-9-]*$` | Lowercase with hyphens |
+| Skill file extension | `.mjs` | ES module format |
+| Version | `flowmcp-skill/1.0.0` | Fixed for v3.0.0 |
+| Content | Non-empty string | Must contain instructions |
+| No circular references | Via `{{skill:x}}` | Prevents infinite loops |
+
+## Complete Example
+
+A schema with tools, a resource, and a skill:
+
+```javascript
+// etherscan-contracts.mjs
+export const main = {
+    namespace: 'etherscan',
+    name: 'ContractExplorer',
+    description: 'Explore verified smart contracts with API tools and local data',
+    version: '3.0.0',
+    root: 'https://api.etherscan.io',
+    requiredServerParams: [ 'ETHERSCAN_API_KEY' ],
+    requiredLibraries: [],
+    headers: {},
+    tools: {
+        getContractAbi: {
+            method: 'GET',
+            path: '/api',
+            description: 'Returns the ABI of a verified smart contract',
+            parameters: [ /* ... */ ]
+        },
+        getSourceCode: {
+            method: 'GET',
+            path: '/api',
+            description: 'Returns the Solidity source code of a verified contract',
+            parameters: [ /* ... */ ]
+        }
+    },
+    skills: [
+        {
+            name: 'full-contract-audit',
+            file: 'full-contract-audit.mjs',
+            description: 'Comprehensive contract audit using ABI, source code, and local metadata'
+        }
+    ]
+}
+```
+
+## Validation Rules
+
+Skills are validated by rules SKL001-SKL025. Key rules include:
+
+| Code | Rule |
+|------|------|
+| SKL002 | Maximum 4 skills per schema |
+| SKL005 | Skill file must end in `.mjs` |
+| SKL008 | `skill.name` must match the name in `main.skills` entry |
+| SKL009 | Version must be `'flowmcp-skill/1.0.0'` |
+| SKL013 | `requires.tools` entries must match tool names in schema |
+| SKL014 | `requires.resources` entries must match resource names in schema |
+| SKL025 | No circular skill references via `{{skill:x}}` placeholders |
+
+See Validation Rules for the complete list.
+
+## Group-Level Skills vs Schema-Level Skills
+
+FlowMCP has two types of skills:
+
+| Type | Location | Format | Purpose |
+|------|----------|--------|---------|
+| **Schema-level** | `.mjs` files alongside schema | `export const skill` object | Distributed with the schema, composing that schema's tools |
+| **Group-level** | `.md` files in `.flowmcp/skills/` | Markdown with sections | Project-specific workflows across multiple schemas |
+
+Schema-level skills (this page) are part of the schema and travel with it. Group-level skills (see Groups & Skills) are project-local and can reference tools from any schema in the group.
+
+---
+
+# "Tests"
+/docs/specification/tests
+
+FlowMCP v3.0.0 requires a minimum of 3 tests per tool, resource query, and agent. Tests serve as both validation and documentation of expected behavior.
+
+:::note
+For the full specification, see 10-tests.md (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/10-tests.md).
+:::
+
+## Tool Tests
+
+Each tool in `main.tools` must have at least 3 test entries:
+
+```javascript
+tools: {
+    getPrice: {
+        method: 'GET',
+        path: '/simple/price',
+        description: 'Get token price',
+        parameters: [...],
+        tests: [
+            { _description: 'Basic price lookup', vs_currencies: 'usd', ids: 'bitcoin' },
+            { _description: 'Multi-token query', vs_currencies: 'usd', ids: 'bitcoin,ethereum' },
+            { _description: 'Alternative currency', vs_currencies: 'eur', ids: 'bitcoin' }
+        ]
+    }
+}
+```
+
+## Agent Tests
+
+Agent tests validate tool selection (deterministic) and content assertions (partial):
+
+```json
+{
+    "_description": "Cross-provider analysis",
+    "input": "Compare TVL of Aave on Ethereum vs Arbitrum",
+    "expectedTools": ["defillama/tool/getProtocolTvl"],
+    "expectedContent": ["TVL", "Ethereum", "Arbitrum"]
+}
+```
+
+### Three-Level Test Model
+
+| Level | Field | Deterministic? | Description |
+|-------|-------|---------------|-------------|
+| Tool Usage | `expectedTools` | Yes | Which tools the agent must call |
+| Content | `expectedContent` | Partial | Strings the response should contain |
+| Quality | Manual review | No | Subjective assessment |
+
+## Test Minimum (TST001)
+
+| Primitive | v2 Minimum | v3 Minimum |
+|-----------|-----------|-----------|
+| Tool | 1 test | 3 tests |
+| Resource query | 1 test | 3 tests |
+| Agent | N/A | 3 tests |
+
+## CLI Commands
+
+```bash
+# Test a single schema
+flowmcp test single path/to/schema.mjs
+
+# Test all project schemas
+flowmcp test project
+```
+
+---
+
+# "Validation Rules"
+/docs/specification/validation-rules
+
+FlowMCP enforces validation rules when loading schemas, shared lists, groups, resources, and skills. Each rule has a code, severity level, and description. Run validation with `flowmcp validate <schema-path>`.
+
+:::note
+This page covers all validation rules from the formal specification (https://github.com/FlowMCP/flowmcp-spec). Rules are enforced at load-time and during CLI validation.
+:::
+
+## Severity Levels
+
+| Severity | Description | Effect |
+|----------|-------------|--------|
+| `error` | Must fix before use | Schema cannot be loaded |
+| `warning` | Should fix | Schema loads with warnings |
+| `info` | Nice to have | Informational only |
+
+## Validation Output
+
+```bash
+flowmcp validate etherscan/contracts.mjs
+```
+
+```bash
+# Errors Found
+  VAL014 error   main.version: Must match ^3\.\d+\.\d+$ (found "2.0.0")
+  VAL031 error   tools: Maximum 8 tools exceeded (found 10)
+  VAL036 warning getContractAbi: output schema is recommended
+  TST001 warning getContractAbi: No tests found
+
+  2 errors, 2 warnings
+  Schema cannot be loaded (has errors)
+
+# All Valid
+  0 errors, 0 warnings
+  Schema is valid
+```
+
+## Rules by Category
+
+### Schema Structure Rules (VAL001-VAL005)
+
+| Code | Severity | Rule |
+|------|----------|------|
+| VAL001 | error | Schema must export `main` as named export |
+| VAL002 | error | `main` must be an object |
+| VAL003 | error | `main` must not contain unknown fields |
+| VAL004 | error | `handlers` (if exported) must be a function |
+| VAL005 | warning | `handlers` function must return an object with keys matching tool names |
+
+### Main Block — Required Fields (VAL010-VAL016)
+
+| Code | Severity | Rule |
+|------|----------|------|
+| VAL010 | error | `main.namespace` is required and must be a string |
+| VAL011 | error | `main.namespace` must match `^[a-z]+$` |
+| VAL012 | error | `main.name` is required and must be a string |
+| VAL013 | error | `main.description` is required and must be a string |
+| VAL014 | error | `main.version` is required and must match `^3\.\d+\.\d+$` |
+| VAL015 | error | `main.root` is required and must be a valid URL |
+| VAL016 | error | `main.tools` is required and must be a non-empty object |
+
+### Main Block — Optional Fields (VAL020-VAL026)
+
+| Code | Severity | Rule |
+|------|----------|------|
+| VAL020 | error | `main.docs` (if present) must be an array of strings |
+| VAL021 | error | `main.tags` (if present) must be an array of strings |
+| VAL022 | error | `main.requiredServerParams` (if present) must be an array of strings |
+| VAL023 | error | `main.headers` (if present) must be a plain object |
+| VAL024 | error | `main.sharedLists` (if present) must be an array of objects |
+| VAL025 | error | `main.requiredLibraries` (if present) must be an array of strings |
+| VAL026 | error | Each entry in `requiredLibraries` must be on the runtime allowlist |
+
+### Tool Rules (VAL030-VAL037)
+
+| Code | Severity | Rule |
+|------|----------|------|
+| VAL030 | error | Tool name must match `^[a-z][a-zA-Z0-9]*$` |
+| VAL031 | error | Maximum 8 tools per schema |
+| VAL032 | error | `tool.method` is required and must be `GET`, `POST`, `PUT`, or `DELETE` |
+| VAL033 | error | `tool.path` is required and must be a string starting with `/` |
+| VAL034 | error | `tool.description` is required and must be a string |
+| VAL035 | error | `tool.parameters` is required and must be an array |
+| VAL036 | warning | `tool.output` is recommended for new schemas |
+| VAL037 | info | `tool.async` is a reserved field (not executed in v3.0.0) |
+
+### Parameter Rules (VAL040-VAL050)
+
+| Code | Severity | Rule |
+|------|----------|------|
+| VAL040 | error | Each parameter must have `position` and `z` objects |
+| VAL041 | error | `position.key` is required and must be a string |
+| VAL042 | error | `position.value` is required and must be a string |
+| VAL043 | error | `position.location` must be `insert`, `query`, or `body` |
+| VAL044 | error | `z.primitive` is required and must be a valid primitive type |
+| VAL045 | error | `z.options` must be an array of strings |
+| VAL046 | error | `enum()` values must not be empty |
+| VAL047 | error | Shared list interpolation `{{listName:fieldName}}` is only allowed in `enum()` |
+| VAL048 | error | Referenced shared list must be declared in `main.sharedLists` |
+| VAL049 | error | Referenced field must exist in the shared list's `meta.fields` |
+| VAL050 | error | `insert` parameters must have a corresponding `{{key}}` in `tool.path` |
+
+### Output Schema Rules (VAL060-VAL065)
+
+| Code | Severity | Rule |
+|------|----------|------|
+| VAL060 | error | `output.mimeType` must be a supported MIME type |
+| VAL061 | error | `output.schema` must be a valid schema definition |
+| VAL062 | error | `output.schema.type` must match MIME type expectations |
+| VAL063 | warning | Nested depth should not exceed 4 levels |
+| VAL064 | error | `properties` is only valid when `type` is `object` |
+| VAL065 | error | `items` is only valid when `type` is `array` |
+
+### Shared List Reference Rules (VAL070-VAL075)
+
+| Code | Severity | Rule |
+|------|----------|------|
+| VAL070 | error | `sharedLists[].ref` is required and must be a string |
+| VAL071 | error | `sharedLists[].version` is required and must be semver |
+| VAL072 | error | Referenced list must exist in the list registry |
+| VAL073 | error | Referenced list version must match or be compatible |
+| VAL074 | error | `filter` (if present) must have valid `key` field |
+| VAL075 | warning | Unused shared list reference (not used by any parameter or handler) |
+
+### Security Rules (SEC001-SEC005)
+
+| Code | Severity | Rule |
+|------|----------|------|
+| SEC001 | error | Forbidden pattern found in schema file — no `import` statements allowed |
+| SEC002 | error | `main` block contains non-serializable value (function, symbol, etc.) |
+| SEC003 | error | Shared list file contains forbidden pattern |
+| SEC004 | error | Shared list file contains executable code |
+| SEC005 | error | `requiredLibraries` contains unapproved package |
+
+See Security Model for the complete list of forbidden patterns and error codes.
+
+### Shared List Validation Rules (LST001-LST011)
+
+| Code | Severity | Rule |
+|------|----------|------|
+| LST001 | error | List must export `list` as named export |
+| LST002 | error | `list.meta.name` is required and must be unique |
+| LST003 | error | `list.meta.version` is required and must be semver |
+| LST004 | error | `list.meta.fields` is required and must be a non-empty array |
+| LST005 | error | Each field must have `key`, `type`, and `description` |
+| LST006 | error | `list.entries` is required and must be a non-empty array |
+| LST007 | error | Each entry must have all required fields |
+| LST008 | error | Entry field types must match `meta.fields` type declarations |
+| LST009 | error | `dependsOn` references must resolve to existing lists |
+| LST010 | error | Circular dependencies are forbidden |
+| LST011 | error | Maximum dependency depth: 3 levels |
+
+### Group Validation Rules (GRP001-GRP006)
+
+| Code | Severity | Rule |
+|------|----------|------|
+| GRP001 | error | Group name must match `^[a-z][a-z0-9-]*$` |
+| GRP002 | error | Maximum 50 tools per group |
+| GRP003 | error | Tool reference must follow `namespace/file::type::name` format |
+| GRP004 | error | All referenced tools must be resolvable |
+| GRP005 | error | Duplicate tool references are forbidden |
+| GRP006 | error | Group hash must match calculated hash |
+
+### Test Requirements (TST001-TST008)
+
+| Code | Severity | Rule |
+|------|----------|------|
+| TST001 | error | Each tool must have at least 1 test |
+| TST002 | error | Each test must have a `_description` field of type string |
+| TST003 | error | Each test must provide values for all required `{{USER_PARAM}}` parameters |
+| TST004 | error | Test parameter values must pass the corresponding `z` validation |
+| TST005 | error | Test objects must be JSON-serializable |
+| TST006 | error | Test objects must only contain keys matching `{{USER_PARAM}}` parameter keys or `_description` |
+| TST007 | warning | Tools with enum or chain parameters should test multiple enum values |
+| TST008 | info | Consider adding tests that demonstrate optional parameter usage |
+
+See Tests for the complete test specification.
+
+### Skill Validation Rules (PRM001-PRM008)
+
+| Code | Severity | Rule |
+|------|----------|------|
+| PRM001 | error | Skill name must match `^[a-z][a-z0-9-]*$` |
+| PRM002 | error | File must exist at declared path |
+| PRM003 | error | File must have `# Title` (first line) |
+| PRM004 | error | File must have `## Workflow` section |
+| PRM005 | warning | Tool references must resolve in group |
+| PRM006 | error | Group must have at least one tool |
+| PRM007 | error | No duplicate skill names within a group |
+| PRM008 | error | Filename must match skill name |
+
+See Groups & Skills for skill format details.
+
+### Resource Validation Rules (RES001-RES023)
+
+| Code | Severity | Rule |
+|------|----------|------|
+| RES001 | error | `resources` (if present) must be an object |
+| RES002 | error | Resource name must match `^[a-z][a-zA-Z0-9]*$` |
+| RES003 | error | Maximum 2 resources per schema |
+| RES004 | error | `resource.description` is required and must be a string |
+| RES005 | error | `resource.source` must be `'sqlite'` |
+| RES006 | error | `resource.database` is required and must be a string ending in `.db` |
+| RES007 | error | `resource.queries` is required and must be a non-empty object |
+| RES008 | error | Maximum 4 queries per resource |
+| RES009 | error | Query name must match `^[a-z][a-zA-Z0-9]*$` |
+| RES010 | error | `query.description` is required and must be a string |
+| RES011 | error | `query.sql` is required and must be a string |
+| RES012 | error | SQL must start with `SELECT` (read-only enforcement) |
+| RES013 | error | SQL must not contain blocked patterns |
+| RES014 | error | SQL must use `?` placeholders (no string interpolation) |
+| RES015 | error | Number of `?` placeholders must match number of parameters |
+| RES016 | error | `query.parameters` (if present) must be an array |
+| RES017 | error | Each query parameter must have `key`, `type`, and `description` |
+| RES018 | error | Query parameter `type` must be `string`, `number`, or `boolean` |
+| RES019 | error | Query parameter `key` must match `^[a-z][a-zA-Z0-9]*$` |
+| RES020 | error | No duplicate parameter keys within a query |
+| RES021 | error | Database file must exist at schema-relative path (runtime check) |
+| RES022 | warning | Consider adding tests to resource queries |
+| RES023 | error | SQL must not contain subqueries with write operations |
+
+### Schema-Level Skill Validation Rules (SKL001-SKL025)
+
+| Code | Severity | Rule |
+|------|----------|------|
+| SKL001 | error | `skills` (if present) must be an array |
+| SKL002 | error | Maximum 4 skills per schema |
+| SKL003 | error | Each skill entry must have `name`, `file`, and `description` |
+| SKL004 | error | Skill `name` must match `^[a-z][a-z0-9-]*$` |
+| SKL005 | error | Skill `file` must end in `.mjs` |
+| SKL006 | error | Skill file must exist at schema-relative path |
+| SKL007 | error | Skill file must export `skill` as named export |
+| SKL008 | error | `skill.name` must match the `name` in main.skills entry |
+| SKL009 | error | `skill.version` must be `'flowmcp-skill/1.0.0'` |
+| SKL010 | error | `skill.description` is required and must be a string |
+| SKL011 | error | `skill.content` is required and must be a non-empty string |
+| SKL012 | error | `skill.requires` must be an object with `tools`, `resources`, and `external` arrays |
+| SKL013 | error | Each `requires.tools` entry must match a tool name in the schema |
+| SKL014 | error | Each `requires.resources` entry must match a resource name in the schema |
+| SKL015 | error | `skill.input` (if present) must be an array |
+| SKL016 | error | Each input must have `key`, `type`, `description`, and `required` fields |
+| SKL017 | error | Input `key` must match `^[a-z][a-zA-Z0-9]*$` |
+| SKL018 | error | Input `type` must be `string`, `number`, or `boolean` |
+| SKL019 | error | No duplicate input keys within a skill |
+| SKL020 | error | `skill.output` (if present) must be a string |
+| SKL021 | warning | `{{tool:x}}` placeholders should reference tools in `requires.tools` |
+| SKL022 | warning | `{{resource:x}}` placeholders should reference resources in `requires.resources` |
+| SKL023 | warning | `{{input:x}}` placeholders should reference input keys |
+| SKL024 | error | `{{skill:x}}` placeholders must reference other skills in the schema |
+| SKL025 | error | No circular skill references via `{{skill:x}}` placeholders |
+
+### Deprecation Rules (DEP001-DEP004)
+
+| Code | Severity | Rule |
+|------|----------|------|
+| DEP001 | warning | `main.routes` is deprecated — use `main.tools` instead |
+| DEP002 | info | Legacy `::routeName` format in groups — use `::tool::routeName` discriminator |
+| DEP003 | warning | `prompts` key in groups.json — renamed to `skills` |
+| DEP004 | info | `version: '2.x.x'` detected — run `flowmcp migrate` to upgrade |
 
 ---
 
