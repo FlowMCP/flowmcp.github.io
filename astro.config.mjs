@@ -5,6 +5,10 @@ import starlight from '@astrojs/starlight';
 
 export default defineConfig({
     site: 'https://flowmcp.github.io',
+    redirects: {
+        '/docs': '/docs/getting-started/what-is-flowmcp/',
+        '/specification': '/docs/specification/overview/',
+    },
     integrations: [
         starlight({
             title: 'FlowMCP',

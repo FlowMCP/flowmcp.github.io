@@ -3,20 +3,27 @@ import { join, relative } from 'node:path'
 import diagramDescriptions from './diagram-descriptions.mjs'
 
 const DOCS_DIR = 'src/content/docs'
-const OUTPUT_PATH = 'public/llm/llms.txt'
-const OUTPUT_ROOT = 'public/llms.txt'
+const OUTPUT_FULL = 'public/llms-full.txt'
+const OUTPUT_DOCS = 'public/docs-llms.txt'
 
-const HEADER = `# FlowMCP — llms.txt
+const HEADER_FULL = `# FlowMCP — Complete Website Content
 
 > Normalize any data source and make it usable for AI agents.
-> Build your own agent in 5 minutes.
+> Open Source (MIT). Install: npm install -g github:FlowMCP/flowmcp-cli
 
-Docs: https://flowmcp.github.io/
+Docs: https://flowmcp.github.io/docs
 GitHub: https://github.com/flowmcp
-License: MIT — Open Source, free for everyone.
+Spec: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v3.0.0/llms.txt
+`
 
-FlowMCP Docs: https://docs.flowmcp.org/llms.txt
-FlowMCP Spec: https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/llms.txt
+const HEADER_DOCS = `# FlowMCP — Practical Documentation
+
+> Normalize any data source and make it usable for AI agents.
+> Open Source (MIT). Install: npm install -g github:FlowMCP/flowmcp-cli
+
+This file contains practical documentation: getting started, schemas, agents, CLI reference.
+For the formal specification, see: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v3.0.0/llms.txt
+For a brief index, see: https://flowmcp.github.io/llms.txt
 `
 
 const SIDEBAR_ORDER = [
@@ -99,14 +106,21 @@ const run = async () => {
         `---\n\n# ${title || slug}\n/${slug}\n\n${body}`
     )
 
-    const output = HEADER + '\n' + sections.join('\n\n') + '\n'
+    const docsPages = allPages.filter(p => p.slug.startsWith('docs/'))
+    const docsSections = docsPages.map(({ slug, title, body }) =>
+        `---\n\n# ${title || slug}\n/${slug}\n\n${body}`
+    )
 
-    await writeFile(OUTPUT_PATH, output, 'utf-8')
-    await writeFile(OUTPUT_ROOT, output, 'utf-8')
+    const outputFull = HEADER_FULL + '\n' + sections.join('\n\n') + '\n'
+    const outputDocs = HEADER_DOCS + '\n' + docsSections.join('\n\n') + '\n'
 
-    console.log(`llms.txt generated: ${allPages.length} pages, ${output.length} chars`)
-    console.log(`  → ${OUTPUT_PATH}`)
-    console.log(`  → ${OUTPUT_ROOT}`)
+    await writeFile(OUTPUT_FULL, outputFull, 'utf-8')
+    await writeFile(OUTPUT_DOCS, outputDocs, 'utf-8')
+
+    console.log(`llms-full.txt generated: ${allPages.length} pages, ${outputFull.length} chars`)
+    console.log(`  → ${OUTPUT_FULL}`)
+    console.log(`docs-llms.txt generated: ${docsPages.length} pages, ${outputDocs.length} chars`)
+    console.log(`  → ${OUTPUT_DOCS}`)
 }
 
 run()
