@@ -14,9 +14,9 @@ via declarative .mjs schema files. No custom server code. No boilerplate.
 - [Full Docs](https://flowmcp.github.io/docs-llms.txt): Complete documentation as single file
 
 ## Specification
-- [Specification Overview](https://flowmcp.github.io/specification): Design principles, v3.0.0 document index
-- [Full Specification](https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v3.0.0/llms.txt): Complete formal spec (auto-generated)
+- [Specification Overview](https://flowmcp.github.io/specification): Design principles, v4.0.0 document index
+- [Full Specification](https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v4.0.0/llms.txt): Complete formal spec (auto-generated)
 
 ## Optional
 - [GitHub Organization](https://github.com/flowmcp): All repositories with CI status
-- [Roadmap](https://flowmcp.github.io/roadmap/overview/): What's coming in v4.0.0
+- [Roadmap](https://flowmcp.github.io/roadmap/overview/): Future direction
