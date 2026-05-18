@@ -1,6 +1,6 @@
 ---
 title: "Validation Rules"
-description: "FlowMCP v3.0.0 validation rules — rules across categories with severity levels and error codes"
+description: "FlowMCP v4.0.0 validation rules — rules across categories with severity levels and error codes"
 ---
 
 FlowMCP enforces validation rules when loading schemas, shared lists, groups, resources, and skills. Each rule has a code, severity level, and description. Run validation with `flowmcp validate <schema-path>`.
@@ -85,7 +85,7 @@ flowmcp validate etherscan/contracts.mjs
 | VAL034 | error | `tool.description` is required and must be a string |
 | VAL035 | error | `tool.parameters` is required and must be an array |
 | VAL036 | warning | `tool.output` is recommended for new schemas |
-| VAL037 | info | `tool.async` is a reserved field (not executed in v3.0.0) |
+| VAL037 | info | `tool.async` is a reserved field (not executed in v4.0.0) |
 
 ### Parameter Rules (VAL040-VAL050)
 

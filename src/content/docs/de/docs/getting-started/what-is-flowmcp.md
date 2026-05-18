@@ -17,7 +17,7 @@ Kein individueller Servercode. Kein Boilerplate. Ein Schema pro Provider.
 
 ## Vier Primitive
 
-FlowMCP v3.0.0 unterstuetzt vier Primitive in einer einzelnen Schema-Datei:
+FlowMCP v4.0.0 unterstuetzt vier Primitive in einer einzelnen Schema-Datei:
 
 :::note[Tools]
 REST API Endpoints (GET/POST/PUT/DELETE). Parameter auf URLs abbilden, Authentifizierung injizieren, Eingaben validieren. Das Kern-Primitiv.
@@ -124,5 +124,5 @@ Eigene Schemas von Grund auf schreiben. Siehe [Schema-Erstellung](/de/docs/guide
 :::
 
 :::note[Spezifikation]
-Vollstaendige v3.0.0-Spezifikation mit allen Primitiven und Validierungsregeln. Siehe [Spezifikation](/de/docs/specification/overview/).
+Vollstaendige v4.0.0-Spezifikation mit allen Primitiven und Validierungsregeln. Siehe [Spezifikation](/de/docs/specification/overview/).
 :::

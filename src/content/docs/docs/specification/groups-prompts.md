@@ -1,12 +1,12 @@
 ---
 title: "Groups & Skills"
-description: "FlowMCP v3.0.0 cherry-pick groups with integrity hashes and skills for multi-tool composition"
+description: "FlowMCP v4.0.0 cherry-pick groups with integrity hashes and skills for multi-tool composition"
 ---
 
 Groups let you create named collections of specific tools, resources, and skills from across multiple schemas. Skills attach reusable AI agent workflows to groups, guiding AI agents through multi-step tasks.
 
 :::note
-This page combines the Groups and Group Skills sections from the [formal specification](https://github.com/FlowMCP/flowmcp-spec). In v3.0.0, "Group Prompts" have been renamed to "Group Skills" to align with MCP terminology.
+This page combines the Groups and Group Skills sections from the [formal specification](https://github.com/FlowMCP/flowmcp-spec). In v4.0.0, "Group Prompts" have been renamed to "Group Skills" to align with MCP terminology.
 :::
 
 ## Groups
@@ -44,7 +44,7 @@ Groups are defined in `.flowmcp/groups.json`:
 
 ### Type Discriminator Syntax
 
-In v3.0.0, tool references use type discriminators to distinguish between tools, resources, and skills:
+In v4.0.0, tool references use type discriminators to distinguish between tools, resources, and skills:
 
 | Discriminator | Format | Example |
 |---------------|--------|---------|

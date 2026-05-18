@@ -76,9 +76,9 @@ The community can contribute schemas through a [5-stage pipeline](/roadmap/commu
 
 ## Create Your Own Schemas
 
-Schemas follow the FlowMCP Specification v3.0.0:
+Schemas follow the FlowMCP Specification v4.0.0:
 
 - **Documentation:** [Schema Overview](/docs/schemas/overview/)
-- **Specification:** [FlowMCP Spec v3.0.0](https://github.com/FlowMCP/flowmcp-spec)
+- **Specification:** [FlowMCP Spec v4.0.0](https://github.com/FlowMCP/flowmcp-spec)
 - **How to contribute:** [Community Hub →](/roadmap/community/)
 - **Schema repository:** [github.com/flowmcp/flowmcp-schemas-public](https://github.com/flowmcp/flowmcp-schemas-public)

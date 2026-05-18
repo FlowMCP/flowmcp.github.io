@@ -115,5 +115,5 @@ Dieses Muster funktioniert in jeder Domaene, in der mehrere Datenquellen kombini
 ## Mehr erfahren
 
 - **Agent-Manifeste und Konfiguration:** [Agents Uebersicht](/de/docs/agents/overview/)
-- **FlowMCP Spezifikation:** [FlowMCP Spec v3.0.0](https://github.com/FlowMCP/flowmcp-spec)
+- **FlowMCP Spezifikation:** [FlowMCP Spec v4.0.0](https://github.com/FlowMCP/flowmcp-spec)
 - **MCP Clients:** [modelcontextprotocol.io/clients](https://modelcontextprotocol.io/clients)

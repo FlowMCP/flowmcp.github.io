@@ -6,7 +6,7 @@ description: "Agent manifests, model binding, system prompts, tool cherry-pickin
 Agents are purpose-driven tool compositions that bundle tools from multiple providers for a specific task. They replace the simpler "Groups" concept from v2.0.0 with full manifest definitions including model binding, system prompts, and testable behavior.
 
 :::note
-This page documents the v3.0.0 Agent system. For the full specification, see [06-agents.md](https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/06-agents.md).
+This page documents the v4.0.0 Agent system. For the full specification, see [06-agents.md](https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.0.0/06-agents.md).
 :::
 
 ## Agent vs Provider

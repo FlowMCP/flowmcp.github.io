@@ -3,10 +3,10 @@ title: "ID Schema"
 description: "Unified namespace/type/name format for referencing tools, resources, and prompts"
 ---
 
-FlowMCP v3.0.0 introduces a unified ID format for referencing any element in the catalog: tools, resources, prompts, and lists.
+FlowMCP v4.0.0 introduces a unified ID format for referencing any element in the catalog: tools, resources, prompts, and lists.
 
 :::note
-For the full specification, see [16-id-schema.md](https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/16-id-schema.md).
+For the full specification, see [16-id-schema.md](https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.0.0/16-id-schema.md).
 :::
 
 ## Format

@@ -157,7 +157,7 @@ Nicht aufgeloeste Platzhalter erzeugen Validierungswarnungen (keine Fehler), aus
 | `requires.external` | Nur fuer Skills | Prompts unterstuetzen dieses Feld nicht |
 | Skill-Namensmuster | `^[a-z][a-z0-9-]*$` | Kleinbuchstaben mit Bindestrichen |
 | Skill-Dateiendung | `.mjs` | ES-Module-Format |
-| Version | `flowmcp-skill/1.0.0` | Fest fuer v3.0.0 |
+| Version | `flowmcp-skill/1.0.0` | Fest fuer v4.0.0 |
 | Content | Nicht-leerer String | Muss Anweisungen enthalten |
 | Keine Zirkelbezuege | Via `{{skill:x}}` | Verhindert Endlosschleifen |
 

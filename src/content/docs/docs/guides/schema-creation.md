@@ -3,7 +3,7 @@ title: Schema Creation
 description: Write your own FlowMCP schemas from scratch
 ---
 
-This guide walks you through creating FlowMCP v3.0.0 schemas. A schema is a `.mjs` file that describes how to interact with a REST API -- what endpoints exist, what parameters they accept, and how responses should be transformed.
+This guide walks you through creating FlowMCP v4.0.0 schemas. A schema is a `.mjs` file that describes how to interact with a REST API -- what endpoints exist, what parameters they accept, and how responses should be transformed.
 
 ## Prerequisites
 

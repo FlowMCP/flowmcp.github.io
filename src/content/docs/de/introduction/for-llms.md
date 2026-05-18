@@ -16,8 +16,8 @@ https://flowmcp.github.io/llm/llms.txt
 # FlowMCP Framework — Technische Basis (Schemas, Agents, MCP Server)
 https://flowmcp.github.io/docs/llms.txt
 
-# FlowMCP Specification v3.0.0
-https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/spec/v3.0.0/llms.txt
+# FlowMCP Specification v4.0.0
+https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/spec/v4.0.0/llms.txt
 ```
 
 ## Was ist llms.txt?
@@ -30,6 +30,6 @@ Eine **llms.txt** Datei ist eine kompakte Zusammenfassung einer Dokumentation in
 |-------|--------|
 | **FlowMCP llms.txt** | Projektuebersicht, Vision, alle Docs-Seiten mit Kurzbeschreibung |
 | **FlowMCP Docs llms.txt** | Technische Details zu Schemas, Agents, MCP-Servern |
-| **FlowMCP Spec llms.txt** | Formale Spezifikation des Schema-Formats (v3.0.0) |
+| **FlowMCP Spec llms.txt** | Formale Spezifikation des Schema-Formats (v4.0.0) |
 
 Fuer tiefere technische Details empfehlen wir die [FlowMCP-Dokumentation](/de/docs/getting-started/what-is-flowmcp/).

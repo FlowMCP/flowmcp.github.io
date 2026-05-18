@@ -17,7 +17,7 @@ No custom server code. No boilerplate. One schema per provider.
 
 ## Four Primitives
 
-FlowMCP v3.0.0 supports four primitives in a single schema file:
+FlowMCP v4.0.0 supports four primitives in a single schema file:
 
 :::note[Tools]
 REST API endpoints (GET/POST/PUT/DELETE). Map parameters to URLs, inject authentication, validate inputs. The core primitive.
@@ -124,5 +124,5 @@ Write your own schemas from scratch. See [Schema Creation](/docs/guides/schema-c
 :::
 
 :::note[Specification]
-Full v3.0.0 specification with all primitives and validation rules. See [Specification](/docs/specification/overview/).
+Full v4.0.0 specification with all primitives and validation rules. See [Specification](/docs/specification/overview/).
 :::

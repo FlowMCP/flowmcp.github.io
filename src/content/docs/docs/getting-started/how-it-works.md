@@ -87,7 +87,7 @@ The schema layer is where you work. Everything else is handled by the runtime.
 
 ## Schema Anatomy
 
-Every FlowMCP v3.0.0 schema uses the **two-export pattern**:
+Every FlowMCP v4.0.0 schema uses the **two-export pattern**:
 
 ### main (required)
 
@@ -224,5 +224,5 @@ Schemas that attempt to import modules, access the filesystem, or use undeclared
 :::
 
 :::note
-For the full specification including all validation rules, parameter formats, and security details, see the [Specification v3.0.0](/docs/specification/overview/).
+For the full specification including all validation rules, parameter formats, and security details, see the [Specification v4.0.0](/docs/specification/overview/).
 :::

@@ -1,6 +1,6 @@
 ---
 title: "Schema Format"
-description: "FlowMCP v3.0.0 schema file structure — the two-export pattern, tool definitions, resources, skills, naming conventions, and constraints"
+description: "FlowMCP v4.0.0 schema file structure — the two-export pattern, tool definitions, resources, skills, naming conventions, and constraints"
 ---
 
 A FlowMCP schema is a `.mjs` file with **two separate named exports**: a static `main` block and an optional `handlers` factory function. This separation enables integrity hashing, security scanning, and dependency injection.
@@ -74,7 +74,7 @@ All fields in `main` must be JSON-serializable. No functions, no dynamic values,
 | `skills` | `array` | `[]` | AI agent skill references. See [Skills](/docs/specification/skills/). |
 
 :::note
-The key `routes` is accepted as a deprecated alias for `tools`. Schemas using `routes` will work in v3.0.0 but will produce warnings in v3.1.0 and errors in v3.2.0. Use `flowmcp migrate` to update automatically.
+The key `routes` is accepted as a deprecated alias for `tools`. Schemas using `routes` will work in v4.0.0 but will produce warnings in v3.1.0 and errors in v3.2.0. Use `flowmcp migrate` to update automatically.
 :::
 
 ### Field Details

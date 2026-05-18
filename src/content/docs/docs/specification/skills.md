@@ -1,6 +1,6 @@
 ---
 title: "Skills"
-description: "FlowMCP v3.0.0 skills — reusable AI agent instructions stored as .mjs files, mapping to MCP Prompts"
+description: "FlowMCP v4.0.0 skills — reusable AI agent instructions stored as .mjs files, mapping to MCP Prompts"
 ---
 
 Skills are reusable AI agent instructions that compose tools and resources into multi-step workflows. They map to the MCP **Prompts** primitive and are declared in the `skills` key of a schema's `main` export. Each skill is stored as a separate `.mjs` file alongside the schema.
@@ -172,7 +172,7 @@ version: 'flowmcp-skill/1.0.0'
 | Max skills per schema | 4 | Skills compose tools; keep schemas focused |
 | Skill name pattern | `^[a-z][a-z0-9-]*$` | Lowercase with hyphens |
 | Skill file extension | `.mjs` | ES module format |
-| Version | `flowmcp-skill/1.0.0` | Fixed for v3.0.0 |
+| Version | `flowmcp-skill/1.0.0` | Fixed for v4.0.0 |
 | Content | Non-empty string | Must contain instructions |
 | No circular references | Via `{{skill:x}}` | Prevents infinite loops |
 

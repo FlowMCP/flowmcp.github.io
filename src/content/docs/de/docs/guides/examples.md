@@ -3,7 +3,7 @@ title: Beispiele
 description: Praktische FlowMCP-Schema-Beispiele fuer gaengige Muster
 ---
 
-Diese Beispiele demonstrieren die vier haeufigsten FlowMCP-Schema-Muster, vom einfachsten moeglichen Schema bis zu mehrstufigen asynchronen Workflows. Alle Beispiele verwenden das v3.0.0-Format.
+Diese Beispiele demonstrieren die vier haeufigsten FlowMCP-Schema-Muster, vom einfachsten moeglichen Schema bis zu mehrstufigen asynchronen Workflows. Alle Beispiele verwenden das v4.0.0-Format.
 
 ## 1. Minimales Schema
 

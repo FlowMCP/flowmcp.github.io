@@ -157,7 +157,7 @@ Unresolved placeholders produce validation warnings (not errors), except for `{{
 | `requires.external` | Skills-only | Prompts do not support this field |
 | Skill name pattern | `^[a-z][a-z0-9-]*$` | Lowercase with hyphens |
 | Skill file extension | `.mjs` | ES module format |
-| Version | `flowmcp-skill/1.0.0` | Fixed for v3.0.0 |
+| Version | `flowmcp-skill/1.0.0` | Fixed for v4.0.0 |
 | Content | Non-empty string | Must contain instructions |
 | No circular references | Via `{{skill:x}}` | Prevents infinite loops |
 

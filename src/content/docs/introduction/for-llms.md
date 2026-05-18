@@ -14,7 +14,7 @@ Open Source (MIT). Install: npm install -g github:FlowMCP/flowmcp-cli
 
 ## Documentation
 Docs:  https://flowmcp.github.io/docs-llms.txt
-Spec:  https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v3.0.0/llms.txt
+Spec:  https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v4.0.0/llms.txt
 Full:  https://flowmcp.github.io/llms-full.txt
 
 ## GitHub
@@ -28,7 +28,7 @@ https://github.com/flowmcp
 | [llms.txt](https://flowmcp.github.io/llms.txt) | Standard index — overview and links | ~25 lines |
 | [docs-llms.txt](https://flowmcp.github.io/docs-llms.txt) | Practical docs — getting started, schemas, agents, CLI | ~8500 lines |
 | [llms-full.txt](https://flowmcp.github.io/llms-full.txt) | Full website content embedded | ~9500 lines |
-| [Spec llms.txt](https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v3.0.0/llms.txt) | Formal v3.0.0 specification (auto-generated from spec repo) | ~9200 lines |
+| [Spec llms.txt](https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v4.0.0/llms.txt) | Formal v4.0.0 specification (auto-generated from spec repo) | ~9200 lines |
 
 ## What is llms.txt?
 

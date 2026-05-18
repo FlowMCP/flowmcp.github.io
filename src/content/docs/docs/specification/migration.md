@@ -11,7 +11,7 @@ The full migration specification is maintained at [github.com/FlowMCP/flowmcp-sp
 
 ## v2 to v3 Migration
 
-The v3.0.0 release renames `routes` to `tools` and adds two new MCP primitives: **Resources** (SQLite-based read-only data) and **Skills** (reusable AI agent instructions).
+The v4.0.0 release renames `routes` to `tools` and adds two new MCP primitives: **Resources** (SQLite-based read-only data) and **Skills** (reusable AI agent instructions).
 
 ### What Changed
 
@@ -84,7 +84,7 @@ Use `--dry-run` first to preview what changes will be made without modifying any
 
 | Version | `routes` Behavior |
 |---------|-------------------|
-| **v3.0.0** | `routes` accepted as silent alias for `tools` |
+| **v4.0.0** | `routes` accepted as silent alias for `tools` |
 | **v3.1.0** | `routes` accepted with loud deprecation warning |
 | **v3.2.0** | `routes` rejected with error |
 
@@ -178,5 +178,5 @@ Use `--dry-run` first to preview what changes will be made without modifying any
 **v2 to v3:**
 - [ ] `routes` renamed to `tools`
 - [ ] `version` changed from `2.x.x` to `3.0.0`
-- [ ] Group references updated with type discriminators (optional in v3.0.0)
+- [ ] Group references updated with type discriminators (optional in v4.0.0)
 - [ ] Full validation passes (`flowmcp validate`)

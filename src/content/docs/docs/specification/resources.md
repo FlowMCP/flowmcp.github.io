@@ -1,9 +1,9 @@
 ---
 title: "Resources"
-description: "FlowMCP v3.0.0 resources — SQLite-based read-only data access with prepared statements and SQL security enforcement"
+description: "FlowMCP v4.0.0 resources — SQLite-based read-only data access with prepared statements and SQL security enforcement"
 ---
 
-Resources provide fast, local read-only data access through SQLite databases. Unlike tools that make HTTP requests to external APIs, resources query local `.db` files using `sql.js` (a pure JavaScript/WASM SQLite implementation). Resources are the second MCP primitive supported by FlowMCP v3.0.0.
+Resources provide fast, local read-only data access through SQLite databases. Unlike tools that make HTTP requests to external APIs, resources query local `.db` files using `sql.js` (a pure JavaScript/WASM SQLite implementation). Resources are the second MCP primitive supported by FlowMCP v4.0.0.
 
 :::note
 Resources are optional. Most schemas only need tools. Add resources when your schema benefits from fast local data lookups that do not require network calls.
@@ -63,7 +63,7 @@ export const main = {
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `description` | `string` | Yes | What data this resource provides. Visible to AI clients. |
-| `source` | `string` | Yes | Must be `'sqlite'`. Only SQLite is supported in v3.0.0. |
+| `source` | `string` | Yes | Must be `'sqlite'`. Only SQLite is supported in v4.0.0. |
 | `database` | `string` | Yes | Path to the `.db` file, relative to the schema file. Must end in `.db`. |
 | `queries` | `object` | Yes | Named queries with SQL and parameters. Max 4 queries per resource. |
 

@@ -5,7 +5,7 @@ description: "FlowMCP-Schemas definieren, wie Datenquellen zu MCP-kompatiblen To
 
 Ein Schema ist eine einzelne `.mjs`-Datei, die eine Datenquelle fuer KI-Agenten kapselt. Jedes Schema deklariert seine Tools, Resources, Prompts und Skills in einem statischen `main` Export. Ein optionaler `handlers` Export ergaenzt Antwort-Transformation.
 
-FlowMCP v3.0.0 unterstuetzt vier Primitive:
+FlowMCP v4.0.0 unterstuetzt vier Primitive:
 
 :::note[Tools]
 REST API Endpoints. Parameter auf URLs abbilden, Authentifizierung injizieren, Eingaben validieren. Das Kern-Primitiv — jedes Schema hat mindestens ein Tool. Siehe [Tools](/de/docs/schemas/tools/).

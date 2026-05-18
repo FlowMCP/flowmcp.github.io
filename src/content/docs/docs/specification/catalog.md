@@ -6,7 +6,7 @@ description: "Catalog manifest, registry.json, named catalogs, and import flow"
 A Catalog is the top-level organizational unit in FlowMCP v3. It is a named directory containing a `registry.json` manifest that describes all shared lists, provider schemas, and agent definitions.
 
 :::note
-For the full specification, see [15-catalog.md](https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/15-catalog.md).
+For the full specification, see [15-catalog.md](https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.0.0/15-catalog.md).
 :::
 
 ## Catalog Structure
@@ -68,7 +68,7 @@ The `registry.json` file declares everything the catalog contains:
 Multiple catalogs can coexist side by side. Each is fully self-contained with no cross-catalog dependencies.
 
 ```
-schemas/v3.0.0/
+schemas/v4.0.0/
 ├── flowmcp-community/     # Official catalog
 ├── my-company-tools/      # Company-internal
 └── experimental/          # Personal experiments

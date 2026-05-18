@@ -1,9 +1,9 @@
 ---
 title: "Overview"
-description: "FlowMCP v3.0.0 specification — design principles, terminology, and document index"
+description: "FlowMCP v4.0.0 specification — design principles, terminology, and document index"
 ---
 
-FlowMCP is a deterministic normalization layer that converts heterogeneous web data sources into uniform, AI-consumable tools. The v3.0.0 specification defines how schemas, shared lists, groups, resources, skills, and security constraints work together to produce reliable, verifiable tool catalogs.
+FlowMCP is a deterministic normalization layer that converts heterogeneous web data sources into uniform, AI-consumable tools. The v4.0.0 specification defines how schemas, shared lists, groups, resources, skills, and security constraints work together to produce reliable, verifiable tool catalogs.
 
 :::note
 This documentation adapts the formal specification for practical use. The full specification is maintained at [github.com/FlowMCP/flowmcp-spec](https://github.com/FlowMCP/flowmcp-spec).
@@ -42,7 +42,7 @@ flowchart LR
 
 ## Three MCP Primitives
 
-FlowMCP v3.0.0 supports all three MCP primitives in a single schema:
+FlowMCP v4.0.0 supports all three MCP primitives in a single schema:
 
 | Primitive | Schema Key | MCP Concept | Description |
 |-----------|-----------|-------------|-------------|
@@ -115,11 +115,11 @@ Security by default, explicit opt-in for capabilities. Schema files have zero im
 | 2.0.0 | 2026-02 | Two-export format (`main` + `handlers` factory). Dependency injection. Shared lists. Output schemas. Zero-import security. Groups with integrity hashes. Max routes reduced to 8. |
 | 3.0.0 | 2026-03 | `routes` renamed to `tools`. Resources (SQLite). Skills (MCP Prompts). Type discriminators. `includeSchemaSkills`. Migration CLI. |
 
-## What's New in v3.0.0
+## What's New in v4.0.0
 
-The v3.0.0 release extends FlowMCP from a tool-only framework to support all three MCP primitives:
+The v4.0.0 release extends FlowMCP from a tool-only framework to support all three MCP primitives:
 
-- **`routes` renamed to `tools`** — aligns with MCP terminology. `routes` is accepted as a deprecated alias with a defined sunset timeline (v3.0.0: alias, v3.1.0: loud warning, v3.2.0: error)
+- **`routes` renamed to `tools`** — aligns with MCP terminology. `routes` is accepted as a deprecated alias with a defined sunset timeline (v4.0.0: alias, v3.1.0: loud warning, v3.2.0: error)
 - **Resources** — SQLite-based read-only data access via `sql.js`. Declared in the `resources` key with prepared statements and SQL security enforcement
 - **Skills** — reusable AI agent instructions stored as `.mjs` files. Declared in the `skills` key. Maps to MCP Prompts with placeholder system (`{{tool:x}}`, `{{resource:x}}`, `{{input:x}}`)
 - **Type discriminators** — `::tool::name`, `::resource::name`, `::skill::name` for unambiguous references in groups

@@ -1033,7 +1033,7 @@ The schema layer is where you work. Everything else is handled by the runtime.
 
 ## Schema Anatomy
 
-Every FlowMCP v3.0.0 schema uses the **two-export pattern**:
+Every FlowMCP v4.0.0 schema uses the **two-export pattern**:
 
 ### main (required)
 
@@ -1170,7 +1170,7 @@ Schemas that attempt to import modules, access the filesystem, or use undeclared
 :::
 
 :::note
-For the full specification including all validation rules, parameter formats, and security details, see the Specification v3.0.0.
+For the full specification including all validation rules, parameter formats, and security details, see the Specification v4.0.0.
 :::
 
 ---
@@ -1515,7 +1515,7 @@ No custom server code. No boilerplate. One schema per provider.
 
 ## Four Primitives
 
-FlowMCP v3.0.0 supports four primitives in a single schema file:
+FlowMCP v4.0.0 supports four primitives in a single schema file:
 
 :::note[Tools]
 REST API endpoints (GET/POST/PUT/DELETE). Map parameters to URLs, inject authentication, validate inputs. The core primitive.
@@ -1622,7 +1622,7 @@ Write your own schemas from scratch. See Schema Creation.
 :::
 
 :::note[Specification]
-Full v3.0.0 specification with all primitives and validation rules. See Specification.
+Full v4.0.0 specification with all primitives and validation rules. See Specification.
 :::
 
 ---
@@ -1630,7 +1630,7 @@ Full v3.0.0 specification with all primitives and validation rules. See Specific
 # Examples
 /docs/guides/examples
 
-These examples demonstrate the four most common FlowMCP schema patterns, from the simplest possible schema to multi-step async workflows. All examples use the v3.0.0 format.
+These examples demonstrate the four most common FlowMCP schema patterns, from the simplest possible schema to multi-step async workflows. All examples use the v4.0.0 format.
 
 ## 1. Minimal Schema
 
@@ -2059,7 +2059,7 @@ Async workflow schemas work naturally with AI agents. The agent reads the tool d
 # Schema Creation
 /docs/guides/schema-creation
 
-This guide walks you through creating FlowMCP v3.0.0 schemas. A schema is a `.mjs` file that describes how to interact with a REST API -- what endpoints exist, what parameters they accept, and how responses should be transformed.
+This guide walks you through creating FlowMCP v4.0.0 schemas. A schema is a `.mjs` file that describes how to interact with a REST API -- what endpoints exist, what parameters they accept, and how responses should be transformed.
 
 ## Prerequisites
 
@@ -4136,7 +4136,7 @@ What actually happens
 
 A schema is a single `.mjs` file that wraps a data source for AI agents. Each schema declares its tools, resources, prompts, and skills in a static `main` export. An optional `handlers` export adds response transformation.
 
-FlowMCP v3.0.0 supports four primitives:
+FlowMCP v4.0.0 supports four primitives:
 
 :::note[Tools]
 REST API endpoints. Map parameters to URLs, inject authentication, validate inputs. The core primitive — every schema has at least one tool. See Tools.
@@ -4637,7 +4637,7 @@ Unresolved placeholders produce validation warnings (not errors), except for `{{
 | `requires.external` | Skills-only | Prompts do not support this field |
 | Skill name pattern | `^[a-z][a-z0-9-]*$` | Lowercase with hyphens |
 | Skill file extension | `.mjs` | ES module format |
-| Version | `flowmcp-skill/1.0.0` | Fixed for v3.0.0 |
+| Version | `flowmcp-skill/1.0.0` | Fixed for v4.0.0 |
 | Content | Non-empty string | Must contain instructions |
 | No circular references | Via `{{skill:x}}` | Prevents infinite loops |
 
@@ -4953,7 +4953,7 @@ This example demonstrates: fixed parameters (`module`, `action`), user parameter
 Agents are purpose-driven tool compositions that bundle tools from multiple providers for a specific task. They replace the simpler "Groups" concept from v2.0.0 with full manifest definitions including model binding, system prompts, and testable behavior.
 
 :::note
-This page documents the v3.0.0 Agent system. For the full specification, see 06-agents.md (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/06-agents.md).
+This page documents the v4.0.0 Agent system. For the full specification, see 06-agents.md (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.0.0/06-agents.md).
 :::
 
 ## Agent vs Provider
@@ -5062,7 +5062,7 @@ flowmcp list
 A Catalog is the top-level organizational unit in FlowMCP v3. It is a named directory containing a `registry.json` manifest that describes all shared lists, provider schemas, and agent definitions.
 
 :::note
-For the full specification, see 15-catalog.md (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/15-catalog.md).
+For the full specification, see 15-catalog.md (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.0.0/15-catalog.md).
 :::
 
 ## Catalog Structure
@@ -5124,7 +5124,7 @@ The `registry.json` file declares everything the catalog contains:
 Multiple catalogs can coexist side by side. Each is fully self-contained with no cross-catalog dependencies.
 
 ```
-schemas/v3.0.0/
+schemas/v4.0.0/
 ├── flowmcp-community/     # Official catalog
 ├── my-company-tools/      # Company-internal
 └── experimental/          # Personal experiments
@@ -5164,7 +5164,7 @@ flowmcp validate-catalog <catalog-directory>
 Groups let you create named collections of specific tools, resources, and skills from across multiple schemas. Skills attach reusable AI agent workflows to groups, guiding AI agents through multi-step tasks.
 
 :::note
-This page combines the Groups and Group Skills sections from the formal specification (https://github.com/FlowMCP/flowmcp-spec). In v3.0.0, "Group Prompts" have been renamed to "Group Skills" to align with MCP terminology.
+This page combines the Groups and Group Skills sections from the formal specification (https://github.com/FlowMCP/flowmcp-spec). In v4.0.0, "Group Prompts" have been renamed to "Group Skills" to align with MCP terminology.
 :::
 
 ## Groups
@@ -5202,7 +5202,7 @@ Groups are defined in `.flowmcp/groups.json`:
 
 ### Type Discriminator Syntax
 
-In v3.0.0, tool references use type discriminators to distinguish between tools, resources, and skills:
+In v4.0.0, tool references use type discriminators to distinguish between tools, resources, and skills:
 
 | Discriminator | Format | Example |
 |---------------|--------|---------|
@@ -5374,10 +5374,10 @@ Produce a Markdown document with indicator summary and embedded charts.
 # "ID Schema"
 /docs/specification/id-schema
 
-FlowMCP v3.0.0 introduces a unified ID format for referencing any element in the catalog: tools, resources, prompts, and lists.
+FlowMCP v4.0.0 introduces a unified ID format for referencing any element in the catalog: tools, resources, prompts, and lists.
 
 :::note
-For the full specification, see 16-id-schema.md (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/16-id-schema.md).
+For the full specification, see 16-id-schema.md (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.0.0/16-id-schema.md).
 :::
 
 ## Format
@@ -5444,7 +5444,7 @@ The full migration specification is maintained at github.com/FlowMCP/flowmcp-spe
 
 ## v2 to v3 Migration
 
-The v3.0.0 release renames `routes` to `tools` and adds two new MCP primitives: **Resources** (SQLite-based read-only data) and **Skills** (reusable AI agent instructions).
+The v4.0.0 release renames `routes` to `tools` and adds two new MCP primitives: **Resources** (SQLite-based read-only data) and **Skills** (reusable AI agent instructions).
 
 ### What Changed
 
@@ -5517,7 +5517,7 @@ Use `--dry-run` first to preview what changes will be made without modifying any
 
 | Version | `routes` Behavior |
 |---------|-------------------|
-| **v3.0.0** | `routes` accepted as silent alias for `tools` |
+| **v4.0.0** | `routes` accepted as silent alias for `tools` |
 | **v3.1.0** | `routes` accepted with loud deprecation warning |
 | **v3.2.0** | `routes` rejected with error |
 
@@ -5611,7 +5611,7 @@ Use `--dry-run` first to preview what changes will be made without modifying any
 **v2 to v3:**
 - [ ] `routes` renamed to `tools`
 - [ ] `version` changed from `2.x.x` to `3.0.0`
-- [ ] Group references updated with type discriminators (optional in v3.0.0)
+- [ ] Group references updated with type discriminators (optional in v4.0.0)
 - [ ] Full validation passes (`flowmcp validate`)
 
 ---
@@ -5809,7 +5809,7 @@ flowchart TD
 # "Overview"
 /docs/specification/overview
 
-FlowMCP is a deterministic normalization layer that converts heterogeneous web data sources into uniform, AI-consumable tools. The v3.0.0 specification defines how schemas, shared lists, groups, resources, skills, and security constraints work together to produce reliable, verifiable tool catalogs.
+FlowMCP is a deterministic normalization layer that converts heterogeneous web data sources into uniform, AI-consumable tools. The v4.0.0 specification defines how schemas, shared lists, groups, resources, skills, and security constraints work together to produce reliable, verifiable tool catalogs.
 
 :::note
 This documentation adapts the formal specification for practical use. The full specification is maintained at github.com/FlowMCP/flowmcp-spec (https://github.com/FlowMCP/flowmcp-spec).
@@ -5848,7 +5848,7 @@ flowchart LR
 
 ## Three MCP Primitives
 
-FlowMCP v3.0.0 supports all three MCP primitives in a single schema:
+FlowMCP v4.0.0 supports all three MCP primitives in a single schema:
 
 | Primitive | Schema Key | MCP Concept | Description |
 |-----------|-----------|-------------|-------------|
@@ -5921,11 +5921,11 @@ Security by default, explicit opt-in for capabilities. Schema files have zero im
 | 2.0.0 | 2026-02 | Two-export format (`main` + `handlers` factory). Dependency injection. Shared lists. Output schemas. Zero-import security. Groups with integrity hashes. Max routes reduced to 8. |
 | 3.0.0 | 2026-03 | `routes` renamed to `tools`. Resources (SQLite). Skills (MCP Prompts). Type discriminators. `includeSchemaSkills`. Migration CLI. |
 
-## What's New in v3.0.0
+## What's New in v4.0.0
 
-The v3.0.0 release extends FlowMCP from a tool-only framework to support all three MCP primitives:
+The v4.0.0 release extends FlowMCP from a tool-only framework to support all three MCP primitives:
 
-- **`routes` renamed to `tools`** — aligns with MCP terminology. `routes` is accepted as a deprecated alias with a defined sunset timeline (v3.0.0: alias, v3.1.0: loud warning, v3.2.0: error)
+- **`routes` renamed to `tools`** — aligns with MCP terminology. `routes` is accepted as a deprecated alias with a defined sunset timeline (v4.0.0: alias, v3.1.0: loud warning, v3.2.0: error)
 - **Resources** — SQLite-based read-only data access via `sql.js`. Declared in the `resources` key with prepared statements and SQL security enforcement
 - **Skills** — reusable AI agent instructions stored as `.mjs` files. Declared in the `skills` key. Maps to MCP Prompts with placeholder system (`{{tool:x}}`, `{{resource:x}}`, `{{input:x}}`)
 - **Type discriminators** — `::tool::name`, `::resource::name`, `::skill::name` for unambiguous references in groups
@@ -6392,10 +6392,10 @@ Route tests always bypass the cache to ensure they test the live API. The `--no-
 # "Prompt Architecture"
 /docs/specification/prompt-architecture
 
-FlowMCP v3.0.0 introduces a two-tier prompt architecture that separates model-neutral guidance from model-specific workflows. This replaces the simpler "Group Prompts" system from v2.
+FlowMCP v4.0.0 introduces a two-tier prompt architecture that separates model-neutral guidance from model-specific workflows. This replaces the simpler "Group Prompts" system from v2.
 
 :::note
-For the full specification, see 12-prompt-architecture.md (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/12-prompt-architecture.md).
+For the full specification, see 12-prompt-architecture.md (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.0.0/12-prompt-architecture.md).
 :::
 
 ## Two Prompt Types
@@ -6477,7 +6477,7 @@ export const prompt = {
 # "Resources"
 /docs/specification/resources
 
-Resources provide fast, local read-only data access through SQLite databases. Unlike tools that make HTTP requests to external APIs, resources query local `.db` files using `sql.js` (a pure JavaScript/WASM SQLite implementation). Resources are the second MCP primitive supported by FlowMCP v3.0.0.
+Resources provide fast, local read-only data access through SQLite databases. Unlike tools that make HTTP requests to external APIs, resources query local `.db` files using `sql.js` (a pure JavaScript/WASM SQLite implementation). Resources are the second MCP primitive supported by FlowMCP v4.0.0.
 
 :::note
 Resources are optional. Most schemas only need tools. Add resources when your schema benefits from fast local data lookups that do not require network calls.
@@ -6537,7 +6537,7 @@ export const main = {
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `description` | `string` | Yes | What data this resource provides. Visible to AI clients. |
-| `source` | `string` | Yes | Must be `'sqlite'`. Only SQLite is supported in v3.0.0. |
+| `source` | `string` | Yes | Must be `'sqlite'`. Only SQLite is supported in v4.0.0. |
 | `database` | `string` | Yes | Path to the `.db` file, relative to the schema file. Must end in `.db`. |
 | `queries` | `object` | Yes | Named queries with SQL and parameters. Max 4 queries per resource. |
 
@@ -6950,7 +6950,7 @@ All fields in `main` must be JSON-serializable. No functions, no dynamic values,
 | `skills` | `array` | `[]` | AI agent skill references. See Skills. |
 
 :::note
-The key `routes` is accepted as a deprecated alias for `tools`. Schemas using `routes` will work in v3.0.0 but will produce warnings in v3.1.0 and errors in v3.2.0. Use `flowmcp migrate` to update automatically.
+The key `routes` is accepted as a deprecated alias for `tools`. Schemas using `routes` will work in v4.0.0 but will produce warnings in v3.1.0 and errors in v3.2.0. Use `flowmcp migrate` to update automatically.
 :::
 
 ### Field Details
@@ -7854,7 +7854,7 @@ version: 'flowmcp-skill/1.0.0'
 | Max skills per schema | 4 | Skills compose tools; keep schemas focused |
 | Skill name pattern | `^[a-z][a-z0-9-]*$` | Lowercase with hyphens |
 | Skill file extension | `.mjs` | ES module format |
-| Version | `flowmcp-skill/1.0.0` | Fixed for v3.0.0 |
+| Version | `flowmcp-skill/1.0.0` | Fixed for v4.0.0 |
 | Content | Non-empty string | Must contain instructions |
 | No circular references | Via `{{skill:x}}` | Prevents infinite loops |
 
@@ -7929,10 +7929,10 @@ Schema-level skills (this page) are part of the schema and travel with it. Group
 # "Tests"
 /docs/specification/tests
 
-FlowMCP v3.0.0 requires a minimum of 3 tests per tool, resource query, and agent. Tests serve as both validation and documentation of expected behavior.
+FlowMCP v4.0.0 requires a minimum of 3 tests per tool, resource query, and agent. Tests serve as both validation and documentation of expected behavior.
 
 :::note
-For the full specification, see 10-tests.md (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v3.0.0/10-tests.md).
+For the full specification, see 10-tests.md (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.0.0/10-tests.md).
 :::
 
 ## Tool Tests
@@ -8081,7 +8081,7 @@ flowmcp validate etherscan/contracts.mjs
 | VAL034 | error | `tool.description` is required and must be a string |
 | VAL035 | error | `tool.parameters` is required and must be an array |
 | VAL036 | warning | `tool.output` is recommended for new schemas |
-| VAL037 | info | `tool.async` is a reserved field (not executed in v3.0.0) |
+| VAL037 | info | `tool.async` is a reserved field (not executed in v4.0.0) |
 
 ### Parameter Rules (VAL040-VAL050)
 

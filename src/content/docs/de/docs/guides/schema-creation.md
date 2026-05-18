@@ -3,7 +3,7 @@ title: Schema erstellen
 description: Eigene FlowMCP-Schemas von Grund auf schreiben
 ---
 
-Diese Anleitung fuehrt dich durch die Erstellung von FlowMCP v3.0.0 Schemas. Ein Schema ist eine `.mjs`-Datei, die beschreibt, wie man mit einer REST-API interagiert -- welche Endpunkte existieren, welche Parameter sie akzeptieren und wie Antworten transformiert werden sollen.
+Diese Anleitung fuehrt dich durch die Erstellung von FlowMCP v4.0.0 Schemas. Ein Schema ist eine `.mjs`-Datei, die beschreibt, wie man mit einer REST-API interagiert -- welche Endpunkte existieren, welche Parameter sie akzeptieren und wie Antworten transformiert werden sollen.
 
 ## Voraussetzungen
 
