@@ -13,7 +13,7 @@ const HEADER_FULL = `# FlowMCP — Complete Website Content
 
 Docs: https://flowmcp.github.io/docs
 GitHub: https://github.com/flowmcp
-Spec: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v3.0.0/llms.txt
+Spec: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v4.0.0/llms.txt
 `
 
 const HEADER_DOCS = `# FlowMCP — Practical Documentation
@@ -22,7 +22,7 @@ const HEADER_DOCS = `# FlowMCP — Practical Documentation
 > Open Source (MIT). Install: npm install -g github:FlowMCP/flowmcp-cli
 
 This file contains practical documentation: getting started, schemas, agents, CLI reference.
-For the formal specification, see: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v3.0.0/llms.txt
+For the formal specification, see: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v4.0.0/llms.txt
 For a brief index, see: https://flowmcp.github.io/llms.txt
 `
 
