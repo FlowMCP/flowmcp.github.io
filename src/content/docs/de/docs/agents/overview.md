@@ -20,7 +20,7 @@ Jeder Agent wird durch eine `agent.mjs`-Datei mit `export const agent` definiert
 ```javascript
 export const agent = {
     name: 'crypto-research',
-    version: 'flowmcp/3.0.0',
+    version: 'flowmcp/4.0.0',
     description: 'Cross-provider crypto analysis agent',
     model: 'anthropic/claude-sonnet-4-5-20250929',
     systemPrompt: 'You are a crypto research agent...',

@@ -37,7 +37,7 @@ Bevor du ein Schema erstellst, brauchst du:
        namespace: 'myapi',
        name: 'MyAPI',
        description: 'Access data from MyAPI service',
-       version: '3.0.0',
+       version: '4.0.0',
        docs: [ 'https://docs.myapi.com' ],
        tags: [ 'data', 'utility' ],
        root: 'https://api.myapi.com/v1',
@@ -316,5 +316,5 @@ Immer `output.schema` fuer jedes Tool definieren. Das hilft KI-Clients zu verste
 - `requiredServerParams` vergessen, wenn `{{SERVER_PARAM:...}}` in Parametern verwendet wird
 - `location: 'insert'` ohne passenden `{{key}}`-Platzhalter im Pfad verwenden
 - `requiredLibraries` deklarieren ohne einen entsprechenden `handlers`-Export, der sie nutzt
-- Das `version: '3.0.0'`-Feld weglassen (erforderlich fuer v3-Schemas)
+- Das `version: '4.0.0'`-Feld weglassen (erforderlich fuer alle Schemas)
 :::

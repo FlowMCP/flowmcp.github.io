@@ -23,7 +23,7 @@ Skills werden im `skills`-Key des `main` Exports deklariert. Jeder Eintrag zeigt
 export const main = {
     namespace: 'tradingsignals',
     name: 'TradingSignals',
-    version: '3.0.0',
+    version: '4.0.0',
     root: 'https://api.example.com',
     tools: {
         computeRSI: { /* ... */ },

@@ -32,7 +32,7 @@ description: "Erstelle dein erstes FlowMCP-Schema und rufe eine API in 5 Minuten
        namespace: 'coingecko',
        name: 'Ping',
        description: 'Check CoinGecko API server status',
-       version: '3.0.0',
+       version: '4.0.0',
        root: 'https://api.coingecko.com/api/v3',
        requiredServerParams: [],
        requiredLibraries: [],

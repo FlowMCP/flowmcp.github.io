@@ -39,7 +39,7 @@ Resources werden in `main.resources` deklariert. Jede Resource zeigt auf eine SQ
 export const main = {
     namespace: 'offeneregister',
     name: 'OffeneRegister',
-    version: '3.0.0',
+    version: '4.0.0',
     root: '',
     tools: {},
     resources: {
@@ -100,7 +100,7 @@ Diese Limits halten Resources fokussiert und vorhersagbar. Wenn du mehr Abfragen
 | Einschraenkung | Wert | Begruendung |
 |----------------|------|-------------|
 | Max Resources pro Schema | 2 | Resources sind ergaenzend, nicht primaerer Output |
-| Max Abfragen pro Resource | 8 | 7 definierte + 1 automatisch injizierte `freeQuery` |
+| Max Abfragen pro Resource | 8 | 7 definierte + 1 automatisch injizierte `runSql` |
 | `getSchema`-Abfrage | Erforderlich | Muss die Datenbank-Tabellenstruktur zurueckgeben |
 | SQL-Operationen | Nur `SELECT` | Schreibschutz-Durchsetzung -- kein INSERT/UPDATE/DELETE |
 | Parameter-Platzhalter | Nur `?` | Verhindert SQL-Injection |
@@ -112,7 +112,7 @@ Diese Limits halten Resources fokussiert und vorhersagbar. Wenn du mehr Abfragen
 Zwei Abfragen werden automatisch von der Runtime behandelt:
 
 - **`getSchema`** -- Du musst diese Abfrage definieren. Sie gibt die Datenbankstruktur zurueck, damit KI-Agenten verfuegbare Tabellen und Spalten verstehen koennen.
-- **`freeQuery`** -- Automatisch von der Runtime injiziert. Erlaubt KI-Agenten, beliebige `SELECT`-Abfragen innerhalb der schreibgeschuetzten Sandbox auszufuehren. Dies zaehlt zum 8-Abfragen-Limit.
+- **`runSql`** -- Automatisch von der Runtime injiziert. Erlaubt KI-Agenten, beliebige `SELECT`-Abfragen innerhalb der schreibgeschuetzten Sandbox auszufuehren. Dies zaehlt zum 8-Abfragen-Limit.
 
 ## Vollstaendiges Beispiel
 
@@ -123,7 +123,7 @@ export const main = {
     namespace: 'offeneregister',
     name: 'OffeneRegister',
     description: 'German company register — local SQLite database',
-    version: '3.0.0',
+    version: '4.0.0',
     tags: ['open-data', 'germany', 'companies'],
     root: '',
     tools: {},
@@ -186,7 +186,7 @@ Resources werden durch die Regeln RES001-RES023 validiert. Wichtige Regeln:
 | RES003 | Maximal 2 Resources pro Schema |
 | RES005 | Source muss `'sqlite'` sein |
 | RES006 | Datenbankpfad muss auf `.db` enden |
-| RES008 | Maximal 8 Abfragen pro Resource (7 + freeQuery) |
+| RES008 | Maximal 8 Abfragen pro Resource (7 + runSql) |
 | RES012 | SQL muss mit `SELECT` beginnen (oder `WITH` fuer CTEs) |
 | RES013 | SQL darf keine blockierten Muster enthalten |
 | RES014 | SQL muss `?`-Platzhalter verwenden |

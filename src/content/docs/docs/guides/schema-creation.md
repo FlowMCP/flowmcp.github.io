@@ -37,7 +37,7 @@ Before creating a schema, you need:
        namespace: 'myapi',
        name: 'MyAPI',
        description: 'Access data from MyAPI service',
-       version: '3.0.0',
+       version: '4.0.0',
        docs: [ 'https://docs.myapi.com' ],
        tags: [ 'data', 'utility' ],
        root: 'https://api.myapi.com/v1',
@@ -316,5 +316,5 @@ Use `flowmcp test single` to verify against the real API. Schema validation alon
 - Forgetting `requiredServerParams` when using `{{SERVER_PARAM:...}}` in parameters
 - Using `location: 'insert'` without a matching `{{key}}` placeholder in the path
 - Declaring `requiredLibraries` without a corresponding `handlers` export that uses them
-- Omitting the `version: '3.0.0'` field (required for v3 schemas)
+- Omitting the `version: '4.0.0'` field (required for all schemas)
 :::

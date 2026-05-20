@@ -44,7 +44,7 @@ export const main = {
     namespace: 'coingecko',
     name: 'CoinGecko Prices',
     description: 'Cryptocurrency price data from CoinGecko',
-    version: '3.0.0',
+    version: '4.0.0',
     root: 'https://api.coingecko.com/api/v3',
     tools: {
         simplePrice: {

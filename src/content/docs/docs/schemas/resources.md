@@ -39,7 +39,7 @@ Resources are declared inside `main.resources`. Each resource points to a SQLite
 export const main = {
     namespace: 'offeneregister',
     name: 'OffeneRegister',
-    version: '3.0.0',
+    version: '4.0.0',
     root: '',
     tools: {},
     resources: {
@@ -100,7 +100,7 @@ These limits keep resources focused and predictable. If you need more queries, s
 | Constraint | Value | Rationale |
 |------------|-------|-----------|
 | Max resources per schema | 2 | Resources are supplementary, not primary output |
-| Max queries per resource | 8 | 7 defined + 1 auto-injected `freeQuery` |
+| Max queries per resource | 8 | 7 defined + 1 auto-injected `runSql` |
 | `getSchema` query | Required | Must return the database table structure |
 | SQL operations | `SELECT` only | Read-only enforcement -- no INSERT/UPDATE/DELETE |
 | Parameter placeholders | `?` only | Prevents SQL injection |
@@ -112,7 +112,7 @@ These limits keep resources focused and predictable. If you need more queries, s
 Two queries are handled automatically by the runtime:
 
 - **`getSchema`** -- You must define this query. It returns the database structure so AI agents can understand available tables and columns.
-- **`freeQuery`** -- Auto-injected by the runtime. Allows AI agents to run arbitrary `SELECT` queries within the read-only sandbox. This counts toward the 8-query limit.
+- **`runSql`** -- Auto-injected by the runtime. Allows AI agents to run arbitrary `SELECT` queries within the read-only sandbox. This counts toward the 8-query limit.
 
 ## Complete Example
 
@@ -123,7 +123,7 @@ export const main = {
     namespace: 'offeneregister',
     name: 'OffeneRegister',
     description: 'German company register — local SQLite database',
-    version: '3.0.0',
+    version: '4.0.0',
     tags: ['open-data', 'germany', 'companies'],
     root: '',
     tools: {},
@@ -186,7 +186,7 @@ Resources are validated by rules RES001-RES023. Key rules include:
 | RES003 | Maximum 2 resources per schema |
 | RES005 | Source must be `'sqlite'` |
 | RES006 | Database path must end in `.db` |
-| RES008 | Maximum 8 queries per resource (7 + freeQuery) |
+| RES008 | Maximum 8 queries per resource (7 + runSql) |
 | RES012 | SQL must start with `SELECT` (or `With` for CTEs) |
 | RES013 | SQL must not contain blocked patterns |
 | RES014 | SQL must use `?` placeholders |

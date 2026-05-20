@@ -26,7 +26,7 @@ Die Schema-Schicht ist dein Arbeitsbereich. Alles andere wird von der Runtime ue
        namespace: 'coingecko',
        name: 'Ping',
        description: 'Check CoinGecko API server status',
-       version: '3.0.0',
+       version: '4.0.0',
        root: 'https://api.coingecko.com/api/v3',
        requiredServerParams: [],
        requiredLibraries: [],
@@ -99,7 +99,7 @@ export const main = {
     namespace: 'provider',       // Provider-Name (Kleinbuchstaben)
     name: 'ToolName',            // Lesbarer Name
     description: 'What it does', // Wird von KI-Clients genutzt
-    version: '3.0.0',            // Schema-Format-Version
+    version: '4.0.0',            // Schema-Format-Version
 
     // Verbindung
     root: 'https://api.example.com', // Basis-URL

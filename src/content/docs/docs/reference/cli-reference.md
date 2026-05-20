@@ -195,7 +195,7 @@ flowmcp migrate --dry-run ./schemas/coingecko/Ping.mjs
 **What it does:**
 1. Reads the schema file
 2. Renames `routes` key to `tools`
-3. Updates `version` from `2.x.x` to `3.0.0`
+3. Updates `version` from `2.x.x` to `4.0.0`
 4. Writes the updated file in-place
 5. Runs validation on the result
 

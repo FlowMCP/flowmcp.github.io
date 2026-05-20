@@ -92,7 +92,7 @@ export const main = {
     requiredServerParams: [],        // Erforderlich (leeres Array wenn keine)
     requiredLibraries: [],           // Erforderlich (leeres Array wenn keine)
     headers: {},                     // Erforderlich (leeres Objekt wenn keine)
-    routes: { ... }                  // Erforderlich (mindestens eine Route)
+    tools: { ... }                  // Erforderlich (mindestens eine Route)
 }
 ```
 </details>

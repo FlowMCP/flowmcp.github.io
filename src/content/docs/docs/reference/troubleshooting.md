@@ -76,7 +76,7 @@ v2.0.0 limits schemas to a maximum of 8 routes. Split large schemas into multipl
 
 ```javascript
 // Wrong - too many routes in one schema
-routes: {
+tools: {
     route1: { ... }, route2: { ... }, route3: { ... },
     route4: { ... }, route5: { ... }, route6: { ... },
     route7: { ... }, route8: { ... }, route9: { ... }  // 9th route fails
@@ -106,7 +106,7 @@ export const main = {
     requiredServerParams: [],        // Required (empty array if none)
     requiredLibraries: [],           // Required (empty array if none)
     headers: {},                     // Required (empty object if none)
-    routes: { ... }                  // Required (at least one route)
+    tools: { ... }                  // Required (at least one route)
 }
 ```
 </details>
@@ -370,7 +370,7 @@ Handler keys must exactly match route names from `main.routes`.
 
 ```javascript
 // main.routes has:
-routes: { getPrice: { ... } }
+tools: { getPrice: { ... } }
 
 // Wrong handler key
 export const handlers = ( deps ) => ({

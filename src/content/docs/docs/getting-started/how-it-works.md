@@ -26,7 +26,7 @@ The schema layer is where you work. Everything else is handled by the runtime.
        namespace: 'coingecko',
        name: 'Ping',
        description: 'Check CoinGecko API server status',
-       version: '3.0.0',
+       version: '4.0.0',
        root: 'https://api.coingecko.com/api/v3',
        requiredServerParams: [],
        requiredLibraries: [],
@@ -99,7 +99,7 @@ export const main = {
     namespace: 'provider',       // Provider name (lowercase)
     name: 'ToolName',            // Human-readable name
     description: 'What it does', // Used by AI clients
-    version: '3.0.0',            // Schema format version
+    version: '4.0.0',            // Schema format version
 
     // Connection
     root: 'https://api.example.com', // Base URL

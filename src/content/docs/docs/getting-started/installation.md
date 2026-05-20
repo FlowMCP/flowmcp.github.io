@@ -103,7 +103,7 @@ const schema = {
     requiredServerParams: [],
     requiredLibraries: [],
     headers: {},
-    routes: {
+    tools: {
         check: {
             method: 'GET',
             path: '/get',
