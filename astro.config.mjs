@@ -19,6 +19,11 @@ export default defineConfig({
         starlight({
             title: 'FlowMCP',
             favicon: '/favicon.png',
+            logo: {
+                light: './public/logo-light.svg',
+                dark: './public/logo-dark.svg',
+                replacesTitle: false,
+            },
             defaultLocale: 'root',
             locales: {
                 root: {
@@ -160,6 +165,7 @@ export default defineConfig({
                                 { label: 'Resources', translations: { de: 'Ressourcen' }, slug: 'docs/schemas/resources' },
                                 { label: 'Prompts', slug: 'docs/schemas/prompts' },
                                 { label: 'Skills', slug: 'docs/schemas/skills' },
+                                { label: 'Tags Reference', slug: 'docs/schemas/tags-reference' },
                             ],
                         },
                         { label: 'Agents', slug: 'docs/agents/overview' },
