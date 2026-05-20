@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://flowmcp.github.io/sitemap-index.xml
+
+# llms.txt — layered LLM context (Memo 045 Kap. 6.1)
+# Layer 0 Index:        https://flowmcp.github.io/llms.txt
+# Layer 1 Search guide: https://flowmcp.github.io/llms-search.txt
+# Layer 2 Add source:   https://flowmcp.github.io/llms-add-source.txt
+# Layer 3 Schema spec:  https://flowmcp.github.io/llms-schema-spec.txt
+# Layer 4 Full content: https://flowmcp.github.io/llms-full.txt
