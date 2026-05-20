@@ -1,22 +1,12 @@
-# FlowMCP
+# FlowMCP — llms.txt Index (Layer 0)
 
-> Normalize any data source and make it usable for AI agents —
-> with schemas, tools, and the MCP protocol.
-> Open Source (MIT).
+> Layered LLM context for FlowMCP. Pick the layer you need.
 
-FlowMCP converts web APIs and open data sources into MCP-compatible tools
-via declarative .mjs schema files. No custom server code. No boilerplate.
+- Layer 1 — Search guide: /llms-search.txt
+- Layer 2 — Add a new source: /llms-add-source.txt
+- Layer 3 — Schema specification (v4.0.0): /llms-schema-spec.txt
+- Layer 4 — Full website content: /llms-full.txt
 
-## Docs
-- [What is FlowMCP](https://flowmcp.github.io/docs): Overview, problem, solution
-- [Schema Format](https://flowmcp.github.io/docs/specification/schema-format/): Two-export pattern, tool definitions
-- [CLI Reference](https://flowmcp.github.io/docs/reference/cli-reference/): search, add, call, validate
-- [Full Docs](https://flowmcp.github.io/docs-llms.txt): Complete documentation as single file
-
-## Specification
-- [Specification Overview](https://flowmcp.github.io/specification): Design principles, v4.0.0 document index
-- [Full Specification](https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v4.0.0/llms.txt): Complete formal spec (auto-generated)
-
-## Optional
-- [GitHub Organization](https://github.com/flowmcp): All repositories with CI status
-- [Roadmap](https://flowmcp.github.io/roadmap/overview/): Future direction
+Spec source: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v4.0.0/llms.txt
+Docs: https://flowmcp.github.io/docs
+GitHub: https://github.com/flowmcp

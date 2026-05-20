@@ -1,16 +1,19 @@
-# v4.0.0 spec source — synced from FlowMCP/flowmcp-spec/spec/v4.0.0
-name: Sync Spec from flowmcp-spec
+name: Generate llms.txt Layers (v4)
 
 on:
-  repository_dispatch:
-    types: [spec-updated]
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/docs/**'
+      - 'public/spec-source/**'
+      - 'scripts/generate-llms-txt.mjs'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  sync:
+  generate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,13 +30,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Sync spec
-        run: npm run sync-spec
+      - name: Generate llms.txt layers
+        run: npm run generate-llms
 
       - name: Check for changes
         id: check
         run: |
-          if [ -n "$(git status --porcelain public/spec-source/)" ]; then
+          if [ -n "$(git status --porcelain public/llms*.txt public/docs-llms.txt)" ]; then
             echo "changed=true" >> $GITHUB_OUTPUT
           else
             echo "changed=false" >> $GITHUB_OUTPUT
@@ -44,6 +47,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/spec-source/
-          git commit -m "chore: sync spec from flowmcp-spec [auto]"
+          git add public/llms*.txt public/docs-llms.txt
+          git commit -m "chore: regenerate llms.txt [auto]"
           git push

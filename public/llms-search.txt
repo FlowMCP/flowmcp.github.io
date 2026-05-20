@@ -1,0 +1,6 @@
+# FlowMCP — Search Guide (Layer 1)
+
+> How to discover existing schemas, tools, and resources.
+> Placeholder — content provided by Memo 047 (Content Strategy).
+
+Index: /llms.txt

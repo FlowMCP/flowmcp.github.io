@@ -1,10 +1,16 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import rehypeMermaid from 'rehype-mermaid';
 
 
 export default defineConfig({
     site: 'https://flowmcp.github.io',
+    markdown: {
+        rehypePlugins: [
+            [ rehypeMermaid, { strategy: 'pre-mermaid' } ],
+        ],
+    },
     redirects: {
         '/docs': '/docs/getting-started/what-is-flowmcp/',
         '/specification': '/docs/specification/overview/',

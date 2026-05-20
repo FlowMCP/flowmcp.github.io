@@ -8,11 +8,16 @@
         "build": "node scripts/generate-llms-txt.mjs && astro build",
         "preview": "astro preview",
         "astro": "astro",
-        "sync-spec": "node scripts/sync-spec.mjs"
+        "sync-spec": "node scripts/sync-spec.mjs",
+        "generate-llms": "node scripts/generate-llms-txt.mjs"
     },
     "dependencies": {
         "@astrojs/starlight": "^0.38.2",
         "astro": "^6.0.1",
+        "rehype-mermaid": "^3.0.0",
         "sharp": "^0.34.2"
+    },
+    "devDependencies": {
+        "playwright": "^1.60.0"
     }
 }

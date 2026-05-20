@@ -1,0 +1,6 @@
+# FlowMCP — Add a New Source (Layer 2)
+
+> Step-by-step guide for adding a new data source as a FlowMCP schema.
+> Placeholder — content provided by Memo 047 (Content Strategy).
+
+Index: /llms.txt

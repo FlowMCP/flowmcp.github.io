@@ -30,3 +30,13 @@ Public data exists in many formats, quality levels, and behind different access 
 		MIT license. Clone, customize, self-host.
 	</Card>
 </CardGrid>
+
+## Architecture (Test Render)
+
+```mermaid
+graph TD
+    A[FlowMCP] --> B[Schemas]
+    A --> C[Agents]
+    B --> D[LLM Context]
+    C --> D
+```

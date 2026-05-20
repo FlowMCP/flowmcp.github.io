@@ -4,7 +4,7 @@
 > Open Source (MIT). Install: npm install -g github:FlowMCP/flowmcp-cli
 
 This file contains practical documentation: getting started, schemas, agents, CLI reference.
-For the formal specification, see: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v3.0.0/llms.txt
+For the formal specification, see: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v4.0.0/llms.txt
 For a brief index, see: https://flowmcp.github.io/llms.txt
 
 ---
@@ -29,7 +29,7 @@ Each agent is defined by an `agent.mjs` file with `export const agent`:
 ```javascript
 export const agent = {
     name: 'crypto-research',
-    version: 'flowmcp/3.0.0',
+    version: 'flowmcp/4.0.0',
     description: 'Cross-provider crypto analysis agent',
     model: 'anthropic/claude-sonnet-4-5-20250929',
     systemPrompt: 'You are a crypto research agent...',
@@ -972,7 +972,7 @@ The schema layer is where you work. Everything else is handled by the runtime.
        namespace: 'coingecko',
        name: 'Ping',
        description: 'Check CoinGecko API server status',
-       version: '3.0.0',
+       version: '4.0.0',
        root: 'https://api.coingecko.com/api/v3',
        requiredServerParams: [],
        requiredLibraries: [],
@@ -1045,7 +1045,7 @@ export const main = {
     namespace: 'provider',       // Provider name (lowercase)
     name: 'ToolName',            // Human-readable name
     description: 'What it does', // Used by AI clients
-    version: '3.0.0',            // Schema format version
+    version: '4.0.0',            // Schema format version
 
     // Connection
     root: 'https://api.example.com', // Base URL
@@ -1278,7 +1278,7 @@ const schema = {
     requiredServerParams: [],
     requiredLibraries: [],
     headers: {},
-    routes: {
+    tools: {
         check: {
             method: 'GET',
             path: '/get',
@@ -1375,7 +1375,7 @@ Understand the architecture and data flow. See How It Works.
        namespace: 'coingecko',
        name: 'Ping',
        description: 'Check CoinGecko API server status',
-       version: '3.0.0',
+       version: '4.0.0',
        root: 'https://api.coingecko.com/api/v3',
        requiredServerParams: [],
        requiredLibraries: [],
@@ -1542,7 +1542,7 @@ export const main = {
     namespace: 'coingecko',
     name: 'CoinGecko Prices',
     description: 'Cryptocurrency price data from CoinGecko',
-    version: '3.0.0',
+    version: '4.0.0',
     root: 'https://api.coingecko.com/api/v3',
     tools: {
         simplePrice: {
@@ -1642,7 +1642,7 @@ export const main = {
     namespace: 'coingecko',
     name: 'Ping',
     description: 'Check CoinGecko API server status',
-    version: '3.0.0',
+    version: '4.0.0',
     docs: [ 'https://docs.coingecko.com/reference/simple-ping' ],
     tags: [ 'utility', 'health' ],
     root: 'https://api.coingecko.com/api/v3',
@@ -1687,7 +1687,7 @@ export const main = {
     namespace: 'defillama',
     name: 'ProtocolAnalytics',
     description: 'DeFi Llama protocol TVL and analytics data',
-    version: '3.0.0',
+    version: '4.0.0',
     docs: [ 'https://defillama.com/docs/api' ],
     tags: [ 'defi', 'tvl', 'analytics' ],
     root: 'https://api.llama.fi',
@@ -1833,7 +1833,7 @@ export const main = {
     namespace: 'etherscan',
     name: 'GasTracker',
     description: 'EVM gas price tracking via Etherscan API',
-    version: '3.0.0',
+    version: '4.0.0',
     docs: [ 'https://docs.etherscan.io/api-endpoints/gas-tracker' ],
     tags: [ 'evm', 'gas', 'transactions' ],
     root: 'https://api.etherscan.io/v2/api',
@@ -1932,7 +1932,7 @@ export const main = {
     namespace: 'dune',
     name: 'QueryEngine',
     description: 'Execute and retrieve Dune Analytics SQL queries',
-    version: '3.0.0',
+    version: '4.0.0',
     docs: [ 'https://docs.dune.com/api-reference/executions' ],
     tags: [ 'analytics', 'sql', 'blockchain' ],
     root: 'https://api.dune.com',
@@ -2093,7 +2093,7 @@ Before creating a schema, you need:
        namespace: 'myapi',
        name: 'MyAPI',
        description: 'Access data from MyAPI service',
-       version: '3.0.0',
+       version: '4.0.0',
        docs: [ 'https://docs.myapi.com' ],
        tags: [ 'data', 'utility' ],
        root: 'https://api.myapi.com/v1',
@@ -2372,7 +2372,7 @@ Use `flowmcp test single` to verify against the real API. Schema validation alon
 - Forgetting `requiredServerParams` when using `{{SERVER_PARAM:...}}` in parameters
 - Using `location: 'insert'` without a matching `{{key}}` placeholder in the path
 - Declaring `requiredLibraries` without a corresponding `handlers` export that uses them
-- Omitting the `version: '3.0.0'` field (required for v3 schemas)
+- Omitting the `version: '4.0.0'` field (required for all schemas)
 :::
 
 ---
@@ -2841,7 +2841,7 @@ flowmcp migrate --dry-run ./schemas/coingecko/Ping.mjs
 **What it does:**
 1. Reads the schema file
 2. Renames `routes` key to `tools`
-3. Updates `version` from `2.x.x` to `3.0.0`
+3. Updates `version` from `2.x.x` to `4.0.0`
 4. Writes the updated file in-place
 5. Runs validation on the result
 
@@ -3750,7 +3750,7 @@ v2.0.0 limits schemas to a maximum of 8 routes. Split large schemas into multipl
 
 ```javascript
 // Wrong - too many routes in one schema
-routes: {
+tools: {
     route1: { ... }, route2: { ... }, route3: { ... },
     route4: { ... }, route5: { ... }, route6: { ... },
     route7: { ... }, route8: { ... }, route9: { ... }  // 9th route fails
@@ -3780,7 +3780,7 @@ export const main = {
     requiredServerParams: [],        // Required (empty array if none)
     requiredLibraries: [],           // Required (empty array if none)
     headers: {},                     // Required (empty object if none)
-    routes: { ... }                  // Required (at least one route)
+    tools: { ... }                  // Required (at least one route)
 }
 ```
 </details>
@@ -4044,7 +4044,7 @@ Handler keys must exactly match route names from `main.routes`.
 
 ```javascript
 // main.routes has:
-routes: { getPrice: { ... } }
+tools: { getPrice: { ... } }
 
 // Wrong handler key
 export const handlers = ( deps ) => ({
@@ -4247,7 +4247,7 @@ A CoinGecko schema with an `about` prompt:
 export const main = {
     namespace: 'coingecko',
     name: 'CoinData',
-    version: '3.0.0',
+    version: '4.0.0',
     root: 'https://api.coingecko.com/api/v3',
     tools: {
         simplePrice: { /* ... */ },
@@ -4323,7 +4323,7 @@ Resources are declared inside `main.resources`. Each resource points to a SQLite
 export const main = {
     namespace: 'offeneregister',
     name: 'OffeneRegister',
-    version: '3.0.0',
+    version: '4.0.0',
     root: '',
     tools: {},
     resources: {
@@ -4384,7 +4384,7 @@ These limits keep resources focused and predictable. If you need more queries, s
 | Constraint | Value | Rationale |
 |------------|-------|-----------|
 | Max resources per schema | 2 | Resources are supplementary, not primary output |
-| Max queries per resource | 8 | 7 defined + 1 auto-injected `freeQuery` |
+| Max queries per resource | 8 | 7 defined + 1 auto-injected `runSql` |
 | `getSchema` query | Required | Must return the database table structure |
 | SQL operations | `SELECT` only | Read-only enforcement -- no INSERT/UPDATE/DELETE |
 | Parameter placeholders | `?` only | Prevents SQL injection |
@@ -4396,7 +4396,7 @@ These limits keep resources focused and predictable. If you need more queries, s
 Two queries are handled automatically by the runtime:
 
 - **`getSchema`** -- You must define this query. It returns the database structure so AI agents can understand available tables and columns.
-- **`freeQuery`** -- Auto-injected by the runtime. Allows AI agents to run arbitrary `SELECT` queries within the read-only sandbox. This counts toward the 8-query limit.
+- **`runSql`** -- Auto-injected by the runtime. Allows AI agents to run arbitrary `SELECT` queries within the read-only sandbox. This counts toward the 8-query limit.
 
 ## Complete Example
 
@@ -4407,7 +4407,7 @@ export const main = {
     namespace: 'offeneregister',
     name: 'OffeneRegister',
     description: 'German company register — local SQLite database',
-    version: '3.0.0',
+    version: '4.0.0',
     tags: ['open-data', 'germany', 'companies'],
     root: '',
     tools: {},
@@ -4470,7 +4470,7 @@ Resources are validated by rules RES001-RES023. Key rules include:
 | RES003 | Maximum 2 resources per schema |
 | RES005 | Source must be `'sqlite'` |
 | RES006 | Database path must end in `.db` |
-| RES008 | Maximum 8 queries per resource (7 + freeQuery) |
+| RES008 | Maximum 8 queries per resource (7 + runSql) |
 | RES012 | SQL must start with `SELECT` (or `With` for CTEs) |
 | RES013 | SQL must not contain blocked patterns |
 | RES014 | SQL must use `?` placeholders |
@@ -4503,7 +4503,7 @@ Skills are declared in the `main` export's `skills` key. Each entry points to a 
 export const main = {
     namespace: 'tradingsignals',
     name: 'TradingSignals',
-    version: '3.0.0',
+    version: '4.0.0',
     root: 'https://api.example.com',
     tools: {
         computeRSI: { /* ... */ },
@@ -4699,7 +4699,7 @@ export const main = {
     namespace: 'etherscan',
     name: 'SmartContractExplorer',
     description: 'Explore verified smart contracts on EVM chains via Etherscan APIs',
-    version: '3.0.0',
+    version: '4.0.0',
     root: 'https://api.etherscan.io',
     docs: [ 'https://docs.etherscan.io/' ],
     tags: [ 'ethereum', 'blockchain' ],
@@ -4848,7 +4848,7 @@ export const main = {
     namespace: 'etherscan',
     name: 'SmartContractExplorer',
     description: 'Ethereum blockchain explorer API',
-    version: '3.0.0',
+    version: '4.0.0',
     docs: [ 'https://docs.etherscan.io/' ],
     tags: [ 'ethereum', 'blockchain' ],
     root: 'https://api.etherscan.io',
@@ -4973,7 +4973,7 @@ Each agent is defined by a `manifest.json` file in the catalog's `agents/` direc
 ```json
 {
     "name": "crypto-research",
-    "version": "flowmcp/3.0.0",
+    "version": "flowmcp/4.0.0",
     "description": "Cross-provider crypto analysis agent",
     "model": "anthropic/claude-sonnet-4-5-20250929",
     "systemPrompt": "You are a crypto research analyst...",
@@ -4999,7 +4999,7 @@ Each agent is defined by a `manifest.json` file in the catalog's `agents/` direc
 |-------|------|-------------|
 | `name` | string | Agent name (kebab-case) |
 | `description` | string | Human-readable purpose |
-| `version` | string | Must be `"flowmcp/3.0.0"` |
+| `version` | string | Must be `"flowmcp/4.0.0"` |
 | `model` | string | Target LLM (OpenRouter format with `/`) |
 | `systemPrompt` | string | Agent persona and behavioral instructions |
 | `tools` | string[] | Tool IDs in `namespace/type/name` format |
@@ -5037,7 +5037,7 @@ Each agent must have at least 3 tests. Tests validate tool selection (determinis
 |------|------|
 | AGT001 | `manifest.json` must exist and be valid JSON |
 | AGT002 | `name` must be kebab-case |
-| AGT003 | `version` must be `"flowmcp/3.0.0"` |
+| AGT003 | `version` must be `"flowmcp/4.0.0"` |
 | AGT004 | `model` must use OpenRouter format (contains `/`) |
 | AGT005 | `tools[]` must not be empty |
 | AGT006 | Each tool ID must be valid (`namespace/type/name`) |
@@ -5093,9 +5093,9 @@ The `registry.json` file declares everything the catalog contains:
 ```json
 {
     "name": "flowmcp-community",
-    "version": "3.0.0",
+    "version": "4.0.0",
     "description": "Official FlowMCP community catalog",
-    "schemaSpec": "3.0.0",
+    "schemaSpec": "4.0.0",
     "shared": [
         { "file": "_lists/evm-chains.mjs", "name": "evmChains" }
     ],
@@ -5433,10 +5433,10 @@ Use [[coingecko-com/tool/simplePrice]] to get the price of [[tokenId]].
 
 ---
 
-# "Migration Guide"
+# "Migration Guide (Historical)"
 /docs/specification/migration
 
-This guide covers migrating schemas between FlowMCP versions. Both migration paths are documented below.
+The current FlowMCP spec is **v4.0.0**. New schemas should use the v4 format directly — see Schema Format. This page documents the historical upgrade paths for schemas authored against earlier specs.
 
 :::note
 The full migration specification is maintained at github.com/FlowMCP/flowmcp-spec (https://github.com/FlowMCP/flowmcp-spec). This page provides a practical walkthrough.
@@ -5444,7 +5444,7 @@ The full migration specification is maintained at github.com/FlowMCP/flowmcp-spe
 
 ## v2 to v3 Migration
 
-The v4.0.0 release renames `routes` to `tools` and adds two new MCP primitives: **Resources** (SQLite-based read-only data) and **Skills** (reusable AI agent instructions).
+The v3.0.0 release renames `routes` to `tools` and adds two new MCP primitives: **Resources** (SQLite-based read-only data) and **Skills** (reusable AI agent instructions).
 
 ### What Changed
 
@@ -5512,14 +5512,6 @@ Use `--dry-run` first to preview what changes will be made without modifying any
 5. **Add skills (optional)** — If your schema benefits from AI agent workflows, see Skills.
 
 6. **Run validation** — `flowmcp validate <schema-path>`
-
-### Deprecation Timeline
-
-| Version | `routes` Behavior |
-|---------|-------------------|
-| **v4.0.0** | `routes` accepted as silent alias for `tools` |
-| **v3.1.0** | `routes` accepted with loud deprecation warning |
-| **v3.2.0** | `routes` rejected with error |
 
 ---
 
@@ -5611,7 +5603,7 @@ Use `--dry-run` first to preview what changes will be made without modifying any
 **v2 to v3:**
 - [ ] `routes` renamed to `tools`
 - [ ] `version` changed from `2.x.x` to `3.0.0`
-- [ ] Group references updated with type discriminators (optional in v4.0.0)
+- [ ] Group references updated with type discriminators
 - [ ] Full validation passes (`flowmcp validate`)
 
 ---
@@ -5638,7 +5630,7 @@ Without output schemas, an AI client calling a FlowMCP tool receives an opaque b
 Each route can optionally define an `output` field:
 
 ```javascript
-routes: {
+tools: {
     getTokenPrice: {
         method: 'GET',
         path: '/simple/price',
@@ -5925,13 +5917,12 @@ Security by default, explicit opt-in for capabilities. Schema files have zero im
 
 The v4.0.0 release extends FlowMCP from a tool-only framework to support all three MCP primitives:
 
-- **`routes` renamed to `tools`** — aligns with MCP terminology. `routes` is accepted as a deprecated alias with a defined sunset timeline (v4.0.0: alias, v3.1.0: loud warning, v3.2.0: error)
+- **`tools`** — primary schema key for tool definitions, aligned with MCP terminology
 - **Resources** — SQLite-based read-only data access via `sql.js`. Declared in the `resources` key with prepared statements and SQL security enforcement
 - **Skills** — reusable AI agent instructions stored as `.mjs` files. Declared in the `skills` key. Maps to MCP Prompts with placeholder system (`{{tool:x}}`, `{{resource:x}}`, `{{input:x}}`)
 - **Type discriminators** — `::tool::name`, `::resource::name`, `::skill::name` for unambiguous references in groups
 - **`includeSchemaSkills`** — groups can auto-include all skills from member schemas
-- **`flowmcp migrate`** — automated v2 to v3 migration via CLI
-- **New validation rules** — RES001-RES023 for resources, SKL001-SKL025 for skills, DEP001-DEP004 for deprecation warnings
+- **New validation rules** — RES001-RES023 for resources, SKL001-SKL025 for skills
 
 ## Specification Document Index
 
@@ -6244,7 +6235,7 @@ Some API endpoints return complete, rarely changing datasets (e.g. all hospitals
 `preload` is an optional object on route level:
 
 ```javascript
-routes: {
+tools: {
     getLocations: {
         method: 'GET',
         path: '/locations.json',
@@ -6503,7 +6494,7 @@ Resources are declared in the `resources` key of the `main` export:
 export const main = {
     namespace: 'etherscan',
     name: 'ContractExplorer',
-    version: '3.0.0',
+    version: '4.0.0',
     root: 'https://api.etherscan.io',
     tools: { /* ... */ },
     resources: {
@@ -6894,7 +6885,7 @@ export const main = {
     namespace: 'provider',
     name: 'SchemaName',
     description: 'What this schema does',
-    version: '3.0.0',
+    version: '4.0.0',
     root: 'https://api.provider.com',
     tools: { /* ... */ },
     resources: { /* ... */ },   // optional
@@ -6932,7 +6923,7 @@ All fields in `main` must be JSON-serializable. No functions, no dynamic values,
 | `namespace` | `string` | Provider identifier, lowercase letters only (`/^[a-z]+$/`). |
 | `name` | `string` | Schema name in PascalCase (e.g. `SmartContractExplorer`). |
 | `description` | `string` | What this schema does, 1-2 sentences. |
-| `version` | `string` | Must match `3.\d+.\d+` (semver, major must be `3`). |
+| `version` | `string` | Must match `4.\d+.\d+` (semver, major must be `4`). |
 | `root` | `string` | Base URL for all tools. Must start with `https://` (no trailing slash). |
 | `tools` | `object` | Tool definitions. Keys are camelCase tool names. Maximum 8 tools. |
 
@@ -6948,10 +6939,6 @@ All fields in `main` must be JSON-serializable. No functions, no dynamic values,
 | `sharedLists` | `object[]` | `[]` | Shared list references. See Shared Lists. |
 | `resources` | `object` | `{}` | SQLite-based read-only data resources. See Resources. |
 | `skills` | `array` | `[]` | AI agent skill references. See Skills. |
-
-:::note
-The key `routes` is accepted as a deprecated alias for `tools`. Schemas using `routes` will work in v4.0.0 but will produce warnings in v3.1.0 and errors in v3.2.0. Use `flowmcp migrate` to update automatically.
-:::
 
 ### Field Details
 
@@ -7090,7 +7077,7 @@ flowchart TD
 | Max tools per schema | 8 | Keeps schemas focused. Split large APIs into multiple schemas. |
 | Max resources per schema | 2 | Resources are supplementary data, not primary output. |
 | Max skills per schema | 4 | Skills compose tools; keep schemas focused. |
-| Version major | `3` | Must match `3.\d+.\d+`. |
+| Version major | `4` | Must match `4.\d+.\d+`. |
 | Namespace pattern | `^[a-z]+$` | Letters only. No numbers, hyphens, or underscores. |
 | Root URL protocol | `https://` | HTTP is not allowed. |
 | `main` export | JSON-serializable | Must survive `JSON.parse( JSON.stringify() )` roundtrip. |
@@ -7103,7 +7090,7 @@ export const main = {
     namespace: 'etherscan',
     name: 'SmartContractExplorer',
     description: 'Explore verified smart contracts on EVM-compatible chains via Etherscan APIs',
-    version: '3.0.0',
+    version: '4.0.0',
     root: 'https://api.etherscan.io',
     docs: [ 'https://docs.etherscan.io/api-endpoints/contracts' ],
     tags: [ 'smart-contracts', 'evm', 'abi' ],
@@ -7713,7 +7700,7 @@ Skills are referenced in the `main` export's `skills` array:
 export const main = {
     namespace: 'etherscan',
     name: 'ContractExplorer',
-    version: '3.0.0',
+    version: '4.0.0',
     root: 'https://api.etherscan.io',
     tools: {
         getContractAbi: { /* ... */ },
@@ -7868,7 +7855,7 @@ export const main = {
     namespace: 'etherscan',
     name: 'ContractExplorer',
     description: 'Explore verified smart contracts with API tools and local data',
-    version: '3.0.0',
+    version: '4.0.0',
     root: 'https://api.etherscan.io',
     requiredServerParams: [ 'ETHERSCAN_API_KEY' ],
     requiredLibraries: [],
