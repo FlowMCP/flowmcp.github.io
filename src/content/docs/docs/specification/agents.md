@@ -26,7 +26,7 @@ Each agent is defined by a `manifest.json` file in the catalog's `agents/` direc
 ```json
 {
     "name": "crypto-research",
-    "version": "flowmcp/3.0.0",
+    "version": "flowmcp/4.0.0",
     "description": "Cross-provider crypto analysis agent",
     "model": "anthropic/claude-sonnet-4-5-20250929",
     "systemPrompt": "You are a crypto research analyst...",
@@ -52,7 +52,7 @@ Each agent is defined by a `manifest.json` file in the catalog's `agents/` direc
 |-------|------|-------------|
 | `name` | string | Agent name (kebab-case) |
 | `description` | string | Human-readable purpose |
-| `version` | string | Must be `"flowmcp/3.0.0"` |
+| `version` | string | Must be `"flowmcp/4.0.0"` |
 | `model` | string | Target LLM (OpenRouter format with `/`) |
 | `systemPrompt` | string | Agent persona and behavioral instructions |
 | `tools` | string[] | Tool IDs in `namespace/type/name` format |
@@ -90,7 +90,7 @@ Each agent must have at least 3 tests. Tests validate tool selection (determinis
 |------|------|
 | AGT001 | `manifest.json` must exist and be valid JSON |
 | AGT002 | `name` must be kebab-case |
-| AGT003 | `version` must be `"flowmcp/3.0.0"` |
+| AGT003 | `version` must be `"flowmcp/4.0.0"` |
 | AGT004 | `model` must use OpenRouter format (contains `/`) |
 | AGT005 | `tools[]` must not be empty |
 | AGT006 | Each tool ID must be valid (`namespace/type/name`) |

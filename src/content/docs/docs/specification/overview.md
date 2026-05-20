@@ -119,13 +119,12 @@ Security by default, explicit opt-in for capabilities. Schema files have zero im
 
 The v4.0.0 release extends FlowMCP from a tool-only framework to support all three MCP primitives:
 
-- **`routes` renamed to `tools`** — aligns with MCP terminology. `routes` is accepted as a deprecated alias with a defined sunset timeline (v4.0.0: alias, v3.1.0: loud warning, v3.2.0: error)
+- **`tools`** — primary schema key for tool definitions, aligned with MCP terminology
 - **Resources** — SQLite-based read-only data access via `sql.js`. Declared in the `resources` key with prepared statements and SQL security enforcement
 - **Skills** — reusable AI agent instructions stored as `.mjs` files. Declared in the `skills` key. Maps to MCP Prompts with placeholder system (`{{tool:x}}`, `{{resource:x}}`, `{{input:x}}`)
 - **Type discriminators** — `::tool::name`, `::resource::name`, `::skill::name` for unambiguous references in groups
 - **`includeSchemaSkills`** — groups can auto-include all skills from member schemas
-- **`flowmcp migrate`** — automated v2 to v3 migration via CLI
-- **New validation rules** — RES001-RES023 for resources, SKL001-SKL025 for skills, DEP001-DEP004 for deprecation warnings
+- **New validation rules** — RES001-RES023 for resources, SKL001-SKL025 for skills
 
 ## Specification Document Index
 

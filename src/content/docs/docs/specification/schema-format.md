@@ -18,7 +18,7 @@ export const main = {
     namespace: 'provider',
     name: 'SchemaName',
     description: 'What this schema does',
-    version: '3.0.0',
+    version: '4.0.0',
     root: 'https://api.provider.com',
     tools: { /* ... */ },
     resources: { /* ... */ },   // optional
@@ -56,7 +56,7 @@ All fields in `main` must be JSON-serializable. No functions, no dynamic values,
 | `namespace` | `string` | Provider identifier, lowercase letters only (`/^[a-z]+$/`). |
 | `name` | `string` | Schema name in PascalCase (e.g. `SmartContractExplorer`). |
 | `description` | `string` | What this schema does, 1-2 sentences. |
-| `version` | `string` | Must match `3.\d+.\d+` (semver, major must be `3`). |
+| `version` | `string` | Must match `4.\d+.\d+` (semver, major must be `4`). |
 | `root` | `string` | Base URL for all tools. Must start with `https://` (no trailing slash). |
 | `tools` | `object` | Tool definitions. Keys are camelCase tool names. Maximum 8 tools. |
 
@@ -72,10 +72,6 @@ All fields in `main` must be JSON-serializable. No functions, no dynamic values,
 | `sharedLists` | `object[]` | `[]` | Shared list references. See [Shared Lists](/docs/specification/shared-lists/). |
 | `resources` | `object` | `{}` | SQLite-based read-only data resources. See [Resources](/docs/specification/resources/). |
 | `skills` | `array` | `[]` | AI agent skill references. See [Skills](/docs/specification/skills/). |
-
-:::note
-The key `routes` is accepted as a deprecated alias for `tools`. Schemas using `routes` will work in v4.0.0 but will produce warnings in v3.1.0 and errors in v3.2.0. Use `flowmcp migrate` to update automatically.
-:::
 
 ### Field Details
 
@@ -214,7 +210,7 @@ flowchart TD
 | Max tools per schema | 8 | Keeps schemas focused. Split large APIs into multiple schemas. |
 | Max resources per schema | 2 | Resources are supplementary data, not primary output. |
 | Max skills per schema | 4 | Skills compose tools; keep schemas focused. |
-| Version major | `3` | Must match `3.\d+.\d+`. |
+| Version major | `4` | Must match `4.\d+.\d+`. |
 | Namespace pattern | `^[a-z]+$` | Letters only. No numbers, hyphens, or underscores. |
 | Root URL protocol | `https://` | HTTP is not allowed. |
 | `main` export | JSON-serializable | Must survive `JSON.parse( JSON.stringify() )` roundtrip. |
@@ -227,7 +223,7 @@ export const main = {
     namespace: 'etherscan',
     name: 'SmartContractExplorer',
     description: 'Explore verified smart contracts on EVM-compatible chains via Etherscan APIs',
-    version: '3.0.0',
+    version: '4.0.0',
     root: 'https://api.etherscan.io',
     docs: [ 'https://docs.etherscan.io/api-endpoints/contracts' ],
     tags: [ 'smart-contracts', 'evm', 'abi' ],

@@ -1,9 +1,9 @@
 ---
-title: "Migration Guide"
-description: "FlowMCP migration guides — v1 to v2 and v2 to v3 upgrade instructions"
+title: "Migration Guide (Historical)"
+description: "FlowMCP legacy upgrade paths — v1 to v2 and v2 to v3 migrations"
 ---
 
-This guide covers migrating schemas between FlowMCP versions. Both migration paths are documented below.
+The current FlowMCP spec is **v4.0.0**. New schemas should use the v4 format directly — see [Schema Format](/docs/specification/schema-format/). This page documents the historical upgrade paths for schemas authored against earlier specs.
 
 :::note
 The full migration specification is maintained at [github.com/FlowMCP/flowmcp-spec](https://github.com/FlowMCP/flowmcp-spec). This page provides a practical walkthrough.
@@ -11,7 +11,7 @@ The full migration specification is maintained at [github.com/FlowMCP/flowmcp-sp
 
 ## v2 to v3 Migration
 
-The v4.0.0 release renames `routes` to `tools` and adds two new MCP primitives: **Resources** (SQLite-based read-only data) and **Skills** (reusable AI agent instructions).
+The v3.0.0 release renames `routes` to `tools` and adds two new MCP primitives: **Resources** (SQLite-based read-only data) and **Skills** (reusable AI agent instructions).
 
 ### What Changed
 
@@ -79,14 +79,6 @@ Use `--dry-run` first to preview what changes will be made without modifying any
 5. **Add skills (optional)** — If your schema benefits from AI agent workflows, see [Skills](/docs/specification/skills/).
 
 6. **Run validation** — `flowmcp validate <schema-path>`
-
-### Deprecation Timeline
-
-| Version | `routes` Behavior |
-|---------|-------------------|
-| **v4.0.0** | `routes` accepted as silent alias for `tools` |
-| **v3.1.0** | `routes` accepted with loud deprecation warning |
-| **v3.2.0** | `routes` rejected with error |
 
 ---
 
@@ -178,5 +170,5 @@ Use `--dry-run` first to preview what changes will be made without modifying any
 **v2 to v3:**
 - [ ] `routes` renamed to `tools`
 - [ ] `version` changed from `2.x.x` to `3.0.0`
-- [ ] Group references updated with type discriminators (optional in v4.0.0)
+- [ ] Group references updated with type discriminators
 - [ ] Full validation passes (`flowmcp validate`)

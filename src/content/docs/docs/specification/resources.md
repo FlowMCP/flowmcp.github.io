@@ -29,7 +29,7 @@ Resources are declared in the `resources` key of the `main` export:
 export const main = {
     namespace: 'etherscan',
     name: 'ContractExplorer',
-    version: '3.0.0',
+    version: '4.0.0',
     root: 'https://api.etherscan.io',
     tools: { /* ... */ },
     resources: {

@@ -37,9 +37,9 @@ The `registry.json` file declares everything the catalog contains:
 ```json
 {
     "name": "flowmcp-community",
-    "version": "3.0.0",
+    "version": "4.0.0",
     "description": "Official FlowMCP community catalog",
-    "schemaSpec": "3.0.0",
+    "schemaSpec": "4.0.0",
     "shared": [
         { "file": "_lists/evm-chains.mjs", "name": "evmChains" }
     ],

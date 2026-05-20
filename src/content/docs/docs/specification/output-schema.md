@@ -22,7 +22,7 @@ Without output schemas, an AI client calling a FlowMCP tool receives an opaque b
 Each route can optionally define an `output` field:
 
 ```javascript
-routes: {
+tools: {
     getTokenPrice: {
         method: 'GET',
         path: '/simple/price',

@@ -18,7 +18,7 @@ Some API endpoints return complete, rarely changing datasets (e.g. all hospitals
 `preload` is an optional object on route level:
 
 ```javascript
-routes: {
+tools: {
     getLocations: {
         method: 'GET',
         path: '/locations.json',

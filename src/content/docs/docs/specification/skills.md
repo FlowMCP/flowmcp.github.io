@@ -31,7 +31,7 @@ Skills are referenced in the `main` export's `skills` array:
 export const main = {
     namespace: 'etherscan',
     name: 'ContractExplorer',
-    version: '3.0.0',
+    version: '4.0.0',
     root: 'https://api.etherscan.io',
     tools: {
         getContractAbi: { /* ... */ },
@@ -186,7 +186,7 @@ export const main = {
     namespace: 'etherscan',
     name: 'ContractExplorer',
     description: 'Explore verified smart contracts with API tools and local data',
-    version: '3.0.0',
+    version: '4.0.0',
     root: 'https://api.etherscan.io',
     requiredServerParams: [ 'ETHERSCAN_API_KEY' ],
     requiredLibraries: [],
