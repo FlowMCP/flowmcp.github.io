@@ -1,0 +1,84 @@
+---
+// Custom Footer — Pencil-Stil (Pencil-Mockup Gdy0k Bottom)
+// Overrides @astrojs/starlight/components/Footer.astro
+const year = new Date().getFullYear();
+const path = Astro.url.pathname;
+const isDE = path.startsWith('/de/') || path === '/de';
+
+const t = isDE ? {
+    copy: `© ${year} FlowMCP · MIT-lizenziert`,
+    docs: 'Dokumentation',
+    blog: 'Blog',
+    github: 'GitHub',
+} : {
+    copy: `© ${year} FlowMCP · MIT-licensed`,
+    docs: 'Docs',
+    blog: 'Blog',
+    github: 'GitHub',
+};
+---
+
+<footer class="pencil-footer">
+    <div class="pencil-footer__inner">
+        <div class="pencil-footer__brand">
+            <span class="pencil-footer__logo">FlowMCP</span>
+            <span class="pencil-footer__copy">{t.copy}</span>
+        </div>
+        <nav class="pencil-footer__links" aria-label="Footer">
+            <a href={isDE ? '/de/docs/getting-started/what-is-flowmcp/' : '/docs/getting-started/what-is-flowmcp/'}>{t.docs}</a>
+            <a href={isDE ? '/de/blog/' : '/blog/'}>{t.blog}</a>
+            <a href="https://github.com/FlowMCP" rel="noopener" target="_blank">{t.github}</a>
+        </nav>
+    </div>
+</footer>
+
+<style>
+.pencil-footer {
+    border-top: 1px solid var(--border);
+    background: var(--bg-canvas);
+    padding: 1.5rem 0;
+    margin-top: 4rem;
+}
+.pencil-footer__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.pencil-footer__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 13px;
+}
+.pencil-footer__logo {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+.pencil-footer__copy {
+    color: var(--text-inactive);
+}
+.pencil-footer__links {
+    display: flex;
+    gap: 1.25rem;
+}
+.pencil-footer__links a {
+    color: var(--text-inactive);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+}
+.pencil-footer__links a:hover {
+    color: var(--accent);
+}
+@media (max-width: 640px) {
+    .pencil-footer__inner {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+</style>

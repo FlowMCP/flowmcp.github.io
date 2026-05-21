@@ -40,6 +40,11 @@ export default defineConfig({
                 themes: ['github-dark'],
             },
             plugins: [],
+            components: {
+                Header: './src/components/Header.astro',
+                MobileMenuToggle: './src/components/MobileMenuToggle.astro',
+                Footer: './src/components/Footer.astro',
+            },
             social: [
                 { icon: 'github', label: 'GitHub', href: 'https://github.com/flowmcp' },
             ],
@@ -48,51 +53,15 @@ export default defineConfig({
                     tag: 'script',
                     attrs: { defer: true },
                     content: `
-                        function addV4Badge() {
-                            var logoLink = document.querySelector('header.header a[href$="/"]');
-                            if (!logoLink) return;
-                            if (logoLink.querySelector('.v4-badge')) return;
-                            var badge = document.createElement('span');
-                            badge.className = 'v4-badge';
-                            badge.textContent = 'v4';
-                            badge.style.cssText = 'display:inline-block;padding:1px 6px;margin-left:8px;background:var(--sidebar-active-bg);color:var(--accent);border-radius:4px;font-size:10px;font-weight:700;vertical-align:middle;letter-spacing:0.5px;';
-                            logoLink.appendChild(badge);
+                        function setMobileClass() {
+                            var w = window.innerWidth;
+                            document.body.classList.toggle('is-mobile', w < 800);
+                            document.body.classList.toggle('is-desktop', w >= 800);
+                            document.body.classList.add('has-pencil-hero-detection');
                         }
-                        function addHeaderLinks() {
-                            var rg = document.querySelector('.right-group');
-                            if (!rg) return;
-                            var path = window.location.pathname;
-                            var isDE = path.indexOf('/de/') === 0 || path === '/de';
-                            var prefix = isDE ? '/de' : '';
-                            var baseStyle = 'font-weight:600!important;text-decoration:none!important;margin-right:0.5rem!important;';
-                            var activeColor = 'color:var(--sl-color-text-accent)!important;';
-                            var inactiveColor = 'color:var(--sl-color-gray-2)!important;';
-                            var isHome = path === '/' || path === '/de' || path === '/de/';
-                            var isAbout = path.indexOf('/introduction') !== -1 || path.indexOf('/basics') !== -1;
-                            var isDocs = path.indexOf('/docs/') !== -1;
-                            var isRoadmap = path.indexOf('/roadmap') !== -1;
-                            var isBlog = path.indexOf('/blog') !== -1;
-                            var links = [
-                                { text: 'About', href: prefix + '/introduction/about/', active: isAbout },
-                                { text: 'Docs', href: prefix + '/docs/getting-started/what-is-flowmcp/', active: isDocs },
-                                { text: 'Roadmap', href: prefix + '/roadmap/overview/', active: isRoadmap },
-                                { text: 'Blog', href: prefix + '/blog/', active: isBlog }
-                            ];
-                            links.forEach(function(link) {
-                                var sel = 'a.header-nav-' + link.text.toLowerCase();
-                                var el = rg.querySelector(sel);
-                                if (!el) {
-                                    el = document.createElement('a');
-                                    el.textContent = link.text;
-                                    el.className = 'header-nav-link header-nav-' + link.text.toLowerCase();
-                                    rg.appendChild(el);
-                                }
-                                el.href = link.href;
-                                el.style.cssText = baseStyle + (link.active ? activeColor : inactiveColor);
-                            });
-                        }
-                        document.addEventListener('DOMContentLoaded', function() { addV4Badge(); addHeaderLinks(); });
-                        document.addEventListener('astro:page-load', function() { addV4Badge(); addHeaderLinks(); });
+                        document.addEventListener('DOMContentLoaded', setMobileClass);
+                        document.addEventListener('astro:page-load', setMobileClass);
+                        window.addEventListener('resize', setMobileClass);
                     `,
                 },
             ],
