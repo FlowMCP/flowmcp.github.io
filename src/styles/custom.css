@@ -223,7 +223,7 @@ mobile-starlight-toc {
  */
 
 body :where(.pencil-hero) .pencil-hero__headline {
-    font-size: clamp(3.5rem, 9vw, 6.5rem) !important;
+    font-size: clamp(3rem, 7vw, 5rem) !important;
     font-weight: 900 !important;
     line-height: 1.02;
     letter-spacing: -0.03em;
