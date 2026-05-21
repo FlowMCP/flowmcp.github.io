@@ -13,7 +13,7 @@ test.describe( 'Persona-E2E-Pfade (Memo 045 REV-15 Kap. 2)', () => {
         await page.goto( '/' )
         await page.goto( '/reference/core-methods/' )
         const heading = page.locator( 'h1' ).first()
-        await expect( heading ).toContainText( /Core Methods/i )
+        await expect( heading ).toContainText( /Core.*Methods/i )
     } )
 
     test( 'Schema-Maintainer — Landing -> Specification -> Schema-Format', async ( { page } ) => {

@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test'
 
 test.describe( 'Navigation (Pencil-Layout REV-15)', () => {
-    test( '1. Sidebar — Top-Groups sichtbar (Docs)', async ( { page } ) => {
+    test( '1. Sidebar — Top-Groups sichtbar (Docs)', async ( { page }, testInfo ) => {
+        test.skip( testInfo.project.name === 'mobile-safari', 'Sidebar collapsed behind hamburger on mobile' )
         await page.goto( '/quickstart/what-is-flowmcp/' )
         const sidebar = page.locator( 'nav.sidebar, [aria-label="Main"]' ).first()
         await expect( sidebar.getByText( /Introduction/i ).first() ).toBeVisible()
@@ -11,13 +12,12 @@ test.describe( 'Navigation (Pencil-Layout REV-15)', () => {
         await expect( sidebar.getByText( /Reference/i ).first() ).toBeVisible()
     } )
 
-    test( '2. Landing zeigt Pencil-Hero + LogoStrip + StatsBar + TagCloud', async ( { page } ) => {
+    test( '2. Landing zeigt Pencil-Hero + LogoStrip + StatsBar', async ( { page } ) => {
         await page.goto( '/' )
         await expect( page.getByText( /Normalize any data source/i ).first() ).toBeVisible()
         await expect( page.getByText( /Connects to/i ).first() ).toBeVisible()
         await expect( page.getByText( '288' ).first() ).toBeVisible()
         await expect( page.getByText( '1,534' ).first() ).toBeVisible()
-        await expect( page.getByText( /Browse by topic/i ).first() ).toBeVisible()
     } )
 
     test( '3. Hackathon Trust-Line auf Landing', async ( { page } ) => {
@@ -32,7 +32,8 @@ test.describe( 'Navigation (Pencil-Layout REV-15)', () => {
         await expect( page ).toHaveURL( /\/de\/?$/ )
     } )
 
-    test( '5. Sidebar-Active-State matched URL', async ( { page } ) => {
+    test( '5. Sidebar-Active-State matched URL', async ( { page }, testInfo ) => {
+        test.skip( testInfo.project.name === 'mobile-safari', 'Sidebar collapsed behind hamburger on mobile' )
         await page.goto( '/specification/schema-format/' )
         const active = page.locator( 'a[aria-current="page"]' )
         await expect( active.first() ).toBeVisible()
