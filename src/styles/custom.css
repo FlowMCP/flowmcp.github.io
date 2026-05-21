@@ -120,23 +120,45 @@ header.header .social-icons {
     }
 }
 
-/* ============ SIDEBAR ============ */
+/* ============ SIDEBAR (PRD-03, REV-05 Kap. 3) ============ */
 
 nav.sidebar {
-    background: var(--bg-card);
+    background: var(--bg-canvas);
     border-right: 1px solid var(--border);
 }
 
-/* Sidebar items: inactive — Pencil Spec REV-14 Kap. 5 Regel 7 */
+/* Group label container — establishes CSS-Counter scope (Top-Level <ul>) */
+.sidebar-content sl-sidebar-state-persist > ul {
+    counter-reset: sidebar-group;
+}
+
+/* Top-Level group labels — 13 px, weight 700, uppercase, nummeriert */
+.sidebar-content sl-sidebar-state-persist > ul > li > details > summary,
+.sidebar-content sl-sidebar-state-persist > ul > li > .group-label,
+.sidebar-content sl-sidebar-state-persist > ul > li > details > summary > .group-label > .large {
+    color: var(--text-inactive) !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.8px !important;
+    text-transform: uppercase;
+}
+
+.sidebar-content sl-sidebar-state-persist > ul > li > details > summary > .group-label > .large::before,
+.sidebar-content sl-sidebar-state-persist > ul > li > .group-label > .large::before {
+    counter-increment: sidebar-group;
+    content: counter(sidebar-group) ". ";
+}
+
+/* Items — 14 px, weight 400, padding 4px 12px */
 .sidebar-content a {
     color: var(--text-inactive) !important;
     font-size: 14px !important;
     font-weight: 400 !important;
-    padding: 8px 12px !important;
+    padding: 4px 12px !important;
     display: block !important;
 }
 
-/* Sidebar: active page — Pencil Spec REV-14 Kap. 5 Regel 5 */
+/* Active item */
 .sidebar-content a[aria-current="page"] {
     background: var(--sidebar-active-bg);
     color: var(--accent) !important;
@@ -144,20 +166,20 @@ nav.sidebar {
     font-weight: 500 !important;
 }
 
-/* Sidebar: hover = lighter */
 .sidebar-content a:hover {
     color: var(--text-primary) !important;
 }
 
-/* Sidebar group labels — Pencil Spec REV-14 Kap. 5 Regel 6 */
-.sidebar-content .group-label span,
-.sidebar-content details > summary,
-.sidebar-content .group-label {
-    color: var(--group-title) !important;
-    font-size: 11px !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.5px !important;
-    text-transform: uppercase;
+/* Sub-Item-Indent 16 px */
+.sidebar-content ul ul a {
+    padding-left: 28px !important;
+}
+
+/* "On this page" Dropdown abschalten (PRD-03, REV-05 Kap. 3.6) */
+.right-sidebar details,
+.right-sidebar .right-sidebar-panel,
+mobile-starlight-toc {
+    display: none !important;
 }
 
 /* ============ RIGHT SIDEBAR (On this page) ============ */

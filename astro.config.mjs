@@ -44,6 +44,7 @@ export default defineConfig({
                 Header: './src/components/Header.astro',
                 MobileMenuToggle: './src/components/MobileMenuToggle.astro',
                 Footer: './src/components/Footer.astro',
+                PageTitle: './src/components/PageTitleWithBreadcrumb.astro',
             },
             social: [
                 { icon: 'github', label: 'GitHub', href: 'https://github.com/flowmcp' },
@@ -69,6 +70,7 @@ export default defineConfig({
                 {
                     label: 'Introduction',
                     translations: { de: 'Einfuehrung' },
+                    collapsed: true,
                     items: [
                         { label: 'About', translations: { de: 'Ueber FlowMCP' }, slug: 'introduction/about' },
                         { label: 'Why We Do This', translations: { de: 'Warum wir das machen' }, slug: 'introduction/why' },
@@ -80,6 +82,7 @@ export default defineConfig({
                 {
                     label: 'Basics',
                     translations: { de: 'Grundlagen' },
+                    collapsed: true,
                     items: [
                         { label: 'Schemas and Tools', translations: { de: 'Schemas und Tools' }, slug: 'basics/schemas-and-tools' },
                         { label: 'Schema Catalog', translations: { de: 'Schema-Katalog' }, slug: 'basics/schema-catalog' },
@@ -89,6 +92,7 @@ export default defineConfig({
                 },
                 {
                     label: 'Roadmap',
+                    collapsed: true,
                     items: [
                         { label: 'Overview', translations: { de: 'Uebersicht' }, slug: 'roadmap/overview' },
                         { label: 'Integration', slug: 'roadmap/integration' },

@@ -1,0 +1,44 @@
+---
+// Sidebar-Hooks — Auto-Expand der aktiven Sektion + Auto-Navigate auf Sektions-Klick
+// PRD-03, REV-05 Kap. 3.3 + 3.4
+---
+
+<script is:inline>
+( function() {
+    const autoExpandActive = () => {
+        const active = document.querySelector( '.sidebar-content a[aria-current="page"]' )
+        if( !active ) { return }
+        let parent = active.closest( 'details' )
+        while( parent ) {
+            parent.open = true
+            parent = parent.parentElement.closest( 'details' )
+        }
+    }
+
+    const wireAutoNavigate = () => {
+        const summaries = document.querySelectorAll( '.sidebar-content > ul > li > details > summary' )
+        summaries.forEach( ( summary ) => {
+            if( summary.dataset.fmcpWired === '1' ) { return }
+            summary.dataset.fmcpWired = '1'
+            summary.addEventListener( 'click', ( e ) => {
+                const details = summary.parentElement
+                if( details.open ) { return }
+                const firstLink = details.querySelector( 'a' )
+                if( firstLink ) {
+                    e.preventDefault()
+                    details.open = true
+                    window.location.href = firstLink.getAttribute( 'href' )
+                }
+            } )
+        } )
+    }
+
+    const run = () => {
+        autoExpandActive()
+        wireAutoNavigate()
+    }
+
+    document.addEventListener( 'DOMContentLoaded', run )
+    document.addEventListener( 'astro:page-load', run )
+} )()
+</script>

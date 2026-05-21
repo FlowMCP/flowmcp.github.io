@@ -1,0 +1,60 @@
+---
+// Breadcrumb — generiert aus URL + Starlight Sidebar
+// PRD-03, REV-05 Kap. 3.5
+const path = Astro.url.pathname
+const isDE = path.startsWith( '/de/' ) || path === '/de'
+const homeLabel = isDE ? 'Start' : 'Home'
+const homeHref = isDE ? '/de/' : '/'
+
+// Walk through sidebar tree returned by Starlight to find current entry chain
+const sidebar = Astro.locals.starlightRoute?.sidebar || []
+
+const findCrumbs = ( { items, acc } ) => {
+    for( const item of items ) {
+        if( item.type === 'link' && item.isCurrent === true ) {
+            return [ ...acc, { label: item.label, href: null } ]
+        }
+        if( item.type === 'group' && Array.isArray( item.entries ) ) {
+            const found = findCrumbs( { items: item.entries, acc: [ ...acc, { label: item.label, href: null } ] } )
+            if( found ) { return found }
+        }
+    }
+    return null
+}
+
+const crumbs = findCrumbs( { items: sidebar, acc: [] } ) || []
+---
+
+{crumbs.length > 0 && (
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={homeHref}>{homeLabel}</a>
+        {crumbs.map( ( c ) => (
+            <>
+                <span class="breadcrumb__sep">›</span>
+                <span class="breadcrumb__label">{c.label}</span>
+            </>
+        ) )}
+    </nav>
+)}
+
+<style>
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    font-size: 13px;
+    color: var(--text-inactive);
+    margin-bottom: 1rem;
+}
+.breadcrumb a {
+    color: var(--text-inactive);
+    text-decoration: none;
+}
+.breadcrumb a:hover {
+    color: var(--accent);
+}
+.breadcrumb__sep {
+    color: var(--group-title);
+}
+</style>
