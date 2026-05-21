@@ -12,15 +12,22 @@ const shouldRenderSearch =
     config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
 
 const path = Astro.url.pathname;
-const isDE = path.indexOf('/de/') === 0 || path === '/de';
+const isDE = path.startsWith('/de/') || path === '/de';
 const prefix = isDE ? '/de' : '';
 
-const navLinks = [
+const navLinks = isDE ? [
+    { text: 'Über',     href: prefix + '/introduction/about/',                  match: '/introduction' },
+    { text: 'Docs',     href: prefix + '/docs/getting-started/what-is-flowmcp/', match: '/docs/' },
+    { text: 'Roadmap',  href: prefix + '/roadmap/overview/',                    match: '/roadmap' },
+    { text: 'Blog',     href: prefix + '/blog/',                                match: '/blog' },
+] : [
     { text: 'About',   href: prefix + '/introduction/about/',                  match: '/introduction' },
     { text: 'Docs',    href: prefix + '/docs/getting-started/what-is-flowmcp/', match: '/docs/' },
     { text: 'Roadmap', href: prefix + '/roadmap/overview/',                    match: '/roadmap' },
     { text: 'Blog',    href: prefix + '/blog/',                                match: '/blog' },
 ];
+
+const ctaLabel = isDE ? 'Docs lesen' : 'Read Docs';
 ---
 
 <div class="header pencil-header">
@@ -47,7 +54,7 @@ const navLinks = [
 
     <div class="sl-hidden md:sl-flex print:hidden right-group">
         <a class="header__cta header__cta--primary" href={prefix + '/docs/getting-started/what-is-flowmcp/'}>
-            Read Docs
+            {ctaLabel}
         </a>
         <div class="sl-flex social-icons">
             <SocialIcons />
