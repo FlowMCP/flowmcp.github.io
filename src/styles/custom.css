@@ -283,8 +283,10 @@ blockquote {
 
 /* ============ HERO ============ */
 
-.hero {
-    padding-bottom: 3rem;
+/* Hide Starlight Splash auto-h1 + .hero on Landing — we use our own <Hero /> component (Pencil REV-15) */
+.hero,
+h1#_top {
+    display: none !important;
 }
 
 .hero img {

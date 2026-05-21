@@ -1,0 +1,128 @@
+---
+// Hero — Pencil-Stil Landing Hero (PRD-25, Memo 045 REV-15)
+// Pencil-Anker: Frame Gdy0k Landing Desktop v2 Dark
+---
+
+<div class="pencil-hero">
+    <span class="pencil-hero__pill">
+        <span class="pencil-hero__pill-icon">✦</span>
+        FlowMCP v4 · Pencil-style website live
+    </span>
+
+    <h1 class="pencil-hero__headline">
+        Normalize any data source<br/>for AI agents.
+    </h1>
+
+    <p class="pencil-hero__tagline">
+        288 open data sources. 1,534 AI-callable tools. GitHub-native, MIT-licensed, multilingual EN/DE.
+    </p>
+
+    <div class="pencil-hero__actions">
+        <a class="pencil-hero__cta pencil-hero__cta--primary" href="/docs/getting-started/what-is-flowmcp/">
+            Read the Docs →
+        </a>
+        <a class="pencil-hero__cta pencil-hero__cta--secondary" href="https://chatgpt.com/" rel="noopener">
+            Ask FlowMCP GPT
+        </a>
+    </div>
+
+    <p class="pencil-hero__trust">
+        Open source · MIT · GitHub-native · No vendor lock-in
+    </p>
+    <p class="pencil-hero__hackathon">
+        Used at Berlin Mobility Hackathon 2026 · DB InfraGO
+    </p>
+</div>
+
+<style>
+.pencil-hero {
+    text-align: center;
+    max-width: 900px;
+    margin: 4rem auto 3rem;
+    padding: 0 1.5rem;
+}
+
+.pencil-hero__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    background: var(--sidebar-active-bg);
+    color: var(--accent);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 2rem;
+}
+
+.pencil-hero__pill-icon { font-size: 12px; }
+
+.pencil-hero__headline {
+    font-size: clamp(2.5rem, 5.5vw, 4rem) !important;
+    font-weight: 800 !important;
+    color: var(--text-primary);
+    line-height: 1.05;
+    margin: 0 0 1.5rem;
+}
+
+.pencil-hero__tagline {
+    font-size: 16px;
+    color: var(--text-inactive);
+    margin: 0 auto 2rem;
+    max-width: 600px;
+    line-height: 1.6;
+}
+
+.pencil-hero__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.pencil-hero__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+
+.pencil-hero__cta--primary {
+    background: var(--accent);
+    color: var(--bg-canvas) !important;
+}
+
+.pencil-hero__cta--primary:hover {
+    filter: brightness(0.9);
+}
+
+.pencil-hero__cta--secondary {
+    background: transparent;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border);
+}
+
+.pencil-hero__cta--secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent) !important;
+}
+
+.pencil-hero__trust {
+    font-size: 13px;
+    color: var(--text-inactive);
+    margin: 0;
+}
+
+.pencil-hero__hackathon {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+</style>
