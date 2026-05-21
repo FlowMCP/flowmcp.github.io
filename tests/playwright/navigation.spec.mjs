@@ -1,14 +1,14 @@
 import { test, expect } from '@playwright/test'
 
 test.describe( 'Navigation (Pencil-Layout REV-15)', () => {
-    test( '1. Sidebar — 5 Top-Groups sichtbar (Docs)', async ( { page } ) => {
-        await page.goto( '/docs/getting-started/what-is-flowmcp/' )
+    test( '1. Sidebar — Top-Groups sichtbar (Docs)', async ( { page } ) => {
+        await page.goto( '/quickstart/what-is-flowmcp/' )
         const sidebar = page.locator( 'nav.sidebar, [aria-label="Main"]' ).first()
         await expect( sidebar.getByText( /Introduction/i ).first() ).toBeVisible()
-        await expect( sidebar.getByText( /Basics/i ).first() ).toBeVisible()
-        await expect( sidebar.getByText( /Roadmap/i ).first() ).toBeVisible()
+        await expect( sidebar.getByText( /Quickstart/i ).first() ).toBeVisible()
+        await expect( sidebar.getByText( /Concepts/i ).first() ).toBeVisible()
         await expect( sidebar.getByText( /Specification/i ).first() ).toBeVisible()
-        await expect( sidebar.getByText( /Docs/i ).first() ).toBeVisible()
+        await expect( sidebar.getByText( /Reference/i ).first() ).toBeVisible()
     } )
 
     test( '2. Landing zeigt Pencil-Hero + LogoStrip + StatsBar + TagCloud', async ( { page } ) => {
@@ -33,7 +33,7 @@ test.describe( 'Navigation (Pencil-Layout REV-15)', () => {
     } )
 
     test( '5. Sidebar-Active-State matched URL', async ( { page } ) => {
-        await page.goto( '/docs/specification/schema-format/' )
+        await page.goto( '/specification/schema-format/' )
         const active = page.locator( 'a[aria-current="page"]' )
         await expect( active.first() ).toBeVisible()
     } )
@@ -66,11 +66,12 @@ test.describe( 'Navigation (Pencil-Layout REV-15)', () => {
     test( '10. Linkkonsistenz — keine 404 von Hauptpfaden', async ( { page } ) => {
         const routes = [
             '/introduction/about/',
-            '/basics/schemas-and-tools/',
+            '/quickstart/what-is-flowmcp/',
+            '/concepts/schemas-and-tools/',
+            '/specification/overview/',
+            '/specification/schema-format/',
             '/roadmap/overview/',
-            '/docs/specification/overview/',
-            '/docs/getting-started/what-is-flowmcp/',
-            '/docs/schemas/tags-reference/',
+            '/about/for-decision-makers/',
             '/blog/',
             '/schemas/',
         ]
