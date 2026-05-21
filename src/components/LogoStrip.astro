@@ -1,0 +1,108 @@
+---
+// LogoStrip — "Connects to" Logo-Strip (PRD-09, Memo 045 REV-14 Punkt 3)
+// Pencil-Anker: Frame Gdy0k Landing Desktop v2 Dark
+const providers = [
+    { label: 'Etherscan',    icon: '⟠' },
+    { label: 'BMI / TBA8',   icon: '🏛' },
+    { label: 'SQLite',       icon: '🗃' },
+    { label: 'GTFS',         icon: '🚇' },
+    { label: 'CKAN',         icon: '📊' },
+    { label: 'Moralis',      icon: '∞' },
+]
+---
+
+<div class="logo-strip">
+    <span class="logo-strip__label">Connects to</span>
+    <ul class="logo-strip__list">
+        {providers.map((p) => (
+            <li class="logo-strip__item">
+                <span class="logo-strip__icon" aria-hidden="true">{p.icon}</span>
+                <span class="logo-strip__name">{p.label}</span>
+            </li>
+        ))}
+        <li class="logo-strip__item logo-strip__item--more">
+            <a href="/docs/schemas/tags-reference/">+ 280 more →</a>
+        </li>
+    </ul>
+</div>
+
+<style>
+.logo-strip {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin: 2rem auto;
+    max-width: 1100px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.logo-strip__label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--group-title);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.logo-strip__list {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.logo-strip__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.9rem;
+    background: var(--bg-canvas);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.logo-strip__icon {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.logo-strip__item--more {
+    background: transparent;
+    border-color: transparent;
+}
+
+.logo-strip__item--more a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.logo-strip__item--more a:hover {
+    filter: brightness(0.85);
+}
+
+@media (max-width: 640px) {
+    .logo-strip {
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .logo-strip__item {
+        padding: 0.4rem 0.7rem;
+        font-size: 13px;
+    }
+}
+</style>

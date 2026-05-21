@@ -1,24 +1,39 @@
 ---
 title: FlowMCP
-description: Making public data accessible to AI agents.
+description: Normalize any data source for AI agents.
 template: splash
 hero:
-  tagline: Normalize any data source and make it usable for AI agents — with schemas, tools, and the MCP protocol
-  image:
-    alt: "FlowMCP — AI agents with real data, 4 sources, one answer"
-    file: ../../assets/hero-chat.png
+  tagline: "288 open data sources. 1,534 AI-callable tools. GitHub-native, MIT-licensed, multilingual EN/DE."
   actions:
-    - text: Read Docs
-      link: /introduction/about/
+    - text: Read the Docs
+      link: /docs/getting-started/what-is-flowmcp/
       icon: right-arrow
+      variant: primary
+    - text: Ask FlowMCP GPT
+      link: https://chatgpt.com/
+      icon: external
+      variant: secondary
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
+import LogoStrip from '../../components/LogoStrip.astro';
+import StatsBar from '../../components/StatsBar.astro';
 
-<p style="text-align:center; font-size:14px; color:#8b949e; margin-top:-0.5rem;">
-  Open source · MIT · GitHub-native · No vendor lock-in<br/>
-  <span style="color:#79c0ff; font-size:12px; font-weight:500;">Used at Berlin Mobility Hackathon 2026 · DB InfraGO</span>
-</p>
+<div style="text-align:center; margin-top:-1.5rem; margin-bottom:2.5rem;">
+  <h1 style="font-size:clamp(2rem, 5vw, 3.5rem); font-weight:800; color:var(--text-primary); margin-bottom:1rem; line-height:1.1;">
+    Normalize any data source<br/>for AI agents.
+  </h1>
+  <p style="font-size:14px; color:var(--text-inactive); margin-top:1.5rem; line-height:1.6;">
+    Open source · MIT · GitHub-native · No vendor lock-in
+  </p>
+  <p style="font-size:12px; color:var(--accent); font-weight:500; margin-top:0.25rem;">
+    Used at Berlin Mobility Hackathon 2026 · DB InfraGO
+  </p>
+</div>
+
+<LogoStrip />
+
+<StatsBar />
 
 ## What is this?
 
