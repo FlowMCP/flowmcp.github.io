@@ -53,9 +53,23 @@ html {
 
 header.header {
     background: var(--bg-card);
-    border-bottom: 1px solid var(--border);
+    border-bottom: none;
     height: 64px;
     padding: 0 1rem;
+}
+
+/* Kill any stray horizontal lines on Landing (Pencil has clean canvas, no separators) */
+body:has(.pencil-hero) hr,
+body:has(.pencil-hero) .content-panel + .content-panel,
+body:has(.pencil-hero) .main-pane > hr {
+    display: none !important;
+}
+
+/* Starlight content-panel separator-border removed on Splash */
+.sl-container > hr,
+main > hr,
+.content-panel hr:first-child {
+    display: none !important;
 }
 
 /* Logo-Min-Spacing 12px (Regel 11) */
