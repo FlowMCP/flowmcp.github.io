@@ -2,6 +2,9 @@
 title: How It Works
 description: "FlowMCP architecture and data flow from schema to AI tool"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Getting Started</span>
+<!-- PAGEFIND-META-END -->
 
 ## Architecture Overview
 

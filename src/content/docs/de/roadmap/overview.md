@@ -2,6 +2,9 @@
 title: Roadmap
 description: Wohin FlowMCP sich entwickelt — aktueller Status und naechste Meilensteine.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Roadmap</span>
+<!-- PAGEFIND-META-END -->
 
 ## Oeffentliche Schemas ✅
 

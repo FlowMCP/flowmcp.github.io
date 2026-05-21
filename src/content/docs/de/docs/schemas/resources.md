@@ -2,6 +2,9 @@
 title: Resources
 description: "Lokale SQLite-Datenbanken als abfragbare MCP Resources fuer Massendaten, Open Data und Offline-Zugriff buendeln"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
 
 Resources liefern lokale, deterministische Daten via SQLite. Im Gegensatz zu Tools (die Remote-REST-APIs aufrufen) fragen Resources lokale Datenbanken ab. Sie sind ideal fuer per Bulk-Download bezogene Open Data wie Handelsregister, Fahrplaene und Sanktionslisten.
 

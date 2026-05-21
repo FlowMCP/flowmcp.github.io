@@ -2,6 +2,9 @@
 title: Troubleshooting
 description: Common issues and solutions for FlowMCP
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Reference</span>
+<!-- PAGEFIND-META-END -->
 
 Solutions to common issues when working with FlowMCP schemas, servers, and integrations.
 

@@ -2,6 +2,9 @@
 title: Overview
 description: "FlowMCP schemas define how data sources become MCP-compatible tools — one .mjs file per provider"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
 
 A schema is a single `.mjs` file that wraps a data source for AI agents. Each schema declares its tools, resources, prompts, and skills in a static `main` export. An optional `handlers` export adds response transformation.
 

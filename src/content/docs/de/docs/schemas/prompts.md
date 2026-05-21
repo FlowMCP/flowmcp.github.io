@@ -2,6 +2,9 @@
 title: Prompts
 description: "Erklaerende Namespace-Beschreibungen hinzufuegen, die KI-Agenten beibringen, wie sie deine Tools effektiv nutzen"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
 
 Prompts sind erklaerende Texte, die einem Namespace zugeordnet sind. Sie bringen KI-Agenten bei, wie die Tools eines Providers zusammenarbeiten -- Paginierungs-Muster, Fehlercodes, Rate Limits, Endpoint-Kombination. Prompts **erklaeren**, sie **instruieren** nicht (dafuer sind [Skills](/de/docs/schemas/skills/) da).
 

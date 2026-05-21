@@ -2,6 +2,9 @@
 title: CLI Reference
 description: Complete FlowMCP CLI command reference
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Reference</span>
+<!-- PAGEFIND-META-END -->
 
 The FlowMCP CLI is a command-line tool for developing, validating, and managing FlowMCP schemas. It handles schema imports, group management, live API testing, migration, and can run as an MCP server for AI agent integration.
 

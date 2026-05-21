@@ -2,6 +2,9 @@
 title: Examples
 description: Practical FlowMCP schema examples for common patterns
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Guides</span>
+<!-- PAGEFIND-META-END -->
 
 These examples demonstrate the four most common FlowMCP schema patterns, from the simplest possible schema to multi-step async workflows. All examples use the v4.0.0 format.
 

@@ -2,6 +2,9 @@
 title: Uebersicht
 description: "FlowMCP-Schemas definieren, wie Datenquellen zu MCP-kompatiblen Tools werden — eine .mjs-Datei pro Provider"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
 
 Ein Schema ist eine einzelne `.mjs`-Datei, die eine Datenquelle fuer KI-Agenten kapselt. Jedes Schema deklariert seine Tools, Resources, Prompts und Skills in einem statischen `main` Export. Ein optionaler `handlers` Export ergaenzt Antwort-Transformation.
 

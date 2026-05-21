@@ -2,6 +2,9 @@
 title: "Groups & Skills"
 description: "FlowMCP v4.0.0 cherry-pick groups with integrity hashes and skills for multi-tool composition"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 Groups let you create named collections of specific tools, resources, and skills from across multiple schemas. Skills attach reusable AI agent workflows to groups, guiding AI agents through multi-step tasks.
 

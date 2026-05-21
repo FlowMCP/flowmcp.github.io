@@ -2,6 +2,9 @@
 title: "Preload"
 description: "FlowMCP v2.0.0 preload and caching — optional route-level caching for static and slow-changing datasets"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 The optional `preload` field on routes signals that the response is static or slow-changing and that the runtime may cache it locally. This avoids redundant API calls for data that rarely changes.
 

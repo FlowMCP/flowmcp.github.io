@@ -385,6 +385,16 @@ dialog .pagefind-ui {
     background: transparent !important;
 }
 
+/* Section-Tag fuer Search-Treffer (PRD-05) */
+.pagefind-section-tag {
+    font-size: 11px;
+    color: var(--text-inactive);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 0 0 4px;
+    font-weight: 500;
+}
+
 /* ============ HERO ============ */
 
 /* Hide Starlight Splash auto-h1 + .hero ONLY on Landing — we use our own <Hero /> component */

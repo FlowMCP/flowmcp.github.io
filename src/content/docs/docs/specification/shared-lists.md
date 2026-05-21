@@ -2,6 +2,9 @@
 title: "Shared Lists"
 description: "FlowMCP v2.0.0 shared lists — reusable value sets for consistent enum values across schemas"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 Shared lists eliminate duplication of common value sets across schemas. Instead of every Etherscan schema maintaining its own chain list, they reference a single `evmChains` shared list that is injected at load-time.
 

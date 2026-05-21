@@ -2,6 +2,9 @@
 title: Skills
 description: "Wiederverwendbare mehrstufige Workflow-Anweisungen mit typisierten Eingaben, Tool-Abhaengigkeiten und modellspezifischem Testing definieren"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
 
 Skills sind instruktive mehrstufige Workflows, die in ein Schema eingebettet sind. Im Gegensatz zu Prompts (die Kontext erklaeren) **instruieren** Skills -- sie sagen einem LLM genau, was zu tun ist, Schritt fuer Schritt. Jeder Skill deklariert seine Tool-Abhaengigkeiten, definiert typisierte Eingabeparameter und erfasst das Modell, mit dem er getestet wurde.
 

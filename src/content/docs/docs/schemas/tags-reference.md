@@ -2,6 +2,9 @@
 title: Standard Tags Reference
 description: Categorization tags for FlowMCP schemas — used in tag-filter routing and discovery
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
 
 Standard tags categorize schemas for discovery and filtering. Each tag belongs to a cluster (semantic group). Schema authors set `tags: [...]` in `main` using these standard slugs.
 

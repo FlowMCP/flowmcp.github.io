@@ -2,6 +2,9 @@
 title: Quickstart
 description: "Erstelle dein erstes FlowMCP-Schema und rufe eine API in 5 Minuten auf"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Getting Started</span>
+<!-- PAGEFIND-META-END -->
 
 ## Voraussetzungen
 

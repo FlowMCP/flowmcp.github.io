@@ -2,6 +2,9 @@
 title: "Schema Format"
 description: "FlowMCP v4.0.0 schema file structure — the two-export pattern, tool definitions, resources, skills, naming conventions, and constraints"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 A FlowMCP schema is a `.mjs` file with **two separate named exports**: a static `main` block and an optional `handlers` factory function. This separation enables integrity hashing, security scanning, and dependency injection.
 

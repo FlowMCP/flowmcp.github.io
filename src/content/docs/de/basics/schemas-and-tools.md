@@ -2,6 +2,9 @@
 title: Schemas und Tools
 description: Was ein Schema ist, was es enthaelt, und wie daraus Tools werden die jede KI nutzen kann.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Basics</span>
+<!-- PAGEFIND-META-END -->
 
 ## Was ist ein Schema?
 

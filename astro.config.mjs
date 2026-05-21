@@ -42,6 +42,7 @@ export default defineConfig({
                 PageTitle: './src/components/PageTitleWithBreadcrumb.astro',
                 SiteTitle: './src/components/SiteTitleCustom.astro',
                 Head: './src/components/Head.astro',
+                Search: './src/components/SearchCustom.astro',
             },
             social: [
                 { icon: 'github', label: 'GitHub', href: 'https://github.com/flowmcp' },

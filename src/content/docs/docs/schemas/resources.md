@@ -2,6 +2,9 @@
 title: Resources
 description: "Bundle local SQLite databases as queryable MCP resources for bulk data, open data, and offline access"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
 
 Resources provide local, deterministic data via SQLite. Unlike tools (which call remote REST APIs), resources query local databases. They are perfect for bulk-downloaded open data such as company registers, transit schedules, and sanctions lists.
 

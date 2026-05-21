@@ -2,6 +2,9 @@
 title: Agents und Architekturen
 description: Was ein Agent ist, wie der Agentic Loop funktioniert, drei Nutzungsarchitekturen und warum Elicitation so wichtig ist.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Basics</span>
+<!-- PAGEFIND-META-END -->
 
 ## Wie Tools ausgewaehlt werden
 

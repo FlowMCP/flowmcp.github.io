@@ -2,6 +2,9 @@
 title: MCP Server
 description: FlowMCP als MCP-Server betreiben fuer die Integration mit Claude Desktop, Cursor und anderen KI-Tools
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Usage</span>
+<!-- PAGEFIND-META-END -->
 
 ## Was ist MCP?
 

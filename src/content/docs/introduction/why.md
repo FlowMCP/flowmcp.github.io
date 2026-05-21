@@ -2,6 +2,9 @@
 title: Why We Do This
 description: Our convictions — from the AI internet to open protocols, democratic participation, and energy efficiency.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Introduction</span>
+<!-- PAGEFIND-META-END -->
 
 ## From the Web Browser Internet to the AI Internet
 

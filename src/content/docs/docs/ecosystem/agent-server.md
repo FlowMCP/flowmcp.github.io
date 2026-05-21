@@ -2,6 +2,9 @@
 title: MCP Agent Server
 description: Deploy agent-powered MCP tools with FlowMCP schemas
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Ecosystem</span>
+<!-- PAGEFIND-META-END -->
 
 The [MCP Agent Server](https://github.com/FlowMCP/mcp-agent-server) is an MCP server where each tool is backed by an AI agent loop. When an AI client calls a tool, the server starts an LLM agent that iteratively calls FlowMCP schema tools to solve the problem and returns a structured answer.
 

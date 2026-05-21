@@ -2,6 +2,9 @@
 title: Prompts
 description: "Add explanatory namespace descriptions that teach AI agents how to use your tools effectively"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
 
 Prompts are explanatory texts scoped to a namespace. They teach AI agents how a provider's tools work together -- pagination patterns, error codes, rate limits, combining endpoints. Prompts **explain**, they don't **instruct** (that's what [Skills](/docs/schemas/skills/) do).
 

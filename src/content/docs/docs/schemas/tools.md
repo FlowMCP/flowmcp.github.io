@@ -2,6 +2,9 @@
 title: Tools
 description: "Define REST API endpoints as declarative MCP tools with parameters, validation, and handlers"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
 
 Tools wrap REST API endpoints. Each tool maps to one HTTP request. Schemas are `.mjs` files with two named exports: a static `main` block and an optional `handlers` factory function.
 

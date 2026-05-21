@@ -2,6 +2,9 @@
 title: Agents-Uebersicht
 description: Tools mehrerer Provider zu zweckgerichteten KI-Agents mit System-Prompts, Skills und Tests zusammenstellen
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs</span>
+<!-- PAGEFIND-META-END -->
 
 Agents sind zweckgerichtete Kompositionen, die Tools mehrerer Provider in einer einzigen, testbaren Einheit buendeln. Waehrend einzelne Schemas eine einzelne API wrappen, kombinieren Agents die richtigen Tools fuer eine bestimmte Aufgabe -- zum Beispiel koennte ein Crypto-Research-Agent gleichzeitig von CoinGecko, Etherscan und DeFi Llama abrufen.
 

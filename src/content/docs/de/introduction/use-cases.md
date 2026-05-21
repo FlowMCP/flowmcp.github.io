@@ -2,6 +2,9 @@
 title: Use Cases
 description: Konkrete Beispiele, wie mehrere Datenquellen durch einen einzigen Prompt zu nuetzlichen Antworten werden.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Introduction</span>
+<!-- PAGEFIND-META-END -->
 
 ## Wie es funktioniert
 

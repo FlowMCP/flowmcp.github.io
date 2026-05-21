@@ -12,6 +12,10 @@ For a brief index, see: https://flowmcp.github.io/llms.txt
 # Agents Overview
 /docs/agents/overview
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs</span>
+<!-- PAGEFIND-META-END -->
+
 Agents are purpose-driven compositions that bundle tools from multiple providers into a single, testable unit. Where individual schemas wrap a single API, agents combine the right tools for a specific task -- for example, a crypto research agent might pull from CoinGecko, Etherscan, and DeFi Llama simultaneously.
 
 :::note
@@ -184,6 +188,10 @@ The `agent.mjs` file is the entry point. Prompts and skills are referenced by re
 
 # MCP Agent Server
 /docs/ecosystem/agent-server
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Ecosystem</span>
+<!-- PAGEFIND-META-END -->
 
 The MCP Agent Server (https://github.com/FlowMCP/mcp-agent-server) is an MCP server where each tool is backed by an AI agent loop. When an AI client calls a tool, the server starts an LLM agent that iteratively calls FlowMCP schema tools to solve the problem and returns a structured answer.
 
@@ -429,6 +437,10 @@ The x402 middleware intercepts requests before they reach the agent server. If p
 # AgentProbe
 /docs/ecosystem/agentprobe
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Ecosystem</span>
+<!-- PAGEFIND-META-END -->
+
 AgentProbe (https://github.com/FlowMCP/mcp-agent-validator) is a web-based multi-protocol validator for AI agent endpoints. Enter a URL and get instant assessment across eight protocol layers.
 
 **Live demo:** agentprobe.xyz (https://agentprobe.xyz)
@@ -591,6 +603,10 @@ AgentProbe builds on the FlowMCP validator ecosystem:
 
 # Schema Library
 /docs/ecosystem/schema-library
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Ecosystem</span>
+<!-- PAGEFIND-META-END -->
 
 The FlowMCP Schema Library (https://github.com/FlowMCP/flowmcp-schemas) is a curated collection of 187+ production-ready schemas covering DeFi, blockchain analytics, utilities, and more. Each schema follows the FlowMCP v2.0.0 specification and is validated, tested, and ready to use.
 
@@ -798,6 +814,10 @@ Schemas that fail validation or testing will not be merged. Run both `flowmcp va
 # x402 Payment Protocol
 /docs/ecosystem/x402
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Ecosystem</span>
+<!-- PAGEFIND-META-END -->
+
 The x402 protocol (https://www.x402.org/) brings HTTP status code 402 (Payment Required) to life as a machine-readable payment protocol for APIs. The x402-mcp-validator (https://github.com/FlowMCP/x402-mcp-validator) validates MCP servers for x402 compliance -- connecting to servers, discovering tools, probing for payment requirements, and validating payment options against the spec.
 
 ## How x402 Works with MCP
@@ -948,6 +968,10 @@ Each validation message includes an error code, severity (ERROR, WARNING, INFO),
 
 # How It Works
 /docs/getting-started/how-it-works
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Getting Started</span>
+<!-- PAGEFIND-META-END -->
 
 ## Architecture Overview
 
@@ -1178,6 +1202,10 @@ For the full specification including all validation rules, parameter formats, an
 # Installation
 /docs/getting-started/installation
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Getting Started</span>
+<!-- PAGEFIND-META-END -->
+
 ## Prerequisites
 
 - **Node.js 22+** — required for ES module support and modern JavaScript features
@@ -1346,6 +1374,10 @@ Understand the architecture and data flow. See How It Works.
 # Quickstart
 /docs/getting-started/quickstart
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Getting Started</span>
+<!-- PAGEFIND-META-END -->
+
 ## Prerequisites
 
 - **Node.js 22+** — check with `node --version`
@@ -1501,6 +1533,10 @@ Real-world schema examples for common APIs. See Examples.
 # What is FlowMCP?
 /docs/getting-started/what-is-flowmcp
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Getting Started</span>
+<!-- PAGEFIND-META-END -->
+
 ## The Problem
 
 AI agents need tools — "get crypto prices", "check wallet balances", "query open data". But APIs are chaotic: different authentication methods, URL structures, response formats, and rate limits. Every integration requires custom server code, parameter validation, error handling, and response formatting.
@@ -1629,6 +1665,10 @@ Full v4.0.0 specification with all primitives and validation rules. See Specific
 
 # Examples
 /docs/guides/examples
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Guides</span>
+<!-- PAGEFIND-META-END -->
 
 These examples demonstrate the four most common FlowMCP schema patterns, from the simplest possible schema to multi-step async workflows. All examples use the v4.0.0 format.
 
@@ -2059,6 +2099,10 @@ Async workflow schemas work naturally with AI agents. The agent reads the tool d
 # Schema Creation
 /docs/guides/schema-creation
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Guides</span>
+<!-- PAGEFIND-META-END -->
+
 This guide walks you through creating FlowMCP v4.0.0 schemas. A schema is a `.mjs` file that describes how to interact with a REST API -- what endpoints exist, what parameters they accept, and how responses should be transformed.
 
 ## Prerequisites
@@ -2380,6 +2424,10 @@ Use `flowmcp test single` to verify against the real API. Schema validation alon
 # MCP Server Integration
 /docs/guides/server-integration
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Guides</span>
+<!-- PAGEFIND-META-END -->
+
 FlowMCP schemas can be served as MCP tools through two transport modes: **stdio** for local AI applications like Claude Desktop, and **HTTP/SSE** for remote web applications. This guide covers both approaches.
 
 ## Overview
@@ -2648,6 +2696,10 @@ const result = await toolConfig.func( { chainName: 'ETH' } )
 
 # CLI Reference
 /docs/reference/cli-reference
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Reference</span>
+<!-- PAGEFIND-META-END -->
 
 The FlowMCP CLI is a command-line tool for developing, validating, and managing FlowMCP schemas. It handles schema imports, group management, live API testing, migration, and can run as an MCP server for AI agent integration.
 
@@ -3041,6 +3093,10 @@ Never commit API keys to version control. The `.env` file in `~/.flowmcp/` is yo
 
 # Core API Methods
 /docs/reference/core-methods
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Reference</span>
+<!-- PAGEFIND-META-END -->
 
 Complete reference for all public methods in `flowmcp-core`. Methods are organized by usage category. All methods are static.
 
@@ -3677,6 +3733,10 @@ For MCP server integration, see the Server Integration Guide.
 # Troubleshooting
 /docs/reference/troubleshooting
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Reference</span>
+<!-- PAGEFIND-META-END -->
+
 Solutions to common issues when working with FlowMCP schemas, servers, and integrations.
 
 ## Schema Validation Errors
@@ -4134,6 +4194,10 @@ What actually happens
 # Overview
 /docs/schemas/overview
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
+
 A schema is a single `.mjs` file that wraps a data source for AI agents. Each schema declares its tools, resources, prompts, and skills in a static `main` export. An optional `handlers` export adds response transformation.
 
 FlowMCP v4.0.0 supports four primitives:
@@ -4171,6 +4235,10 @@ Most schemas only need `main`. Add `handlers` when API responses need transforma
 
 # Prompts
 /docs/schemas/prompts
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
 
 Prompts are explanatory texts scoped to a namespace. They teach AI agents how a provider's tools work together -- pagination patterns, error codes, rate limits, combining endpoints. Prompts **explain**, they don't **instruct** (that's what Skills do).
 
@@ -4286,6 +4354,10 @@ All endpoints accept {{input:vsCurrency}} (e.g. "usd", "eur", "btc").`
 
 # Resources
 /docs/schemas/resources
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
 
 Resources provide local, deterministic data via SQLite. Unlike tools (which call remote REST APIs), resources query local databases. They are perfect for bulk-downloaded open data such as company registers, transit schedules, and sanctions lists.
 
@@ -4483,6 +4555,10 @@ See Validation Rules for the complete list.
 # Skills
 /docs/schemas/skills
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
+
 Skills are instructional multi-step workflows embedded in a schema. Unlike Prompts (which explain context), Skills **instruct** -- they tell an LLM exactly what to do, step by step. Each skill declares its tool dependencies, defines typed input parameters, and records the model it was tested with.
 
 :::tip
@@ -4658,6 +4734,10 @@ Unresolved placeholders produce validation warnings (not errors), except for `{{
 # Standard Tags Reference
 /docs/schemas/tags-reference
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
+
 Standard tags categorize schemas for discovery and filtering. Each tag belongs to a cluster (semantic group). Schema authors set `tags: [...]` in `main` using these standard slugs.
 
 ## Tag Catalog
@@ -4717,6 +4797,10 @@ The canonical tag list lives in `src/data/standard-tags.mjs`. The build script p
 
 # Tools
 /docs/schemas/tools
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
 
 Tools wrap REST API endpoints. Each tool maps to one HTTP request. Schemas are `.mjs` files with two named exports: a static `main` block and an optional `handlers` factory function.
 
@@ -5010,6 +5094,10 @@ This example demonstrates: fixed parameters (`module`, `action`), user parameter
 # "Agents"
 /docs/specification/agents
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
+
 Agents are purpose-driven tool compositions that bundle tools from multiple providers for a specific task. They replace the simpler "Groups" concept from v2.0.0 with full manifest definitions including model binding, system prompts, and testable behavior.
 
 :::note
@@ -5119,6 +5207,10 @@ flowmcp list
 # "Catalog"
 /docs/specification/catalog
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
+
 A Catalog is the top-level organizational unit in FlowMCP v3. It is a named directory containing a `registry.json` manifest that describes all shared lists, provider schemas, and agent definitions.
 
 :::note
@@ -5220,6 +5312,10 @@ flowmcp validate-catalog <catalog-directory>
 
 # "Groups & Skills"
 /docs/specification/groups-prompts
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 Groups let you create named collections of specific tools, resources, and skills from across multiple schemas. Skills attach reusable AI agent workflows to groups, guiding AI agents through multi-step tasks.
 
@@ -5434,6 +5530,10 @@ Produce a Markdown document with indicator summary and embedded charts.
 # "ID Schema"
 /docs/specification/id-schema
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
+
 FlowMCP v4.0.0 introduces a unified ID format for referencing any element in the catalog: tools, resources, prompts, and lists.
 
 :::note
@@ -5495,6 +5595,10 @@ Use [[coingecko-com/tool/simplePrice]] to get the price of [[tokenId]].
 
 # "Migration Guide (Historical)"
 /docs/specification/migration
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 The current FlowMCP spec is **v4.0.0**. New schemas should use the v4 format directly — see Schema Format. This page documents the historical upgrade paths for schemas authored against earlier specs.
 
@@ -5670,6 +5774,10 @@ Use `--dry-run` first to preview what changes will be made without modifying any
 
 # "Output Schema"
 /docs/specification/output-schema
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 Output schemas make tool responses predictable. AI clients can know in advance what shape the data will have, enabling structured reasoning without parsing guesswork.
 
@@ -5861,6 +5969,10 @@ flowchart TD
 # "Overview"
 /docs/specification/overview
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
+
 FlowMCP is a deterministic normalization layer that converts heterogeneous web data sources into uniform, AI-consumable tools. The v4.0.0 specification defines how schemas, shared lists, groups, resources, skills, and security constraints work together to produce reliable, verifiable tool catalogs.
 
 :::note
@@ -6005,6 +6117,10 @@ The v4.0.0 release extends FlowMCP from a tool-only framework to support all thr
 
 # "Parameters"
 /docs/specification/parameters
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 Each parameter in a FlowMCP tool describes **where** a value is placed in the API request (`position`) and **how** it is validated (`z`). Both blocks are required.
 
@@ -6280,6 +6396,10 @@ API keys are injected via the `{{SERVER_PARAM:KEY_NAME}}` syntax:
 # "Preload"
 /docs/specification/preload
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
+
 The optional `preload` field on routes signals that the response is static or slow-changing and that the runtime may cache it locally. This avoids redundant API calls for data that rarely changes.
 
 :::note
@@ -6443,6 +6563,10 @@ Route tests always bypass the cache to ensure they test the live API. The `--no-
 # "Prompt Architecture"
 /docs/specification/prompt-architecture
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
+
 FlowMCP v4.0.0 introduces a two-tier prompt architecture that separates model-neutral guidance from model-specific workflows. This replaces the simpler "Group Prompts" system from v2.
 
 :::note
@@ -6527,6 +6651,10 @@ export const prompt = {
 
 # "Resources"
 /docs/specification/resources
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 Resources provide fast, local read-only data access through SQLite databases. Unlike tools that make HTTP requests to external APIs, resources query local `.db` files using `sql.js` (a pure JavaScript/WASM SQLite implementation). Resources are the second MCP primitive supported by FlowMCP v4.0.0.
 
@@ -6700,6 +6828,10 @@ See Validation Rules for the complete list.
 
 # "Tests"
 /docs/specification/route-tests
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 Tests are executable examples embedded in each tool and resource definition. They serve three purposes: documenting what a tool can do, providing input data to capture real API responses, and generating accurate output schemas from those responses.
 
@@ -6929,6 +7061,10 @@ capture/
 
 # "Schema Format"
 /docs/specification/schema-format
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 A FlowMCP schema is a `.mjs` file with **two separate named exports**: a static `main` block and an optional `handlers` factory function. This separation enables integrity hashing, security scanning, and dependency injection.
 
@@ -7193,6 +7329,10 @@ This example demonstrates: two separate exports, fixed parameters, user paramete
 
 # "Security Model"
 /docs/specification/security
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 FlowMCP enforces a layered security model that prevents schema files from accessing the network, filesystem, or process environment. All potentially dangerous operations are restricted to the trusted core runtime. Dependencies are injected through a factory function pattern, and external libraries are gated by an allowlist.
 
@@ -7461,6 +7601,10 @@ All violations in a single file are reported together — the scan does not stop
 
 # "Shared Lists"
 /docs/specification/shared-lists
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 Shared lists eliminate duplication of common value sets across schemas. Instead of every Etherscan schema maintaining its own chain list, they reference a single `evmChains` shared list that is injected at load-time.
 
@@ -7732,6 +7876,10 @@ _lists/
 # "Skills"
 /docs/specification/skills
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
+
 Skills are reusable AI agent instructions that compose tools and resources into multi-step workflows. They map to the MCP **Prompts** primitive and are declared in the `skills` key of a schema's `main` export. Each skill is stored as a separate `.mjs` file alongside the schema.
 
 :::note
@@ -7976,6 +8124,10 @@ Schema-level skills (this page) are part of the schema and travel with it. Group
 # "Tests"
 /docs/specification/tests
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
+
 FlowMCP v4.0.0 requires a minimum of 3 tests per tool, resource query, and agent. Tests serve as both validation and documentation of expected behavior.
 
 :::note
@@ -8045,6 +8197,10 @@ flowmcp test project
 
 # "Validation Rules"
 /docs/specification/validation-rules
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 FlowMCP enforces validation rules when loading schemas, shared lists, groups, resources, and skills. Each rule has a code, severity level, and description. Run validation with `flowmcp validate <schema-path>`.
 
@@ -8309,6 +8465,10 @@ See Groups & Skills for skill format details.
 # CLI Usage
 /docs/usage/cli
 
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Usage</span>
+<!-- PAGEFIND-META-END -->
+
 ## Installation
 
 ```bash
@@ -8430,6 +8590,10 @@ Never commit API keys to version control. The `.env` file in `~/.flowmcp/` is yo
 
 # MCP Server
 /docs/usage/mcp-server
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Usage</span>
+<!-- PAGEFIND-META-END -->
 
 ## What is MCP?
 

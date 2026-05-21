@@ -2,6 +2,9 @@
 title: "Output Schema"
 description: "FlowMCP v2.0.0 output schemas — declare expected response shapes for predictable AI tool responses"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 Output schemas make tool responses predictable. AI clients can know in advance what shape the data will have, enabling structured reasoning without parsing guesswork.
 

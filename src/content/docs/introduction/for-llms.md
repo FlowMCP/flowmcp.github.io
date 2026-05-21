@@ -2,6 +2,9 @@
 title: For LLMs
 description: Machine-readable documentation for AI agents and LLMs.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Introduction</span>
+<!-- PAGEFIND-META-END -->
 
 ## Mini-Skill
 

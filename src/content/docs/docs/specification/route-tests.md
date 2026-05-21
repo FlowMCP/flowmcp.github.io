@@ -2,6 +2,9 @@
 title: "Tests"
 description: "FlowMCP v4.0.0 tests — executable documentation for tools and resources, response capture lifecycle, and output schema generation"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 Tests are executable examples embedded in each tool and resource definition. They serve three purposes: documenting what a tool can do, providing input data to capture real API responses, and generating accurate output schemas from those responses.
 

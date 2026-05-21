@@ -2,6 +2,9 @@
 title: Haeufige Fragen (FAQ)
 description: Antworten auf die wichtigsten Fragen zu Open Data Enabled AI.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Introduction</span>
+<!-- PAGEFIND-META-END -->
 
 ## Bietet ihr Daten an?
 

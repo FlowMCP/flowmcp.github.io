@@ -2,6 +2,9 @@
 title: Installation
 description: "FlowMCP Core und CLI fuer die Schema-Entwicklung installieren"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Getting Started</span>
+<!-- PAGEFIND-META-END -->
 
 ## Voraussetzungen
 

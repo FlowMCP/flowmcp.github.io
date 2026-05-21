@@ -2,6 +2,9 @@
 title: Community Hub (Coming Soon)
 description: How the schema repo becomes a community platform — with a 5-stage pipeline, quality standards, and the principle "Validated once, for all".
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Roadmap</span>
+<!-- PAGEFIND-META-END -->
 
 :::caution[In Planning]
 The Community Hub describes our vision for the next phase. Technical implementation has not started yet — but the architecture and processes are thought through and documented.

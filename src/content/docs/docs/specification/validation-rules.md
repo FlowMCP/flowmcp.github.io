@@ -2,6 +2,9 @@
 title: "Validation Rules"
 description: "FlowMCP v4.0.0 validation rules — rules across categories with severity levels and error codes"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 FlowMCP enforces validation rules when loading schemas, shared lists, groups, resources, and skills. Each rule has a code, severity level, and description. Run validation with `flowmcp validate <schema-path>`.
 

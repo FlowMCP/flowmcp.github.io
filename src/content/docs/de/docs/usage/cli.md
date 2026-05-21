@@ -2,6 +2,9 @@
 title: CLI-Nutzung
 description: FlowMCP-Tools von der Kommandozeile aus suchen, hinzufuegen und aufrufen
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Usage</span>
+<!-- PAGEFIND-META-END -->
 
 ## Installation
 

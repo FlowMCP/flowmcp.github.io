@@ -2,6 +2,9 @@
 title: What is FlowMCP?
 description: "Schema-driven tool orchestration for AI agents — transform REST APIs, local databases, and workflows into MCP-compatible tools"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Getting Started</span>
+<!-- PAGEFIND-META-END -->
 
 ## The Problem
 

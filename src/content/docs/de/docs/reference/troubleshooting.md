@@ -2,6 +2,9 @@
 title: Fehlerbehebung
 description: Haeufige Probleme und Loesungen fuer FlowMCP
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Reference</span>
+<!-- PAGEFIND-META-END -->
 
 Loesungen fuer haeufige Probleme bei der Arbeit mit FlowMCP-Schemas, Servern und Integrationen.
 

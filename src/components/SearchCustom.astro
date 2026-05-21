@@ -1,0 +1,83 @@
+---
+// Search Override — Pagefind-UI mit Section-Tag (PRD-05, REV-05 Kap. 5)
+// Uses pagefind.search() API to look up section meta for each visible result.
+import Default from '@astrojs/starlight/components/Search.astro'
+---
+
+<Default />
+
+<script is:inline>
+    ( function() {
+        let pagefindLib = null
+        const loadLib = async () => {
+            if( pagefindLib ) { return pagefindLib }
+            try {
+                pagefindLib = await import( '/pagefind/pagefind.js' )
+                await pagefindLib.options( {} )
+                return pagefindLib
+            } catch( e ) { return null }
+        }
+
+        const sectionByUrl = {}
+
+        const insertTag = ( result, sectionText ) => {
+            if( result.dataset.sectionInjected === 'true' ) { return }
+            const titleInner = result.querySelector( '.pagefind-ui__result-inner > .pagefind-ui__result-title' )
+            const target = titleInner || result.querySelector( '.pagefind-ui__result-title' )
+            if( !target ) { return }
+            const tag = document.createElement( 'div' )
+            tag.className = 'pagefind-section-tag'
+            tag.textContent = sectionText
+            target.parentElement.insertBefore( tag, target )
+            result.dataset.sectionInjected = 'true'
+        }
+
+        const resolveSection = async ( href ) => {
+            if( sectionByUrl[ href ] !== undefined ) { return sectionByUrl[ href ] }
+            const lib = await loadLib()
+            if( !lib ) { sectionByUrl[ href ] = null; return null }
+            try {
+                const search = await lib.search( href.split( '/' ).filter( Boolean ).slice( -1 )[ 0 ] || '' )
+                const datas = await Promise.all( search.results.map( ( r ) => r.data() ) )
+                const found = datas.find( ( d ) => d.url === href || d.url + '/' === href || d.url === href + '/' )
+                if( found && found.meta && found.meta.section ) {
+                    sectionByUrl[ href ] = found.meta.section
+                    return sectionByUrl[ href ]
+                }
+            } catch( e ) {}
+            sectionByUrl[ href ] = null
+            return null
+        }
+
+        const processResults = async () => {
+            const results = document.querySelectorAll( '.pagefind-ui__result' )
+            await Promise.all( Array.from( results ).map( async ( result ) => {
+                if( result.dataset.sectionInjected === 'true' ) { return }
+                const link = result.querySelector( '.pagefind-ui__result-link' )
+                if( !link ) { return }
+                const href = link.getAttribute( 'href' )
+                if( !href ) { return }
+                const section = await resolveSection( href )
+                if( section ) { insertTag( result, section ) }
+            } ) )
+        }
+
+        let scheduled = false
+        const schedule = () => {
+            if( scheduled ) { return }
+            scheduled = true
+            setTimeout( () => {
+                scheduled = false
+                processResults()
+            }, 80 )
+        }
+
+        const wire = () => {
+            const observer = new MutationObserver( () => schedule() )
+            observer.observe( document.body, { childList: true, subtree: true } )
+        }
+
+        document.addEventListener( 'DOMContentLoaded', wire )
+        document.addEventListener( 'astro:page-load', wire )
+    } )()
+</script>

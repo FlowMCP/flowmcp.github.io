@@ -2,6 +2,9 @@
 title: Warum wir das machen
 description: Unsere Ueberzeugungen — vom KI-Internet ueber offene Protokolle und demokratische Teilhabe bis zur Energieeffizienz.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Introduction</span>
+<!-- PAGEFIND-META-END -->
 
 ## Vom Webbrowser-Internet zum KI-Internet
 

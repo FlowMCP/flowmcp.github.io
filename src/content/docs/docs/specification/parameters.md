@@ -2,6 +2,9 @@
 title: "Parameters"
 description: "FlowMCP v4.0.0 parameter format — position block, Z block validation, shared list interpolation, and API key injection"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 Each parameter in a FlowMCP tool describes **where** a value is placed in the API request (`position`) and **how** it is validated (`z`). Both blocks are required.
 

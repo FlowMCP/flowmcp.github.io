@@ -5,6 +5,7 @@
     "scripts": {
         "dev": "astro dev",
         "start": "astro dev",
+        "prebuild": "node scripts/inject-pagefind-meta.mjs",
         "build": "node scripts/generate-llms-txt.mjs && astro build",
         "preview": "astro preview",
         "astro": "astro",

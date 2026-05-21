@@ -2,6 +2,9 @@
 title: "ID Schema"
 description: "Unified namespace/type/name format for referencing tools, resources, and prompts"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 FlowMCP v4.0.0 introduces a unified ID format for referencing any element in the catalog: tools, resources, prompts, and lists.
 

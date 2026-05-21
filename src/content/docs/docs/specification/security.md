@@ -2,6 +2,9 @@
 title: "Security Model"
 description: "FlowMCP v2.0.0 security — trust boundaries, zero-import policy, static security scan, and library allowlist"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 FlowMCP enforces a layered security model that prevents schema files from accessing the network, filesystem, or process environment. All potentially dangerous operations are restricted to the trusted core runtime. Dependencies are injected through a factory function pattern, and external libraries are gated by an allowlist.
 

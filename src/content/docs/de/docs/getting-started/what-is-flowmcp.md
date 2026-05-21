@@ -2,6 +2,9 @@
 title: Was ist FlowMCP?
 description: "Schema-basierte Tool-Orchestrierung fuer KI-Agenten — REST APIs, lokale Datenbanken und Workflows in MCP-kompatible Tools transformieren"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Getting Started</span>
+<!-- PAGEFIND-META-END -->
 
 ## Das Problem
 

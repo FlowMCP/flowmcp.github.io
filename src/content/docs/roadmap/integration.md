@@ -2,6 +2,9 @@
 title: Integration (Coming Soon)
 description: MVP 2 — How our schemas reach existing clients, why we chose OpenClaw and CLI, and what this means for users.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Roadmap</span>
+<!-- PAGEFIND-META-END -->
 
 :::caution[In Planning]
 This page describes the planned next phase. The architecture is designed, technical implementation has not started yet.

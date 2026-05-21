@@ -2,6 +2,9 @@
 title: "Agents"
 description: "Agent manifests, model binding, system prompts, tool cherry-picking, and integrity verification"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 Agents are purpose-driven tool compositions that bundle tools from multiple providers for a specific task. They replace the simpler "Groups" concept from v2.0.0 with full manifest definitions including model binding, system prompts, and testable behavior.
 

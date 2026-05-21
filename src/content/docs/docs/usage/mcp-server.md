@@ -2,6 +2,9 @@
 title: MCP Server
 description: Run FlowMCP as an MCP server to integrate with Claude Desktop, Cursor, and other AI tools
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Usage</span>
+<!-- PAGEFIND-META-END -->
 
 ## What is MCP?
 

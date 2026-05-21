@@ -2,6 +2,9 @@
 title: Standard-Tags-Referenz
 description: Kategorisierungs-Tags fuer FlowMCP-Schemas — verwendet im Tag-Filter-Routing und in der Discovery
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
 
 Standard-Tags kategorisieren Schemas fuer Discovery und Filterung. Jedes Tag gehoert zu einem Cluster (semantische Gruppe). Schema-Autoren setzen `tags: [...]` in `main` mit diesen Standard-Slugs.
 

@@ -2,6 +2,9 @@
 title: Skills
 description: "Define reusable multi-step workflow instructions with typed inputs, tool dependencies, and model-specific testing"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Schemas</span>
+<!-- PAGEFIND-META-END -->
 
 Skills are instructional multi-step workflows embedded in a schema. Unlike Prompts (which explain context), Skills **instruct** -- they tell an LLM exactly what to do, step by step. Each skill declares its tool dependencies, defines typed input parameters, and records the model it was tested with.
 

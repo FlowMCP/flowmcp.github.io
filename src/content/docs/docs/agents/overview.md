@@ -2,6 +2,9 @@
 title: Agents Overview
 description: Compose tools from multiple providers into purpose-driven AI agents with system prompts, skills, and tests
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs</span>
+<!-- PAGEFIND-META-END -->
 
 Agents are purpose-driven compositions that bundle tools from multiple providers into a single, testable unit. Where individual schemas wrap a single API, agents combine the right tools for a specific task -- for example, a crypto research agent might pull from CoinGecko, Etherscan, and DeFi Llama simultaneously.
 

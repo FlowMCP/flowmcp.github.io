@@ -2,6 +2,9 @@
 title: CLI Usage
 description: Search, add, and call FlowMCP tools from the command line
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Usage</span>
+<!-- PAGEFIND-META-END -->
 
 ## Installation
 

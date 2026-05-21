@@ -2,6 +2,9 @@
 title: Wie es funktioniert
 description: "FlowMCP-Architektur und Datenfluss vom Schema zum KI-Tool"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Getting Started</span>
+<!-- PAGEFIND-META-END -->
 
 ## Architektur-Ueberblick
 

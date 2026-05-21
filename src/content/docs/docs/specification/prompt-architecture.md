@@ -2,6 +2,9 @@
 title: "Prompt Architecture"
 description: "Two-tier prompt system: Provider-Prompts (model-neutral) and Agent-Prompts (model-specific)"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 FlowMCP v4.0.0 introduces a two-tier prompt architecture that separates model-neutral guidance from model-specific workflows. This replaces the simpler "Group Prompts" system from v2.
 

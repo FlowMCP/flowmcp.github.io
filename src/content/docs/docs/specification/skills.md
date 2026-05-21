@@ -2,6 +2,9 @@
 title: "Skills"
 description: "FlowMCP v4.0.0 skills — reusable AI agent instructions stored as .mjs files, mapping to MCP Prompts"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 Skills are reusable AI agent instructions that compose tools and resources into multi-step workflows. They map to the MCP **Prompts** primitive and are declared in the `skills` key of a schema's `main` export. Each skill is stored as a separate `.mjs` file alongside the schema.
 

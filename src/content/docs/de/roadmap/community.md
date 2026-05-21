@@ -2,6 +2,9 @@
 title: Community Hub (Coming Soon)
 description: Wie aus dem Schema-Repo eine Community-Plattform wird — mit einer 5-Stufen-Pipeline, Qualitaetsstandards und dem Prinzip "Validated once, for all".
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Roadmap</span>
+<!-- PAGEFIND-META-END -->
 
 :::caution[In Planung]
 Der Community Hub beschreibt unsere Vision fuer die naechste Phase. Die technische Umsetzung ist noch nicht gestartet — aber die Architektur und die Prozesse sind durchdacht und dokumentiert.

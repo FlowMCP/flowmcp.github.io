@@ -2,6 +2,9 @@
 title: "Resources"
 description: "FlowMCP v4.0.0 resources — SQLite-based read-only data access with prepared statements and SQL security enforcement"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 Resources provide fast, local read-only data access through SQLite databases. Unlike tools that make HTTP requests to external APIs, resources query local `.db` files using `sql.js` (a pure JavaScript/WASM SQLite implementation). Resources are the second MCP primitive supported by FlowMCP v4.0.0.
 

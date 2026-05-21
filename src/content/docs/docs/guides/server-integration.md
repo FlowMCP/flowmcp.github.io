@@ -2,6 +2,9 @@
 title: MCP Server Integration
 description: Run FlowMCP schemas as an MCP server
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Guides</span>
+<!-- PAGEFIND-META-END -->
 
 FlowMCP schemas can be served as MCP tools through two transport modes: **stdio** for local AI applications like Claude Desktop, and **HTTP/SSE** for remote web applications. This guide covers both approaches.
 

@@ -2,6 +2,9 @@
 title: Roadmap
 description: Where FlowMCP is heading — current status and upcoming milestones.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Roadmap</span>
+<!-- PAGEFIND-META-END -->
 
 ## Public Schemas ✅
 

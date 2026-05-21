@@ -2,6 +2,9 @@
 title: "Tests"
 description: "Tool tests, resource tests, agent tests, and response capture"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 FlowMCP v4.0.0 requires a minimum of 3 tests per tool, resource query, and agent. Tests serve as both validation and documentation of expected behavior.
 

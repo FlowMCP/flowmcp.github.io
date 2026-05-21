@@ -2,6 +2,9 @@
 title: Ueber das Projekt
 description: Was FlowMCP ist, wie es funktioniert und fuer wen es gedacht ist.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Introduction</span>
+<!-- PAGEFIND-META-END -->
 
 ## Das Problem
 

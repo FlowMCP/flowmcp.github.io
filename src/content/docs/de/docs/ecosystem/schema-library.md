@@ -2,6 +2,9 @@
 title: Schema-Bibliothek
 description: 187+ vorgefertigte API-Schemas sofort einsatzbereit
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Ecosystem</span>
+<!-- PAGEFIND-META-END -->
 
 Die [FlowMCP Schema-Bibliothek](https://github.com/FlowMCP/flowmcp-schemas) ist eine kuratierte Sammlung von 187+ produktionsreifen Schemas fuer DeFi, Blockchain-Analytik, Utilities und mehr. Jedes Schema folgt der FlowMCP v2.0.0-Spezifikation und ist validiert, getestet und einsatzbereit.
 

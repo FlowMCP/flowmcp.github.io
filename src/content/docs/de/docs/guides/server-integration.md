@@ -2,6 +2,9 @@
 title: Server-Integration
 description: FlowMCP-Schemas als MCP-Server betreiben
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Guides</span>
+<!-- PAGEFIND-META-END -->
 
 FlowMCP-Schemas koennen als MCP-Tools ueber zwei Transport-Modi bereitgestellt werden: **stdio** fuer lokale KI-Anwendungen wie Claude Desktop und **HTTP/SSE** fuer Remote-Webanwendungen. Diese Anleitung behandelt beide Ansaetze.
 

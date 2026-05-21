@@ -2,6 +2,9 @@
 title: Frequently Asked Questions
 description: Answers to the most common questions about Open Data Enabled AI.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Introduction</span>
+<!-- PAGEFIND-META-END -->
 
 ## Do you provide data?
 

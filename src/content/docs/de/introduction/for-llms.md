@@ -2,6 +2,9 @@
 title: Fuer LLMs
 description: Maschinenlesbare Dokumentation fuer KI-Agenten und LLMs.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Introduction</span>
+<!-- PAGEFIND-META-END -->
 
 ## Dokumentation fuer KI-Agenten
 

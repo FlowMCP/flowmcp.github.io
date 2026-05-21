@@ -2,6 +2,9 @@
 title: Schemas and Tools
 description: What a schema is, what it contains, and how it becomes tools any AI can use.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Basics</span>
+<!-- PAGEFIND-META-END -->
 
 ## What is a Schema?
 

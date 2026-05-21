@@ -2,6 +2,9 @@
 title: AgentProbe
 description: Multi-protocol validation for MCP servers, A2A agents, and x402 endpoints
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Ecosystem</span>
+<!-- PAGEFIND-META-END -->
 
 [AgentProbe](https://github.com/FlowMCP/mcp-agent-validator) is a web-based multi-protocol validator for AI agent endpoints. Enter a URL and get instant assessment across eight protocol layers.
 

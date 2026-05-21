@@ -2,6 +2,9 @@
 title: "Migration Guide (Historical)"
 description: "FlowMCP legacy upgrade paths — v1 to v2 and v2 to v3 migrations"
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Specification</span>
+<!-- PAGEFIND-META-END -->
 
 The current FlowMCP spec is **v4.0.0**. New schemas should use the v4 format directly — see [Schema Format](/docs/specification/schema-format/). This page documents the historical upgrade paths for schemas authored against earlier specs.
 
