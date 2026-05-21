@@ -1,0 +1,19 @@
+---
+// Head Override — serverseitig data-theme=dark + Favicons
+// PRD-08, REV-05 Kap. 8.4 (Chrome-Dark-Mode-Fix)
+import Default from '@astrojs/starlight/components/Head.astro'
+---
+
+<meta name="color-scheme" content="dark" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+<Default><slot /></Default>
+<script is:inline>
+    // Force dark theme — overrides Starlight ThemeProvider auto-detection
+    try { localStorage.setItem( 'starlight-theme', 'dark' ) } catch( e ) {}
+    document.documentElement.setAttribute( 'data-theme', 'dark' )
+    document.documentElement.dataset.theme = 'dark'
+</script>

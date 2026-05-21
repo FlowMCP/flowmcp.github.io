@@ -18,12 +18,7 @@ export default defineConfig({
     integrations: [
         starlight({
             title: 'FlowMCP',
-            favicon: '/favicon.png',
-            logo: {
-                light: './public/logo-light.svg',
-                dark: './public/logo-dark.svg',
-                replacesTitle: true,
-            },
+            favicon: '/favicon.svg',
             defaultLocale: 'root',
             locales: {
                 root: {
@@ -45,6 +40,8 @@ export default defineConfig({
                 MobileMenuToggle: './src/components/MobileMenuToggle.astro',
                 Footer: './src/components/Footer.astro',
                 PageTitle: './src/components/PageTitleWithBreadcrumb.astro',
+                SiteTitle: './src/components/SiteTitleCustom.astro',
+                Head: './src/components/Head.astro',
             },
             social: [
                 { icon: 'github', label: 'GitHub', href: 'https://github.com/flowmcp' },

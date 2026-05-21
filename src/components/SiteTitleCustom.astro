@@ -1,0 +1,41 @@
+---
+// SiteTitle Override — Icon (SVG) + HTML-Text Wordmark
+// PRD-08, REV-05 Kap. 8.3 + 8.4 (Wordmark als HTML-Text, nicht ins SVG eingebrannt)
+const path = Astro.url.pathname
+const isDE = path.startsWith( '/de/' ) || path === '/de'
+const homeHref = isDE ? '/de/' : '/'
+---
+
+<a href={homeHref} class="site-title-link" aria-label="FlowMCP">
+    <img src="/logo.svg" alt="" class="site-title-icon" width="32" height="32" />
+    <span class="site-title-wordmark">FlowMCP</span>
+</a>
+
+<style>
+.site-title-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--text-primary);
+}
+.site-title-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+.site-title-wordmark {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+    line-height: 1;
+}
+
+/* Mobile: nur Icon, kein Wordmark (REV-05 Kap. 8.3) */
+@media (max-width: 800px) {
+    .site-title-wordmark {
+        display: none;
+    }
+}
+</style>

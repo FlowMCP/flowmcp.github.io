@@ -69,6 +69,12 @@ header.header {
     padding: 0 1rem;
 }
 
+/* Wordmark-Color-Override (PRD-08, REV-05 Kap. 8.4 — Cross-Browser-Safety) */
+header.header .site-title-wordmark,
+header.header .site-title-link {
+    color: var(--text-primary) !important;
+}
+
 /* Kill any stray horizontal lines on Landing (Pencil has clean canvas, no separators) */
 body:has(.pencil-hero) hr,
 body:has(.pencil-hero) .main-pane > hr {

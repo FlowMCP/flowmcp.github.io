@@ -10,6 +10,7 @@
         "astro": "astro",
         "sync-spec": "node scripts/sync-spec.mjs",
         "generate-llms": "node scripts/generate-llms-txt.mjs",
+        "favicons": "node scripts/generate-favicons.mjs",
         "test:e2e": "playwright test"
     },
     "dependencies": {
