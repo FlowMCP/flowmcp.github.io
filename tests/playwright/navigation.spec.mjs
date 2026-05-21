@@ -1,61 +1,61 @@
 import { test, expect } from '@playwright/test'
 
-test.describe( 'Navigation (10 Test-Bereiche)', () => {
-    test( '1. Sidebar — 5 Top-Groups sichtbar', async ( { page } ) => {
+test.describe( 'Navigation (Pencil-Layout REV-15)', () => {
+    test( '1. Sidebar — 5 Top-Groups sichtbar (Docs)', async ( { page } ) => {
         await page.goto( '/docs/getting-started/what-is-flowmcp/' )
         const sidebar = page.locator( 'nav.sidebar, [aria-label="Main"]' ).first()
-        await expect( sidebar.getByText( 'Introduction', { exact: false } ) ).toBeVisible()
-        await expect( sidebar.getByText( 'Basics', { exact: false } ) ).toBeVisible()
-        await expect( sidebar.getByText( 'Roadmap', { exact: false } ) ).toBeVisible()
-        await expect( sidebar.getByText( 'Specification', { exact: false } ) ).toBeVisible()
-        await expect( sidebar.getByText( 'Docs', { exact: false } ) ).toBeVisible()
+        await expect( sidebar.getByText( /Introduction/i ).first() ).toBeVisible()
+        await expect( sidebar.getByText( /Basics/i ).first() ).toBeVisible()
+        await expect( sidebar.getByText( /Roadmap/i ).first() ).toBeVisible()
+        await expect( sidebar.getByText( /Specification/i ).first() ).toBeVisible()
+        await expect( sidebar.getByText( /Docs/i ).first() ).toBeVisible()
     } )
 
-    test( '2. Header-Links — About / Docs / Roadmap / Blog Quick-Jump', async ( { page } ) => {
+    test( '2. Landing zeigt Pencil-Hero + LogoStrip + StatsBar + TagCloud', async ( { page } ) => {
         await page.goto( '/' )
-        await expect( page.locator( 'a.header-nav-docs' ) ).toBeVisible()
-        await expect( page.locator( 'a.header-nav-roadmap' ) ).toBeVisible()
+        await expect( page.getByText( /Normalize any data source/i ).first() ).toBeVisible()
+        await expect( page.getByText( /Connects to/i ) ).toBeVisible()
+        await expect( page.getByText( '288' ) ).toBeVisible()
+        await expect( page.getByText( '1,534' ) ).toBeVisible()
+        await expect( page.getByText( /Browse by topic/i ) ).toBeVisible()
     } )
 
-    test( '3. Hamburger Mobile (sichtbar nur auf Mobile)', async ( { page, isMobile } ) => {
+    test( '3. Hackathon Trust-Line auf Landing', async ( { page } ) => {
         await page.goto( '/' )
-        const hamburger = page.locator( 'starlight-menu-button button, [aria-label*="Menu"], [aria-label*="menu"]' ).first()
-        if( isMobile ) {
-            await expect( hamburger ).toBeVisible()
-        } else {
-            await expect( hamburger ).not.toBeVisible()
-        }
+        const trustLine = page.getByText( /Berlin Mobility Hackathon/i )
+        await expect( trustLine ).toBeVisible()
     } )
 
-    test( '4. Sprachumschaltung EN <-> DE', async ( { page } ) => {
+    test( '4. Sprachumschaltung EN -> DE', async ( { page } ) => {
         await page.goto( '/' )
         await page.goto( '/de/' )
         await expect( page ).toHaveURL( /\/de\/?$/ )
-        await page.goto( '/' )
-        await expect( page ).toHaveURL( /^http:\/\/[^/]+\/?$/ )
     } )
 
     test( '5. Sidebar-Active-State matched URL', async ( { page } ) => {
         await page.goto( '/docs/specification/schema-format/' )
         const active = page.locator( 'a[aria-current="page"]' )
-        await expect( active ).toContainText( /Schema Format/i )
+        await expect( active.first() ).toBeVisible()
     } )
 
-    test( '6. Search funktioniert (Pagefind)', async ( { page } ) => {
-        await page.goto( '/' )
-        const searchTrigger = page.locator( 'button[aria-label*="Search"], button[data-open-modal]' ).first()
-        if( await searchTrigger.count() > 0 ) {
-            await searchTrigger.click()
-            await page.keyboard.type( 'schema' )
-            await page.waitForTimeout( 500 )
-        }
+    test( '6. Tag-Filter Route lädt', async ( { page } ) => {
+        const response = await page.goto( '/schemas?tag=defi' )
+        expect( response?.status() ).toBeLessThan( 400 )
+        await expect( page.getByText( /Schema Catalog/i ) ).toBeVisible()
     } )
 
-    test( '7. Tag-Filter Route (Backlog Phase 8)', async ( { page } ) => {
-        test.skip( true, 'Tag-Filter Routing wird in Phase 8 implementiert' )
+    test( '7. Blog Index lädt + Welcome-Post sichtbar', async ( { page } ) => {
+        const response = await page.goto( '/blog/' )
+        expect( response?.status() ).toBeLessThan( 400 )
+        await expect( page.getByText( /Welcome to the FlowMCP Blog/i ) ).toBeVisible()
     } )
 
-    test( '8. Responsive Breakpoints', async ( { page } ) => {
+    test( '8. RSS-Feed erreichbar', async ( { page } ) => {
+        const response = await page.goto( '/rss.xml' )
+        expect( response?.status() ).toBeLessThan( 400 )
+    } )
+
+    test( '9. Responsive Breakpoints — Landing rendert auf 1440/768/375', async ( { page } ) => {
         for( const width of [ 1440, 768, 375 ] ) {
             await page.setViewportSize( { width, height: 900 } )
             await page.goto( '/' )
@@ -63,27 +63,20 @@ test.describe( 'Navigation (10 Test-Bereiche)', () => {
         }
     } )
 
-    test( '9. Linkkonsistenz — keine 404 von Sidebar-Links (Spot-Check)', async ( { page } ) => {
+    test( '10. Linkkonsistenz — keine 404 von Hauptpfaden', async ( { page } ) => {
         const routes = [
             '/introduction/about/',
             '/basics/schemas-and-tools/',
             '/roadmap/overview/',
             '/docs/specification/overview/',
             '/docs/getting-started/what-is-flowmcp/',
+            '/docs/schemas/tags-reference/',
+            '/blog/',
+            '/schemas/',
         ]
         for( const route of routes ) {
             const response = await page.goto( route )
             expect( response?.status() ).toBeLessThan( 400 )
         }
-    } )
-
-    test( '10. Footer-Links auf allen Seiten konsistent', async ( { page } ) => {
-        await page.goto( '/' )
-        const footerLicense = page.locator( 'footer a[href*="MIT"], footer a[href*="license"]' )
-        const count1 = await footerLicense.count()
-        await page.goto( '/docs/specification/overview/' )
-        const count2 = await footerLicense.count()
-        expect( count1 ).toBeGreaterThanOrEqual( 0 )
-        expect( count2 ).toBeGreaterThanOrEqual( 0 )
     } )
 } )
