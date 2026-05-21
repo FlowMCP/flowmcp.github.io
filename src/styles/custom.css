@@ -49,11 +49,49 @@ html {
     color-scheme: dark;
 }
 
-/* ============ HEADER ============ */
+/* ============ HEADER (Pencil REV-14 Kap. 5 Regeln 4, 9, 10, 11) ============ */
 
 header.header {
     background: var(--bg-card);
     border-bottom: 1px solid var(--border);
+    height: 64px;
+    padding: 0 1rem;
+}
+
+/* Logo-Min-Spacing 12px (Regel 11) */
+header.header .site-title,
+header.header a[href="/"] {
+    margin-left: 12px;
+}
+
+/* Search-Globe-Gap 16px Desktop (Regel 10) */
+header.header .right-group,
+header.header .social-icons {
+    gap: 16px;
+}
+
+/* Mobile-Anpassungen (REV-14 Kap. 5 Regel 4, 9, 10) */
+@media (max-width: 768px) {
+    header.header {
+        height: 56px;
+        padding: 0 0.75rem;
+    }
+
+    /* Hamburger LINKS Mobile (Regel 4) — Pencil-Spec, default Starlight ist rechts */
+    header.header starlight-menu-button,
+    header.header [data-mobile-menu],
+    header.header button[aria-label*="Menu" i],
+    header.header button[aria-label*="menu" i] {
+        order: -1 !important;
+        margin-right: auto;
+        margin-left: 0;
+    }
+
+    /* Search-Globe-Gap 14px Mobile (Regel 10) */
+    header.header .right-group,
+    header.header .social-icons {
+        gap: 14px;
+    }
 }
 
 /* ============ SIDEBAR ============ */

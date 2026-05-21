@@ -1,0 +1,60 @@
+---
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+    const posts = await getCollection('blog', ({ data }) => !data.draft);
+    return posts.map((post) => ({
+        params: { slug: post.id },
+        props: { post },
+    }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>{post.data.title} — FlowMCP Blog</title>
+    <meta name="description" content={post.data.description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+</head>
+<body>
+    <main class="blog-post">
+        <a class="blog-post__back" href="/blog/">← All posts</a>
+
+        <header class="blog-post__header">
+            <h1>{post.data.title}</h1>
+            <p class="blog-post__meta">
+                {post.data.pubDate.toISOString().slice(0, 10)} · {post.data.author}
+            </p>
+            <ul class="blog-post__tags">
+                {post.data.tags.map((tag) => (
+                    <li>#{tag}</li>
+                ))}
+            </ul>
+        </header>
+
+        <article class="blog-post__content">
+            <Content />
+        </article>
+    </main>
+
+    <style is:global>
+        body { background: #0d1117; color: #f0f6fc; font-family: Inter, sans-serif; margin: 0; }
+        .blog-post { max-width: 720px; margin: 4rem auto; padding: 0 1.5rem; }
+        .blog-post__back { color: #79c0ff; text-decoration: none; font-size: 14px; }
+        .blog-post__header { margin: 2rem 0 3rem; }
+        .blog-post__header h1 { font-size: 2.5rem; color: #f0f6fc; margin: 0; }
+        .blog-post__meta { color: #8b949e; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin: 0.75rem 0 0; }
+        .blog-post__tags { list-style: none; padding: 0; margin: 0.75rem 0 0; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .blog-post__tags li { font-size: 12px; color: #79c0ff; }
+        .blog-post__content h2 { color: #f0f6fc; margin-top: 2rem; }
+        .blog-post__content p { color: #f0f6fc; line-height: 1.7; }
+        .blog-post__content code { background: #161b22; padding: 2px 6px; border-radius: 4px; color: #79c0ff; }
+        .blog-post__content a { color: #79c0ff; }
+    </style>
+</body>
+</html>

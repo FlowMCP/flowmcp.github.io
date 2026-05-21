@@ -1,0 +1,81 @@
+---
+// TagCloud — Tag-Cloud fuer Landing (PRD-19, Memo 045 REV-14 Punkt 16 Anbindung)
+import { standardTags } from '../data/standard-tags.mjs';
+---
+
+<section class="tag-cloud" aria-label="Browse schemas by topic">
+    <h2 class="tag-cloud__title">Browse by topic</h2>
+    <ul class="tag-cloud__list">
+        {standardTags.map((tag) => (
+            <li>
+                <a href={`/schemas?tag=${tag.slug}`} class="tag-cloud__pill" data-cluster={tag.cluster}>
+                    {tag.label}
+                </a>
+            </li>
+        ))}
+    </ul>
+    <p class="tag-cloud__hint">
+        <a href="/docs/schemas/tags-reference/">View full tag reference →</a>
+    </p>
+</section>
+
+<style>
+.tag-cloud {
+    max-width: 1100px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+    text-align: center;
+}
+
+.tag-cloud__title {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.tag-cloud__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+}
+
+.tag-cloud__pill {
+    display: inline-block;
+    padding: 0.4rem 0.9rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s;
+}
+
+.tag-cloud__pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.tag-cloud__pill[data-cluster="crypto"]      { border-left: 3px solid #f7931a; }
+.tag-cloud__pill[data-cluster="government"]  { border-left: 3px solid #ffd700; }
+.tag-cloud__pill[data-cluster="data"]        { border-left: 3px solid #79c0ff; }
+.tag-cloud__pill[data-cluster="web3"]        { border-left: 3px solid #c084fc; }
+.tag-cloud__pill[data-cluster="tools"]       { border-left: 3px solid #34d399; }
+.tag-cloud__pill[data-cluster="misc"]        { border-left: 3px solid #6e7681; }
+
+.tag-cloud__hint {
+    margin-top: 1.5rem;
+}
+
+.tag-cloud__hint a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+</style>

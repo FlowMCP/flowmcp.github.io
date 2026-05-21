@@ -1,0 +1,100 @@
+---
+// /schemas page — Tag-Filter via URL-Param (PRD-18, Memo 045 REV-14 Punkt 16)
+import { standardTags, tagBySlug } from '../data/standard-tags.mjs';
+
+const url = new URL(Astro.request.url);
+const tagParam = url.searchParams.get('tag');
+const clusterParam = url.searchParams.get('cluster');
+
+const selectedTags = tagParam ? tagParam.split(',').map(s => s.trim()) : [];
+const selectedCluster = clusterParam;
+
+let visibleTags = standardTags;
+if (selectedTags.length > 0) {
+    visibleTags = visibleTags.filter(t => selectedTags.includes(t.slug));
+}
+if (selectedCluster) {
+    visibleTags = visibleTags.filter(t => t.cluster === selectedCluster);
+}
+
+const allClusters = [...new Set(standardTags.map(t => t.cluster))];
+---
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>FlowMCP — Schema Catalog</title>
+    <meta name="description" content="Browse FlowMCP schemas by tag or cluster." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+</head>
+<body>
+    <main class="schemas-page">
+        <a class="schemas-page__back" href="/">← Home</a>
+
+        <header>
+            <h1>Schema Catalog</h1>
+            <p>288 data sources, organized by topic. Filter by tag or cluster.</p>
+        </header>
+
+        <section class="schemas-page__filter">
+            <h2>Active filters</h2>
+            {selectedTags.length === 0 && !selectedCluster && (
+                <p><em>No filter applied — showing all standard tags.</em></p>
+            )}
+            {selectedTags.length > 0 && (
+                <p>Tag: <strong>{selectedTags.join(', ')}</strong> <a href="/schemas/">clear</a></p>
+            )}
+            {selectedCluster && (
+                <p>Cluster: <strong>{selectedCluster}</strong> <a href="/schemas/">clear</a></p>
+            )}
+        </section>
+
+        <section class="schemas-page__clusters">
+            <h2>Clusters</h2>
+            <ul>
+                {allClusters.map((c) => (
+                    <li><a href={`/schemas?cluster=${c}`}>{c}</a></li>
+                ))}
+            </ul>
+        </section>
+
+        <section class="schemas-page__tags">
+            <h2>Tags ({visibleTags.length} of {standardTags.length})</h2>
+            <ul>
+                {visibleTags.map((tag) => (
+                    <li>
+                        <a href={`/schemas?tag=${tag.slug}`}>
+                            <strong>{tag.label}</strong>
+                            <span class="cluster-badge">{tag.cluster}</span>
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </section>
+
+        <p class="schemas-page__note">
+            Schema list integration (live data from <code>flowmcp-schemas-private</code>) follows in a later iteration. For now, see the <a href="/docs/schemas/tags-reference/">full tag reference</a>.
+        </p>
+    </main>
+
+    <style is:global>
+        body { background: #0d1117; color: #f0f6fc; font-family: Inter, sans-serif; margin: 0; }
+        .schemas-page { max-width: 900px; margin: 3rem auto; padding: 0 1.5rem; }
+        .schemas-page__back { color: #79c0ff; text-decoration: none; font-size: 14px; }
+        .schemas-page h1 { font-size: 2.5rem; color: #f0f6fc; margin: 1.5rem 0 0.5rem; }
+        .schemas-page h2 { color: #f0f6fc; font-size: 1.3rem; margin-top: 2.5rem; }
+        .schemas-page p { color: #8b949e; }
+        .schemas-page__filter { background: #161b22; padding: 1rem 1.25rem; border: 1px solid #30363d; border-radius: 8px; margin-top: 1.5rem; }
+        .schemas-page__filter h2 { margin: 0 0 0.5rem; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: #6e7681; }
+        .schemas-page__clusters ul,
+        .schemas-page__tags ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .schemas-page__clusters li a { padding: 0.4rem 0.9rem; background: #161b22; border: 1px solid #30363d; border-radius: 999px; color: #f0f6fc; text-decoration: none; }
+        .schemas-page__clusters li a:hover { border-color: #79c0ff; color: #79c0ff; }
+        .schemas-page__tags li a { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1rem; background: #161b22; border: 1px solid #30363d; border-radius: 8px; color: #f0f6fc; text-decoration: none; min-width: 200px; }
+        .schemas-page__tags li a:hover { border-color: #79c0ff; }
+        .cluster-badge { font-size: 11px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; margin-left: auto; }
+        .schemas-page__note { margin-top: 3rem; padding: 1rem; background: #161b22; border-left: 3px solid #79c0ff; }
+    </style>
+</body>
+</html>
