@@ -1,0 +1,4291 @@
+{
+  "providers": [
+    {
+      "folder": "abgeordnetenwatch",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "abgeordnetenwatch",
+          "file": "schemas/v4.0.0/providers/abgeordnetenwatch/abgeordnetenwatch.mjs",
+          "description": "Die Beschreibung ist konkret und nennt klar Zielgruppe (deutsche Politiker), Datentypen (Profile, Parlamentsdaten, Mandate, Kandidaturen, Abstimmungen) sowie Quelle und Lizenz (Abgeordnetenwatch, CC0). Es fehlt allerdings ein expliziter Use-Case-Trigger (wann statt eines anderen Tools zu nutzen) und eine Abgrenzung, was die API nicht abdeckt.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "alternative",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "fearAndGreed",
+          "file": "schemas/v4.0.0/providers/alternative/fearAndGreed.mjs",
+          "description": "The description clearly states the data source (alternative.me Crypto Fear and Greed Index) and lists three concrete capabilities: current reading, historical data with configurable lookback, and trend analysis. It is specific and concise, though it lacks explicit trigger phrases or example user queries that would push it to exemplary.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "aqicn",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "aqicn",
+          "file": "schemas/v4.0.0/providers/aqicn/aqicn.mjs",
+          "description": "Die Beschreibung ist klar und spezifisch: nennt den Datentyp (Real-time air quality), Skalierung (10,000+ stations), konkrete Metriken (AQI, PM2.5, PM10, O3, NO2, SO2, CO) und Zusatz (health recommendations). Kein dediziertes skill whenToUse vorhanden, was Use-Case-Triggering leicht einschraenkt; die Beschreibung selbst bleibt aber praezise.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "arbeitsagentur",
+      "toolCount": 4,
+      "schemas": [
+        {
+          "name": "jobs",
+          "file": "schemas/v4.0.0/providers/arbeitsagentur/jobs.mjs",
+          "description": "Beschreibung nennt klar Anbieter, Domaene (Job-Suche) und vier Filter-Achsen (profession, location, employer, job type). Es fehlen explizite Use-Case-Kriterien oder Abgrenzungen.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "jobsuche",
+          "file": "schemas/v4.0.0/providers/arbeitsagentur/jobsuche.mjs",
+          "description": "Klar, benennt Quelle (Bundesagentur fuer Arbeit) und Zweck. Es fehlt expliziter whenToUse-Hinweis und konkrete Use-Cases oder Abgrenzungen.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "professions",
+          "file": "schemas/v4.0.0/providers/arbeitsagentur/professions.mjs",
+          "description": "Klar: nennt Anbieter, BERUFENET, Umfang (3500+) und Geographie. Es fehlt dedizierter whenToUse-Block mit Use-Cases.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "education",
+          "file": "schemas/v4.0.0/providers/arbeitsagentur/education.mjs",
+          "description": "Die Beschreibung nennt den Anbieter (German Federal Employment Agency), den Inhalt (apprenticeship and training offers), die Region (Germany) und erwaehnt Filteroptionen. Es fehlen jedoch konkrete Use-Case-Hinweise und Abgrenzungen zu aehnlichen Tools, weshalb sie zwar verstaendlich, aber nicht exemplarisch spezifisch ist.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "artinstitutechi",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "art-institute-chicago",
+          "file": "schemas/v4.0.0/providers/artinstitutechi/art-institute-chicago.mjs",
+          "description": "Klar und spezifisch: nennt Datenbestand (130000+ Artworks), Suchdimensionen, Output-Eigenschaften und Zugangsbedingungen. Klare Domaenenabgrenzung.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "autobahn",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "traffic",
+          "file": "schemas/v4.0.0/providers/autobahn/traffic.mjs",
+          "description": "Praezise: Domain (deutsche Autobahnen), Datentyp (Echtzeit-Verkehr), fuenf konkrete Datentypen. Es fehlt expliziter whenToUse-Block mit Trigger-Faellen.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "avalanchemetrics",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "metrics-api",
+          "file": "schemas/v4.0.0/providers/avalanchemetrics/metrics-api.mjs",
+          "description": "Description is concrete and lists key metric categories (staking, throughput, gas, TPS, validators), though missing explicit triggers for when an LLM should select this tool.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "avnu",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "avnu",
+          "file": "schemas/v4.0.0/providers/avnu/avnu.mjs",
+          "description": "Benennt klar Funktionalitaet, Plattform (Starknet) und Aggregator. Es fehlt explizite whenToUse-Anweisung mit Anwendungsfaellen.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "berlin",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "schulen",
+          "file": "schemas/v4.0.0/providers/berlin/schulen.mjs",
+          "description": "Klar: Datenquelle (Berlin WFS GeoJSON), Inhalt, Zugangsbedingung. Spezifisch genug fuer LLM-Routing. Use-Cases koennten klarer sein.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "berlinevents",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "events",
+          "file": "schemas/v4.0.0/providers/berlinevents/events.mjs",
+          "description": "Description clearly identifies the data domain (Berlin events: markets, festivals, public assemblies) and is specific enough to differentiate from other event sources.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "berlinvergabe",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "procurement",
+          "file": "schemas/v4.0.0/providers/berlinvergabe/procurement.mjs",
+          "description": "Benennt klar Quelle (Berlin Vergabeplattform), Format (RSS feed), Inhalt. Es fehlt expliziter whenToUse-Hinweis, Aktualisierungsfrequenz, Geltungsbereich.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "berlinwfs",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "wfs-locations",
+          "file": "schemas/v4.0.0/providers/berlinwfs/wfs-locations.mjs",
+          "description": "Description is specific (Berlin geo data: dog parks, BBQ areas) and identifies the technology (WFS). Could be slightly broader with more example use cases but is clear.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "bfsodl",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "bfsodl",
+          "file": "schemas/v4.0.0/providers/bfsodl/bfsodl.mjs",
+          "description": "Very specific description with concrete data source (BfS), exact scope (gamma dose rate, ~1,700 stations), frequency (10 min), and geographic coverage (Germany). Excellent triggerability.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "bicscan",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "bicscan",
+          "file": "schemas/v4.0.0/providers/bicscan/bicscan.mjs",
+          "description": "Clear, specific use case (risk scoring + portfolio for wallet addresses), names provider, and lists concrete outputs (risk ratings, token details). Very triggerable.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "biorxiv",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "biorxiv",
+          "file": "schemas/v4.0.0/providers/biorxiv/biorxiv.mjs",
+          "description": "Description names specific data sources (bioRxiv, medRxiv), data type (preprint metadata), and lists clear categories (content, publication, publisher, statistics). Excellent triggerability.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "bis",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "bisStatistics",
+          "file": "schemas/v4.0.0/providers/bis/bisStatistics.mjs",
+          "description": "Description names provider (BIS), protocol (SDMX REST), and lists 7 concrete data domains (policy rates, exchange rates, credit gaps, property prices, CPI, debt securities, USD rates). Excellent specificity.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "blockberry",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "mina-mainnet",
+          "file": "schemas/v4.0.0/providers/blockberry/mina-mainnet.mjs",
+          "description": "Description identifies blockchain (Mina) and scope (blocks, accounts, ZkApps) but is brief. The parenthetical 'working endpoints only' is an internal note that doesn't help LLM triggering.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "blockchaininfo",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "utxoAndBlocks",
+          "file": "schemas/v4.0.0/providers/blockchaininfo/utxoAndBlocks.mjs",
+          "description": "Description is clear about scope (Bitcoin UTXOs and block stats) and provider, but brief. Could elaborate on use cases (e.g., wallet balance checking, blockchain forensics).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "boldsystems",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "boldSystems",
+          "file": "schemas/v4.0.0/providers/boldsystems/boldSystems.mjs",
+          "description": "Names full provider (Barcode of Life Data Systems / BOLD), data scope (DNA barcode records), and search dimensions (taxonomy, geography, BIN). Highly specific and triggerable.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "bonfida",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "bonfida",
+          "file": "schemas/v4.0.0/providers/bonfida/bonfida.mjs",
+          "description": "Description is concrete: names data domain (.sol/SNS), 3 operations (resolve, favorite, list owned), and the underlying SDK. Highly triggerable for Solana wallet/domain questions.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "bridgerates",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "bridgerates",
+          "file": "schemas/v4.0.0/providers/bridgerates/bridgerates.mjs",
+          "description": "Description names provider (LiFi) and core capabilities (bridge quotes, chains, tools, transfer data). Specific to cross-chain bridging domain, clearly triggerable.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "brightsky",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "bright-sky",
+          "file": "schemas/v4.0.0/providers/brightsky/bright-sky.mjs",
+          "description": "Description is very specific: names data source (DWD, German weather agency), geographic scope (Germany), and explicit content (forecasts, current conditions, alerts, rainfall radar).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "bsbmdz",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "bsbMdz",
+          "file": "schemas/v4.0.0/providers/bsbmdz/bsbMdz.mjs",
+          "description": "Description names institution (Bayerische Staatsbibliothek MDZ), volume (3.16M+ items), protocol (IIIF), and content categories (manuscripts, prints, maps, music). Very specific.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "bundesbank",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "bundesbankStatistics",
+          "file": "schemas/v4.0.0/providers/bundesbank/bundesbankStatistics.mjs",
+          "description": "Names institution (Deutsche Bundesbank), protocol (SDMX REST), and 4 specific data categories (exchange rates, monetary stats, financial market, macroeconomic). Highly triggerable.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "bundeshaushalt",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "budget",
+          "file": "schemas/v4.0.0/providers/bundeshaushalt/budget.mjs",
+          "description": "Exemplary description: names data domain (German federal budget), explicit year range (2012-2025), 3 classification dimensions (Einzelplan, function, group), and capability (hierarchical drill-down).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "bundeswahlleiterin",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "bundeswahlleiterin",
+          "file": "schemas/v4.0.0/providers/bundeswahlleiterin/bundeswahlleiterin.mjs",
+          "description": "Exemplary: names institution (Die Bundeswahlleiterin), specific election (Bundestagswahl 2025), all query dimensions, both vote types (Erst/Zweit), constituency count (299), and access (free, no key).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "catalogueoflife",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "catalogueoflife",
+          "file": "schemas/v4.0.0/providers/catalogueoflife/catalogueoflife.mjs",
+          "description": "Names data source (Catalogue of Life ChecklistBank), scope (taxonomic names), volume (2.07M+ species), and coverage (all kingdoms). Very specific.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "cernopendata",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "cern-open-data",
+          "file": "schemas/v4.0.0/providers/cernopendata/cern-open-data.mjs",
+          "description": "Exemplary: names institution (CERN), domain (particle physics), volume (50,000+ records), specific experiments (ATLAS, CMS, LHCb, ALICE), data types, and notable use cases (Higgs boson). No API key noted.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "chainlink",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "price-feeds",
+          "file": "schemas/v4.0.0/providers/chainlink/price-feeds.mjs",
+          "description": "Description names provider (Chainlink), scope (oracle price feeds), chain count (13 EVM), discovery flow (chains → pairs → prices), and infrastructure (Infura RPC). Very specific.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "chainlinkmulticall",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "price-feeds-multicall",
+          "file": "schemas/v4.0.0/providers/chainlinkmulticall/price-feeds-multicall.mjs",
+          "description": "Clear distinction from individual feed schema: emphasizes batch reading via Multicall3 for efficiency. Names the chain scope and what's returned.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "chainlist",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "chainlist",
+          "file": "schemas/v4.0.0/providers/chainlist/chainlist.mjs",
+          "description": "Names provider (Chainlist), scope (EVM chain metadata), and concrete data types returned (chain IDs, RPC, explorers, WebSocket, native currency). Highly triggerable for blockchain config lookup.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "chartimg",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "tradingview-charts",
+          "file": "schemas/v4.0.0/providers/chartimg/tradingview-charts.mjs",
+          "description": "Description identifies provider (TradingView) and output (chart screenshots), but is brief and lacks specific use cases (e.g., stock vs crypto, technical analysis). Acceptable but not exemplary.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "charts",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "VegaLiteCharts",
+          "file": "schemas/v4.0.0/providers/charts/VegaLiteCharts.mjs",
+          "description": "Description is clear: names tech (Vega-Lite), chart types (candlestick/line/multi-line/bar), output format (base64 PNG), and key feature (local rendering, no external API).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "cheapshark",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "cheapshark",
+          "file": "schemas/v4.0.0/providers/cheapshark/cheapshark.mjs",
+          "description": "Klar formuliert, nennt Use-Case (Game Deals), konkrete Stores, Filter-Optionen und API-Key-Freiheit; sehr spezifisch und actionable.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "chembl",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "chembl",
+          "file": "schemas/v4.0.0/providers/chembl/chembl.mjs",
+          "description": "Beschreibt Inhalt (2.4M+ Molekuele), Datenarten und Quelle EBI klar; koennte konkrete Use-Cases noch staerker benennen.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "clinicaltrials",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "clinicaltrialsgov",
+          "file": "schemas/v4.0.0/providers/clinicaltrials/clinicaltrialsgov.mjs",
+          "description": "Beschreibung ist klar und nennt Datenarten, bleibt aber relativ kurz ohne konkrete Use-Cases oder Beispielanfragen.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "cocktaildb",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "cocktaildb",
+          "file": "schemas/v4.0.0/providers/cocktaildb/cocktaildb.mjs",
+          "description": "Sehr spezifisch: nennt 600+ Cocktails, Suchmoeglichkeiten, Datenfelder und API-Key-Hinweis; sehr klar.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "coinbasebazaar",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "discovery",
+          "file": "schemas/v4.0.0/providers/coinbasebazaar/discovery.mjs",
+          "description": "Kurze Beschreibung nennt x402 und Coinbase Bazaar, aber bleibt vage zu Inhalt, Filtern und konkretem Anwendungsfall.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "coincap",
+      "toolCount": 3,
+      "schemas": [
+        {
+          "name": "markets",
+          "file": "schemas/v4.0.0/providers/coincap/markets.mjs",
+          "description": "Beschreibung nennt klar trading pairs, Datenarten und Filterungsmoglichkeiten.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "assets",
+          "file": "schemas/v4.0.0/providers/coincap/assets.mjs",
+          "description": "Klar und prazise, beschreibt Datenarten (prices, market caps, supply, volume, historical) und Abdeckung (thousands of tokens).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "exchanges",
+          "file": "schemas/v4.0.0/providers/coincap/exchanges.mjs",
+          "description": "Klar formuliert, nennt zwei Operationen (list + get by ID) und Datentypen (volume rankings, metadata).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "coingecko",
+      "toolCount": 7,
+      "schemas": [
+        {
+          "name": "getCategories",
+          "file": "schemas/v4.0.0/providers/coingecko/getCategories.mjs",
+          "description": "Klar und spezifisch, nennt zwei Operationen und konkrete Metriken (market cap, volume, change) per Category.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "global",
+          "file": "schemas/v4.0.0/providers/coingecko/global.mjs",
+          "description": "Spezifisch und klar: nennt konkrete Metriken (market cap, volume, BTC/ETH dominance) und DeFi-spezifische Daten.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "trending",
+          "file": "schemas/v4.0.0/providers/coingecko/trending.mjs",
+          "description": "Klar und spezifisch: nennt drei Datenarten (coins, NFTs, categories) und enthaltene Metriken (price, volume).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "coingecko-stablecoins",
+          "file": "schemas/v4.0.0/providers/coingecko/coingecko-stablecoins.mjs",
+          "description": "Klar und spezifisch: nennt Stablecoins, market metrics, peg stability und historische Trends - sehr fokussierter Use-Case.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "search-ohlc",
+          "file": "schemas/v4.0.0/providers/coingecko/search-ohlc.mjs",
+          "description": "Spezifisch: nennt zwei Operationen (search + OHLC) und Use-Case (technical analysis), API-Tier-Hinweis enthalten.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "derivatives",
+          "file": "schemas/v4.0.0/providers/coingecko/derivatives.mjs",
+          "description": "Klar formuliert, beschreibt drei Operationen (list, get by ID, products per exchange) und das Datenthema (derivatives).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "coins",
+          "file": "schemas/v4.0.0/providers/coingecko/coins.mjs",
+          "description": "Sehr knappe Beschreibung listet die Endpunkte auf, nennt aber keinen konkreten Use-Case und gibt wenig Kontext zum Inhalt.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "coinmarketcap",
+      "toolCount": 5,
+      "schemas": [
+        {
+          "name": "category",
+          "file": "schemas/v4.0.0/providers/coinmarketcap/category.mjs",
+          "description": "Exemplarisch: nennt alle 5 Operationen, Workflow-Beziehungen (getCategories -> getCategory; getIdMap -> getMetadata/getQuotes) und ist sehr handlungsleitend.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "fear-and-greed",
+          "file": "schemas/v4.0.0/providers/coinmarketcap/fear-and-greed.mjs",
+          "description": "Exemplarisch klar: nennt Use-Case (market psychology), beide Operationen mit Workflow und Skala-Hinweis explizit.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "listings",
+          "file": "schemas/v4.0.0/providers/coinmarketcap/listings.mjs",
+          "description": "Klar und specific: nennt paginated list, Filter (price, market cap, volume, supply), sort by any major metric, und convert-Parameter.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "cmc-index",
+          "file": "schemas/v4.0.0/providers/coinmarketcap/cmc-index.mjs",
+          "description": "Klar und spezifisch: erklaert CMC100-Benchmark, beide Operationen und nennt Use-Case (current value vs time-series).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "exchanges",
+          "file": "schemas/v4.0.0/providers/coinmarketcap/exchanges.mjs",
+          "description": "Klar formuliert, nennt drei Operationen (list, info, market pairs - allerdings nur 2 echte exchange-Tools + 2 weitere); enthaelt etwas Inkonsistenz (4 Tools im Schema, Description erwaehnt nur exchanges).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "copernicusland",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "copernicusland",
+          "file": "schemas/v4.0.0/providers/copernicusland/copernicusland.mjs",
+          "description": "Exemplarisch: nennt konkrete Datenarten (Urban Atlas, CORINE, etc.), Abdeckung (Europa), API-Key-Freiheit, und Workflow (listProducts -> datasetsByProduct -> getDatasetDetail).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "coreac",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "core",
+          "file": "schemas/v4.0.0/providers/coreac/core.mjs",
+          "description": "Exemplarisch: 200M+ Papers, klare Datenarten (works, outputs, providers, journals), Workflow zwischen Tools explizit (searchWorks -> getWork -> discoverFulltext).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "cosmos",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "cosmos-bank",
+          "file": "schemas/v4.0.0/providers/cosmos/cosmos-bank.mjs",
+          "description": "Exemplarisch: nennt konkret abgedeckte Module (bank, staking, governance), Adress-Format-Hinweis, Tool-Verkettung (getBalances -> getDelegations + getValidators).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "crossref",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "crossref",
+          "file": "schemas/v4.0.0/providers/crossref/crossref.mjs",
+          "description": "Klar und konkret: 150M+ DOI Records, nennt alle Datenarten (works, citations, funders, journals, members) und polite-pool-Hinweis.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "cryptorank",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "currencies",
+          "file": "schemas/v4.0.0/providers/cryptorank/currencies.mjs",
+          "description": "Concise, specific description mentioning provider, free-tier limit, and all four endpoint purposes.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "curve",
+      "toolCount": 3,
+      "schemas": [
+        {
+          "name": "analytics",
+          "file": "schemas/v4.0.0/providers/curve/analytics.mjs",
+          "description": "Exemplary description: lists scope, names each tool's purpose, and clarifies cross-references between getVolumes/getAllGauges pool addresses.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "crvusd",
+          "file": "schemas/v4.0.0/providers/curve/crvusd.mjs",
+          "description": "Clear and focused description, lists exactly what data is provided (CRV supply, crvUSD supply, AMM volumes).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "pools",
+          "file": "schemas/v4.0.0/providers/curve/pools.mjs",
+          "description": "Specific description mentioning 21 EVM chains and the data types (TVL, coins, gauge info, etc.); concise and informative.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "dailymed",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "dailymed",
+          "file": "schemas/v4.0.0/providers/dailymed/dailymed.mjs",
+          "description": "Concise and specific: lists data types (FDA labels, SPL, NDC, drug classes) and the source (NLM DailyMed REST).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "dashboarddeutschland",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "statistics",
+          "file": "schemas/v4.0.0/providers/dashboarddeutschland/statistics.mjs",
+          "description": "Identifies source (DESTATIS) and concrete categories (economic indicators, labour, energy, trade, financial markets); no period but otherwise clear.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "datacite",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "datacite",
+          "file": "schemas/v4.0.0/providers/datacite/datacite.mjs",
+          "description": "Clear scope (DOI metadata) and concrete numbers (60M+ DOIs, 3000+ repositories); identifies content types.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "dataeuropaeu",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "dataEuropaEu",
+          "file": "schemas/v4.0.0/providers/dataeuropaeu/dataEuropaEu.mjs",
+          "description": "Exemplary description with scale (1.6M+ datasets, 36 countries, 200+ catalogues), filter dimensions, and accessible metadata listed.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "datamuse",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "datamuse",
+          "file": "schemas/v4.0.0/providers/datamuse/datamuse.mjs",
+          "description": "Exemplary: clearly identifies domain, use cases (writers, crossword solvers, language learners), scale (100k+ words), and access (free, no key).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "datetimeutils",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "datetimeUtils",
+          "file": "schemas/v4.0.0/providers/datetimeutils/datetimeUtils.mjs",
+          "description": "Clear scope (current time, arithmetic, formatting), notes local computation, and lists realistic use cases (travel, schedules).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "dawum",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "dawum",
+          "file": "schemas/v4.0.0/providers/dawum/dawum.mjs",
+          "description": "Concise, specific description naming source (dawum.de) and content (German election polls, institutes, parliaments).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "dblp",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "dblp",
+          "file": "schemas/v4.0.0/providers/dblp/dblp.mjs",
+          "description": "Specific scope (CS bibliography), scale (6M+ publications), and three distinct search modes (papers, authors, venues) called out.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "debridge",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "debridge",
+          "file": "schemas/v4.0.0/providers/debridge/debridge.mjs",
+          "description": "Concise description listing capabilities (bridge quotes, chains, tokens, orders) and naming the protocol (DeBridge DLN).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "defillama",
+      "toolCount": 2,
+      "schemas": [
+        {
+          "name": "yields",
+          "file": "schemas/v4.0.0/providers/defillama/yields.mjs",
+          "description": "Specific scope (yields, APY, TVL, rewards) with two clear capabilities; identifies source.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "coins",
+          "file": "schemas/v4.0.0/providers/defillama/coins.mjs",
+          "description": "Mentions DeFi Llama and 'batch query ERC20 and native token prices' but actual schema only exposes single-token coingecko price lookups, slight overstatement.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "destatis",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "catalogue",
+          "file": "schemas/v4.0.0/providers/destatis/catalogue.mjs",
+          "description": "Specific source (DESTATIS GENESIS) and resource types (tables, statistics, variables, metadata); concise.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "deutschedigitalebibliothek",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "deutschedigitalebibliothek",
+          "file": "schemas/v4.0.0/providers/deutschedigitalebibliothek/deutschedigitalebibliothek.mjs",
+          "description": "Specific scope (40M+ digitized objects), sources (museums, archives, libraries, monuments), and country named explicitly.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "dexpaprika",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "defiPrices",
+          "file": "schemas/v4.0.0/providers/dexpaprika/defiPrices.mjs",
+          "description": "Lists data scope (DEX prices, pools, liquidity, transactions) and identifies source; functional but unspecific in trigger phrasing.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "dexscreener",
+      "toolCount": 4,
+      "schemas": [
+        {
+          "name": "boosted",
+          "file": "schemas/v4.0.0/providers/dexscreener/boosted.mjs",
+          "description": "Specific domain (boosted tokens on DexScreener), names two distinct endpoints (latest, most active) and scope (across all DEX chains).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "tokenInfo",
+          "file": "schemas/v4.0.0/providers/dexscreener/tokenInfo.mjs",
+          "description": "Specific scope listing four endpoints (profiles, search, token-to-pair, pools) and source (DexScreener).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "pairs",
+          "file": "schemas/v4.0.0/providers/dexscreener/pairs.mjs",
+          "description": "Mentions provider and capabilities (pair lookup, order checks) but somewhat terse and uses vague 'buy/sell order checks' phrasing.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "tokenpairs",
+          "file": "schemas/v4.0.0/providers/dexscreener/tokenpairs.mjs",
+          "description": "Generic description listing data types (pair data, price, metrics) and source; lacks named endpoint capabilities or specific scale.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "dip",
+      "toolCount": 2,
+      "schemas": [
+        {
+          "name": "documents",
+          "file": "schemas/v4.0.0/providers/dip/documents.mjs",
+          "description": "Clear specific scope (Drucksachen, Plenarprotokolle) with German terminology preserved; identifies source DIP API and parliament.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "proceedings",
+          "file": "schemas/v4.0.0/providers/dip/proceedings.mjs",
+          "description": "Clear description naming the DIP API, listing the four resource types (Vorgaenge, Vorgangspositionen, Aktivitaeten, Personen) with German+English glosses. Could mention typical use cases or filters more explicitly.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "discogs",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "discogs",
+          "file": "schemas/v4.0.0/providers/discogs/discogs.mjs",
+          "description": "Highly specific description with concrete scale numbers (19M+ releases, 9.9M+ artists), names the API purpose and supported entities precisely.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "diseasesh",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "disease-sh",
+          "file": "schemas/v4.0.0/providers/diseasesh/disease-sh.mjs",
+          "description": "Excellent description: scope (200+ countries), data sources (Johns Hopkins, Worldometers), refresh interval (10 min), and access requirement (no API key). Highly actionable.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "dndapi",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "dnd-api",
+          "file": "schemas/v4.0.0/providers/dndapi/dnd-api.mjs",
+          "description": "Very clear description with concrete content numbers (320+ spells, 300+ monsters, 12 classes, 9 races), the SRD scope, edition (5e), and no-API-key requirement.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "doaj",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "doaj",
+          "file": "schemas/v4.0.0/providers/doaj/doaj.mjs",
+          "description": "Clear description with concrete scale (20,000+ journals, 10M+ articles), scope (peer-reviewed, open access), and disciplines (all). Could mention API key requirement or rate limits.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "dottescooter",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "dottEscooter",
+          "file": "schemas/v4.0.0/providers/dottescooter/dottEscooter.mjs",
+          "description": "Excellent: precise (GBFS v2.3), scope (125+ cities), data types (real-time availability, pricing, geofencing), and no-API-key noted.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "dpla",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "dpla",
+          "file": "schemas/v4.0.0/providers/dpla/dpla.mjs",
+          "description": "Clear with concrete scale (15M+ items) and content types listed (books, photographs, maps, audio, video) plus sources (libraries, archives, museums).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "duckduckgo",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "duckduckgo",
+          "file": "schemas/v4.0.0/providers/duckduckgo/duckduckgo.mjs",
+          "description": "Clear description listing the response types (instant answers, abstracts, related topics, definitions) and noting no API key. Could mention limitations like no general web search.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "duneanalytics",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "getResults",
+          "file": "schemas/v4.0.0/providers/duneanalytics/getResults.mjs",
+          "description": "Clear and focused description naming Dune Analytics, the function (fetch latest cached result by query ID), and the return type. Compact, single-purpose schema.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "dwd",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "weather",
+          "file": "schemas/v4.0.0/providers/dwd/weather.mjs",
+          "description": "Brief description naming DWD (Deutscher Wetterdienst) and WarnWetter API. Could specify what data is returned (forecasts, warnings), coverage, or freshness.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "dwds",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "dwds",
+          "file": "schemas/v4.0.0/providers/dwds/dwds.mjs",
+          "description": "Clear description listing functions (definitions, frequencies, IPA, snippets) and naming the DWDS source. Specific and actionable.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "ebird",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "ebird",
+          "file": "schemas/v4.0.0/providers/ebird/ebird.mjs",
+          "description": "Clear and concise: names the source (Cornell Lab), data types (recent/notable sightings, hotspots), and global scope. Could mention API key requirement.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "ecb",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "ecbSdmx",
+          "file": "schemas/v4.0.0/providers/ecb/ecbSdmx.mjs",
+          "description": "Clear description naming the ECB SDMX REST API and listing covered data types (exchange rates, interest rates, monetary aggregates). Mentions time series filtering.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "ecovisio",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "counters",
+          "file": "schemas/v4.0.0/providers/ecovisio/counters.mjs",
+          "description": "Clear description naming Eco-Counter, data type (bike/pedestrian counts), and scope (German cities + worldwide). Could mention freshness or auth requirements.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "eeawaterbase",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "eeaWaterbase",
+          "file": "schemas/v4.0.0/providers/eeawaterbase/eeaWaterbase.mjs",
+          "description": "Excellent: names DISCODATA SQL-to-JSON, covered datasets (CO2, EUNIS biodiversity, GHG policies), query language (T-SQL), and no-key requirement.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "emsc",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "emscSeismic",
+          "file": "schemas/v4.0.0/providers/emsc/emscSeismic.mjs",
+          "description": "Clear: names EMSC and FDSN, lists filter dimensions (magnitude, location, depth, time). Could mention data freshness or coverage area.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "ens",
+      "toolCount": 2,
+      "schemas": [
+        {
+          "name": "ens-public",
+          "file": "schemas/v4.0.0/providers/ens/ens-public.mjs",
+          "description": "Clear and compact: lists all features (resolve, reverse, text records, avatars, content hashes) and says no API key. Could mention which RPC and which chain (Ethereum mainnet) explicitly.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "ens-resolution",
+          "file": "schemas/v4.0.0/providers/ens/ens-resolution.mjs",
+          "description": "Reasonable scope (ENS plus some EVM chains via ethers.js, forward and reverse). 'some EVM name services' is vague — listing supported chains in the description would help.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "enso",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "enso",
+          "file": "schemas/v4.0.0/providers/enso/enso.mjs",
+          "description": "Exemplary: names Enso Finance, describes purpose (intent-based DeFi routing), lists all capabilities, and gives the discovery flow (getNetworks -> chainId, getProtocols -> slugs feed into getTokens).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "epodata",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "epoLinkedData",
+          "file": "schemas/v4.0.0/providers/epodata/epoLinkedData.mjs",
+          "description": "Strong: names EPO Linked Data API (ELDA), lists covered entities (applications, publications, families, classifications), gives scale (100M+ documents), and no-API-key requirement.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "ergast",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "ergast-f1",
+          "file": "schemas/v4.0.0/providers/ergast/ergast-f1.mjs",
+          "description": "Excellent: names Ergast API and its Jolpi hosting, lists covered data (races, standings, circuits, schedules), gives scale (1,000+ races, 850+ drivers, 200+ constructors), date range, and no-API-key.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "ethers",
+      "toolCount": 4,
+      "schemas": [
+        {
+          "name": "signature-utils",
+          "file": "schemas/v4.0.0/providers/ethers/signature-utils.mjs",
+          "description": "Beschreibung ist praezise: nennt vier konkrete Operationen (verify personal/EIP-712, hash, recover) und stellt klar, dass kein RPC/API-Key noetig ist. Kontext fuer Anwendungsfall ist eindeutig.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "convert-utils",
+          "file": "schemas/v4.0.0/providers/ethers/convert-utils.mjs",
+          "description": "Clear and specific: lists all conversion utilities (wei/ether, hexlify, UTF-8), notes ethers.js source and offline use.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "hash-address",
+          "file": "schemas/v4.0.0/providers/ethers/hash-address.mjs",
+          "description": "Clear and specific: lists all utilities (keccak256, Solidity packed, CREATE2/CREATE, ENS namehash, EIP-55 checksum), notes ethers.js source and offline use.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "abi-utils",
+          "file": "schemas/v4.0.0/providers/ethers/abi-utils.mjs",
+          "description": "Clear and specific: lists all six utilities (decode/encode calldata, decode events, compute selectors, ABI en/decode), notes offline (no RPC/API key).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "etherscan",
+      "toolCount": 4,
+      "schemas": [
+        {
+          "name": "getContractEthereum",
+          "file": "schemas/v4.0.0/providers/etherscan/getContractEthereum.mjs",
+          "description": "Beschreibung spezifiziert genau: ABI + Source Code, Ethereum Mainnet, fuer verifizierte Contracts. Sehr klar und fokussiert.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "account",
+          "file": "schemas/v4.0.0/providers/etherscan/account.mjs",
+          "description": "Beschreibung nennt die Hauptfunktionen (balances, txs, internal txs, ERC20, logs) und benennt die API-Version klar. Kontext klar, Domaene eindeutig.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "getGaspriceMultichain",
+          "file": "schemas/v4.0.0/providers/etherscan/getGaspriceMultichain.mjs",
+          "description": "Beschreibung praezise: Gas-Oracle (safe/proposed/fast) ueber multiple EVM-Chains. Explizit unterstuetzte Chains genannt. Klar fokussiert.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "getContractMultichain",
+          "file": "schemas/v4.0.0/providers/etherscan/getContractMultichain.mjs",
+          "description": "Beschreibung klar: ABI + Source ueber 60+ EVM-Chains. Erwaehnt Listen-Funktion und Lookup-by-Address. Kontext eindeutig.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "ethscriptions",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "ethscriptions-api-part2",
+          "file": "schemas/v4.0.0/providers/ethscriptions/ethscriptions-api-part2.mjs",
+          "description": "Beschreibung erlaeutert Domaene (Ethscriptions, Ethereum-Artefakte) und benennt unterstuetzte Operationen (list, search, inspect) sowie API-Version. Klar fokussiert.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "europeana",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "europeana",
+          "file": "schemas/v4.0.0/providers/europeana/europeana.mjs",
+          "description": "Beschreibung praezise: kulturelles Erbe aus europaeischen Museen, Bibliotheken, Archiven, Galerien ueber Europeana API. Klar und thematisch fokussiert.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "europepmc",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "europepmc",
+          "file": "schemas/v4.0.0/providers/europepmc/europepmc.mjs",
+          "description": "Beschreibung sehr klar: 47M+ Life-Science Publikationen, mit konkreten Anwendungsfaellen (citations, references, full-text, grants, annotations). Praezise und numerisch belegt.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "eusafetygate",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "eu-safety-gate",
+          "file": "schemas/v4.0.0/providers/eusafetygate/eu-safety-gate.mjs",
+          "description": "Beschreibung exzellent: erklaert was Safety Gate ist (ex-RAPEX), Scope (EEA), Inhalt (alerts/risk/categories), Skalen (250+/20+/30+), und Hinweis auf 'free, no API key'. Sehr klar.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "familysearch",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "familySearch",
+          "file": "schemas/v4.0.0/providers/familysearch/familySearch.mjs",
+          "description": "Beschreibung klar: FamilySearch Places API fuer genealogische Ortsdaten, Jurisdiktionen, Place-Types. Fokus auf historische und moderne Locations gut erkennbar.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "feiertage",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "holidays",
+          "file": "schemas/v4.0.0/providers/feiertage/holidays.mjs",
+          "description": "Beschreibung klar fokussiert: deutsche Feiertage, alle Bundeslaender, optionales Filtering. Knapp aber praezise.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "flixbus",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "flixbus",
+          "file": "schemas/v4.0.0/providers/flixbus/flixbus.mjs",
+          "description": "Beschreibung praezise: FlixBus + FlixTrain, autocomplete (cities/stations), trip search mit Echtzeitpreisen, Skope (Europa), no auth. Komplette Information.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "footballdata",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "footballdata",
+          "file": "schemas/v4.0.0/providers/footballdata/footballdata.mjs",
+          "description": "Beschreibung konkret: 183 Wettbewerbe weltweit, mit konkreten Datentypen (matches, standings, teams, scorers, players). Praezise und numerisch belegt.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "frankfurter",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "frankfurter",
+          "file": "schemas/v4.0.0/providers/frankfurter/frankfurter.mjs",
+          "description": "Beschreibung exzellent: ECB Quelle, 30+ Currencies, latest+historical+timeseries, Update-Zeit (16:00 CET), 'free, no API key'. Komplett und klar.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "fred",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "fred",
+          "file": "schemas/v4.0.0/providers/fred/fred.mjs",
+          "description": "Beschreibung gut: FRED (St. Louis Fed), Inhaltsumfang (GDP, employment, inflation), klare Anwendungsdomaene (Wirtschaftsdaten).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "freedictionary",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "free-dictionary",
+          "file": "schemas/v4.0.0/providers/freedictionary/free-dictionary.mjs",
+          "description": "Beschreibung klar: englische Woerterbuch-API mit Definitions, Phonetik, Synonyme, Antonyme, Beispiele. Spezifisch und fokussiert.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "gbif",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "gbif",
+          "file": "schemas/v4.0.0/providers/gbif/gbif.mjs",
+          "description": "Beschreibung praezise: GBIF mit 2+ Mrd Records, Anwendung (species, names, occurrence). Domaene und Skala klar.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "gdacs",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "gdacsDisasterAlerts",
+          "file": "schemas/v4.0.0/providers/gdacs/gdacsDisasterAlerts.mjs",
+          "description": "Beschreibung klar: GDACS fuer Naturkatastrophen, Liste der Typen (earthquake, flood, cyclone, volcano, wildfire, drought), inkl. Alert-Levels und Geo-Daten.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "gdelt",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "gdelt",
+          "file": "schemas/v4.0.0/providers/gdelt/gdelt.mjs",
+          "description": "Beschreibung exzellent: GDELT, 100+ Sprachen, 15-min Updates, 300M+ Artikel seit 2015, frei, Rate-Limit explizit. Komplett.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "geoapify",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "geocoding",
+          "file": "schemas/v4.0.0/providers/geoapify/geocoding.mjs",
+          "description": "Beschreibung knapp aber komplett: forward + reverse + autocomplete. Klare Anwendungsfaelle.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "geonames",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "geonames",
+          "file": "schemas/v4.0.0/providers/geonames/geonames.mjs",
+          "description": "Beschreibung praezise: 11M+ Namen, Postleitzahlen, Elevation, Timezones. Konkrete Funktionen (search, reverse, country info) klar.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "gesetzede",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "law-index",
+          "file": "schemas/v4.0.0/providers/gesetzede/law-index.mjs",
+          "description": "Beschreibung praezise: gesetze-im-internet.de Index, 6,800+ Gesetze, mit Abkuerzung, Titel, Link. Klare Abgrenzung zum content-Schema.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "gesetzedecontent",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "law-content",
+          "file": "schemas/v4.0.0/providers/gesetzedecontent/law-content.mjs",
+          "description": "Beschreibung praezise: Lesen+Suchen in deutschen Bundesgesetzen, mit konkreten Funktionen (paragraphs, full-text, TOC, structure).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "goldskylilnouns",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "lil-nouns",
+          "file": "schemas/v4.0.0/providers/goldskylilnouns/lil-nouns.mjs",
+          "description": "Beschreibung klar: Lil Nouns DAO Governance-Proposals via Goldsky Subgraph. Beide Operationen (list/byId) explizit.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "googlefactcheck",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "googleFactCheck",
+          "file": "schemas/v4.0.0/providers/googlefactcheck/googleFactCheck.mjs",
+          "description": "Beschreibung klar: Google Fact Check Tools API, Text+Image Suche, ClaimReviews mit Ratings und Quellen. Anwendungsfall offensichtlich.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "govdatasparql",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "sparql-analytics",
+          "file": "schemas/v4.0.0/providers/govdatasparql/sparql-analytics.mjs",
+          "description": "Description is specific (DCAT-AP.de, SPARQL aggregate analytics) and lists concrete capabilities (themes, publishers, formats, keywords, recent). Quantification of 177k+ entries adds clarity.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "greix",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "greix",
+          "file": "schemas/v4.0.0/providers/greix/greix.mjs",
+          "description": "Excellent specificity: source (ECONtribute), exact time range (1963-2024), city count (27), property types covered, granularity levels, and pricing model (free, no key). Clear scope.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "gutendex",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "gutendex",
+          "file": "schemas/v4.0.0/providers/gutendex/gutendex.mjs",
+          "description": "Clear scope (Project Gutenberg, 70k+ ebooks) and explicit filter dimensions named (author, language, subject, downloads). Slightly terse but unambiguous.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "hamburgudp",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "hamburgUdp",
+          "file": "schemas/v4.0.0/providers/hamburgudp/hamburgUdp.mjs",
+          "description": "Concrete scope: OGC SensorThings API, Hamburg, named sub-domains (E-charging, StadtRad, traffic, energy). Mentions OData features and no-API-key constraint.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "hathitrust",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "hathitrust",
+          "file": "schemas/v4.0.0/providers/hathitrust/hathitrust.mjs",
+          "description": "Specific scope (HathiTrust, 17M+ volumes), explicit identifier types (ISBN, OCLC, LCCN) and source (research libraries). Clear and actionable.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "hebcal",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "hebcal",
+          "file": "schemas/v4.0.0/providers/hebcal/hebcal.mjs",
+          "description": "Clear functional scope (holidays, Shabbat times, conversion), enumerates which event classes are covered (major/minor/fast days/Torah readings), and notes free access.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "hnrss",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "jsonFeeds",
+          "file": "schemas/v4.0.0/providers/hnrss/jsonFeeds.mjs",
+          "description": "Concise and clear scope (Hacker News, JSON feeds, list of feed kinds) but somewhat terse. Doesn't mention filters/quotas.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "hochwasserzentralen",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "flood-monitoring",
+          "file": "schemas/v4.0.0/providers/hochwasserzentralen/flood-monitoring.mjs",
+          "description": "Very specific: source (LHP), data type (real-time flood), quantification (~1,200 stations), geographic scope (16 federal states), and two output types (current readings + warnings).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "honeypot",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "honeypot",
+          "file": "schemas/v4.0.0/providers/honeypot/honeypot.mjs",
+          "description": "Clear use-case (detect honeypot tokens), specific signals checked (buy/sell tax, liquidity, contract risks), and target (EVM token address). Concrete API source named.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "hudoc",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "hudoc",
+          "file": "schemas/v4.0.0/providers/hudoc/hudoc.mjs",
+          "description": "Specific source (HUDOC), quantified scale (90K+ docs), explicit doc types (judgments, decisions, communications) and time range (since 1959). ECHR scope crystal clear.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "imfdatamapper",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "imfdatamapper",
+          "file": "schemas/v4.0.0/providers/imfdatamapper/imfdatamapper.mjs",
+          "description": "Clear scope: IMF DataMapper, quantification (120+ indicators, 190+ countries), domain examples (GDP, inflation, debt, trade), and free access noted.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "inaturalist",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "inaturalist",
+          "file": "schemas/v4.0.0/providers/inaturalist/inaturalist.mjs",
+          "description": "Clear and specific: iNaturalist citizen science, lists primary use cases (observations, taxa, places, counts). Implicit but evident scope.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "indicators",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "chart-generator",
+          "file": "schemas/v4.0.0/providers/indicators/chart-generator.mjs",
+          "description": "Concise and specific (candlestick PNG, OHLCV, ECharts, base64 output for Markdown embedding). Slightly narrow; doesn't mention indicator overlays explicitly outside parameters.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "indicatorts",
+      "toolCount": 5,
+      "schemas": [
+        {
+          "name": "indicatorts-schema-part5",
+          "file": "schemas/v4.0.0/providers/indicatorts/indicatorts-schema-part5.mjs",
+          "description": "Clear and informative: explicit library name, 80+ indicators, named categories (momentum, trend, volume) with examples, and local computation. Slightly generic per-part description (same for all parts).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "indicatorts-schema-part6",
+          "file": "schemas/v4.0.0/providers/indicatorts/indicatorts-schema-part6.mjs",
+          "description": "Clear and informative: explicit library, 80+ indicators, named categories with examples, local computation. Generic per-part description shared with sibling parts.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "indicatorts-schema-part7",
+          "file": "schemas/v4.0.0/providers/indicatorts/indicatorts-schema-part7.mjs",
+          "description": "Clear and informative: explicit library, 80+ indicators, named categories with examples, local computation. Generic per-part description shared with sibling parts.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "indicatorts-schema-part8",
+          "file": "schemas/v4.0.0/providers/indicatorts/indicatorts-schema-part8.mjs",
+          "description": "Clear and informative: explicit library, 80+ indicators, named categories with examples, local computation. Generic per-part description shared with sibling parts.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "indicatorts-schema-part9",
+          "file": "schemas/v4.0.0/providers/indicatorts/indicatorts-schema-part9.mjs",
+          "description": "Clear and informative: explicit library, 80+ indicators, named categories with examples, local computation. Generic per-part description shared with sibling parts.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "infravelo",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "infravelo",
+          "file": "schemas/v4.0.0/providers/infravelo/infravelo.mjs",
+          "description": "Very specific: source (infraVelo), city (Berlin), domain (cycling infrastructure), data elements (bike lanes, parking, traffic signals), output format (GeoJSON), and license noted.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "infura",
+      "toolCount": 3,
+      "schemas": [
+        {
+          "name": "node-read-part1",
+          "file": "schemas/v4.0.0/providers/infura/node-read-part1.mjs",
+          "description": "Excellent specificity: source (Infura JSON-RPC), full chain list enumerated (Ethereum, Polygon, Arbitrum, Optimism, Base, BSC, Avalanche, Linea, Scroll, zkSync, Mantle, Celo), and concrete read capabilities listed (blocks, balances, transactions, receipts, code, gas, logs).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "node-read-part2",
+          "file": "schemas/v4.0.0/providers/infura/node-read-part2.mjs",
+          "description": "Excellent specificity: same shared description as part1 — Infura JSON-RPC across 12 named EVM chains with concrete capability list including event logs (relevant for this part).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "contract-read",
+          "file": "schemas/v4.0.0/providers/infura/contract-read.mjs",
+          "description": "Clear scope: read-only contract calls via Infura on EVM mainnets, ABI-based signature. Slightly terse on which exact chains supported (deferred to enum).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "insolvenzbekanntmachungen",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "insolvenzbekanntmachungen",
+          "file": "schemas/v4.0.0/providers/insolvenzbekanntmachungen/insolvenzbekanntmachungen.mjs",
+          "description": "Specific official source (insolvenzbekanntmachungen.de), domain (German insolvency), explicit search dimensions listed, and structured output noted.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "internetarchive",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "internetArchive",
+          "file": "schemas/v4.0.0/providers/internetarchive/internetArchive.mjs",
+          "description": "Specific scope: 40M+ items, listed media types (books, audio, video, software, web pages), and capabilities (metadata, files, statistics). Doesn't mention Wayback explicitly though that's offered.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "ipuparline",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "ipuParline",
+          "file": "schemas/v4.0.0/providers/ipuparline/ipuParline.mjs",
+          "description": "Clear source (IPU Parline), domain (parliamentary data), explicit entities (countries, parliaments, chambers, elections, specialized bodies), and scale (190+ countries).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "irys",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "irys",
+          "file": "schemas/v4.0.0/providers/irys/irys.mjs",
+          "description": "Klare Beschreibung der Datenquelle (Irys GraphQL, decentralized storage), nennt zentrale Filter (owner, token, tags, timestamp) und auth requirements. Etwas knapp, aber spezifisch genug.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "itausschreibung",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "tenders",
+          "file": "schemas/v4.0.0/providers/itausschreibung/tenders.mjs",
+          "description": "Beschreibt klar Provider (German IT procurement RSS) und Kategorien (software/hardware/internet/telecom/consulting), aber keine Hinweise auf Sprache der Inhalte, Aktualisierungsfrequenz oder Anwendungsfaelle.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "iucnredlist",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "iucnRedList",
+          "file": "schemas/v4.0.0/providers/iucnredlist/iucnRedList.mjs",
+          "description": "Sehr spezifische Beschreibung: API-Version, Filteroptionen (taxonomy/country/habitat/threat), Skalierungs-Info (150k+ Arten). Klar abgegrenzter Use Case fuer Biodiversitaets-Queries.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "jikan",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "jikan",
+          "file": "schemas/v4.0.0/providers/jikan/jikan.mjs",
+          "description": "Exzellente Beschreibung: Datenquelle (MyAnimeList), Skalierung (25k+ Anime, 60k+ Manga), gelieferte Felder, auth/rate limits. Vollstaendig und LLM-freundlich.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "jpl",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "jplfireball",
+          "file": "schemas/v4.0.0/providers/jpl/jplfireball.mjs",
+          "description": "Konkrete Beschreibung der Datenquelle (NASA JPL fireball/bolide), nennt die wichtigsten Felder (date/location/energy/velocity) und Sensor-Provenienz (US Gov).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "jplcad",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "jplcad",
+          "file": "schemas/v4.0.0/providers/jplcad/jplcad.mjs",
+          "description": "Klarer Scope (JPL Close Approach Data), nennt Filterdimensionen (date range, distance, object type PHA/NEO/comet, designation, magnitude). Spezifisch genug fuer LLM-Auswahl.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "jplsbdb",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "jplsbdb",
+          "file": "schemas/v4.0.0/providers/jplsbdb/jplsbdb.mjs",
+          "description": "Klar abgegrenzt (Small-Body Database asteroids/comets), nennt die liefernden Datentypen (orbital elements, physical parameters, close approaches, alternate designations).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "jplsentry",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "jplsentry",
+          "file": "schemas/v4.0.0/providers/jplsentry/jplsentry.mjs",
+          "description": "Klare Beschreibung: NASA JPL Sentry Impact Risk Assessment mit konkreten Datenpunkten (probability, Palermo scale, virtual impactors). Domain-spezifisch und eindeutig.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "ladesaeulenregister",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "ladesaeulenregister",
+          "file": "schemas/v4.0.0/providers/ladesaeulenregister/ladesaeulenregister.mjs",
+          "description": "Spezifische Beschreibung mit Provider (Bundesnetzagentur), Skalierung (175k+ Stationen), Datentyp (ArcGIS FeatureServer), und Filteroptionen (location, city, state, operator, power).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "ladestationen",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "ladestationen",
+          "file": "schemas/v4.0.0/providers/ladestationen/ladestationen.mjs",
+          "description": "Klare Beschreibung mit Provider (Bundesnetzagentur), Quelle (ArcGIS FeatureServer) und Scope (alle oeffentlichen Stationen Deutschland). Keine Skalierungsangabe wie beim Schwester-Schema.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "lastfm",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "lastfm",
+          "file": "schemas/v4.0.0/providers/lastfm/lastfm.mjs",
+          "description": "Klare Beschreibung der Datentypen (artist/track/album/charts/recommendations) und Quelle (Last.fm/listening data). Knapp, aber ausreichend spezifisch.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "libraryofcongress",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "libraryOfCongress",
+          "file": "schemas/v4.0.0/providers/libraryofcongress/libraryOfCongress.mjs",
+          "description": "Sehr konkret: Datentypen (books/photos/maps/manuscripts/audio/video), Skalierung (170M+ records). Klarer Mediendaten-Fokus.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "lobid",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "lobid",
+          "file": "schemas/v4.0.0/providers/lobid/lobid.mjs",
+          "description": "Sehr spezifisch: Provider (hbz), Skalierung (250M+ holdings, GND), Datenfelder, Format (REST/JSON-LD). Klar abgegrenzter Use Case fuer deutsche Bibliotheksdaten.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "luksonetwork",
+      "toolCount": 8,
+      "schemas": [
+        {
+          "name": "search",
+          "file": "schemas/v4.0.0/providers/luksonetwork/search.mjs",
+          "description": "Klare Beschreibung: full-text search ueber addresses/tx/blocks/tokens, mit redirect support. Passt exakt zu den zwei Tools.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "sourceCode",
+          "file": "schemas/v4.0.0/providers/luksonetwork/sourceCode.mjs",
+          "description": "Klare Aufzaehlung der vier Funktionen (list contracts, ABI, source code, creation tx). Spezifisch und matchend zu Tools.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "stats",
+          "file": "schemas/v4.0.0/providers/luksonetwork/stats.mjs",
+          "description": "Beschreibung erwaehnt korrekt die drei Tools (stats overview, tx volume chart, market price chart) und Quelle (BlockScout). Klar und passend.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "transactions",
+          "file": "schemas/v4.0.0/providers/luksonetwork/transactions.mjs",
+          "description": "Klare Aufzaehlung der sieben Transaktions-Funktionen (list, details by hash, token transfers, internal txs, logs, raw traces, state changes). Passt zum Schema.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "address-part1",
+          "file": "schemas/v4.0.0/providers/luksonetwork/address-part1.mjs",
+          "description": "Klare Beschreibung (LUKSO via BlockScout) mit Aufzaehlung der Datentypen (transactions, transfers, internal, logs, balances, history). Knapp, aber praezise.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "blocks",
+          "file": "schemas/v4.0.0/providers/luksonetwork/blocks.mjs",
+          "description": "Klare Beschreibung der vier Block-Funktionen (list/details/transactions/withdrawals) mit Quelle (LUKSO BlockScout). Spezifisch und kompakt.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "nfts",
+          "file": "schemas/v4.0.0/providers/luksonetwork/nfts.mjs",
+          "description": "Klar abgegrenzt: NFT-Daten auf LUKSO (collections, instances, holders, transfers). Passt zum Schema-Inhalt, Quelle (BlockScout) genannt.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "tokens",
+          "file": "schemas/v4.0.0/providers/luksonetwork/tokens.mjs",
+          "description": "Klare Auflistung der Token-Funktionen (list, details, transfer history, holders, counters). Passt zu den fuenf Tools.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "magiceden",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "magiceden",
+          "file": "schemas/v4.0.0/providers/magiceden/magiceden.mjs",
+          "description": "Clear, specific description naming the marketplace (Magic Eden), platform (Solana), and concrete data types (collection stats, listings, metadata, activity). Helps an LLM decide when to use the schema.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "marktstammdaten",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "energy-units",
+          "file": "schemas/v4.0.0/providers/marktstammdaten/energy-units.mjs",
+          "description": "Specific German energy registry (MaStR) with concrete dataset size (8.4M+), data types (electricity/gas generation/consumption), and core features (filtering, pagination). Clear scope.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "mcpregistry",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "servers",
+          "file": "schemas/v4.0.0/providers/mcpregistry/servers.mjs",
+          "description": "Clear purpose (browse/search MCP server registry) but description is brief and does not detail filtering capabilities or scale. Adequate for routing decisions.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "mealdb",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "mealdb",
+          "file": "schemas/v4.0.0/providers/mealdb/mealdb.mjs",
+          "description": "Highly descriptive: dataset (TheMealDB, 300+ meals, world cuisines), capabilities (search, filter, browse), output features (images, video tutorials, instructions), and API key tier info. Excellent specificity.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "medium",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "rss-feeds",
+          "file": "schemas/v4.0.0/providers/medium/rss-feeds.mjs",
+          "description": "Clear scope: Medium articles via RSS, four entry points (tag, user, publication, topic). Mentions metadata/summaries. Adequate specificity.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "merkl",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "merkl",
+          "file": "schemas/v4.0.0/providers/merkl/merkl.mjs",
+          "description": "Specific: DeFi rewards on 50+ chains, concrete capabilities (campaigns with APR/TVL, user rewards, chain metadata), named integrations (Uniswap, Aave, Velodrome). Good routing signal.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "metaver",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "metaver",
+          "file": "schemas/v4.0.0/providers/metaver/metaver.mjs",
+          "description": "Very specific: 31,900+ German metadata records, 8 federal states, CSW 2.0.2 protocol, download formats (WFS/WMS/CSV/GeoJSON), free, no API key. Excellent routing info.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "meteora",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "meteora",
+          "file": "schemas/v4.0.0/providers/meteora/meteora.mjs",
+          "description": "Specific: Meteora DLMM pools on Solana, with concrete data types (pools, pair groups, OHLCV, volume history, protocol metrics). Clear scope for liquidity/DEX analysis.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "metmuseum",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "metMuseum",
+          "file": "schemas/v4.0.0/providers/metmuseum/metMuseum.mjs",
+          "description": "Excellent specificity: Met Museum, 470K+ artworks, search/filter capabilities, returned data (images, artist, provenance), CC0 licensing. Clear routing.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "mobidatabw",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "mobidataBw",
+          "file": "schemas/v4.0.0/providers/mobidatabw/mobidataBw.mjs",
+          "description": "Highly specific: Baden-Wuerttemberg mobility data, concrete dataset sizes (27,966 parking sites, 100+ GBFS feeds), distinct data types (parking, GTFS stops, sharing, roadworks), free, no key needed.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "moralis",
+      "toolCount": 6,
+      "schemas": [
+        {
+          "name": "defiApi",
+          "file": "schemas/v4.0.0/providers/moralis/defiApi.mjs",
+          "description": "Specific: DeFi portfolio analysis via Moralis with named protocols (Uniswap, Aave, Lido, MakerDAO, EigenLayer). Clear summary vs detail distinction.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "priceApi",
+          "file": "schemas/v4.0.0/providers/moralis/priceApi.mjs",
+          "description": "Specific: token/NFT price data via Moralis (ERC20 prices, NFT floor prices current/historical, sale history, DEX OHLCV). Good distinction from blockchain/wallet APIs.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "blockchainApi",
+          "file": "schemas/v4.0.0/providers/moralis/blockchainApi.mjs",
+          "description": "Clear scope: low-level blockchain data via Moralis (blocks, transactions, native history) across 30+ EVM chains. Good differentiation from other Moralis APIs.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "walletApi-part1",
+          "file": "schemas/v4.0.0/providers/moralis/walletApi-part1.mjs",
+          "description": "Specific: wallet intelligence with concrete features (balance, history, net worth, profitability, active chain detection, ENS/Unstoppable resolution). Clear scope.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "tokenApi-part2",
+          "file": "schemas/v4.0.0/providers/moralis/tokenApi-part2.mjs",
+          "description": "Specific: ERC20 token analytics via Moralis with many concrete features named (metadata, holders, transfers, DEX swaps, sniper detection, liquidity, balances, approvals, rankings). Good differentiation.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "nftApi-part1",
+          "file": "schemas/v4.0.0/providers/moralis/nftApi-part1.mjs",
+          "description": "Clear scope: comprehensive NFT data via Moralis (stats, metadata, ownership, transfers, trades, traits, rankings) across 30+ EVM chains. Adequate routing info.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "morpho",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "markets",
+          "file": "schemas/v4.0.0/providers/morpho/markets.mjs",
+          "description": "Specific: Morpho Blue lending markets via GraphQL with concrete capabilities (markets, positions, chains) and explicit chain support list (Ethereum, Base, Polygon, Arbitrum, Optimism).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "mudab",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "marine-data",
+          "file": "schemas/v4.0.0/providers/mudab/marine-data.mjs",
+          "description": "Description is clear and specific — names the institution (BfG, German Federal Institute of Hydrology), the domain (marine environment), and the data source (coastal states and research institutions). Strong signal for when an LLM should select this schema.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "musicbrainz",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "musicBrainz",
+          "file": "schemas/v4.0.0/providers/musicbrainz/musicBrainz.mjs",
+          "description": "Specific: MusicBrainz with scale (2M+ artists, 30M+ recordings), entity types (artists, recordings, releases, release groups), and lookup methods (MBID or keyword). Clear scope.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "nagerdate",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "nager-date",
+          "file": "schemas/v4.0.0/providers/nagerdate/nager-date.mjs",
+          "description": "Very specific: 100+ countries via Nager.Date with all features named (year+country, upcoming, long weekends, country list), free, no key. Excellent routing.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "nasaapod",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "nasaapod",
+          "file": "schemas/v4.0.0/providers/nasaapod/nasaapod.mjs",
+          "description": "Specific: NASA APOD with concrete output (titles, explanations, high-res URLs) and start date (1995). Adequate scope.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "nasaeonet",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "nasaEonet",
+          "file": "schemas/v4.0.0/providers/nasaeonet/nasaEonet.mjs",
+          "description": "Very specific: NASA EONET with concrete event categories (wildfires, storms, volcanoes, earthquakes, floods, sea ice), worldwide scope, free, no key. Excellent routing.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "nasaepic",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "nasaepic",
+          "file": "schemas/v4.0.0/providers/nasaepic/nasaepic.mjs",
+          "description": "Description is specific and clear — names the source satellite (DSCOVR), the camera (EPIC), data types (natural, enhanced, aerosol, cloud), and what is returned (metadata, coordinates). Slightly weakened by absence of explicit use-case framing.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "nasaexoplanet",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "nasaExoplanet",
+          "file": "schemas/v4.0.0/providers/nasaexoplanet/nasaExoplanet.mjs",
+          "description": "Description names the API (NASA Exoplanet Archive), the protocol (TAP/ADQL), dataset size (6100+), and lists searchable dimensions. Could mention typical use scenarios more explicitly.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "nasaneows",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "nasaneows",
+          "file": "schemas/v4.0.0/providers/nasaneows/nasaneows.mjs",
+          "description": "Description clearly names the API (NeoWs) and three usage modes (close approach feed, lookup, browse). Brief but specific. Could mention the 7-day feed limit at description level.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "nasatechport",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "nasatechport",
+          "file": "schemas/v4.0.0/providers/nasatechport/nasatechport.mjs",
+          "description": "Specific naming of the API (NASA TechPort) and listed entities (projects, programs, organizations, taxonomy) is clear. Slightly generic — could mention typical research/portfolio use cases.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "neuris",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "neuris",
+          "file": "schemas/v4.0.0/providers/neuris/neuris.mjs",
+          "description": "Description is precise — names the official system (Rechtsinformationsportal), the operator (Federal Ministry of Justice), the data types (legislation, case law, legal documents) and the protocol (JSON REST). Bilingual context provided.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "newsapi",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "news",
+          "file": "schemas/v4.0.0/providers/newsapi/news.mjs",
+          "description": "Description is short and accurate but generic — does not name the provider (NewsAPI) or scope (free vs paid, archive depth). Acceptable but not exemplary.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "newsdata",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "getNews",
+          "file": "schemas/v4.0.0/providers/newsdata/getNews.mjs",
+          "description": "Names the provider and scope (crypto news) clearly but is short. Doesn't mention features like sentiment analysis/AI tags surfaced in the schema, which could help routing decisions.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "nextbike",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "nextbike",
+          "file": "schemas/v4.0.0/providers/nextbike/nextbike.mjs",
+          "description": "Description is concrete — names the provider, the data types (station locations, availability, system info), the geographic coverage (50+ German networks with examples), and the access model (free, no API key). Very actionable.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "neynar",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "neynar",
+          "file": "schemas/v4.0.0/providers/neynar/neynar.mjs",
+          "description": "Description specifies provider (Neynar), protocol context (Farcaster, REST), and lists concrete operations (by username/FID/ETH address, casts, feeds). Clear enough to route to.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "nhtsarecalls",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "nhtsaRecalls",
+          "file": "schemas/v4.0.0/providers/nhtsarecalls/nhtsaRecalls.mjs",
+          "description": "Description is highly specific — names provider (NHTSA), scope (US recalls + complaints), data dimensions (make/model/year, campaign), and includes the agency full name. Very easy to route to.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "nhtsavpic",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "nhtsaVpic",
+          "file": "schemas/v4.0.0/providers/nhtsavpic/nhtsaVpic.mjs",
+          "description": "Description is exemplary — names provider (NHTSA vPIC), expands acronym, lists primary capability (VIN decoding), data dimensions (make/model/manufacturer), and access constraints (no API key, US scope).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "nihreporter",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "nihreporter",
+          "file": "schemas/v4.0.0/providers/nihreporter/nihreporter.mjs",
+          "description": "Description clearly names provider context (NIH-funded research), data types (projects, publications, clinical studies) and metadata (grants, PIs, funding). Could specify the agency (NIH RePORTER) by name.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "nina",
+      "toolCount": 2,
+      "schemas": [
+        {
+          "name": "ninaWarnApp",
+          "file": "schemas/v4.0.0/providers/nina/ninaWarnApp.mjs",
+          "description": "Description specifies provider (NINA Warn-App), data sources (BBK, DWD, KATWARN, BIWAPP, LHP flood), country (Germany), and the type of data (civil protection warnings).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "warnings",
+          "file": "schemas/v4.0.0/providers/nina/warnings.mjs",
+          "description": "Description names the federal system (NINA), data types (DWD weather, MOWAS civil protection, BIWAPP, KATWARN), and the country context (German federal warning system). Slightly less detailed than ninaWarnApp counterpart.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "noaa",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "noaaWeatherAlerts",
+          "file": "schemas/v4.0.0/providers/noaa/noaaWeatherAlerts.mjs",
+          "description": "Description names the agency (NWS, NOAA), the API (Weather.gov), the country scope (US), and three concrete data dimensions (alerts by state, forecast by grid, station observations). Clear and actionable.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "noaaclimate",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "noaa-climate",
+          "file": "schemas/v4.0.0/providers/noaaclimate/noaa-climate.mjs",
+          "description": "Exemplary description — names provider (NOAA NCEI), data types (daily, global, normals), coverage (10,000+ stations worldwide), parameters measured (temperature, precipitation, wind), and access constraints (free without key).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "nobelprize",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "nobel-prize",
+          "file": "schemas/v4.0.0/providers/nobelprize/nobel-prize.mjs",
+          "description": "Description names the official source (Nobel Foundation), time range (1901-present), search dimensions (name/gender/country), all six categories, and access model (free, no key). Comprehensive.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "nominatim",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "nominatim",
+          "file": "schemas/v4.0.0/providers/nominatim/nominatim.mjs",
+          "description": "Description names both capabilities (geocode + reverse geocode) and the data source (OpenStreetMap). Slightly short — does not name the service (Nominatim) explicitly or mention rate-limit / usage policy.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "nvd",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "nvdCve",
+          "file": "schemas/v4.0.0/providers/nvd/nvdCve.mjs",
+          "description": "Description names provider (NIST NVD), data types (CVE records, severity scores, affected products, change history) and is concise. Could mention rate-limits or API key behavior.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "nwsweather",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "nwsWeather",
+          "file": "schemas/v4.0.0/providers/nwsweather/nwsWeather.mjs",
+          "description": "Description is highly specific — names agency (US NWS), data dimensions (forecasts, alerts, observations), station count (3000+), geographic scope (entire US), and access model (free, no key).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "obis",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "obis",
+          "file": "schemas/v4.0.0/providers/obis/obis.mjs",
+          "description": "Description names the system (Ocean Biodiversity Information System), data types (occurrences, taxonomy, checklists, dataset metadata), and scale (100M+ records worldwide). Clear and actionable.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "oeffentlichevergabe",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "tenders",
+          "file": "schemas/v4.0.0/providers/oeffentlichevergabe/tenders.mjs",
+          "description": "Description names the service (German Bekanntmachungsservice), data format (OCDS), and key fields (buyer, title, CPV, location). Slightly bilingual which is fine, but no scope (federal/state) or coverage info.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "ohlcv",
+      "toolCount": 3,
+      "schemas": [
+        {
+          "name": "olhcv-moralis-solana",
+          "file": "schemas/v4.0.0/providers/ohlcv/olhcv-moralis-solana.mjs",
+          "description": "Description names provider (Moralis), data type (OHLCV), chain (Solana), and the recursive auto-pagination feature. Clear, parallel to the EVM variant.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "olhcv-solana-tracker",
+          "file": "schemas/v4.0.0/providers/ohlcv/olhcv-solana-tracker.mjs",
+          "description": "Description names provider (Solana Tracker), data type (OHLCV candlestick chart), scope (Solana token + pool), and use case (price history visualization). Clear and specific.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "olhcv-moralis-evm",
+          "file": "schemas/v4.0.0/providers/ohlcv/olhcv-moralis-evm.mjs",
+          "description": "Description names provider (Moralis), data type (OHLCV candlesticks), scope (EVM token pairs), and notable feature (recursive auto-pagination). Could mention key requirement explicitly.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "omdb",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "omdb",
+          "file": "schemas/v4.0.0/providers/omdb/omdb.mjs",
+          "description": "Schema description is clear and specific about searching/retrieving movie, TV series, and episode information with examples of returned fields (ratings, plot, cast, poster). Slightly generic but adequate.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "openaire",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "openaire",
+          "file": "schemas/v4.0.0/providers/openaire/openaire.mjs",
+          "description": "Description is specific with scale (170M+ products), entity types (publications, datasets, software, projects), and key filters (EU funding, open access, impact metrics). Clear when to use.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "openalex",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "openalex",
+          "file": "schemas/v4.0.0/providers/openalex/openalex.mjs",
+          "description": "Description is specific with scale (240M+) and clearly lists entity types (works, authors, institutions, funders, topics). Communicates open and free nature.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "openbrewerydb",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "open-brewery-db",
+          "file": "schemas/v4.0.0/providers/openbrewerydb/open-brewery-db.mjs",
+          "description": "Very specific description with filter dimensions (name, city, state, country, type), return fields (address, coordinates, phone, website), and data scale (8,000+ US breweries). Clear free/no-key statement.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "opencellid",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "opencellid",
+          "file": "schemas/v4.0.0/providers/opencellid/opencellid.mjs",
+          "description": "Description clearly states the three main use cases (lookup, geolocation, area query) and the data scope. Specific to cell tower locations with worldwide scope.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "openchargemap",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "openchargemap",
+          "file": "schemas/v4.0.0/providers/openchargemap/openchargemap.mjs",
+          "description": "Specific scope (300K+ EV charging stations), feature list (connector types, charging speeds), data origin (crowdsourced) and key data points listed. Clear scope and use case.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "opencitations",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "opencitations",
+          "file": "schemas/v4.0.0/providers/opencitations/opencitations.mjs",
+          "description": "Clear scope of citation data with specific query types (DOI-to-DOI links, references, counts, metadata) and licensing info (CC0). Well-targeted description.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "openfda",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "openfda",
+          "file": "schemas/v4.0.0/providers/openfda/openfda.mjs",
+          "description": "Clear scope of FDA datasets covered (drugs, devices, food, recalls, adverse events). Specifies clear use cases. Could mention search syntax.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "openfec",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "openfec",
+          "file": "schemas/v4.0.0/providers/openfec/openfec.mjs",
+          "description": "Very specific description: scope (FEC campaign finance), entity types (candidates, committees, filings, totals), time range (1980-present), elections (presidential, Senate, House), and access info (API key, DEMO_KEY).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "openfigi",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "openfigi",
+          "file": "schemas/v4.0.0/providers/openfigi/openfigi.mjs",
+          "description": "Very specific description with identifier types (ISIN, CUSIP, SEDOL, ticker), three use cases (map, search, retrieve values), and access info (free, no key). Clear use cases.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "openfoodfacts",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "openFoodFacts",
+          "file": "schemas/v4.0.0/providers/openfoodfacts/openFoodFacts.mjs",
+          "description": "Very specific description with database scale (3M+ items), return data types (nutrition, ingredients, allergens, Nutri-Score, eco-scores), and access methods (barcode, category, grade). Clear use cases.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "openfootball",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "openfootball",
+          "file": "schemas/v4.0.0/providers/openfootball/openfootball.mjs",
+          "description": "Description briefly mentions key leagues (Bundesliga, Premier League, La Liga) and data source (GitHub static JSON). Lacks scope details on coverage (history, granularity).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "openlegaldata",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "openLegalData",
+          "file": "schemas/v4.0.0/providers/openlegaldata/openLegalData.mjs",
+          "description": "Description is specific with concrete dataset scale (250K+ decisions, 57K+ law sections, 1100+ law books), data type (German legal data), licensing (CC0). Clear scope.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "openlibrary",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "openLibrary",
+          "file": "schemas/v4.0.0/providers/openlibrary/openLibrary.mjs",
+          "description": "Description specifies scale (20M+ editions, works, authors, subjects) and source (Internet Archive). Clear scope but could mention what data is queryable.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "openligadb",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "openligadb",
+          "file": "schemas/v4.0.0/providers/openligadb/openligadb.mjs",
+          "description": "Description mentions key data types (matches, standings, scorers, teams) and language scope (German + international). Could elaborate on supported leagues.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "openmeteo",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "openMeteoAirQuality",
+          "file": "schemas/v4.0.0/providers/openmeteo/openMeteoAirQuality.mjs",
+          "description": "Very specific description listing exact pollutants (PM2.5, PM10, ozone, NO2, CO, UV index) and AQI types (European/US). Worldwide scope and time granularity (hourly) clear.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "openplz",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "openplz",
+          "file": "schemas/v4.0.0/providers/openplz/openplz.mjs",
+          "description": "Specific description with entity types (postal codes, localities, streets, municipalities, admin divisions) and three country scopes (DE/AT/CH). Clear no-auth open data.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "openrouteservice",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "openrouteservice",
+          "file": "schemas/v4.0.0/providers/openrouteservice/openrouteservice.mjs",
+          "description": "Description lists six distinct services (routing, isochrones, matrix, geocoding, elevation, optimization) and data source (OpenStreetMap). Clear and broad scope.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "opensanctions",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "opensanctions",
+          "file": "schemas/v4.0.0/providers/opensanctions/opensanctions.mjs",
+          "description": "Clear use cases (screen persons/companies, retrieve entities, dataset metadata) and data types (sanctions, PEP, criminal records). API name (yente) specified.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "opensea",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "opensea",
+          "file": "schemas/v4.0.0/providers/opensea/opensea.mjs",
+          "description": "Clear scope (NFT marketplace data) with specific data types (collection stats, listings, offers, events, metadata) and version (v2 API). Includes tool selection guidance.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "opensensemap",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "opensensemap",
+          "file": "schemas/v4.0.0/providers/opensensemap/opensensemap.mjs",
+          "description": "Specific description with network scale (16K+ stations), measurements (air quality, temperature, humidity, UV, noise), and provenance (re:edu, University of Muenster). Worldwide scope.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "opensky",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "openskyNetwork",
+          "file": "schemas/v4.0.0/providers/opensky/openskyNetwork.mjs",
+          "description": "Very specific: real-time aircraft tracking, four data types (state vectors, flight history, arrivals/departures, waypoints), and data source (ADS-B receiver network).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "openstates",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "openStates",
+          "file": "schemas/v4.0.0/providers/openstates/openStates.mjs",
+          "description": "Clear geographic scope (all 50 states, DC, Puerto Rico) and entity types (legislators, bills, committees, votes). Concise and well-targeted.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "opentdb",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "opentdb",
+          "file": "schemas/v4.0.0/providers/opentdb/opentdb.mjs",
+          "description": "Very specific: 4,000+ questions, 24 categories, question types (multiple choice, true/false), difficulty levels, example categories, access info (free, no API key). Excellent specificity.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "opsd",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "opsd",
+          "file": "schemas/v4.0.0/providers/opsd/opsd.mjs",
+          "description": "Very specific: 6000+ plants, 20+ European countries, scope (conventional power), filter dimensions, energy types (fossil, renewable, nuclear), and access (free, no API key).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "orca",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "orca",
+          "file": "schemas/v4.0.0/providers/orca/orca.mjs",
+          "description": "Description is clear and specific — names Orca DEX on Solana, lists exactly what data is fetched (pool data, token listings, whirlpool details), and gives explicit usage guidance with tool chaining.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "orcid",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "orcid",
+          "file": "schemas/v4.0.0/providers/orcid/orcid.mjs",
+          "description": "Description is concrete with scale (19M+ profiles), enumerates content types (publications, affiliations, fundings, peer reviews), and notes auth/cost — gives LLM clear trigger conditions.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "pangaea",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "pangaea",
+          "file": "schemas/v4.0.0/providers/pangaea/pangaea.mjs",
+          "description": "Description names PANGAEA, scale (400K+ datasets), domain (earth/environmental/climate/ocean/geoscience), and access pattern (georeferenced datasets). Clear scope for LLM trigger.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "passportonchain",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "onchain-data",
+          "file": "schemas/v4.0.0/providers/passportonchain/onchain-data.mjs",
+          "description": "Description identifies Passport scores/credentials/attestations and networks (Ethereum, Arbitrum) but is brief — could benefit from explaining 'Passport' (Gitcoin Passport sybil resistance) context.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "pegelonline",
+      "toolCount": 2,
+      "schemas": [
+        {
+          "name": "pegelonline",
+          "file": "schemas/v4.0.0/providers/pegelonline/pegelonline.mjs",
+          "description": "Description names Pegelonline, scope (German federal waterways), data type (real-time water levels, station data, measurements) and access (no API key) — clear trigger conditions.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "water-levels",
+          "file": "schemas/v4.0.0/providers/pegelonline/water-levels.mjs",
+          "description": "Description names domain (German federal waterway gauging stations), data type (water levels, measurements, station data) and source (WSV). Slightly less explicit than the sister schema.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "pflanzenschutzmittel",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "pesticides",
+          "file": "schemas/v4.0.0/providers/pflanzenschutzmittel/pesticides.mjs",
+          "description": "Description identifies source (German BVL), scope (pesticide registration database), and content categories (products, ingredients, companies, restrictions) — clear and specific trigger.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "pinata",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "read",
+          "file": "schemas/v4.0.0/providers/pinata/read.mjs",
+          "description": "Description clearly identifies Pinata as IPFS gateway, access pattern (by CID), and auth requirement. Concise and specific.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "poap",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "graphql",
+          "file": "schemas/v4.0.0/providers/poap/graphql.mjs",
+          "description": "Description identifies POAP protocol, GraphQL access, and three usage modes (introspection, predefined queries, custom). Could elaborate slightly on POAP context (Proof of Attendance Protocol).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "podcastindex",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "podcastIndex",
+          "file": "schemas/v4.0.0/providers/podcastindex/podcastIndex.mjs",
+          "description": "Description gives scale (4M+ podcasts) and concrete capabilities (search, trending, recent, live, categories). Clear, specific trigger conditions.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "pokeapi",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "pokeapi",
+          "file": "schemas/v4.0.0/providers/pokeapi/pokeapi.mjs",
+          "description": "Description is exemplary — names PokeAPI, scale (1,300+ Pokemon), capabilities (stats, abilities, types, moves, evolution chains), generation coverage, additional data (berries, items, locations), and access (free, no key).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "polymarket",
+      "toolCount": 3,
+      "schemas": [
+        {
+          "name": "marketInfo",
+          "file": "schemas/v4.0.0/providers/polymarket/marketInfo.mjs",
+          "description": "Description names Polymarket CLOB API, scope (prediction markets), and two operations (list with filters, retrieve by condition ID). Clear and specific.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "searchBySlug",
+          "file": "schemas/v4.0.0/providers/polymarket/searchBySlug.mjs",
+          "description": "Description is concise and concrete — names Polymarket, Gamma API, lookup mechanism (URL slug), and return structure (embedded markets, outcomes, probabilities).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "gammaApi",
+          "file": "schemas/v4.0.0/providers/polymarket/gammaApi.mjs",
+          "description": "Description identifies Polymarket Gamma API and capabilities (search events, list events, list markets) but is brief and the 'readable, table-like summaries' phrasing is implementation detail rather than user-facing scope.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "profilejump",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "profileJump",
+          "file": "schemas/v4.0.0/providers/profilejump/profileJump.mjs",
+          "description": "Description names ProfileJump for LUKSO Universal Profiles and lists capabilities (token prices, trending profiles, listings, profile lookup). Clear scope.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "pubchem",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "pubchem",
+          "file": "schemas/v4.0.0/providers/pubchem/pubchem.mjs",
+          "description": "Description is exemplary — names PubChem, source (NCBI/NIH), scale (115M+ compounds), search modes (name/formula/structure), property types, content categories (drugs, metabolites, toxins, etc.), and access.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "pumpfun",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "pumpfun",
+          "file": "schemas/v4.0.0/providers/pumpfun/pumpfun.mjs",
+          "description": "Description names Pump.fun on Solana, content scope (meme token launches, coins, live streams, replies, creator profiles), and gives explicit chaining hint (getCoins → getCoinByMint).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "pvgis",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "pvgis",
+          "file": "schemas/v4.0.0/providers/pvgis/pvgis.mjs",
+          "description": "Description names PVGIS by JRC, scope (solar PV energy output, radiation, time series, horizon profiles), and abbreviation expansion (EU Photovoltaic Geographical Information System). Clear trigger.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "quickchart",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "charts",
+          "file": "schemas/v4.0.0/providers/quickchart/charts.mjs",
+          "description": "Description is concise — identifies QuickChart.io for PNG generation from Chart.js configs, no API key. Could clarify the difference between renderChart and getChartUrl modes.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "rcsbpdb",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "rcsb-pdb",
+          "file": "schemas/v4.0.0/providers/rcsbpdb/rcsb-pdb.mjs",
+          "description": "Description is exemplary — names RCSB PDB, scope (worldwide 3D macromolecule archive), scale (220,000+ structures), data types (proteins, nucleic acids, complexes), returned content (atomic coordinates, experimental details), and access (free).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "regionalatlas",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "regionalatlas",
+          "file": "schemas/v4.0.0/providers/regionalatlas/regionalatlas.mjs",
+          "description": "Description gives scale (160+ indicators), regional granularity (federal states, districts, Kreise), and topical coverage (population, demographics, economy, education, environment). Clear trigger.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "regionalstatistik",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "regionalstatistik",
+          "file": "schemas/v4.0.0/providers/regionalstatistik/regionalstatistik.mjs",
+          "description": "Description names source (Regionaldatenbank Deutschland via GENESIS REST API), scale (160+ indicators), regional granularity (Kreis/Gemeinde/Bundesland), and auth note (free registration). Clear trigger.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "reisewarnung",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "reisewarnung",
+          "file": "schemas/v4.0.0/providers/reisewarnung/reisewarnung.mjs",
+          "description": "Description names source (German Federal Foreign Office / Auswaertiges Amt) and content (travel advisories, country security info, diplomatic contacts). Clear and specific.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "reisewarnungen",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "travel-warnings",
+          "file": "schemas/v4.0.0/providers/reisewarnungen/travel-warnings.mjs",
+          "description": "Description names source (German Federal Foreign Office / Auswaertiges Amt) and scope (travel warnings, safety advisories, worldwide). Concise and clear.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "restcountries",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "rest-countries",
+          "file": "schemas/v4.0.0/providers/restcountries/rest-countries.mjs",
+          "description": "Description is specific with concrete data points (250+ countries) and lists key data fields (names, capitals, currencies, languages, flags, geographic data). Clear scope, no ambiguity.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "retractionwatch",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "retractionwatch",
+          "file": "schemas/v4.0.0/providers/retractionwatch/retractionwatch.mjs",
+          "description": "Concrete scope (63K+ articles), specifies access path (Crossref API), lists all filter dimensions (date, DOI, publisher, keyword), and clarifies data source.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "rickandmorty",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "rickandmorty",
+          "file": "schemas/v4.0.0/providers/rickandmorty/rickandmorty.mjs",
+          "description": "Concrete counts (800+ characters, 50+ episodes, 120+ locations), explicit filter dimensions, and clear statement about free access without API key.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "rijksmuseum",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "rijksmuseum",
+          "file": "schemas/v4.0.0/providers/rijksmuseum/rijksmuseum.mjs",
+          "description": "Clear scope (700K+ objects) with filter dimensions listed and access requirement (no API key). Concise but lacks examples of typical use cases.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "rkicovid",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "rki-covid",
+          "file": "schemas/v4.0.0/providers/rkicovid/rki-covid.mjs",
+          "description": "Clearly identifies source (RKI) and lists data granularities (national, state, district, vaccination, testing). No counts but explicit dimensions.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "ror",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "ror",
+          "file": "schemas/v4.0.0/providers/ror/ror.mjs",
+          "description": "Concrete scale (100,000+ organizations), clear capability statement (search/retrieve/match), and identifies the data source (ROR). Could elaborate on use cases.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "rugcheck",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "tokenSafety",
+          "file": "schemas/v4.0.0/providers/rugcheck/tokenSafety.mjs",
+          "description": "Identifies Solana scope and key capabilities (safety scores, risk reports, votes, trending). Source (rugcheck.xyz) noted. Lacks concrete metrics or counts.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "rxnorm",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "rxnorm",
+          "file": "schemas/v4.0.0/providers/rxnorm/rxnorm.mjs",
+          "description": "Identifies source (NLM RxNorm) and lists key data types (drug concepts, RxCUI, NDC codes, properties, related medications). Clear domain coverage.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "safeglobal",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "transaction-service",
+          "file": "schemas/v4.0.0/providers/safeglobal/transaction-service.mjs",
+          "description": "Clear scope (Gnosis Safe multisig wallets) with key data dimensions (balances, transactions, owners, modules) and chain context (Ethereum mainnet). Concise.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "secdata",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "sec-data",
+          "file": "schemas/v4.0.0/providers/secdata/sec-data.mjs",
+          "description": "Detailed scope (SEC EDGAR XBRL, all US public companies), specifies CIK format with concrete example (CIK0000320193), notes free access and User-Agent header requirement.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "secedgar",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "sec-edgar",
+          "file": "schemas/v4.0.0/providers/secedgar/sec-edgar.mjs",
+          "description": "Specific time range (1993 to present), explicit form examples (10-K, 10-Q, 8-K, S-1), search dimensions noted, and access requirements documented.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "semanticscholar",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "semanticscholar",
+          "file": "schemas/v4.0.0/providers/semanticscholar/semanticscholar.mjs",
+          "description": "Concrete scale (200M+ papers), specific features listed (TLDR summaries, citation intent, embeddings, author profiles), and access info documented.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "sensorcommunity",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "sensorcommunity",
+          "file": "schemas/v4.0.0/providers/sensorcommunity/sensorcommunity.mjs",
+          "description": "Identifies source with former name (Sensor.Community formerly Luftdaten.info), lists measured variables (PM2.5, PM10, temp, humidity) and scope (thousands of DIY sensors worldwide).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "serlo",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "serlo",
+          "file": "schemas/v4.0.0/providers/serlo/serlo.mjs",
+          "description": "Identifies platform (Serlo.org OER), protocol (GraphQL), and capabilities (subjects, articles, exercises, taxonomy, activity). German context noted, no API key required.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "servicebund",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "tenders",
+          "file": "schemas/v4.0.0/providers/servicebund/tenders.mjs",
+          "description": "Identifies content (German Ausschreibungen and awarded contracts), scope (federal, state, municipal), and access method (RSS feed). Bilingual terms aid German users.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "shodan",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "shodaninternetdb",
+          "file": "schemas/v4.0.0/providers/shodan/shodaninternetdb.mjs",
+          "description": "Clear capability list (open ports, CPEs, hostnames, tags, CVEs) and clear access info (no API key). Concrete IP-based use case.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "simdune",
+      "toolCount": 8,
+      "schemas": [
+        {
+          "name": "balancesEVM",
+          "file": "schemas/v4.0.0/providers/simdune/balancesEVM.mjs",
+          "description": "Clear data scope (native + ERC20 tokens with USD valuations) and realtime nature across EVM chains. Concise.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "balancesSVM",
+          "file": "schemas/v4.0.0/providers/simdune/balancesSVM.mjs",
+          "description": "Token types listed (native, SPL, SPL-2022) with USD valuation, scope (SVM chains) clear. Concise.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "collectiblesEVM",
+          "file": "schemas/v4.0.0/providers/simdune/collectiblesEVM.mjs",
+          "description": "Specifies NFT standards (ERC721, ERC1155), data returned (metadata, images, collection details), and scope (EVM chains).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "tokenInfoEVM",
+          "file": "schemas/v4.0.0/providers/simdune/tokenInfoEVM.mjs",
+          "description": "Clear list of metadata fields (symbol, name, decimals, USD price, logo URLs), and scope (native + ERC20 across EVM chains).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "transactionsEVM",
+          "file": "schemas/v4.0.0/providers/simdune/transactionsEVM.mjs",
+          "description": "Describes data scope (block info, gas, raw values) and ordering. Lacks explicit mention of EVM scope in description but inferable from schema name.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "activityEVM",
+          "file": "schemas/v4.0.0/providers/simdune/activityEVM.mjs",
+          "description": "Clear activity types listed (transfers, swaps, mints, burns, approvals) and scope (EVM chains, realtime). Decoded format noted.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "tokenHoldersEVM",
+          "file": "schemas/v4.0.0/providers/simdune/tokenHoldersEVM.mjs",
+          "description": "Briefly describes token holder distribution scope for ERC20/ERC721. Lacks scale or detail compared to siblings. Mentions ranking by wallet value.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "transactionsSVM",
+          "file": "schemas/v4.0.0/providers/simdune/transactionsSVM.mjs",
+          "description": "Describes SVM transaction history with block info and ordering. Brief but accurate. Could note specific data fields returned.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "smard",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "energy",
+          "file": "schemas/v4.0.0/providers/smard/energy.mjs",
+          "description": "Beschreibt klar die Datenquelle (deutscher Strommarkt von SMARD/Bundesnetzagentur) und Datentypen, bleibt aber relativ generisch ohne konkrete Use Cases.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "smithsonian",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "smithsonianOpenAccess",
+          "file": "schemas/v4.0.0/providers/smithsonian/smithsonianOpenAccess.mjs",
+          "description": "Klare Datenquelle (Smithsonian Open Access, 11M+ Objekte) mit konkretem Scope (Museumsobjekte, Kunst, Artefakte). Use Cases bleiben implizit aber gut ableitbar.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "smithsoniangvp",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "smithsonianVolcanoes",
+          "file": "schemas/v4.0.0/providers/smithsoniangvp/smithsonianVolcanoes.mjs",
+          "description": "Praezise Beschreibung (GVP/Smithsonian Volcanoes via WFS, Holocene/Pleistocene, GeoJSON). Macht klar was zurueckkommt und in welchem Format.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "soilgrids",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "soilgrids",
+          "file": "schemas/v4.0.0/providers/soilgrids/soilgrids.mjs",
+          "description": "Klare Beschreibung (ISRIC SoilGrids, 250m Aufloesung, WRB-Klassifikation, multiple Tiefen). Erkennbar fuer welche Use Cases nutzbar (Bodenkunde, Landwirtschaft).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "solanatracker",
+      "toolCount": 6,
+      "schemas": [
+        {
+          "name": "--priceEndpoints",
+          "file": "schemas/v4.0.0/providers/solanatracker/--priceEndpoints.mjs",
+          "description": "Sehr praezise Beschreibung listet alle Preis-Modi (real-time, historisch, timestamp, ranges, batch multi-token) auf. Provider klar genannt.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "--chartRoutes",
+          "file": "schemas/v4.0.0/providers/solanatracker/--chartRoutes.mjs",
+          "description": "Klare Beschreibung (OHLCV-Candles, Holder-Distribution, Solana Tracker, Tokens und Pools). Use Case ist sofort erkennbar.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "--pnlRoutes",
+          "file": "schemas/v4.0.0/providers/solanatracker/--pnlRoutes.mjs",
+          "description": "Sehr klare Beschreibung (PnL-Analytik fuer Solana Wallets via Solana Tracker, drei Sub-Funktionen: voll, per-Token, first-buyer).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "--tradeEndpoints",
+          "file": "schemas/v4.0.0/providers/solanatracker/--tradeEndpoints.mjs",
+          "description": "Praezise (DEX Trades, by token/pool/wallet/combination, Pagination, Jupiter parse mode). Use Cases klar.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "--walletEndpoints",
+          "file": "schemas/v4.0.0/providers/solanatracker/--walletEndpoints.mjs",
+          "description": "Klar (Wallet-Daten via Solana Tracker, Token-Balances mit USD-Werten, Trades, paginierte Portfolio-Views).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "--topTraderRoutes",
+          "file": "schemas/v4.0.0/providers/solanatracker/--topTraderRoutes.mjs",
+          "description": "Klar (top-profitable Traders, Pagination, optional token-specific). Knapp aber praezise.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "solscan",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "getChainInfo",
+          "file": "schemas/v4.0.0/providers/solscan/getChainInfo.mjs",
+          "description": "Klar (Solscan, allgemeine Solana-Chain-Info: Block height, TX count, TPS, supply). Sehr eng gefasste, klar erkennbare Funktion.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "solsniffer",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "analysis",
+          "file": "schemas/v4.0.0/providers/solsniffer/analysis.mjs",
+          "description": "Klar (SolSniffer Token-Security-Analyse, Risk-Assessment, Rug-Pull, Mint Authority, Safety Score). Konkrete Anwendung erkennbar.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "sourcify",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "verification",
+          "file": "schemas/v4.0.0/providers/sourcify/verification.mjs",
+          "description": "Klar aber knapp (Sourcify, Smart-Contract Source Verification, multi-chain). Use Cases (verification status) erkennbar.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "spaceid",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "spaceid",
+          "file": "schemas/v4.0.0/providers/spaceid/spaceid.mjs",
+          "description": "Praezise (SPACE ID on-chain Resolution fuer Domains und Adressen). Kompakt aber klar.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "spacex",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "spacexApi",
+          "file": "schemas/v4.0.0/providers/spacex/spacexApi.mjs",
+          "description": "Klar und vollstaendig (Launches, Rockets, Crew, Starlink, Launchpads, Company via open SpaceX API). Use Cases offensichtlich.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "starknet",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "starknet-token",
+          "file": "schemas/v4.0.0/providers/starknet/starknet-token.mjs",
+          "description": "Praezise (ERC20 Balances und Block-Info auf Starknet via public RPC, kein API-Key). Klar abgegrenzt.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "stolpersteineberl",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "memorial-stones",
+          "file": "schemas/v4.0.0/providers/stolpersteineberl/memorial-stones.mjs",
+          "description": "Klar (Stolpersteine in Berlin, Holocaust-Gedenkstaetten). Use Cases (Recherche, Bildung) implizit erkennbar.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "strahlenschutz",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "radiation",
+          "file": "schemas/v4.0.0/providers/strahlenschutz/radiation.mjs",
+          "description": "Sehr praezise (BfS Strahlenschutz, ambient dose rate, WFS/OGC, 1685 Stationen). Quelle und Datenmenge klar.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "swaggerhub",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "api-registry",
+          "file": "schemas/v4.0.0/providers/swaggerhub/api-registry.mjs",
+          "description": "Klar (SwaggerHub Registry-API, Search, Metadata, Swagger-Definitionen). Use Cases offensichtlich fuer API-Konsumenten.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "tagesschau",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "news",
+          "file": "schemas/v4.0.0/providers/tagesschau/news.mjs",
+          "description": "Klar (ARD tagesschau, Headlines, Suche, Livestreams). Provider und Use Case klar erkennbar.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "ted",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "procurement",
+          "file": "schemas/v4.0.0/providers/ted/procurement.mjs",
+          "description": "Klar (TED, EU-Procurement Notices, Expert-Query-Syntax). Wichtiger Use Case (EU-Vergaben) klar erkennbar.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "tenderly",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "public-contracts",
+          "file": "schemas/v4.0.0/providers/tenderly/public-contracts.mjs",
+          "description": "Klar (Tenderly, public smart contract info, source verification, compiler, token metadata). Use Case eindeutig.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "thegraph",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "getSchema",
+          "file": "schemas/v4.0.0/providers/thegraph/getSchema.mjs",
+          "description": "Description clearly states purpose (GraphQL schemas + arbitrary queries on The Graph subgraphs). Slightly brief but specific enough to know when to use.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "tle",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "tle-api",
+          "file": "schemas/v4.0.0/providers/tle/tle-api.mjs",
+          "description": "Description is specific (NORAD TLE orbital data, ISS, weather satellites) and conveys clear use cases. Concise and unambiguous.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "tradingsignals",
+      "toolCount": 5,
+      "schemas": [
+        {
+          "name": "trading-signals-momentum",
+          "file": "schemas/v4.0.0/providers/tradingsignals/trading-signals-momentum.mjs",
+          "description": "Clear scope (momentum indicators), explicit indicator list (RSI, MACD, etc.), and notes local computation. Very informative for tool selection.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "trading-signals-ohlc",
+          "file": "schemas/v4.0.0/providers/tradingsignals/trading-signals-ohlc.mjs",
+          "description": "Description specifies OHLC requirement and lists indicators (ADX, ATR, CCI, etc.). Helpful disambiguation from price-only indicators.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "trading-signals-trend",
+          "file": "schemas/v4.0.0/providers/tradingsignals/trading-signals-trend.mjs",
+          "description": "Description clearly scopes trend-following indicators, names all variants, and emphasizes local computation. Disambiguates from momentum/volume schemas.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "trading-signals-volatility",
+          "file": "schemas/v4.0.0/providers/tradingsignals/trading-signals-volatility.mjs",
+          "description": "Clearly scopes volatility indicators with all four members enumerated and notes local computation. Concise and specific.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "trading-signals-volume",
+          "file": "schemas/v4.0.0/providers/tradingsignals/trading-signals-volume.mjs",
+          "description": "Description clearly scopes volume+candle indicators, lists members (OBV, VWAP, AC, PSAR, ZigZag), and notes local computation.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "transitousmotis",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "transitousMotis",
+          "file": "schemas/v4.0.0/providers/transitousmotis/transitousMotis.mjs",
+          "description": "Highly specific description: pan-European transit, 30+ countries, modes listed, free, no key. Perfect for routing decisions.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "transportrestvbb",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "transportRestVbb",
+          "file": "schemas/v4.0.0/providers/transportrestvbb/transportRestVbb.mjs",
+          "description": "Description is highly specific: Berlin-Brandenburg VBB, lists all modes (S-Bahn, U-Bahn, tram, bus, regional), all functions (search, departures, journeys, vehicle radar, reachable stops). Free, no key.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "transportrestvbbext",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "transportRestVbbExtended",
+          "file": "schemas/v4.0.0/providers/transportrestvbbext/transportRestVbbExtended.mjs",
+          "description": "Description lists complementary VBB functions (nearby stops, trip search, line info, shapes, autocomplete) and notes it complements the core schema. Clear scope.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "tvmaze",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "tvmaze",
+          "file": "schemas/v4.0.0/providers/tvmaze/tvmaze.mjs",
+          "description": "Description states scope (70k+ shows, episodes, cast, schedules), API freeness, and use cases. Highly specific.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "ukparliament",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "uk-parliament",
+          "file": "schemas/v4.0.0/providers/ukparliament/uk-parliament.mjs",
+          "description": "Description specifies UK Parliament Members API, search dimensions (name/party/constituency/House), data returned, scope (both Houses, current+historical), free, no key. Excellent clarity.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "uncomtrade",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "un-comtrade",
+          "file": "schemas/v4.0.0/providers/uncomtrade/un-comtrade.mjs",
+          "description": "Excellent description: scope (200+ countries, 1962-present, monthly/annual), classification (HS), preview limitation, rate limit. Highly specific for selection.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "unescoworldheritage",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "unescoWorldHeritage",
+          "file": "schemas/v4.0.0/providers/unescoworldheritage/unescoWorldHeritage.mjs",
+          "description": "Description clearly conveys 1200+ heritage sites with filterable dimensions (country, category, danger, inscription year). Free, public. Specific and concise.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "unified",
+      "toolCount": 7,
+      "schemas": [
+        {
+          "name": "unified-momentum-advanced",
+          "file": "schemas/v4.0.0/providers/unified/unified-momentum-advanced.mjs",
+          "description": "Clear scope: advanced momentum indicators with multi-library selection (indicatorts/trading-signals/talib). Lists 8 indicators. Useful for picking when basic momentum is insufficient.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "unified-momentum-basic",
+          "file": "schemas/v4.0.0/providers/unified/unified-momentum-basic.mjs",
+          "description": "Description states basic momentum scope, multi-library selection, lists 8 indicators (RSI, MACD, Stochastic etc.), and local computation note. Clear differentiation from advanced variant.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "unified-trend-advanced",
+          "file": "schemas/v4.0.0/providers/unified/unified-trend-advanced.mjs",
+          "description": "Description clearly scopes advanced trend indicators (DMA, KAMA, MAMA, T3, Linear Regression family) with library selection (trading-signals/talib). Local computation noted.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "unified-trend-basic",
+          "file": "schemas/v4.0.0/providers/unified/unified-trend-basic.mjs",
+          "description": "Description clearly scopes basic moving averages (SMA, EMA, DEMA, WMA, TEMA, TRIMA, WSMA, RMA) with multi-library selection. Clear differentiation from advanced trend.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "unified-trend-channels",
+          "file": "schemas/v4.0.0/providers/unified/unified-trend-channels.mjs",
+          "description": "Description clearly scopes trend channels/bands (Bollinger, Keltner, Donchian, Acceleration Bands, Ichimoku) with multi-library selection. Specific membership listing.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "unified-volatility",
+          "file": "schemas/v4.0.0/providers/unified/unified-volatility.mjs",
+          "description": "Clear scope: volatility indicators (ATR, TR, NATR, IQR, MAD, Ulcer Index, Mass Index, Chandelier Exit) with multi-library selection. Local computation noted.",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "unified-volume",
+          "file": "schemas/v4.0.0/providers/unified/unified-volume.mjs",
+          "description": "Clear scope: volume-based indicators (OBV, VWAP, AD, ADOSC, CMF, MFI, VWMA, VPT) with multi-library selection. Local computation noted.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "uniprot",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "uniprot",
+          "file": "schemas/v4.0.0/providers/uniprot/uniprot.mjs",
+          "description": "Description specifies UniProt scope (250M+ entries, sequences/functions/classifications/cross-refs). Concise and clearly delimits the protein-data use case.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "uniswap",
+      "toolCount": 2,
+      "schemas": [
+        {
+          "name": "price-discovery",
+          "file": "schemas/v4.0.0/providers/uniswap/price-discovery.mjs",
+          "description": "Description is brief: price discovery via Uniswap V3 with CryptoCompare fallback. Adequate but lacks scope details (supported chains, fee tier, return format).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "uniswap-pool-explorer",
+          "file": "schemas/v4.0.0/providers/uniswap/uniswap-pool-explorer.mjs",
+          "description": "Description states Uniswap V2/V3/V4 pools via The Graph subgraphs, but is brief and lacks detail on data returned.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "unpaywall",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "unpaywall",
+          "file": "schemas/v4.0.0/providers/unpaywall/unpaywall.mjs",
+          "description": "Description is precise: detects OA status, finds free PDFs by DOI, 100M+ articles, lists OA classes (gold/green/hybrid/bronze). Clear scope.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "uscongress",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "us-congress",
+          "file": "schemas/v4.0.0/providers/uscongress/us-congress.mjs",
+          "description": "Description is specific and clear: names data source (Library of Congress), enumerates entity types (bills, members, committees, etc.), specifies coverage (93rd Congress to present), and includes auth note (DEMO_KEY).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "usdafooddata",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "usdaFoodData",
+          "file": "schemas/v4.0.0/providers/usdafooddata/usdaFoodData.mjs",
+          "description": "Description is clear and specific: names provider (USDA FoodData Central) and lists supported actions (search, nutrient details, browse). Could mention auth requirement explicitly.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "usgs",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "usgsEarthquake",
+          "file": "schemas/v4.0.0/providers/usgs/usgsEarthquake.mjs",
+          "description": "Description names provider and core capabilities (search by location/magnitude/date/depth, GeoJSON). Clear and specific but compact.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "vag",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "transit",
+          "file": "schemas/v4.0.0/providers/vag/transit.mjs",
+          "description": "Description is specific: city (Nuremberg/VAG), data type (real-time stops/departures/service info), modes (bus, tram, subway). Compact and informative.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "vanda",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "vanda",
+          "file": "schemas/v4.0.0/providers/vanda/vanda.mjs",
+          "description": "Specific provider (Victoria and Albert Museum), scope (1M+ objects, 5000 years). Clear and informative.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "vrrefa",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "vrrEfa",
+          "file": "schemas/v4.0.0/providers/vrrefa/vrrEfa.mjs",
+          "description": "Description is specific: region (Rhein-Ruhr), broader scope (Germany-wide via DELFI), capabilities (stops, departures, trip planning, alerts), auth (no key required).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "wegweiserkommune",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "wegweiser-kommune",
+          "file": "schemas/v4.0.0/providers/wegweiserkommune/wegweiser-kommune.mjs",
+          "description": "Exemplary description: names provider (Bertelsmann Stiftung), scope (100+ indicators, 5000+ residents), data categories, year range (2006-2040), license (CC0), auth (none). Highly specific.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "whogho",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "whogho",
+          "file": "schemas/v4.0.0/providers/whogho/whogho.mjs",
+          "description": "Description is specific: provider (WHO GHO), scope (indicators, country stats, dimensions), API style (OData). Clear and concise.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "wikidata",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "wikidata",
+          "file": "schemas/v4.0.0/providers/wikidata/wikidata.mjs",
+          "description": "Specific provider (Wikidata), scope (100M+ items, structured knowledge), interface (SPARQL + predefined queries), auth (no key required). Comprehensive overview.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "wikimediacommons",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "wikimediaCommons",
+          "file": "schemas/v4.0.0/providers/wikimediacommons/wikimediaCommons.mjs",
+          "description": "Specific: provider (Wikimedia Commons), scope (100M+ files), capabilities (search, browse, metadata, license/author), licensing (CC). Clear and complete.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "wikipedia",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "wikipedia",
+          "file": "schemas/v4.0.0/providers/wikipedia/wikipedia.mjs",
+          "description": "Specific: provider (Wikipedia), capabilities (search, summary, OpenSearch), API types (REST + Action), no key required. Clear and complete.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "wipoipc",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "wipoipc",
+          "file": "schemas/v4.0.0/providers/wipoipc/wipoipc.mjs",
+          "description": "Specific: provider (WIPO IPCPUB), purpose (IPC symbol validity, classification details), and output fields described. Clear and focused.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "worldbank",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "worldBank",
+          "file": "schemas/v4.0.0/providers/worldbank/worldBank.mjs",
+          "description": "Specific: provider (World Bank), scope (17,000+ indicators, 260+ countries), example domains (GDP, population, poverty, health).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "wormholescan",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "wormholescan",
+          "file": "schemas/v4.0.0/providers/wormholescan/wormholescan.mjs",
+          "description": "Specific: provider (Wormholescan), domain (cross-chain bridge metrics), capabilities (activity, money flow, top assets/pairs/corridors, KPIs).",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "yfinance",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "chart",
+          "file": "schemas/v4.0.0/providers/yfinance/chart.mjs",
+          "description": "Specific: provider (Yahoo Finance), data (OHLCV), generality (any ticker), no API key. Clear and concise.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "zdb",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "zdb",
+          "file": "schemas/v4.0.0/providers/zdb/zdb.mjs",
+          "description": "Specific: provider (Zeitschriftendatenbank/ZDB), scope (2.2M titles, 24.7M holdings, 3700+ libraries), output format (JSON-LD), no key required.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "zenodo",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "zenodo",
+          "file": "schemas/v4.0.0/providers/zenodo/zenodo.mjs",
+          "description": "Specific: provider (Zenodo/CERN), scope (research datasets, publications, software). Clear, though lacks mention of OAI/scale.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "zerox",
+      "toolCount": 1,
+      "schemas": [
+        {
+          "name": "zerox",
+          "file": "schemas/v4.0.0/providers/zerox/zerox.mjs",
+          "description": "Specific: provider (0x Protocol v2), domain (DEX aggregator/swaps), scope (100+ sources, 20+ chains), approval flows (Allowance Holder, Permit2). Comprehensive.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    },
+    {
+      "folder": "zvgportal",
+      "toolCount": 2,
+      "schemas": [
+        {
+          "name": "auctions",
+          "file": "schemas/v4.0.0/providers/zvgportal/auctions.mjs",
+          "description": "Specific: provider (zvg-portal.de), scope (foreclosure auctions all 16 German states), data types (auction dates, property details, valuations, court info).",
+          "requiresApiKey": false,
+          "tools": []
+        },
+        {
+          "name": "zwangsversteigerungen",
+          "file": "schemas/v4.0.0/providers/zvgportal/zwangsversteigerungen.mjs",
+          "description": "Specific provider (official ZVG portal of German courts) and domain (foreclosure auctions), but compact and lacks detail on coverage or available filters.",
+          "requiresApiKey": false,
+          "tools": []
+        }
+      ]
+    }
+  ],
+  "totalProviders": 288,
+  "totalTools": 365,
+  "totalSchemas": 365,
+  "generatedAt": "2026-05-18T14:49:32.530Z"
+}

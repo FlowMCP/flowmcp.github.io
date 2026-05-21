@@ -1,0 +1,83 @@
+---
+// SchemaCatalog — Liest lokales schemas-snapshot.json (PRD-07)
+// Filter via SHOW_PROVIDERS auf eine kuratierte Auswahl.
+import data from '../data/schemas-snapshot.json'
+
+const SHOW_PROVIDERS = [
+    'brightsky',
+    'datetimeutils',
+    'infravelo',
+    'nextbike',
+    'nominatim',
+    'nwsweather',
+    'transportrestvbb',
+    'wikipedia',
+    'worldbank',
+    'openligadb'
+]
+const GITHUB_BASE = 'https://github.com/FlowMCP/flowmcp-schemas-public/tree/main/schemas/v4.0.0/providers'
+
+const all = data.providers || []
+const filtered = all.filter( ( p ) => SHOW_PROVIDERS.includes( p.folder ) )
+const totalTools = filtered.reduce( ( s, p ) => s + p.toolCount, 0 )
+const totalSchemas = filtered.reduce( ( s, p ) => s + p.schemas.length, 0 )
+---
+
+<p><strong>{filtered.length} Providers</strong> with <strong>{totalTools} tools</strong> from <strong>{totalSchemas} schemas</strong>. More in the <a href="https://github.com/FlowMCP/flowmcp-schemas-public">repository</a>.</p>
+
+<h2>Overview</h2>
+<table>
+    <thead><tr><th>Provider</th><th>Schemas</th><th>Tools</th><th>API Key</th><th>GitHub</th></tr></thead>
+    <tbody>
+        {filtered.map( ( p ) => (
+            <tr>
+                <td><strong>{p.folder}</strong></td>
+                <td>{p.schemas.length}</td>
+                <td>{p.toolCount}</td>
+                <td>{p.schemas.some( ( s ) => s.requiresApiKey ) ? 'Yes' : 'No'}</td>
+                <td><a href={`${GITHUB_BASE}/${p.folder}/`}>Folder →</a></td>
+            </tr>
+        ) )}
+    </tbody>
+</table>
+
+<h2>Details</h2>
+{filtered.map( ( p ) => (
+    <section class="schema-catalog__provider">
+        <h3 id={p.folder}>{p.folder}</h3>
+        {p.schemas.map( ( s ) => (
+            <div class="schema-catalog__schema">
+                <p><strong>{s.name}</strong></p>
+                <p class="schema-catalog__desc">{s.description}</p>
+                {s.tools.length > 0 && (
+                    <table>
+                        <thead><tr><th>Tool</th><th>Description</th></tr></thead>
+                        <tbody>
+                            {s.tools.map( ( tool ) => (
+                                <tr><td><code>{tool.name}</code></td><td>{tool.description}</td></tr>
+                            ) )}
+                        </tbody>
+                    </table>
+                )}
+            </div>
+        ) )}
+        <p class="schema-catalog__link"><a href={`${GITHUB_BASE}/${p.folder}/`}>View on GitHub →</a></p>
+    </section>
+) )}
+
+<style>
+.schema-catalog__provider {
+    margin-bottom: 2.5rem;
+}
+.schema-catalog__schema {
+    margin-bottom: 1.5rem;
+}
+.schema-catalog__desc {
+    color: var(--text-inactive);
+    margin-top: -0.5rem;
+    font-size: 0.9rem;
+}
+.schema-catalog__link {
+    font-size: 0.85rem;
+}
+</style>
