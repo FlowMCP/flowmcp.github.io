@@ -15,15 +15,15 @@ const isDE = path.startsWith('/de/') || path === '/de';
 const prefix = isDE ? '/de' : '';
 
 const navLinks = isDE ? [
-    { text: 'Über',     href: prefix + '/introduction/about/',                  match: '/introduction' },
-    { text: 'Docs',     href: prefix + '/docs/getting-started/what-is-flowmcp/', match: '/docs/' },
-    { text: 'Roadmap',  href: prefix + '/roadmap/overview/',                    match: '/roadmap' },
-    { text: 'Blog',     href: prefix + '/blog/',                                match: '/blog' },
+    { text: 'Über',     href: prefix + '/introduction/about/',         match: '/introduction' },
+    { text: 'Docs',     href: prefix + '/quickstart/what-is-flowmcp/', match: '/quickstart' },
+    { text: 'Roadmap',  href: prefix + '/roadmap/overview/',           match: '/roadmap' },
+    { text: 'Blog',     href: prefix + '/blog/',                       match: '/blog' },
 ] : [
-    { text: 'About',   href: prefix + '/introduction/about/',                  match: '/introduction' },
-    { text: 'Docs',    href: prefix + '/docs/getting-started/what-is-flowmcp/', match: '/docs/' },
-    { text: 'Roadmap', href: prefix + '/roadmap/overview/',                    match: '/roadmap' },
-    { text: 'Blog',    href: prefix + '/blog/',                                match: '/blog' },
+    { text: 'About',   href: prefix + '/introduction/about/',         match: '/introduction' },
+    { text: 'Docs',    href: prefix + '/quickstart/what-is-flowmcp/', match: '/quickstart' },
+    { text: 'Roadmap', href: prefix + '/roadmap/overview/',           match: '/roadmap' },
+    { text: 'Blog',    href: prefix + '/blog/',                       match: '/blog' },
 ];
 ---
 
