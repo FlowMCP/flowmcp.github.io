@@ -52,8 +52,8 @@ Die Industrie arbeitet daran, Sicherheitsrichtlinien einzuziehen, damit auch Fir
 
 Unsere Software ist **model-agnostisch**: Sie laeuft mit jedem LLM. Wir optimieren die Agents auf ein Modell (eine notwendige Entscheidung fuer die bestmoegliche Qualitaet), aber der Betrieb auf anderen Modellen ist problemlos moeglich.
 
-Sie ist auch **client-agnostisch**: Jeder MCP-kompatible Client oder CLI kann unsere Schemas nutzen — du hast freie Wahl. Mehr dazu unter [MCP-Clients & CLI](/de/basics/clients/).
+Sie ist auch **client-agnostisch**: Jeder MCP-kompatible Client oder CLI kann unsere Schemas nutzen — du hast freie Wahl. Mehr dazu unter [MCP-Clients & CLI](/de/concepts/clients/).
 
 ## Woher kommt das?
 
-FlowMCP entstand aus der Idee, oeffentliche Datenquellen fuer KI-Agenten zugaenglich zu machen. Heute bietet es ein vollstaendiges Framework — von der Schema-Definition bis zur Agent-Integration. Mehr dazu unter [Schemas und Tools](/de/basics/schemas-and-tools/)
+FlowMCP entstand aus der Idee, oeffentliche Datenquellen fuer KI-Agenten zugaenglich zu machen. Heute bietet es ein vollstaendiges Framework — von der Schema-Definition bis zur Agent-Integration. Mehr dazu unter [Schemas und Tools](/de/concepts/schemas-and-tools/)

@@ -18,7 +18,7 @@ Currently covering transportation, weather, geocoding, and infrastructure data.
 - [x] **Schema validation** and test infrastructure
 - [ ] Expand to additional domains (environment, administration, health)
 
-[Schema Catalog →](/basics/schema-catalog/)
+[Schema Catalog →](/concepts/schema-catalog/)
 
 ---
 
@@ -54,6 +54,6 @@ and validate schemas through a structured pipeline.
 
 ## Get Involved
 
-- **Use schemas** — [Schema Catalog →](/basics/schema-catalog/)
+- **Use schemas** — [Schema Catalog →](/concepts/schema-catalog/)
 - **Contribute schemas** — [Community Hub →](/roadmap/community/)
 - **Follow development** — [GitHub](https://github.com/flowmcp)

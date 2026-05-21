@@ -48,7 +48,7 @@ Load validated schemas via OpenClaw or CLI and query data. No GitHub account nee
 
 You can additionally create and submit schemas yourself. Maybe you work at an organization that provides public data. Maybe you have a Swagger file and an AI that can turn it into a schema. The path: your AI creates the schema according to our spec, you submit it as an issue, the community reviews it.
 
-**The special part:** The compute for schema creation comes from the user — their AI does the work. The spec — the rules for how a schema must look — comes from [FlowMCP](/docs/schemas/overview/). Without correct spec compliance, nothing gets accepted. But when it passes, the entire community benefits.
+**The special part:** The compute for schema creation comes from the user — their AI does the work. The spec — the rules for how a schema must look — comes from [FlowMCP](/concepts/schemas-overview/). Without correct spec compliance, nothing gets accepted. But when it passes, the entire community benefits.
 
 This is real crowdsourcing: not just giving feedback, but making productive contributions. Every user with an AI is theoretically also a developer.
 
@@ -144,7 +144,7 @@ We communicate these open points deliberately and transparently. A project that 
 There are several ways to contribute to the project:
 
 - **Become a data partner:** You have access to public data and want to make it accessible for AI systems? [Meet the team →](/roadmap/team/)
-- **Contribute schemas:** You have an AI and a data source? Create a schema following the [FlowMCP Spec](/docs/schemas/overview/) and submit it as an issue.
+- **Contribute schemas:** You have an AI and a data source? Create a schema following the [FlowMCP Spec](/concepts/schemas-overview/) and submit it as an issue.
 - **Give feedback:** Something is not working? A data source is missing? [Issues on GitHub](https://github.com/flowmcp/flowmcp-schemas-public/issues) are the right place.
 
 Schema repository: [github.com/flowmcp/flowmcp-schemas-public](https://github.com/flowmcp/flowmcp-schemas-public)

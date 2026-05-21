@@ -18,7 +18,7 @@ Derzeit abgedeckt: Transport, Wetter, Geocoding und Infrastrukturdaten.
 - [x] **Schema-Validierung** und Test-Infrastruktur
 - [ ] Erweiterung auf weitere Domaenen (Umwelt, Verwaltung, Gesundheit)
 
-[Schema-Katalog →](/de/basics/schema-catalog/)
+[Schema-Katalog →](/de/concepts/schema-catalog/)
 
 ---
 
@@ -54,6 +54,6 @@ und validieren kann — ueber eine strukturierte Pipeline.
 
 ## Mitmachen
 
-- **Schemas nutzen** — [Schema-Katalog →](/de/basics/schema-catalog/)
+- **Schemas nutzen** — [Schema-Katalog →](/de/concepts/schema-catalog/)
 - **Schemas beitragen** — [Community Hub →](/de/roadmap/community/)
 - **Entwicklung verfolgen** — [GitHub](https://github.com/flowmcp)

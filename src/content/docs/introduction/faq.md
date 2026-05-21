@@ -36,13 +36,13 @@ A schema describes how to query a data source — structured and standardized. I
 
 One schema per data provider. Multiple tools (individual queries) per schema. The AI does not need to read the API documentation itself — the schema has already done that work.
 
-More: [Schemas and Tools →](/basics/schemas-and-tools/)
+More: [Schemas and Tools →](/concepts/schemas-and-tools/)
 
 ## Can I use your schemas without OpenClaw?
 
 Yes. Our schemas work with **any MCP-compatible client** — over 100 applications, including Claude, ChatGPT, Cursor, VS Code Copilot, and many more. OpenClaw is just one of many options.
 
-Which client for whom: [Clients and Compatibility →](/basics/clients/)
+Which client for whom: [Clients and Compatibility →](/concepts/clients/)
 
 ## Is this free?
 

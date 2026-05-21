@@ -110,6 +110,6 @@ Diese Beispiele zeigen Mobilitaet als eine Domaene — aber FlowMCP funktioniert
 
 ---
 
-Alle verwendeten Schemas: [Schema-Katalog →](/de/basics/schema-catalog/)
+Alle verwendeten Schemas: [Schema-Katalog →](/de/concepts/schema-catalog/)
 
 Eigene Schemas beitragen: [Community Hub →](/de/roadmap/community/)

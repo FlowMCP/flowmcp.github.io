@@ -48,7 +48,7 @@ Du laedsst validierte Schemas ueber OpenClaw oder die CLI und fragst Daten ab. K
 
 Du kannst zusaetzlich selbst Schemas erstellen und einreichen. Vielleicht arbeitest du bei einer Organisation, die offene Daten bereitstellt. Vielleicht hast du eine Swagger-Datei und eine KI, die daraus ein Schema machen kann. Der Weg: Deine KI erstellt das Schema nach unserer Spec, du reichst es als Issue ein, die Community prueft es.
 
-**Die Besonderheit:** Der Compute fuer die Schema-Erstellung kommt vom Nutzer — seine KI macht die Arbeit. Das Spec, also die Regeln wie ein Schema aussehen muss, kommt von [FlowMCP](/de/docs/schemas/overview/). Ohne korrektes Spec wird nichts akzeptiert. Aber wenn es passt, profitiert die gesamte Community davon.
+**Die Besonderheit:** Der Compute fuer die Schema-Erstellung kommt vom Nutzer — seine KI macht die Arbeit. Das Spec, also die Regeln wie ein Schema aussehen muss, kommt von [FlowMCP](/de/concepts/schemas-overview/). Ohne korrektes Spec wird nichts akzeptiert. Aber wenn es passt, profitiert die gesamte Community davon.
 
 Das ist echtes Crowdsourcing: Nicht nur Feedback geben, sondern produktiv beitragen. Jeder Nutzer mit einer KI ist theoretisch auch ein Entwickler.
 
@@ -144,7 +144,7 @@ Wir kommunizieren diese offenen Punkte bewusst transparent. Ein Projekt, das vor
 Es gibt verschiedene Wege, zum Projekt beizutragen:
 
 - **Datenpartner werden:** Du hast Zugang zu oeffentlichen Daten und moechtest sie fuer KI-Systeme zugaenglich machen? [Team kennenlernen →](/de/roadmap/team/)
-- **Schemas beitragen:** Du hast eine KI und eine Datenquelle? Erstelle ein Schema nach der [FlowMCP Spec](/de/docs/schemas/overview/) und reiche es als Issue ein.
+- **Schemas beitragen:** Du hast eine KI und eine Datenquelle? Erstelle ein Schema nach der [FlowMCP Spec](/de/concepts/schemas-overview/) und reiche es als Issue ein.
 - **Feedback geben:** Etwas funktioniert nicht? Eine Datenquelle fehlt? [Issues auf GitHub](https://github.com/flowmcp/flowmcp-schemas-public/issues) sind der richtige Ort.
 
 Das Schema-Repository: [github.com/flowmcp/flowmcp-schemas-public](https://github.com/flowmcp/flowmcp-schemas-public)

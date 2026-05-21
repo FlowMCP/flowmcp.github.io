@@ -35,4 +35,4 @@ Eine **llms.txt** Datei ist eine kompakte Zusammenfassung einer Dokumentation in
 | **FlowMCP Docs llms.txt** | Technische Details zu Schemas, Agents, MCP-Servern |
 | **FlowMCP Spec llms.txt** | Formale Spezifikation des Schema-Formats (v4.0.0) |
 
-Fuer tiefere technische Details empfehlen wir die [FlowMCP-Dokumentation](/de/docs/getting-started/what-is-flowmcp/).
+Fuer tiefere technische Details empfehlen wir die [FlowMCP-Dokumentation](/de/quickstart/what-is-flowmcp/).

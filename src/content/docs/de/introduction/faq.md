@@ -36,13 +36,13 @@ Ein Schema beschreibt, wie man eine Datenquelle abfragt — strukturiert und sta
 
 Pro Datenanbieter gibt es ein Schema. Pro Schema gibt es mehrere Tools (einzelne Abfragen). Die KI muss die API-Dokumentation nicht selbst lesen — das Schema hat die Arbeit bereits erledigt.
 
-Mehr dazu: [Schemas und Tools →](/de/basics/schemas-and-tools/)
+Mehr dazu: [Schemas und Tools →](/de/concepts/schemas-and-tools/)
 
 ## Kann ich eure Schemas auch ohne OpenClaw nutzen?
 
 Ja. Unsere Schemas funktionieren mit **jedem MCP-kompatiblen Client** — ueber 100 Anwendungen, darunter Claude, ChatGPT, Cursor, VS Code Copilot und viele mehr. OpenClaw ist nur eine von vielen Moeglichkeiten.
 
-Welcher Client fuer wen: [Clients und Kompatibilitaet →](/de/basics/clients/)
+Welcher Client fuer wen: [Clients und Kompatibilitaet →](/de/concepts/clients/)
 
 ## Ist das kostenlos?
 
