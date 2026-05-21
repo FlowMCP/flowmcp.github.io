@@ -285,6 +285,30 @@ blockquote {
     border-radius: 0 8px 8px 0;
 }
 
+/* ============ SEARCH MODAL — single consistent border ============ */
+dialog[aria-label*="Search" i],
+.pagefind-ui__search-input,
+.pagefind-ui__form {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+dialog[aria-label*="Search" i] input:focus,
+.pagefind-ui__search-input:focus {
+    border-color: var(--accent) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 1px var(--accent) !important;
+}
+
+/* Kill double-border on the search-modal wrapper */
+dialog .pagefind-ui {
+    border: none !important;
+    background: transparent !important;
+}
+
 /* ============ HERO ============ */
 
 /* Hide Starlight Splash auto-h1 + .hero ONLY on Landing — we use our own <Hero /> component */
