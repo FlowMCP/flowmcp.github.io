@@ -9,6 +9,19 @@ This document provides the conceptual foundation, positioning, terminology, and 
 
 ---
 
+## Conformance Language
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all capitals, as shown here.
+
+Some specification files in `spec/v4.0.0/` are intentionally written in prose without normative keywords because they describe history, lifecycle, or conceptual background (this overview document, the migration guide, the schema lifecycle document). All other specification files use normative language and assume this conformance interpretation.
+
+References:
+- [RFC2119](https://www.rfc-editor.org/rfc/rfc2119) — Key words for use in RFCs to Indicate Requirement Levels
+- [RFC8174](https://www.rfc-editor.org/rfc/rfc8174) — Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words
+- [BCP 14](https://www.rfc-editor.org/info/bcp14) — Best Current Practice 14 (combined RFC2119 + RFC8174)
+
+---
+
 ## The Problem FlowMCP Solves
 
 Not every data source is a clean REST API. The real world is messy — some APIs have quirks, some tasks require combining multiple APIs, and some data lives behind websites with no API at all. FlowMCP provides a solution for each scenario:
@@ -43,7 +56,7 @@ flowchart TD
     G --> H[Tool Combinatorics — How to chain tools across providers]
 ```
 
-FlowMCP provides **five primitives**: Tools, Resources, Prompts, Skills, and Selections. Tools, Resources, and Prompts are defined in `main.tools`, `main.resources`, and `main.prompts`. **Skills are a top-level entity** that lives outside `main` and is scoped to a namespace, selection, or agent — never `main.skills` (forbidden in v4.0.0, see Memo 022 REV-08 and VAL016). Selections are curated subsets that bundle tools/resources/prompts/skills for agent loading. Tools and Resources are deterministic — same input always produces the same result. Prompts and Skills are non-deterministic — they guide LLMs on which tools to call, in which order, how to pass results between them, and when to fall back to alternative providers. Prompts are explanatory (describing a namespace or workflow), while Skills are instructional (step-by-step procedures with typed inputs and outputs). Together, they encode knowledge that would take hours to figure out manually.
+FlowMCP provides **five primitives**: Tools, Resources, Prompts, Skills, and Selections. Tools, Resources, and Prompts are defined in `main.tools`, `main.resources`, and `main.prompts`. **Skills are a top-level entity** that lives outside `main` and is scoped to a namespace, selection, or agent — never `main.skills` (forbidden in v4.0.0, see VAL016). Selections are curated subsets that bundle tools/resources/prompts/skills for agent loading. Tools and Resources are deterministic — same input always produces the same result. Prompts and Skills are non-deterministic — they guide LLMs on which tools to call, in which order, how to pass results between them, and when to fall back to alternative providers. Prompts are explanatory (describing a namespace or workflow), while Skills are instructional (step-by-step procedures with typed inputs and outputs). Together, they encode knowledge that would take hours to figure out manually.
 
 ---
 
@@ -76,7 +89,7 @@ Providers deliver data — one namespace per API source, model-neutral, reusable
 
 ### 3. LLM-First
 
-The specification must be written so an LLM can import it as plaintext and write tools itself. Schema files are `.mjs` with named exports — no build steps, no binary formats, no complex inheritance. An LLM reading a schema file should immediately understand what it does.
+The specification MUST be written so an LLM can import it as plaintext and write tools itself. Schema files are `.mjs` with named exports — no build steps, no binary formats, no complex inheritance. An LLM reading a schema file SHOULD immediately understand what it does.
 
 ### 4. Token efficiency
 
@@ -192,7 +205,7 @@ Agent-level prompts are **model-specific** — they are written and tested for a
 |------|-----------|
 | **Schema** | A `.mjs` file with two named exports: `main` (static) and optionally `handlers` (factory function). Defines tools, resources, and/or prompts. |
 | **Tool** | A single API endpoint within a schema (formerly called "Route" in v2). Maps to the MCP `server.tool` primitive. Each tool has parameters, a method, a path, and optional handlers. Defined in `main.tools`. |
-| **Route** | Deprecated alias for Tool. `main.routes` is accepted in v3.0.0 with a deprecation warning but will be removed in v3.2.0. Schemas must not define both `tools` and `routes`. |
+| **Route** | Deprecated alias for Tool. `main.routes` is accepted in v3.0.0 with a deprecation warning but will be removed in v3.2.0. Schemas MUST NOT define both `tools` and `routes`. |
 | **Resource** | Local data access via SQLite databases (in-memory or file-based) and Markdown documents. Maps to the MCP `server.resource` primitive. Defined in `main.resources`. See `13-resources.md`. |
 | **Provider-Prompt** | A model-neutral prompt explaining a single namespace. Describes how to use one provider's tools effectively without assuming a specific LLM model. |
 | **Agent-Prompt** | A model-specific prompt tested against a specific LLM model. Contains tool combinatorics, chaining instructions, and fallback strategies. |
@@ -283,7 +296,7 @@ The v3.1.0 release enhances Resources and Prompts with production-ready features
 - **Two SQLite modes** — `mode: 'in-memory'` (readonly via `better-sqlite3` `readonly: true`) and `mode: 'file-based'` (writable via WAL mode). Clear separation instead of implicit read-only.
 - **Origin system** — `origin: 'global'`, `origin: 'project'`, `origin: 'inline'` replace pseudo-paths (`~/.flowmcp/data/`, `./data/`). Explicit storage locations with clear resolution rules.
 - **`better-sqlite3` runtime** — Replaces `sql.js` as the unified SQLite runtime. Native C bindings, real `readonly: true` flag, WAL mode for concurrent writes.
-- **`getSchema` is MUST** — Required for both modes (previously SHOULD). Schema authors must define it. CLI uses it to create databases for `file-based` mode.
+- **`getSchema` is MUST** — Required for both modes (previously SHOULD). Schema authors MUST define it. CLI uses it to create databases for `file-based` mode.
 - **`runSql` auto-injected** — Runtime automatically adds runSql. SELECT-only for in-memory, all statements for file-based.
 - **Max queries increased to 8** — 7 schema-defined (including getSchema) + 1 auto-injected runSql.
 - **Block patterns removed** — `readonly: true` handles in-memory security at DB level. No more SQL pattern matching.
@@ -306,14 +319,14 @@ The migration path for existing resources is documented in the schema migration 
 
 The v3.0.0 release transforms FlowMCP from a tool catalog into a complete API knowledge platform covering all four primitives (Tools, Resources, Prompts, Skills):
 
-- **Tools replace Routes** — `main.tools` is the primary key. `main.routes` is accepted as a deprecated alias with a warning (removed in v3.2.0). Schemas must not define both `tools` and `routes`.
+- **Tools replace Routes** — `main.tools` is the primary key. `main.routes` is accepted as a deprecated alias with a warning (removed in v3.2.0). Schemas MUST NOT define both `tools` and `routes`.
 - **Resources** — Embedded SQLite databases for local, deterministic data access. Defined in `main.resources`. See `13-resources.md`.
-- **Skills** — Self-contained instruction sets for AI agents. Defined as `.mjs` files with `export const skill` and `{{type:name}}` placeholders. In v3.0.0 Skills were schema-scoped via `main.skills`; in v4.0.0 they are namespace/selection/agent-scoped (see `14-skills.md` and Memo 022 REV-08).
+- **Skills** — Self-contained instruction sets for AI agents. Defined as `.mjs` files with `export const skill` and `{{type:name}}` placeholders. In v4.0.0 Skills are namespace/selection/agent-scoped (see `14-skills.md`).
 - **Groups renamed to Agents** — Groups evolve into full agent manifests (`agent.mjs` with `export const agent`) with model binding, system prompts, and purpose-driven tool selection. See `06-agents.md`.
 - **Prompt Architecture** — Two-tier prompt system: Provider-Prompts (model-neutral, single namespace) and Agent-Prompts (model-specific, multi-provider workflows). Unified `{{type:name}}` placeholder syntax (replaces deprecated `[[...]]`). See `12-prompt-architecture.md`.
 - **Catalog with registry.json** — Named catalogs with a manifest file listing all providers, agents, and shared lists. Enables import and distribution. See `15-catalog.md`.
 - **ID Schema** — Unified `namespace/type/name` format for referencing tools, resources, prompts, and skills across the catalog. Short form for common cases. See `16-id-schema.md`.
-- **Test minimum increased to 3** — Every tool must have at least 3 deterministic test cases (up from 1 in v2).
+- **Test minimum increased to 3** — Every tool MUST have at least 3 deterministic test cases (up from 1 in v2).
 - **Agent tests** — `expectedTools` validates which tools the agent selects (deterministic). `expectedContent` validates LLM output (partially deterministic).
 - **0-tool schemas are valid** — Resource-only, prompt-only, or skill-only schemas are allowed.
 - **Three-level architecture** — Root (shared lists, helpers, registry), Provider (one API per namespace), Agent (purpose-driven compositions).
@@ -324,7 +337,7 @@ The migration path from v2.0.0 to v3.0.0 is documented in `08-migration.md`.
 
 ## What Changed in v2.0.0
 
-The v2.0.0 release restructures the schema format around a fundamental insight: **the declarative parts of a schema should be separable from the executable parts**. This enables:
+The v2.0.0 release restructures the schema format around a fundamental insight: **the declarative parts of a schema SHOULD be separable from the executable parts**. This enables:
 
 - **Integrity hashing** of the `main` block without including function bodies
 - **Security scanning** of the `handlers` block as an isolated concern

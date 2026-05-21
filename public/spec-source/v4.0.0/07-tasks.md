@@ -1,5 +1,7 @@
 # FlowMCP Specification v4.0.0 — MCP Tasks
 
+> Normative language (MUST/SHOULD/MAY) follows the conventions defined in [00-overview.md](./00-overview.md) (Conformance Language).
+
 ## Status
 
 **Deferred to v2.1.0.** This section is a placeholder.
@@ -28,4 +30,4 @@ v2.1.0 will define:
 
 ## Reserved Fields
 
-Schema authors may include an `async` field in route definitions for forward compatibility. In v2.0.0, this field is **ignored** by the runtime but preserved for future use.
+Schema authors MAY include an `async` field in route definitions for forward compatibility. In v2.0.0, this field is **ignored** by the runtime but preserved for future use.

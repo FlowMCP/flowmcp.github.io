@@ -1,5 +1,7 @@
 # FlowMCP Specification v4.0.0 — Resources
 
+> Normative language (MUST/SHOULD/MAY) follows the conventions defined in [00-overview.md](./00-overview.md) (Conformance Language).
+
 Resources provide local data access via SQLite databases and Markdown documents. They map to the MCP `server.resource` primitive and are defined in `main.resources` alongside `main.tools`. This document defines the resource format, two SQLite modes (in-memory and file-based), the origin-based storage system, Markdown resources, query definitions, parameter binding, handler integration, and validation rules.
 
 ---
@@ -235,7 +237,7 @@ resources: {
 | **File changes** | Yes — persistent on disk |
 | **Only allowed origin** | `project` |
 | **Use case** | Analysis results, agent memory, data collection |
-| **getSchema** | **OPTIONAL** — define only if CLI must bootstrap DB via CREATE TABLE |
+| **getSchema** | **OPTIONAL** — define only if CLI MUST bootstrap DB via CREATE TABLE |
 | **runSql** | Auto-injected by runtime (all statements) |
 | **describeTables** | Auto-injected by runtime (AI-friendly schema discovery) |
 | **DB does not exist** | CLI creates DB based on getSchema if defined, otherwise reports missing-DB warning |
@@ -252,7 +254,7 @@ resources: {
 | CREATE/DROP TABLE | No | **Yes** |
 | Changes persistent | No | **Yes** |
 | Allowed origins | `global`, `project` | Only `project` |
-| DB must exist | Yes (warning if missing) | No (CLI creates via getSchema) |
+| DB MUST exist | Yes (warning if missing) | No (CLI creates via getSchema) |
 | getSchema | OPTIONAL (rarely needed) | OPTIONAL (only for CLI DB bootstrap) |
 | runSql | Auto-injected (SELECT only) | Auto-injected (all statements) |
 | describeTables | Auto-injected (structured discovery) | Auto-injected (structured discovery) |
@@ -271,6 +273,109 @@ Intermediate modes (append-only, insert-but-no-delete) are intentionally omitted
 1. **Hard to enforce** — SQL is too flexible for reliable pattern matching
 2. **Misleading** — they suggest safety that cannot be guaranteed
 3. **Counterproductive** — they create problems without solving real ones
+
+---
+
+## SQLite-GTFS Resources
+
+### Overview
+
+The `source: 'sqlite-gtfs'` resource type is a **top-level sub-type of `sqlite`** (Design C — top-level with inheritance). It denotes a SQLite database that has been produced by a FlowMCP add-on (such as `gtfs-sqlite-toolkit`) and carries a verified quality seal in its `meta` table. The seal guarantees that the database structure, validation status, and discoverable capabilities are conformant with a known add-on contract — which allows FlowMCP-CLI to automatically inject standard tools without the schema author writing any SQL by hand.
+
+`sqlite-gtfs` is **not** a fallback for `sqlite`. A database without a valid seal is rejected (see [Validation Rules](#validation-rules) — `RES032`). Users who want full manual control over a SQLite database continue to use `source: 'sqlite'`.
+
+### Required Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `source` | `'sqlite-gtfs'` | Yes | Resource type. Must be `'sqlite-gtfs'`. |
+| `mode` | `'file-based'` | Yes | Access mode. Only `'file-based'` is allowed. `'in-memory'` is rejected (`RES030`) because the seal verification depends on the persisted `meta` table. |
+| `path` | `string` | Yes | Absolute path to the converted SQLite database. May contain the path variable `${FLOWMCP_RESOURCES}` (see [Path Variable Support](#path-variable-support)). |
+| `addon` | `string` | Yes | Name of the FlowMCP add-on responsible for producing and interpreting the database (e.g. `gtfs-sqlite-toolkit`). The add-on is the authority over which standard tools are auto-injected. |
+
+### Optional Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `addonVersion` | `string` | No | SemVer range pinning the add-on version (e.g. `>=0.1.0`). When omitted, the FlowMCP-CLI uses the version listed in its add-on registry. |
+| `addonSource` | `string` | No | Add-on source reference. Default: `github:FlowMCP/<addon>`. **NPM is not supported** — only `github:` paths are valid. FlowMCP is not published to the NPM registry. |
+
+### Seal Requirement
+
+Every `sqlite-gtfs` resource MUST point to a database whose `meta` table contains the entry `qualitySeal === 'sqlite-gtfs'`. This is a hard requirement enforced by the validator (`RES032`). A database that does not carry the seal — whether because it was produced by an unverified converter, manually edited, or partially converted — is rejected at schema activation time.
+
+The seal is written by the converter (e.g. `MetaWriter` in `gtfs-sqlite-toolkit`) only when the conversion completes successfully and all pre-validation checks pass strictly. A failed or partial conversion produces `qualitySeal: null` and the database is not usable as a `sqlite-gtfs` resource.
+
+### Required Meta Keys
+
+The `meta` table of a sealed database MUST contain the following ten keys. They support reproducibility, capability detection, and audit logging:
+
+| Key | Purpose |
+|-----|---------|
+| `qualitySeal` | Add-on identifier (here: `'sqlite-gtfs'`). The seal value. |
+| `specRevision` | FlowMCP spec revision the converter targeted (e.g. `'2026-04-27'`). Used for spec-drift warnings (`RES034`). |
+| `specUrl` | URL of the spec revision document. |
+| `converterVersion` | SemVer of the add-on that produced the database (e.g. `gtfs-sqlite-toolkit@0.1.0`). |
+| `capabilities` | JSON-encoded map of capability booleans (e.g. `basicLookup`, `routing`, `shapesVisualization`, `flexService`). Drives auto-injection. |
+| `validationReport` | JSON-encoded summary of pre-validation results (counts of errors / warnings / info). |
+| `buildDate` | ISO-8601 timestamp of the conversion run. |
+| `rowCounts` | JSON-encoded per-table row counts. |
+| `sourceUrl` | URL of the upstream data source the converter consumed (provider feed URL). |
+| `sourceHash` | SHA-256 hash of the source archive — supports content-addressed deduplication and replay. |
+
+### Path Variable Support
+
+The `path` field MAY contain the variable `${FLOWMCP_RESOURCES}`. The FlowMCP-CLI resolves the variable from the `FLOWMCP_RESOURCES` environment variable, falling back to `~/.flowmcp/resources/` when the variable is unset.
+
+| Variable | Resolution | Default when unset |
+|----------|------------|--------------------|
+| `${FLOWMCP_RESOURCES}` | `process.env.FLOWMCP_RESOURCES` | `~/.flowmcp/resources/` |
+
+Path variables establish the `FLOWMCP_*` naming family — variable names mirror the spec primitive they reference (`main.resources` → `FLOWMCP_RESOURCES`). Future variables follow the same pattern (`FLOWMCP_LOGS`, `FLOWMCP_CACHE`).
+
+A path variable that cannot be resolved (no environment variable and no documented default) raises `RES035`.
+
+### Schema Example
+
+A minimal POC schema demonstrating `sqlite-gtfs`:
+
+```javascript
+export const schema = {
+    namespace: 'gtfsde',
+    name: 'gtfsde-transit-v2',
+    version: '2.0.0',
+    main: {
+        resources: [
+            {
+                source: 'sqlite-gtfs',                              // Design C
+                mode: 'file-based',
+                path: '${FLOWMCP_RESOURCES}/gtfs-de.db',            // User-configurable
+                addon: 'gtfs-sqlite-toolkit',                       // Authority over default methods
+                addonVersion: '>=0.1.0',                            // optional
+                addonSource: 'github:FlowMCP/gtfs-sqlite-toolkit'   // NPM is not supported
+            }
+        ],
+        tools: [
+            // OPTIONAL: schema-specific tools only.
+            // Standard GTFS tools are auto-injected by the add-on.
+        ]
+    }
+}
+```
+
+When the FlowMCP-CLI activates this schema via `flowmcp add`, it (1) resolves the path variable, (2) verifies the seal, (3) reads `capabilities` from the `meta` table, (4) loads the add-on declared in `addon`, and (5) injects the standard toolset that the add-on derives from the active capabilities.
+
+### Add-on Authority
+
+The `sqlite-gtfs` resource type **delegates the definition of standard tools to the add-on**. The spec describes the resource contract; the add-on (e.g. `gtfs-sqlite-toolkit`) owns the catalog of default methods — `searchStops`, `searchRoutes`, `getDepartures`, `getShapeForRoute`, `getFlexBookingRules`, and so on — and decides which ones become available based on the `capabilities` map.
+
+This split keeps the spec stable while letting add-ons evolve independently. New add-ons (for example a future `sqlite-netex` or `sqlite-trias`) follow the same `Design C` pattern: top-level source value, seal requirement, add-on reference, capability-driven auto-injection.
+
+### Data Policy Note
+
+**Provider GTFS data MUST NOT be committed to the spec repository, the add-on repository, or any other public FlowMCP repository.** GTFS feeds carry third-party licensing terms that typically prohibit redistribution. Users provide their own GTFS data locally — either by downloading from the provider directly or by using the add-on's converter against a local source archive. The converted database lives under the user-controlled `${FLOWMCP_RESOURCES}` directory and is never published.
+
+The synthetic Mini-GTFS fixture shipped with `gtfs-sqlite-toolkit` (under a CC0 license) is the only GTFS-shaped data permitted in any public FlowMCP repository. It exists exclusively for testing and CI.
 
 ---
 
@@ -323,9 +428,9 @@ flowchart TD
 | `project` | Yes | **Yes** (only allowed origin) | Yes |
 | `global` | Yes (recommended) | **Not allowed** | Yes |
 
-**Why SQLite inline is not recommended:** SQLite databases may contain personal data, proprietary datasets, or large binary files. Committing them to a schema repository exposes data to all users of the catalog. Markdown documents are text, typically documentation, and safe to commit.
+**Why SQLite inline is not recommended:** SQLite databases MAY contain personal data, proprietary datasets, or large binary files. Committing them to a schema repository exposes data to all users of the catalog. Markdown documents are text, typically documentation, and safe to commit.
 
-**Why file-based is project-only:** Writable databases must be isolated to a single project. A writable global database could be corrupted by concurrent use from multiple projects.
+**Why file-based is project-only:** Writable databases MUST be isolated to a single project. A writable global database could be corrupted by concurrent use from multiple projects.
 
 ### Name Field
 
@@ -361,7 +466,7 @@ Schema authors MAY define `getSchema` if they want to expose CREATE TABLE statem
 
 **When to define `getSchema`:**
 
-- `mode: 'file-based'`: Only when the CLI must create the database on first run. The CLI derives CREATE TABLE statements from the getSchema return value (table names, column names, column types).
+- `mode: 'file-based'`: Only when the CLI MUST create the database on first run. The CLI derives CREATE TABLE statements from the getSchema return value (table names, column names, column types).
 - `mode: 'in-memory'`: Almost never — `describeTables` is sufficient. Define `getSchema` only if a downstream consumer needs the CREATE TABLE text directly (e.g. dump/migration tooling).
 
 **getSchema and CREATE TABLE:** When defined, the CLI can derive CREATE TABLE statements from the getSchema return value. No separate `createSchema` query is needed.
@@ -449,7 +554,7 @@ WHERE m.type = 'table'
 | AI-friendliness | High (immediate consumption) | Medium (regex parsing required) |
 | Use case | Default AI discovery | Author needs CREATE-text (e.g. CLI bootstraps file-based DB) |
 
-For `mode: 'in-memory'`, constraints are practically irrelevant — the agent only builds SELECTs. `describeTables` covers 100% of practical discovery use cases. For `mode: 'file-based'`, schema authors may still define `getSchema` if the CLI needs CREATE TABLE statements to bootstrap the database on first run.
+For `mode: 'in-memory'`, constraints are practically irrelevant — the agent only builds SELECTs. `describeTables` covers 100% of practical discovery use cases. For `mode: 'file-based'`, schema authors MAY still define `getSchema` if the CLI needs CREATE TABLE statements to bootstrap the database on first run.
 
 ### Query Limits
 
@@ -647,7 +752,7 @@ resources: {
 
 ### Validation Rule
 
-**RES010:** `source: 'http'` requires a `url` field. The URL must use HTTPS (`https://`). HTTP URLs are rejected to prevent insecure data transfer.
+**RES010:** `source: 'http'` requires a `url` field. The URL MUST use HTTPS (`https://`). HTTP URLs are rejected to prevent insecure data transfer.
 
 ---
 
@@ -669,7 +774,7 @@ No block patterns needed. `better-sqlite3` with `readonly: true` prevents all wr
 |-------|-------------|
 | Only project-level | No access to global or inline DBs |
 | All statements allowed | User has consciously chosen file-based |
-| CLI asks on creation | User must confirm |
+| CLI asks on creation | User MUST confirm |
 | Backup before first write | `.bak` copy as safety net |
 | WAL mode | Concurrent access safely possible |
 | Changes persistent | Intended — that is the purpose |
@@ -702,7 +807,7 @@ flowchart LR
 
 ### Problem
 
-For `file-based` databases at project level, the DB must exist before the agent can write. But who creates it?
+For `file-based` databases at project level, the DB MUST exist before the agent can write. But who creates it?
 
 ### Solution: CLI Creates on Demand
 
@@ -726,7 +831,7 @@ flowchart TD
 | CLI creates DB | Only when `source: 'sqlite'` + `mode: 'file-based'` + DB missing |
 | User confirmation | **Required** — CLI always asks |
 | Path | Always `project`: `.{base}/resources/{name}` |
-| getSchema | OPTIONAL for file-based — required only when CLI must bootstrap the DB on first run (derives CREATE TABLE) |
+| getSchema | OPTIONAL for file-based — required only when CLI MUST bootstrap the DB on first run (derives CREATE TABLE) |
 | Backup | `.bak` copy before first write (for existing DB) |
 
 ### Backup Strategy
@@ -833,7 +938,7 @@ This is used by the auto-injected `runSql`. Schema authors do not normally need 
 
 #### `{{DYNAMIC_SQL}}` Rules
 
-1. **Runtime security checks** — for `in-memory`, user SQL must start with `SELECT` and must not contain write operations. For `file-based`, all statements are allowed.
+1. **Runtime security checks** — for `in-memory`, user SQL MUST start with `SELECT` and MUST NOT contain write operations. For `file-based`, all statements are allowed.
 2. **Automatic LIMIT** — the runtime appends `LIMIT {n}` to SELECT queries if no LIMIT clause is present. Default: 100, maximum: 1000.
 3. **The `sql` parameter** — provides the user's SQL query.
 4. **The `limit` parameter** — optional, controls the automatic LIMIT.
@@ -885,7 +990,7 @@ parameters: [
 ]
 ```
 
-The number of parameters must match the number of `?` placeholders in the SQL statement. A mismatch is a validation error.
+The number of parameters MUST match the number of `?` placeholders in the SQL statement. A mismatch is a validation error.
 
 ### Supported Primitives
 
@@ -950,7 +1055,7 @@ Resource handlers only support `postRequest`. There is no `preRequest` for resou
 1. **Handlers are optional.** Queries without handlers return the raw SQL result rows directly.
 2. **Only `postRequest` is supported.** Resource handlers transform query results, not query construction.
 3. **Same security restrictions apply.** Resource handlers follow the same rules as tool handlers: no imports, no restricted globals, pure transformations only. See `05-security.md`.
-4. **Return shape must match.** `postRequest` must return `{ response }`.
+4. **Return shape MUST match.** `postRequest` must return `{ response }`.
 
 ---
 
@@ -1056,7 +1161,7 @@ export const main = {
 1. **`tools` and `resources` are independent.** A schema can have tools only, resources only, or both.
 2. **Limits are separate.** The 8-tool limit and 2-resource limit are independent constraints.
 3. **Handlers are namespaced.** Tool handlers are keyed by tool name, resource handlers are keyed by resource name then query name. There is no collision because resource handlers are nested one level deeper.
-4. **`root` is not required when a schema has only resources.** The `root` field provides the base URL for HTTP tools. A resource-only schema does not make HTTP calls and may omit `root`.
+4. **`root` is not required when a schema has only resources.** The `root` field provides the base URL for HTTP tools. A resource-only schema does not make HTTP calls and MAY omit `root`.
 
 ---
 
@@ -1064,7 +1169,7 @@ export const main = {
 
 | Constraint | Value | Rationale |
 |------------|-------|-----------|
-| Max resources per schema | 2 | Keeps schemas focused. Resources should be tightly scoped to one data domain. |
+| Max resources per schema | 2 | Keeps schemas focused. Resources SHOULD be tightly scoped to one data domain. |
 | Max schema-defined queries per resource | 7 | getSchema is optional. Plus 2 auto-injected (runSql + describeTables) = 9 total. |
 | Query name pattern | `^[a-z][a-zA-Z0-9]*$` | camelCase, consistent with tool names. |
 | Resource name pattern | `^[a-z][a-zA-Z0-9]*$` | camelCase, consistent with tool names. |
@@ -1096,7 +1201,7 @@ The following fields are part of the `main` export and therefore included in the
 
 | Excluded | Reason |
 |----------|--------|
-| Database file contents | Data updates should not invalidate the schema hash. |
+| Database file contents | Data updates SHOULD NOT invalidate the schema hash. |
 | Markdown file contents | Same reasoning as database contents. |
 | Handler code | Consistent with tool handler exclusion. Handler functions are in the `handlers` export, not in `main`. |
 
@@ -1123,33 +1228,39 @@ The following rules are enforced when validating resource definitions:
 |------|----------|------|
 | RES001 | error | `source` must be `'sqlite'` or `'markdown'`. |
 | RES002 | error | `description` must be a non-empty string. |
-| RES003 | error | `mode` is required for `source: 'sqlite'` and must be `'in-memory'` or `'file-based'`. |
-| RES004 | error | `origin` is required and must be `'global'`, `'project'`, or `'inline'`. |
+| RES003 | error | `mode` is required for `source: 'sqlite'` and MUST be `'in-memory'` or `'file-based'`. |
+| RES004 | error | `origin` is required and MUST be `'global'`, `'project'`, or `'inline'`. |
 | RES005 | error | `name` is required, must be a non-empty string with the correct extension (`.db` for sqlite, `.md` for markdown). |
 | RES006 | error | Maximum 2 resources per schema. |
 | RES007 | error | Maximum 7 schema-defined queries per SQLite resource (9 total with auto-injected runSql + describeTables). |
-| RES008 | error | Each query must have a `sql` field of type string. |
-| RES009 | error | Each query must have a `description` field of type string. |
-| RES010 | error | Each query must have a `parameters` array. |
-| RES011 | error | Each query must have an `output` object with `mimeType` and `schema`. |
-| RES012 | error | Each query must have at least 1 test. |
-| RES013 | error | For `mode: 'in-memory'`, schema-defined SQL must begin with `SELECT` or `WITH` (CTE). |
-| RES014 | error | Number of parameters must match number of `?` placeholders in the SQL statement. |
-| RES015 | error | Resource parameters must not have a `location` field in `position`. |
-| RES016 | error | Resource parameters must not use `{{SERVER_PARAM:...}}` values. |
-| RES017 | error | Resource name must match `^[a-z][a-zA-Z0-9]*$` (camelCase). |
-| RES018 | error | Query name must match `^[a-z][a-zA-Z0-9]*$` (camelCase). |
-| RES019 | error | Resource parameter primitives must be scalar: `string()`, `number()`, `boolean()`, or `enum()`. |
-| RES020 | warning | Database file should exist at validation time. Missing file produces a warning. |
+| RES008 | error | Each query MUST have a `sql` field of type string. |
+| RES009 | error | Each query MUST have a `description` field of type string. |
+| RES010 | error | Each query MUST have a `parameters` array. |
+| RES011 | error | Each query MUST have an `output` object with `mimeType` and `schema`. |
+| RES012 | error | Each query MUST have at least 1 test. |
+| RES013 | error | For `mode: 'in-memory'`, schema-defined SQL MUST begin with `SELECT` or `WITH` (CTE). |
+| RES014 | error | Number of parameters MUST match number of `?` placeholders in the SQL statement. |
+| RES015 | error | Resource parameters MUST NOT have a `location` field in `position`. |
+| RES016 | error | Resource parameters MUST NOT use `{{SERVER_PARAM:...}}` values. |
+| RES017 | error | Resource name MUST match `^[a-z][a-zA-Z0-9]*$` (camelCase). |
+| RES018 | error | Query name MUST match `^[a-z][a-zA-Z0-9]*$` (camelCase). |
+| RES019 | error | Resource parameter primitives MUST be scalar: `string()`, `number()`, `boolean()`, or `enum()`. |
+| RES020 | warning | Database file SHOULD exist at validation time. Missing file produces a warning. |
 | RES021 | error | `output.schema.type` must be `'array'` for resource queries. |
-| RES022 | error | Test parameter values must pass the corresponding `z` validation. |
-| RES023 | error | Test objects must be JSON-serializable. |
+| RES022 | error | Test parameter values MUST pass the corresponding `z` validation. |
+| RES023 | error | Test objects MUST be JSON-serializable. |
 | RES024 | info | SQLite resources MAY include a `getSchema` query for CLI bootstrap (file-based) or downstream tooling. Not required. |
 | RES025 | error | `mode: 'file-based'` requires `origin: 'project'`. |
-| RES026 | error | `source: 'markdown'` must not have a `mode` field. |
-| RES027 | error | `source: 'markdown'` must not have a `queries` field. |
+| RES026 | error | `source: 'markdown'` MUST NOT have a `mode` field. |
+| RES027 | error | `source: 'markdown'` MUST NOT have a `queries` field. |
 | RES028 | warning | `source: 'sqlite'` with `origin: 'inline'` is not recommended (data privacy). |
-| RES029 | error | All resource fields are required. No field may be omitted. |
+| RES029 | error | All resource fields are required. No field MAY be omitted. |
+| RES030 | error | `source: 'sqlite-gtfs'` requires `mode: 'file-based'`. `in-memory` is not allowed. |
+| RES031 | error | `source: 'sqlite-gtfs'` requires the `addon` field (add-on name). |
+| RES032 | error | Database at `path` does not contain `meta.qualitySeal === 'sqlite-gtfs'`. Schema rejected. |
+| RES033 | error | Database at `path` cannot be opened (file missing or corrupt). |
+| RES034 | warning | Database `meta.specRevision` is outside the expected range. |
+| RES035 | error | Path variable in `path` (e.g. `${FLOWMCP_RESOURCES}`) cannot be resolved (environment variable not set AND no default available). |
 
 ---
 
