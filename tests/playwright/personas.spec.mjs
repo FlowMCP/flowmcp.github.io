@@ -28,8 +28,8 @@ test.describe( 'Persona-E2E-Pfade (Memo 045 REV-15 Kap. 2)', () => {
 
     test( 'Decision-Maker — Landing -> Introduction -> Roadmap, Trust-Signale sichtbar', async ( { page } ) => {
         await page.goto( '/' )
-        await expect( page.getByText( /Hackathon/i ) ).toBeVisible()
-        await expect( page.getByText( '288' ) ).toBeVisible()
+        await expect( page.getByText( /Hackathon/i ).first() ).toBeVisible()
+        await expect( page.getByText( '288' ).first() ).toBeVisible()
 
         await page.goto( '/introduction/about/' )
         await page.goto( '/roadmap/overview/' )

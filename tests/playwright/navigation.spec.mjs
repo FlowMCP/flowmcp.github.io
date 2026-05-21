@@ -14,10 +14,10 @@ test.describe( 'Navigation (Pencil-Layout REV-15)', () => {
     test( '2. Landing zeigt Pencil-Hero + LogoStrip + StatsBar + TagCloud', async ( { page } ) => {
         await page.goto( '/' )
         await expect( page.getByText( /Normalize any data source/i ).first() ).toBeVisible()
-        await expect( page.getByText( /Connects to/i ) ).toBeVisible()
-        await expect( page.getByText( '288' ) ).toBeVisible()
-        await expect( page.getByText( '1,534' ) ).toBeVisible()
-        await expect( page.getByText( /Browse by topic/i ) ).toBeVisible()
+        await expect( page.getByText( /Connects to/i ).first() ).toBeVisible()
+        await expect( page.getByText( '288' ).first() ).toBeVisible()
+        await expect( page.getByText( '1,534' ).first() ).toBeVisible()
+        await expect( page.getByText( /Browse by topic/i ).first() ).toBeVisible()
     } )
 
     test( '3. Hackathon Trust-Line auf Landing', async ( { page } ) => {
