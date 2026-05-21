@@ -1,5 +1,16 @@
 /* Custom Theme — FlowMCP Pencil Dark-Style (REV-14 Kap. 5) */
 
+/*
+ * SPEZIFITAETS-HIERARCHIE (PRD-01, REV-05):
+ *   Hoechste Prioritaet: body :where(.pencil-hero) .pencil-hero__headline
+ *   Mittlere:            .sl-markdown-content h1:not(.pencil-hero__headline)
+ *   Basis:               header.header, nav.sidebar, .content-panel
+ *
+ * REGEL: Vor jeder neuen !important-Regel pruefen, ob ein bestehender
+ * Selektor durch hoehere Spezifitaet ersetzt werden kann. !important nur
+ * gegen Starlight-Defaults verwenden, niemals zwischen eigenen Regeln.
+ */
+
 /* Hide theme selector — force dark */
 starlight-theme-select {
     display: none !important;
@@ -173,8 +184,34 @@ nav.sidebar {
     background: var(--bg-canvas);
 }
 
-/* Smaller headings — Starlight defaults are too large */
-.sl-markdown-content h1 {
+/* ============ HERO HEADLINE OVERRIDE (PRD-01, REV-05 RC-1) ============
+ *
+ * Selektor-Strategie:
+ * - body :where(.pencil-hero) erhoeht Spezifitaet auf (0,1,2) ohne nested
+ *   Pseudo-Class-Penalty (:where = 0).
+ * - Schlaegt damit globale .sl-markdown-content h1 (Spezifitaet 0,2,1).
+ * - Hero-Style ist KEIN Markdown-Content und darf nicht durch h1-Defaults
+ *   ueberschrieben werden.
+ */
+
+body :where(.pencil-hero) .pencil-hero__headline {
+    font-size: clamp(3.5rem, 9vw, 6.5rem) !important;
+    font-weight: 900 !important;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    margin: 0 0 2rem;
+}
+
+@media (max-width: 640px) {
+    body :where(.pencil-hero) .pencil-hero__headline {
+        font-size: clamp(2rem, 10vw, 3rem) !important;
+    }
+}
+
+/* Smaller headings — Starlight defaults are too large.
+ * EXCLUDED: .pencil-hero h1 — siehe HERO HEADLINE OVERRIDE Block oben. */
+.sl-markdown-content h1:not(.pencil-hero__headline) {
     font-size: 1.8rem !important;
 }
 
