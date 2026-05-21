@@ -1,0 +1,78 @@
+---
+title: Fuer Entscheider
+description: Alles was du in 5 Minuten ueber FlowMCP wissen musst — fuer CTOs, Gruender und Produktverantwortliche.
+---
+{/* PAGEFIND-META-START */}
+<span style="display:none" data-pagefind-meta="section">Einfuehrung</span>
+{/* PAGEFIND-META-END */}
+
+## Was ist FlowMCP?
+
+FlowMCP ist ein Open-Source-Framework, das beliebige Datenquellen in KI-aufrufbare Tools normalisiert. Gebaut fuer Engineers und Entscheider, deren KI-Agenten ohne fragile Integrationen auf reale Daten zugreifen sollen.
+
+- **288 Datenquellen** in 13 Kategorien (Blockchain, Behoerden, Wetter, etc.)
+- **1.534 KI-aufrufbare Tools** mit konsistenten Input/Output-Schemas
+- **KI-nativ:** Von Tag eins fuer LLM-basierte Agenten konzipiert
+
+[Zum Schnellstart →](/de/quickstart/quickstart/)
+
+---
+
+## <a id="use-cases"></a>Anwendungsfaelle 
+
+- **Research-Agenten** ziehen aus Open Data + APIs ohne Custom-Code
+- **Compliance-Tooling** mit Government-EU und Government-DE Schema-Katalog
+- **DeFi & Blockchain-Analytics** mit 230+ Schemas (EVM + Solana)
+- **Hackathons & Prototypen** mit vorbereiteten Schemas (siehe [Hackathon-Onboarding](#hackathon))
+
+---
+
+## <a id="comparison"></a>Warum FlowMCP statt Alternativen? 
+
+| Anliegen | FlowMCP | Eigenintegrationen | LangChain-Tools |
+|---|---|---|---|
+| Time-to-first-call | < 5 min | Tage | Stunden |
+| Quellenabdeckung | 288 Quellen | 1 Quelle/Integration | variiert |
+| Open Source | MIT | n/a | variiert |
+| Schema-Validierung | strenge v3.0.0-Spec | keine | teilweise |
+| KI-nativ | ja | nein | teilweise |
+| Vendor Lock-in | keiner | gering | mittel |
+
+---
+
+## <a id="trust"></a>Vertrauen & Open Source 
+
+- Lizenz: **MIT** — nutzen, forken, verteilen
+- GitHub: [github.com/FlowMCP](https://github.com/FlowMCP) — aktive Repositories
+- Test-Coverage: pro Repo publiziert (siehe [Repository-Uebersicht](https://github.com/FlowMCP))
+- Kein Vendor Lock-in: Schemas, Core und CLI sind unabhaengig und offline lauffaehig
+
+---
+
+## <a id="roadmap"></a>Roadmap-Highlights 
+
+- **2026 Q2:** Schema-Library v3.1 (Resources + Prompts Standard)
+- **2026 Q2:** AgentProbe-Integration fuer Agent-Validierung
+- **2026 Q3:** Hosted Schema-Registry (Community-getrieben)
+- **2026 Q3:** x402 Payment-Protocol-Integration
+- **2026 Q4:** Multi-Sprachen-SDK (Python, TypeScript)
+
+[Komplette Roadmap →](/de/roadmap/overview/)
+
+---
+
+## <a id="team"></a>Team & Sponsoren 
+
+[Team →](/de/roadmap/team/) · [Community-Hub →](/de/roadmap/community/)
+
+---
+
+## <a id="hackathon"></a>Fuer Hackathon-Teilnehmende 
+
+Du baust einen MCP-Server im Hackathon: Es gibt einen vorbereiteten Claude-Code-Skill, der dein Projekt scaffolded. Fuehre aus:
+
+```
+claude /flowmcp-hackathon-onboarding
+```
+
+(Skill-Repository: siehe [Hackathon-Onboarding-Skill](https://github.com/FlowMCP) — kommt mit Memo-050-Rollout-Abschluss)

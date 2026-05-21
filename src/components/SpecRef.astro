@@ -1,0 +1,65 @@
+---
+// SpecRef — verlinkt eine Spec-Datei und zeigt Sync-Status
+// PRD-09, REV-05 Kap. 9.1
+import syncStatus from '../data/spec-sync.json'
+
+interface Props {
+    path: string
+    commit: string
+}
+
+const { path, commit } = Astro.props
+const status = ( syncStatus as Record<string, { pinned: string; current: string | null; inSync: boolean }> )[ path ] ?? null
+const inSync = status?.inSync === true
+const relInRepo = path.replace( /^repos\/flowmcp-spec\//, '' )
+const url = `https://github.com/FlowMCP/flowmcp-spec/blob/${commit}/${relInRepo}`
+const filename = path.split( '/' ).pop()
+---
+
+<div class="spec-ref">
+    <a href={url} class="spec-ref__link">
+        Spec: <code>{filename}</code> @ <code>{commit.slice( 0, 7 )}</code>
+    </a>
+    {!inSync && status && (
+        <span class="spec-ref__badge spec-ref__badge--warning" title={`Pinned: ${commit}, Current: ${status.current?.slice( 0, 7 )}`}>
+            Out of sync
+        </span>
+    )}
+    {inSync && (
+        <span class="spec-ref__badge spec-ref__badge--ok">
+            In sync
+        </span>
+    )}
+</div>
+
+<style>
+.spec-ref {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    margin: 1rem 0;
+}
+.spec-ref__link {
+    color: var(--accent);
+    text-decoration: none;
+}
+.spec-ref__badge {
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+.spec-ref__badge--ok {
+    background: rgba(46, 160, 67, 0.15);
+    color: #3fb950;
+}
+.spec-ref__badge--warning {
+    background: rgba(210, 153, 34, 0.15);
+    color: #d29922;
+}
+</style>

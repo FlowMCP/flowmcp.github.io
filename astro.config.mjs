@@ -125,6 +125,7 @@ export default defineConfig({
                     translations: { de: 'Einfuehrung' },
                     collapsed: true,
                     items: [
+                        { label: 'For Decision Makers', translations: { de: 'Fuer Entscheider' }, slug: 'about/for-decision-makers' },
                         { label: 'About', translations: { de: 'Ueber FlowMCP' }, slug: 'introduction/about' },
                         { label: 'Why We Do This', translations: { de: 'Warum wir das machen' }, slug: 'introduction/why' },
                         { label: 'Use Cases', translations: { de: 'Anwendungsfaelle' }, slug: 'introduction/use-cases' },
