@@ -1,8 +1,8 @@
 ---
-// StatsBar — 4-Spalten Stats (Pencil-Mockup Gdy0k, Memo 045 REV-15 Punkt 4)
-// Jede Spalte in eigener Kachel (User-Feedback: Hintergrund-Kacheln nötig)
-const path = Astro.url.pathname;
-const isDE = path.startsWith('/de/') || path === '/de';
+// StatsBar — Pencil-Stil (Frame Gdy0k, REV-05 Kap. 2.1)
+// KEINE Kacheln (User-Entscheidung REV-03). 4 Spalten, identische Hoehe.
+const path = Astro.url.pathname
+const isDE = path.startsWith( '/de/' ) || path === '/de'
 
 const stats = [
     { value: '288',    label: isDE ? 'Datenquellen'           : 'Data sources' },
@@ -13,34 +13,40 @@ const stats = [
 ---
 
 <section class="stats-bar" aria-label="FlowMCP at a glance">
-    {stats.map((s) => (
-        <div class="stats-bar__tile">
+    {stats.map( ( s ) => (
+        <div class="stats-bar__cell">
             <div class="stats-bar__value">{s.value}</div>
             <div class="stats-bar__label">{s.label}</div>
         </div>
-    ))}
+    ) )}
 </section>
 
 <style>
 .stats-bar {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
+    align-items: start;
+    gap: 3rem;
     margin: 2rem auto 3rem;
     max-width: 1100px;
     padding: 0 1.5rem;
 }
 
-.stats-bar__tile {
+.stats-bar__cell {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     text-align: center;
     gap: 0.6rem;
-    padding: 1.5rem 1rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    min-height: 130px;
+    margin-top: 0;
+    /* KEIN background, KEINE border, KEIN border-radius — Pencil-Paritaet */
+}
+
+/* Starlight reset: kill sibling-margin on stats cells */
+.stats-bar > .stats-bar__cell + .stats-bar__cell {
+    margin-top: 0;
 }
 
 .stats-bar__value {
@@ -52,27 +58,24 @@ const stats = [
 }
 
 .stats-bar__label {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-inactive);
     text-transform: uppercase;
-    letter-spacing: 0.6px;
+    letter-spacing: 0.8px;
     font-weight: 500;
 }
 
 @media (max-width: 640px) {
     .stats-bar {
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.75rem;
+        gap: 1.5rem;
         padding: 0 1rem;
-    }
-    .stats-bar__tile {
-        padding: 1.25rem 0.75rem;
     }
     .stats-bar__value {
         font-size: 1.75rem;
     }
     .stats-bar__label {
-        font-size: 10px;
+        font-size: 11px;
     }
 }
 </style>
