@@ -1,12 +1,11 @@
-# FlowMCP — llms.txt Index (Layer 0)
+# FlowMCP — llms.txt Index
 
 > Layered LLM context for FlowMCP. Pick the layer you need.
 
-- Layer 1 — Search guide: /llms-search.txt
-- Layer 2 — Add a new source: /llms-add-source.txt
-- Layer 3 — Schema specification (v4.0.0): /llms-schema-spec.txt
-- Layer 4 — Full website content: /llms-full.txt
+- Practical documentation: /docs-llms.txt
+- Full website content: /llms-full.txt
+- Schema specification (v4.0.0): https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/generated/llms.txt
 
-Spec source: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v4.0.0/llms.txt
+Spec source: https://github.com/FlowMCP/flowmcp-spec
 Docs: https://flowmcp.github.io/docs
 GitHub: https://github.com/flowmcp
