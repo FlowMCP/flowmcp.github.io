@@ -22,7 +22,7 @@ export default defineConfig({
             logo: {
                 light: './public/logo-light.svg',
                 dark: './public/logo-dark.svg',
-                replacesTitle: false,
+                replacesTitle: true,
             },
             defaultLocale: 'root',
             locales: {
@@ -48,6 +48,16 @@ export default defineConfig({
                     tag: 'script',
                     attrs: { defer: true },
                     content: `
+                        function addV4Badge() {
+                            var logoLink = document.querySelector('header.header a[href$="/"]');
+                            if (!logoLink) return;
+                            if (logoLink.querySelector('.v4-badge')) return;
+                            var badge = document.createElement('span');
+                            badge.className = 'v4-badge';
+                            badge.textContent = 'v4';
+                            badge.style.cssText = 'display:inline-block;padding:1px 6px;margin-left:8px;background:var(--sidebar-active-bg);color:var(--accent);border-radius:4px;font-size:10px;font-weight:700;vertical-align:middle;letter-spacing:0.5px;';
+                            logoLink.appendChild(badge);
+                        }
                         function addHeaderLinks() {
                             var rg = document.querySelector('.right-group');
                             if (!rg) return;
@@ -61,10 +71,12 @@ export default defineConfig({
                             var isAbout = path.indexOf('/introduction') !== -1 || path.indexOf('/basics') !== -1;
                             var isDocs = path.indexOf('/docs/') !== -1;
                             var isRoadmap = path.indexOf('/roadmap') !== -1;
+                            var isBlog = path.indexOf('/blog') !== -1;
                             var links = [
                                 { text: 'About', href: prefix + '/introduction/about/', active: isAbout },
                                 { text: 'Docs', href: prefix + '/docs/getting-started/what-is-flowmcp/', active: isDocs },
-                                { text: 'Roadmap', href: prefix + '/roadmap/overview/', active: isRoadmap }
+                                { text: 'Roadmap', href: prefix + '/roadmap/overview/', active: isRoadmap },
+                                { text: 'Blog', href: prefix + '/blog/', active: isBlog }
                             ];
                             links.forEach(function(link) {
                                 var sel = 'a.header-nav-' + link.text.toLowerCase();
@@ -79,8 +91,8 @@ export default defineConfig({
                                 el.style.cssText = baseStyle + (link.active ? activeColor : inactiveColor);
                             });
                         }
-                        document.addEventListener('DOMContentLoaded', function() { addHeaderLinks(); });
-                        document.addEventListener('astro:page-load', function() { addHeaderLinks(); });
+                        document.addEventListener('DOMContentLoaded', function() { addV4Badge(); addHeaderLinks(); });
+                        document.addEventListener('astro:page-load', function() { addV4Badge(); addHeaderLinks(); });
                     `,
                 },
             ],

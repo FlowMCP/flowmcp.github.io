@@ -1,10 +1,10 @@
 ---
 title: "Welcome to the FlowMCP Blog"
 description: "Releases, hackathon stories, and notes from the FlowMCP team."
-pubDate: 2026-05-21
-author: "FlowMCP Team"
-tags: ["release", "announcement"]
+template: doc
 ---
+
+> 2026-05-21 · FlowMCP Team · #release #announcement
 
 This is the first post on the FlowMCP blog. We will publish release notes, hackathon stories, integration guides, and notes from the team here.
 

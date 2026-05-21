@@ -2,7 +2,7 @@ import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 
 export async function GET(context) {
-    const posts = await getCollection('blog', ({ data }) => !data.draft);
+    const posts = (await getCollection('docs', ({ id }) => id.startsWith('blog/') && id !== 'blog/index'));
 
     return rss({
         title: 'FlowMCP Blog',
@@ -11,9 +11,7 @@ export async function GET(context) {
         items: posts.map((post) => ({
             title: post.data.title,
             description: post.data.description,
-            pubDate: post.data.pubDate,
-            author: post.data.author,
-            link: `/blog/${post.id}/`,
+            link: `/${post.id}/`,
         })),
         customData: '<language>en-us</language>',
     });

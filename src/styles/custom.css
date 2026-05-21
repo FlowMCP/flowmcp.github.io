@@ -77,14 +77,18 @@ header.header .social-icons {
         padding: 0 0.75rem;
     }
 
-    /* Hamburger LINKS Mobile (Regel 4) — Pencil-Spec, default Starlight ist rechts */
-    header.header starlight-menu-button,
-    header.header [data-mobile-menu],
-    header.header button[aria-label*="Menu" i],
-    header.header button[aria-label*="menu" i] {
-        order: -1 !important;
-        margin-right: auto;
-        margin-left: 0;
+    /* Hamburger LINKS Mobile (Regel 4) — starlight-menu-button is in nav.sidebar, absolute-positioned */
+    starlight-menu-button {
+        position: fixed !important;
+        top: 8px !important;
+        left: 8px !important;
+        right: auto !important;
+        z-index: 100 !important;
+    }
+    starlight-menu-button button {
+        background: var(--bg-card) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 6px !important;
     }
 
     /* Search-Globe-Gap 14px Mobile (Regel 10) */
@@ -283,9 +287,14 @@ blockquote {
 
 /* ============ HERO ============ */
 
-/* Hide Starlight Splash auto-h1 + .hero on Landing — we use our own <Hero /> component (Pencil REV-15) */
-.hero,
-h1#_top {
+/* Hide Starlight Splash auto-h1 + .hero ONLY on Landing — we use our own <Hero /> component */
+/* Detection via :has() — only when pencil-hero is present */
+:root:has(.pencil-hero) h1#_top,
+:root:has(.pencil-hero) .hero {
+    display: none !important;
+}
+/* Fallback: also for Splash-template-pages without .pencil-hero — match Landing only */
+body.has-pencil-hero h1#_top {
     display: none !important;
 }
 
