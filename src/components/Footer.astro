@@ -1,34 +1,25 @@
 ---
-// Custom Footer — Pencil-Stil (Pencil-Mockup Gdy0k Bottom)
-// Overrides @astrojs/starlight/components/Footer.astro
+// Custom Footer — Pencil-Stil (Mockup Gdy0k Bottom)
+// Pencil zeigt nur: Logo "FlowMCP" links + "© 2026 FlowMCP · MIT" + GitHub-Icon rechts
 const year = new Date().getFullYear();
 const path = Astro.url.pathname;
 const isDE = path.startsWith('/de/') || path === '/de';
 
-const t = isDE ? {
-    copy: `© ${year} FlowMCP · MIT-lizenziert`,
-    docs: 'Dokumentation',
-    blog: 'Blog',
-    github: 'GitHub',
-} : {
-    copy: `© ${year} FlowMCP · MIT-licensed`,
-    docs: 'Docs',
-    blog: 'Blog',
-    github: 'GitHub',
-};
+const copy = isDE ? `© ${year} FlowMCP · MIT` : `© ${year} FlowMCP · MIT`;
 ---
 
 <footer class="pencil-footer">
     <div class="pencil-footer__inner">
         <div class="pencil-footer__brand">
             <span class="pencil-footer__logo">FlowMCP</span>
-            <span class="pencil-footer__copy">{t.copy}</span>
+            <span class="pencil-footer__sep">·</span>
+            <span class="pencil-footer__copy">{copy}</span>
         </div>
-        <nav class="pencil-footer__links" aria-label="Footer">
-            <a href={isDE ? '/de/docs/getting-started/what-is-flowmcp/' : '/docs/getting-started/what-is-flowmcp/'}>{t.docs}</a>
-            <a href={isDE ? '/de/blog/' : '/blog/'}>{t.blog}</a>
-            <a href="https://github.com/FlowMCP" rel="noopener" target="_blank">{t.github}</a>
-        </nav>
+        <a class="pencil-footer__github" href="https://github.com/FlowMCP" rel="noopener" target="_blank" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                <path d="M12 .5C5.6.5.5 5.6.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2.9-.3 2-.4 3-.4 1 0 2 .1 3 .4 2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.6-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.6 18.4.5 12 .5z"/>
+            </svg>
+        </a>
     </div>
 </footer>
 
@@ -36,7 +27,7 @@ const t = isDE ? {
 .pencil-footer {
     border-top: 1px solid var(--border);
     background: var(--bg-canvas);
-    padding: 1.5rem 0;
+    padding: 1.25rem 0;
     margin-top: 4rem;
 }
 .pencil-footer__inner {
@@ -47,38 +38,38 @@ const t = isDE ? {
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    flex-wrap: wrap;
 }
 .pencil-footer__brand {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.6rem;
     font-size: 13px;
 }
 .pencil-footer__logo {
     font-weight: 700;
     color: var(--text-primary);
 }
+.pencil-footer__sep {
+    color: var(--group-title);
+}
 .pencil-footer__copy {
     color: var(--text-inactive);
 }
-.pencil-footer__links {
-    display: flex;
-    gap: 1.25rem;
-}
-.pencil-footer__links a {
+.pencil-footer__github {
     color: var(--text-inactive);
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
 }
-.pencil-footer__links a:hover {
-    color: var(--accent);
+.pencil-footer__github:hover {
+    color: var(--text-primary);
 }
 @media (max-width: 640px) {
     .pencil-footer__inner {
-        flex-direction: column;
-        text-align: center;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .pencil-footer__brand {
+        font-size: 12px;
     }
 }
 </style>
