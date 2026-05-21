@@ -36,7 +36,7 @@ starlight-theme-select {
     --sl-color-accent: var(--accent);
     --sl-color-accent-high: #c9e4ff;
     --sl-color-bg: var(--bg-canvas);
-    --sl-color-bg-nav: var(--bg-card);
+    --sl-color-bg-nav: var(--bg-canvas);
     --sl-color-bg-sidebar: var(--bg-card);
     --sl-color-bg-inline-code: var(--bg-card);
     --sl-color-hairline-light: var(--border);
@@ -63,8 +63,8 @@ html {
 /* ============ HEADER (Pencil REV-14 Kap. 5 Regeln 4, 9, 10, 11) ============ */
 
 header.header {
-    background: var(--bg-card);
-    border-bottom: none;
+    background: var(--bg-canvas);
+    border-bottom: 1px solid var(--border);
     height: 64px;
     padding: 0 1rem;
 }
