@@ -16,7 +16,7 @@ Fuer einen Menschen ist es aufwaendig, die richtigen Daten zu finden und zu nutz
 
 Wir machen offene Daten ueber ein Schema-System nutzbar fuer KI-Agenten. Jedes Schema beschreibt, wie eine Datenquelle angesprochen wird — und bringt sie auf einen gemeinsamen Standard.
 
-![Datenquellen werden normalisiert](../../../../assets/diagram-1-data-normalization.png)
+![Datenquellen werden normalisiert](/images/diagram-1-data-normalization.png)
 
 **Dabei veraendern wir die Datenquellen nicht.** Wir passen uns an sie an. Das Schema uebersetzt zwischen der Datenquelle und dem Agenten.
 

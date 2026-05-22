@@ -38,3 +38,7 @@ Every schema exports two things:
 :::tip
 Most schemas only need `main`. Add `handlers` when API responses need transformation before reaching the AI agent.
 :::
+
+## See also
+
+- [Schemas and Tools (Basics)](/concepts/schemas-and-tools/)

@@ -38,3 +38,7 @@ Jedes Schema exportiert zwei Dinge:
 :::tip
 Die meisten Schemas benoetigen nur `main`. Fuege `handlers` hinzu, wenn API-Antworten vor der Weitergabe an den KI-Agenten transformiert werden muessen.
 :::
+
+## Siehe auch
+
+- [Schemas und Tools (Basics)](/de/concepts/schemas-and-tools/)

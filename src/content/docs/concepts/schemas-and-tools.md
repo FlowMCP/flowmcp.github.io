@@ -16,7 +16,7 @@ The schema does not change the data source itself. It translates between the pro
 
 ## What's Inside a Schema?
 
-A schema contains four sections. Only Tools are required — the other three are optional and come into play with more complex data sources.
+A schema contains four primitives. Only Tools are required — the other three are optional and come into play with more complex data sources.
 
 ![Provider Schema Structure: Tools, Resources, Prompts, Skills](/images/provider-schema-aufbau.png)
 
@@ -46,6 +46,17 @@ Guidance for the AI on how to best use this provider's tools. Formulated model-n
 ### Skills (Optional)
 
 Step-by-step instructions for complex workflows combining multiple tools. For example: "First find the station, then query connections, then compare prices."
+
+### Schema-Level Fields
+
+Beyond Tools, Resources, Prompts, and Skills, a schema can declare optional top-level fields:
+
+- **handlers** — A factory function that receives injected dependencies (`sharedLists`, `libraries`) and returns per-tool `preRequest` / `postRequest` modifiers. Use it when a tool needs custom request shaping or response transformation.
+- **sharedLists** — Reusable reference data (e.g., EVM chain IDs) that the schema imports and exposes to its handlers.
+- **requiredServerParams** — Names of environment-bound values (e.g., `ETHERSCAN_API_KEY`) that must be present before the schema can run.
+- **requiredLibraries** — npm packages the schema depends on. Loaded at runtime and injected into handlers — schemas never `import` directly.
+
+Details and the full factory signature: [Schemas Overview](/concepts/schemas-overview/).
 
 ## Example: Bright Sky (German Weather Service)
 

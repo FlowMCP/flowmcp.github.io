@@ -16,7 +16,7 @@ Das Schema selbst veraendert die Datenquelle nicht. Es uebersetzt zwischen der A
 
 ## Was steckt in einem Schema?
 
-Ein Schema enthaelt vier Bereiche. Nur Tools sind Pflicht — die anderen drei sind optional und kommen bei komplexeren Datenquellen zum Einsatz.
+Ein Schema enthaelt vier Primitive. Nur Tools sind Pflicht — die anderen drei sind optional und kommen bei komplexeren Datenquellen zum Einsatz.
 
 ![Provider-Schema Aufbau: Tools, Resources, Prompts, Skills](/images/provider-schema-aufbau.png)
 
@@ -46,6 +46,17 @@ Hinweise fuer die KI, wie sie die Tools dieses Anbieters am besten nutzt. Model-
 ### Skills (Optional)
 
 Schritt-fuer-Schritt-Anleitungen fuer komplexe Ablaeufe, die mehrere Tools kombinieren. Zum Beispiel: "Erst die Station finden, dann die Verbindungen abfragen, dann die Preise vergleichen."
+
+### Schema-Felder auf oberster Ebene
+
+Neben Tools, Resources, Prompts und Skills kann ein Schema optionale Top-Level-Felder deklarieren:
+
+- **handlers** — Eine Factory-Funktion, die injizierte Abhaengigkeiten (`sharedLists`, `libraries`) entgegennimmt und pro Tool `preRequest`- / `postRequest`-Modifier zurueckgibt. Sinnvoll, wenn ein Tool Requests vorbereiten oder Antworten transformieren muss.
+- **sharedLists** — Wiederverwendbare Referenzdaten (z. B. EVM-Chain-IDs), die das Schema importiert und seinen Handlern bereitstellt.
+- **requiredServerParams** — Namen umgebungsgebundener Werte (z. B. `ETHERSCAN_API_KEY`), die vorhanden sein muessen, bevor das Schema laeuft.
+- **requiredLibraries** — npm-Pakete, von denen das Schema abhaengt. Werden zur Laufzeit geladen und in Handler injiziert — Schemas verwenden nie `import` direkt.
+
+Details und die vollstaendige Factory-Signatur: [Schemas Overview](/de/concepts/schemas-overview/).
 
 ## Beispiel: Bright Sky (Deutscher Wetterdienst)
 

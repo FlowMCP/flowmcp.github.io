@@ -16,7 +16,7 @@ For a human, finding and using the right data is tedious. For an AI, it is nearl
 
 We make open data usable for AI agents through a schema system. Each schema describes how to access a data source — and brings it to a common standard.
 
-![Data sources are normalized](../../../assets/diagram-1-data-normalization.png)
+![Data sources are normalized](/images/diagram-1-data-normalization.png)
 
 **We do not change the data sources.** We adapt to them. The schema translates between the data source and the agent.
 

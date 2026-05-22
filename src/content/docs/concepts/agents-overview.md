@@ -173,3 +173,7 @@ agents/crypto-research/
 ```
 
 The `agent.mjs` file is the entry point. Prompts and skills are referenced by relative path from the manifest and follow the same format as schema-level skills and prompt architecture.
+
+## See also
+
+- [Agents (Basics)](/concepts/agents/)
