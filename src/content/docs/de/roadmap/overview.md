@@ -6,7 +6,7 @@ description: Wohin FlowMCP sich entwickelt — aktueller Status und naechste Mei
 <span style="display:none" data-pagefind-meta="section">Roadmap</span>
 <!-- PAGEFIND-META-END -->
 
-## Oeffentliche Schemas ✅
+## Oeffentliche Schemas
 
 **Status: Verfuegbar**
 
@@ -22,7 +22,7 @@ Derzeit abgedeckt: Transport, Wetter, Geocoding und Infrastrukturdaten.
 
 ---
 
-## Integration 🔄
+## Integration
 
 **Status: In Arbeit**
 
@@ -37,7 +37,7 @@ die Entwickler bereits nutzen.
 
 ---
 
-## Community Hub ⏳
+## Community Hub
 
 **Status: Geplant**
 

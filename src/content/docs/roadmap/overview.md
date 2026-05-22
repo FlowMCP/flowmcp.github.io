@@ -6,7 +6,7 @@ description: Where FlowMCP is heading — current status and upcoming milestones
 <span style="display:none" data-pagefind-meta="section">Roadmap</span>
 <!-- PAGEFIND-META-END -->
 
-## Public Schemas ✅
+## Public Schemas
 
 **Status: Available**
 
@@ -22,7 +22,7 @@ Currently covering transportation, weather, geocoding, and infrastructure data.
 
 ---
 
-## Integration 🔄
+## Integration
 
 **Status: In Progress**
 
@@ -37,7 +37,7 @@ that developers already use.
 
 ---
 
-## Community Hub ⏳
+## Community Hub
 
 **Status: Planned**
 
