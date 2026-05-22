@@ -516,3 +516,23 @@ hr,
     margin-top: 0 !important;
     padding-top: 16px !important;
 }
+
+/* ============ EDIT WARNING (PRD-03, Memo 052) ============
+ * Aside-Box am Top jeder Auto-Gen-Spec-Seite. Wird vom sync-spec.mjs
+ * direkt in das Markdown injiziert (als HTML-Block) und matcht das
+ * gleiche Styling wie src/components/EditWarning.astro.
+ */
+.edit-warning {
+    margin: 0 0 1.5rem;
+    padding: 0.75rem 1rem;
+    border-left: 3px solid var(--sl-color-orange, #f0b429);
+    background: rgba(240, 180, 41, 0.08);
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-3, #8a8a8a);
+    border-radius: 0 4px 4px 0;
+}
+
+.edit-warning strong {
+    color: var(--sl-color-white, #fff);
+    margin-right: 0.25rem;
+}

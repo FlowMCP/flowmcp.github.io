@@ -1,0 +1,26 @@
+---
+// PRD-03 (Memo 052): EditWarning-Komponente fuer Auto-Gen-Spec-Seiten.
+// Wird vom sync-spec.mjs als HTML-Aside in synced Markdown injiziert
+// und kann zusaetzlich von Astro-Layouts importiert werden.
+const { warning } = Astro.props
+---
+<aside class="edit-warning" role="note">
+    <strong>Auto-generated:</strong> { warning }
+</aside>
+
+<style>
+    .edit-warning {
+        margin: 0 0 1.5rem;
+        padding: 0.75rem 1rem;
+        border-left: 3px solid var( --sl-color-orange, #f0b429 );
+        background: rgba( 240, 180, 41, 0.08 );
+        font-size: 0.875rem;
+        color: var( --sl-color-gray-3, #8a8a8a );
+        border-radius: 0 4px 4px 0;
+    }
+
+    .edit-warning strong {
+        color: var( --sl-color-white, #fff );
+        margin-right: 0.25rem;
+    }
+</style>

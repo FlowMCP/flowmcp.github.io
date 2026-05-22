@@ -1,85 +1,227 @@
-import { mkdir, writeFile, rm } from 'node:fs/promises'
-import { join } from 'node:path'
+// PRD-01 + PRD-03 (Memo 052): Sync der Doku-Payload-Schnittstelle.
+// Source: ../flowmcp-spec/generated/docs-payload/ (lokales Spec-Repo)
+// Targets:
+//   1. public/spec-generated/docs-payload/   — Raw-Mirror fuer Build-Pruefungen
+//   2. src/content/docs/specification/        — Starlight-Content-Collection
+//
+// Validierung (PRD-03):
+//   - Hash-Match (sofern manifest.files[].hash_sha256 vorhanden)
+//   - Pflicht-Frontmatter-Check (11 Felder)
+//   - EditWarning-HTML-Block am Top jeder Auto-Gen-Spec-Seite
+
+import { mkdir, writeFile, rm, readFile, readdir, stat } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { fileURLToPath } from 'node:url'
+import path from 'node:path'
 
 
-const SPEC_REPO_RAW = 'https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main'
+const __dirname = path.dirname( fileURLToPath( import.meta.url ) )
+const REPO_ROOT = path.resolve( __dirname, '..' )
 
-const SOURCES = [
-    {
-        apiUrl: 'https://api.github.com/repos/FlowMCP/flowmcp-spec/contents/spec/v4.0.0?ref=main',
-        rawBase: `${ SPEC_REPO_RAW }/spec/v4.0.0`,
-        targetDir: 'public/spec-source/v4.0.0',
-        label: 'spec/v4.0.0/'
-    },
-    {
-        apiUrl: 'https://api.github.com/repos/FlowMCP/flowmcp-spec/contents/generated/docs-payload?ref=main',
-        rawBase: `${ SPEC_REPO_RAW }/generated/docs-payload`,
-        targetDir: 'public/spec-generated/docs-payload',
-        label: 'generated/docs-payload/'
-    }
+const SPEC_REPO_PAYLOAD = path.resolve( REPO_ROOT, '..', 'flowmcp-spec', 'generated', 'docs-payload' )
+const PUBLIC_PAYLOAD_DIR = path.resolve( REPO_ROOT, 'public', 'spec-generated', 'docs-payload' )
+const CONTENT_SPEC_DIR = path.resolve( REPO_ROOT, 'src', 'content', 'docs', 'specification' )
+
+const REQUIRED_FRONTMATTER = [
+    'title', 'description', 'spec_version', 'spec_file', 'order',
+    'section', 'normative', 'generated_at', 'generated_from',
+    'generator', 'edit_warning'
 ]
 
 
-const fetchJson = async ( { url } ) => {
-    const response = await fetch( url, {
-        headers: { 'Accept': 'application/vnd.github.v3+json', 'User-Agent': 'flowmcp-sync-spec' }
-    } )
-    if( !response.ok ) {
-        throw new Error( `Fetch failed for ${ url }: ${ response.status }` )
+class SpecSync {
+    static async run() {
+        SpecSync.#assertSource()
+
+        const manifest = await SpecSync.#loadManifest()
+        const payloadFiles = await SpecSync.#listPayloadFiles()
+
+        const stats = {
+            totalManifest: manifest.files.length,
+            totalPayload: payloadFiles.length,
+            syncedPublic: 0,
+            syncedContent: 0,
+            hashChecked: 0,
+            hashSkipped: 0,
+            frontmatterChecked: 0
+        }
+
+        await SpecSync.#prepareTargetDirs()
+
+        const tasks = manifest.files.map( async ( fileEntry ) => {
+            const srcPath = path.join( SPEC_REPO_PAYLOAD, fileEntry.filename )
+            if( !existsSync( srcPath ) ) {
+                throw new Error( `Manifest references missing payload file: ${fileEntry.filename}` )
+            }
+
+            const content = await readFile( srcPath, 'utf-8' )
+
+            SpecSync.#validateHash( { fileEntry, content, stats } )
+            SpecSync.#validateFrontmatter( { fileEntry, content, stats } )
+
+            await writeFile(
+                path.join( PUBLIC_PAYLOAD_DIR, fileEntry.filename ),
+                content,
+                'utf-8'
+            )
+            stats.syncedPublic += 1
+
+            const contentWithWarning = SpecSync.#injectEditWarning( { content, fileEntry } )
+            const contentDst = path.join( CONTENT_SPEC_DIR, `${ fileEntry.slug }.md` )
+            await writeFile( contentDst, contentWithWarning, 'utf-8' )
+            stats.syncedContent += 1
+        } )
+
+        await Promise.all( tasks )
+
+        await writeFile(
+            path.join( PUBLIC_PAYLOAD_DIR, 'manifest.json' ),
+            JSON.stringify( manifest, null, 2 ) + '\n',
+            'utf-8'
+        )
+
+        SpecSync.#printSummary( { stats } )
+        return { stats }
     }
-    return response.json()
+
+
+    static #assertSource() {
+        if( !existsSync( SPEC_REPO_PAYLOAD ) ) {
+            throw new Error(
+                `Spec-Payload source missing: ${SPEC_REPO_PAYLOAD}\n` +
+                `Memo 49 Phase 4 muss abgeschlossen sein.`
+            )
+        }
+        const manifestPath = path.join( SPEC_REPO_PAYLOAD, 'manifest.json' )
+        if( !existsSync( manifestPath ) ) {
+            throw new Error( `manifest.json fehlt unter ${SPEC_REPO_PAYLOAD}` )
+        }
+    }
+
+
+    static async #loadManifest() {
+        const manifestPath = path.join( SPEC_REPO_PAYLOAD, 'manifest.json' )
+        const raw = await readFile( manifestPath, 'utf-8' )
+        const manifest = JSON.parse( raw )
+        if( !Array.isArray( manifest.files ) ) {
+            throw new Error( 'manifest.files ist kein Array' )
+        }
+        return manifest
+    }
+
+
+    static async #listPayloadFiles() {
+        const entries = await readdir( SPEC_REPO_PAYLOAD )
+        const md = entries.filter( ( name ) => name.endsWith( '.md' ) && name !== 'README.md' )
+        return md
+    }
+
+
+    static async #prepareTargetDirs() {
+        await mkdir( PUBLIC_PAYLOAD_DIR, { recursive: true } )
+        await mkdir( CONTENT_SPEC_DIR, { recursive: true } )
+    }
+
+
+    static #validateHash( { fileEntry, content, stats } ) {
+        if( !fileEntry.hash_sha256 ) {
+            stats.hashSkipped += 1
+            return
+        }
+        const digest = createHash( 'sha256' ).update( content ).digest( 'hex' )
+        if( digest !== fileEntry.hash_sha256 ) {
+            throw new Error(
+                `Hash mismatch for ${fileEntry.filename}: ` +
+                `expected ${fileEntry.hash_sha256}, got ${digest}`
+            )
+        }
+        stats.hashChecked += 1
+    }
+
+
+    static #validateFrontmatter( { fileEntry, content, stats } ) {
+        const match = content.match( /^---\n([\s\S]*?)\n---/ )
+        if( !match ) {
+            throw new Error( `${fileEntry.filename}: no frontmatter block found` )
+        }
+        const lines = match[ 1 ].split( '\n' )
+        const fm = {}
+        lines.forEach( ( line ) => {
+            const sep = line.indexOf( ':' )
+            if( sep === -1 ) { return }
+            const key = line.slice( 0, sep ).trim()
+            fm[ key ] = true
+        } )
+        const missing = REQUIRED_FRONTMATTER.filter( ( key ) => !( key in fm ) )
+        if( missing.length > 0 ) {
+            throw new Error(
+                `${fileEntry.filename}: missing required frontmatter fields: ${missing.join( ', ' )}`
+            )
+        }
+        stats.frontmatterChecked += 1
+    }
+
+
+    static #injectEditWarning( { content, fileEntry } ) {
+        const fmMatch = content.match( /^---\n([\s\S]*?)\n---\n?/ )
+        if( !fmMatch ) {
+            return content
+        }
+        const fmBlock = fmMatch[ 0 ]
+        const body = content.slice( fmBlock.length )
+
+        const warning = fileEntry.edit_warning
+            ? fileEntry.edit_warning
+            : SpecSync.#extractWarningFromBody( { fmBlockBody: fmMatch[ 1 ] } )
+        const warningText = warning
+            ? warning
+            : `This file is auto-generated from flowmcp-spec. Do not edit directly.`
+
+        const aside = `<aside class="edit-warning" role="note">\n` +
+            `  <strong>Auto-generated:</strong> ${SpecSync.#escapeHtml( warningText )}\n` +
+            `</aside>\n\n`
+
+        return `${fmBlock}${aside}${body.replace( /^\n+/, '' )}`
+    }
+
+
+    static #extractWarningFromBody( { fmBlockBody } ) {
+        const match = fmBlockBody.match( /^edit_warning:\s*"?([^"\n]+)"?\s*$/m )
+        return match ? match[ 1 ].trim() : ''
+    }
+
+
+    static #escapeHtml( str ) {
+        return str
+            .replace( /&/g, '&amp;' )
+            .replace( /</g, '&lt;' )
+            .replace( />/g, '&gt;' )
+            .replace( /"/g, '&quot;' )
+    }
+
+
+    static #printSummary( { stats } ) {
+        console.log( '' )
+        console.log( 'Spec-Sync abgeschlossen' )
+        console.log( `  Source:            ${SPEC_REPO_PAYLOAD}` )
+        console.log( `  Manifest entries:  ${stats.totalManifest}` )
+        console.log( `  Payload files:     ${stats.totalPayload}` )
+        console.log( `  Public mirror:     ${stats.syncedPublic} -> ${PUBLIC_PAYLOAD_DIR}` )
+        console.log( `  Content collection: ${stats.syncedContent} -> ${CONTENT_SPEC_DIR}` )
+        console.log( `  Frontmatter checks: ${stats.frontmatterChecked} OK` )
+        if( stats.hashChecked > 0 ) {
+            console.log( `  Hash matches:      ${stats.hashChecked} OK` )
+        }
+        if( stats.hashSkipped > 0 ) {
+            console.log( `  Hash skipped:      ${stats.hashSkipped} (no hash_sha256 in manifest)` )
+        }
+    }
 }
 
 
-const fetchText = async ( { url } ) => {
-    const response = await fetch( url )
-    if( !response.ok ) {
-        throw new Error( `Fetch failed for ${ url }: ${ response.status }` )
-    }
-    return response.text()
-}
-
-
-const syncSource = async ( { apiUrl, rawBase, targetDir, label } ) => {
-    console.log( `\nSyncing ${ label } from FlowMCP/flowmcp-spec...` )
-
-    if( existsSync( targetDir ) ) {
-        console.log( `  Cleaning ${ targetDir }` )
-        await rm( targetDir, { recursive: true, force: true } )
-    }
-    await mkdir( targetDir, { recursive: true } )
-
-    const files = await fetchJson( { url: apiUrl } )
-    const targetFiles = files.filter( ( f ) => f.name.endsWith( '.md' ) || f.name.endsWith( '.json' ) )
-
-    console.log( `  Found ${ targetFiles.length } files.` )
-
-    let syncedCount = 0
-    for( const file of targetFiles ) {
-        const url = `${ rawBase }/${ file.name }`
-        const content = await fetchText( { url } )
-        const targetPath = join( targetDir, file.name )
-        await writeFile( targetPath, content, 'utf-8' )
-        console.log( `    ✓ ${ file.name }` )
-        syncedCount++
-    }
-
-    console.log( `  Synced ${ syncedCount } files to ${ targetDir }` )
-    return syncedCount
-}
-
-
-const main = async () => {
-    let total = 0
-    for( const source of SOURCES ) {
-        total += await syncSource( source )
-    }
-    console.log( `\nTotal synced: ${ total } files across ${ SOURCES.length } sources` )
-}
-
-
-main()
+SpecSync
+    .run()
     .then( () => process.exit( 0 ) )
     .catch( ( err ) => {
         console.error( 'Sync failed:', err.message )
