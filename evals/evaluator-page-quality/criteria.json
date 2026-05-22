@@ -1,0 +1,22 @@
+{
+    "version": "1.0.0",
+    "source": "Memo 052-webseite-content-audit REV-07 Kap. 4.5",
+    "maxScore": 6.0,
+    "rules": [
+        { "name": "persona-tonality",     "weight": 1.0 },
+        { "name": "diagram-ratio",        "weight": 1.0 },
+        { "name": "no-emojis",            "weight": 0.5 },
+        { "name": "github-install",       "weight": 0.5 },
+        { "name": "de-pendant",           "weight": 1.0 },
+        { "name": "cross-links",          "weight": 0.5 },
+        { "name": "code-examples",        "weight": 0.5 },
+        { "name": "length-content-ratio", "weight": 1.0 }
+    ],
+    "gradeMapping": [
+        { "minScore": 5.5, "grade": 5 },
+        { "minScore": 4.5, "grade": 4 },
+        { "minScore": 3.5, "grade": 3 },
+        { "minScore": 2.5, "grade": 2 },
+        { "minScore": 0.0, "grade": 1 }
+    ]
+}

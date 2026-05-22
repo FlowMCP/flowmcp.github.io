@@ -7,14 +7,22 @@
         "start": "astro dev",
         "sync-schemas": "node scripts/sync-schemas.mjs",
         "check-spec-sync": "node scripts/check-spec-sync.mjs",
-        "prebuild": "node scripts/sync-schemas.mjs && node scripts/check-spec-sync.mjs && node scripts/inject-pagefind-meta.mjs",
+        "check:spec-links": "node scripts/check-spec-links.mjs",
+        "prebuild": "node scripts/sync-schemas.mjs && node scripts/check-spec-sync.mjs && node scripts/check-spec-links.mjs && node scripts/inject-pagefind-meta.mjs",
         "build": "node scripts/generate-llms-txt.mjs && astro build",
         "preview": "astro preview",
         "astro": "astro",
         "sync-spec": "node scripts/sync-spec.mjs",
         "generate-llms": "node scripts/generate-llms-txt.mjs",
         "favicons": "node scripts/generate-favicons.mjs",
-        "test:e2e": "playwright test"
+        "test:e2e": "playwright test",
+        "test:pagefind": "node scripts/test-pagefind.mjs",
+        "test:lighthouse": "node scripts/test-lighthouse.mjs",
+        "test:mermaid": "node scripts/check-mermaid-renders.mjs",
+        "test:autogen-sync": "node scripts/test-autogen-sync.mjs",
+        "preview:mermaid": "node scripts/render-mermaid-previews.mjs",
+        "eval:page-quality": "node evals/evaluator-page-quality/runner.mjs",
+        "check:links": "node scripts/check-external-links.mjs"
     },
     "dependencies": {
         "@astrojs/rss": "^4.0.18",
@@ -24,6 +32,7 @@
         "sharp": "^0.34.2"
     },
     "devDependencies": {
+        "@mermaid-js/mermaid-cli": "^11.15.0",
         "@playwright/test": "^1.60.0",
         "playwright": "^1.60.0"
     }

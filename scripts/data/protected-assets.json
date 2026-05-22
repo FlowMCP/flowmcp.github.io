@@ -1,0 +1,46 @@
+{
+    "version": "1.0.0",
+    "source": "Memo 052-webseite-content-audit REV-07 Kap. 5.2",
+    "protectedPages": [
+        {
+            "markdown": "src/content/docs/concepts/agents.md",
+            "pngs": [
+                { "file": "public/images/tool-auswahl.png", "ref": "/images/tool-auswahl.png" },
+                { "file": "public/images/agent-manifest-aufbau.png", "ref": "/images/agent-manifest-aufbau.png" },
+                { "file": "public/images/diagram-2-usage-architectures.png", "ref": "/images/diagram-2-usage-architectures.png" }
+            ]
+        },
+        {
+            "markdown": "src/content/docs/concepts/clients.md",
+            "pngs": [
+                { "file": "src/assets/diagram-3-mcp-compatibility.png", "ref": "../../../assets/diagram-3-mcp-compatibility.png" }
+            ]
+        },
+        {
+            "markdown": "src/content/docs/concepts/schemas-and-tools.md",
+            "pngs": [
+                { "file": "public/images/provider-schema-aufbau.png", "ref": "/images/provider-schema-aufbau.png" }
+            ]
+        },
+        {
+            "markdown": "src/content/docs/introduction/about.md",
+            "pngs": [
+                { "file": "public/images/diagram-1-data-normalization.png", "ref": "/images/diagram-1-data-normalization.png" }
+            ]
+        },
+        {
+            "markdown": "src/content/docs/introduction/why.md",
+            "pngs": [
+                { "file": "public/images/energieeffizienz.png", "ref": "/images/energieeffizienz.png" }
+            ]
+        },
+        {
+            "markdown": "src/content/docs/roadmap/community.md",
+            "pngs": [
+                { "file": "public/images/mvp-3-community.png", "ref": "/images/mvp-3-community.png" },
+                { "file": "public/images/pipeline-sicherheitsstufen.png", "ref": "/images/pipeline-sicherheitsstufen.png" },
+                { "file": "public/images/scoring-threshold.png", "ref": "/images/scoring-threshold.png" }
+            ]
+        }
+    ]
+}
