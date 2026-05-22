@@ -2,9 +2,11 @@
 title: MCP Agent Server
 description: Agent-gesteuerte MCP-Tools mit FlowMCP-Schemas deployen
 ---
-<!-- PAGEFIND-META-START -->
+import InstallNote from '../../../../components/InstallNote.astro';
+
+{/* PAGEFIND-META-START */}
 <span style="display:none" data-pagefind-meta="section">Docs > Ecosystem</span>
-<!-- PAGEFIND-META-END -->
+{/* PAGEFIND-META-END */}
 
 Der [MCP Agent Server](https://github.com/FlowMCP/mcp-agent-server) ist ein MCP-Server, bei dem jedes Tool durch eine AI-Agent-Schleife unterstuetzt wird. Wenn ein AI-Client ein Tool aufruft, startet der Server einen LLM-Agenten, der iterativ FlowMCP-Schema-Tools aufruft, um das Problem zu loesen und eine strukturierte Antwort zurueckgibt.
 
@@ -28,9 +30,7 @@ Der AI-Client sendet eine Anfrage an den MCP-Server. Der Server startet eine Age
 
 ## Installation
 
-```bash
-npm install mcp-agent-server
-```
+<InstallNote repo="mcp-agent-server" />
 
 Oder lokal klonen und ausfuehren:
 
@@ -243,4 +243,5 @@ Die x402-Middleware faengt Anfragen ab, bevor sie den Agent-Server erreichen. Fa
 ## Links
 
 - **GitHub**: [FlowMCP/mcp-agent-server](https://github.com/FlowMCP/mcp-agent-server)
-- **npm**: `npm install mcp-agent-server`
+
+<InstallNote repo="mcp-agent-server" />

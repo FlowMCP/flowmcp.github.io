@@ -7,6 +7,7 @@ description: "Create your first FlowMCP schema and call an API in 5 minutes"
 {/* PAGEFIND-META-END */}
 
 import { Aside } from '@astrojs/starlight/components'
+import InstallNote from '../../../components/InstallNote.astro'
 
 <Aside type="tip" title="Hackathon participants">
     Building at a hackathon? Run `claude /flowmcp-hackathon-onboarding` for a pre-filled skill that scaffolds your MCP server in under 60 seconds.
@@ -28,8 +29,9 @@ import { Aside } from '@astrojs/starlight/components'
    mkdir my-flowmcp-project
    cd my-flowmcp-project
    npm init -y
-   npm install github:FlowMCP/flowmcp-core
    ```
+
+   <InstallNote repo="flowmcp-core" />
 
    Add `"type": "module"` to your `package.json` for ES module support.
 

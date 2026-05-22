@@ -2,9 +2,11 @@
 title: Was ist FlowMCP?
 description: "Schema-basierte Tool-Orchestrierung fuer KI-Agenten — REST APIs, lokale Datenbanken und Workflows in MCP-kompatible Tools transformieren"
 ---
-<!-- PAGEFIND-META-START -->
+import InstallNote from '../../../../components/InstallNote.astro';
+
+{/* PAGEFIND-META-START */}
 <span style="display:none" data-pagefind-meta="section">Docs > Getting Started</span>
-<!-- PAGEFIND-META-END -->
+{/* PAGEFIND-META-END */}
 
 ## Das Problem
 
@@ -71,9 +73,7 @@ Die meisten Schemas benoetigen nur den `main` Export. Ein optionaler `handlers` 
 
 1. **FlowMCP installieren**
 
-   ```bash
-   npm install -g github:FlowMCP/flowmcp-cli
-   ```
+   <InstallNote repo="flowmcp-cli" global />
 
 2. **Verfuegbare Schemas durchsuchen**
 

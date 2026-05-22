@@ -2,9 +2,11 @@
 title: Installation
 description: "Install FlowMCP Core and CLI for schema development"
 ---
-<!-- PAGEFIND-META-START -->
+import InstallNote from '../../../components/InstallNote.astro';
+
+{/* PAGEFIND-META-START */}
 <span style="display:none" data-pagefind-meta="section">Docs > Getting Started</span>
-<!-- PAGEFIND-META-END -->
+{/* PAGEFIND-META-END */}
 
 ## Prerequisites
 
@@ -22,9 +24,7 @@ node --version
 
 The core library provides schema validation, API execution, and MCP server activation.
 
-```bash
-npm install github:FlowMCP/flowmcp-core
-```
+<InstallNote repo="flowmcp-core" />
 
 ```javascript
 import { FlowMCP } from 'flowmcp-core'
@@ -40,9 +40,7 @@ import { FlowMCP } from 'flowmcp-core'
 
 The CLI provides interactive access to the full schema catalog from the command line.
 
-```bash
-npm install -g github:FlowMCP/flowmcp-cli
-```
+<InstallNote repo="flowmcp-cli" global />
 
 Verify the installation:
 

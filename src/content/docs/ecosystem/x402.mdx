@@ -2,9 +2,11 @@
 title: x402 Payment Protocol
 description: Add payment-gated access to MCP tools
 ---
-<!-- PAGEFIND-META-START -->
+import InstallNote from '../../../components/InstallNote.astro';
+
+{/* PAGEFIND-META-START */}
 <span style="display:none" data-pagefind-meta="section">Docs > Ecosystem</span>
-<!-- PAGEFIND-META-END -->
+{/* PAGEFIND-META-END */}
 
 The [x402 protocol](https://www.x402.org/) brings HTTP status code 402 (Payment Required) to life as a machine-readable payment protocol for APIs. The [x402-mcp-validator](https://github.com/FlowMCP/x402-mcp-validator) validates MCP servers for x402 compliance -- connecting to servers, discovering tools, probing for payment requirements, and validating payment options against the spec.
 
@@ -150,4 +152,5 @@ Each validation message includes an error code, severity (ERROR, WARNING, INFO),
 
 - **GitHub**: [FlowMCP/x402-mcp-validator](https://github.com/FlowMCP/x402-mcp-validator)
 - **x402 Spec**: [x402.org](https://www.x402.org/)
-- **npm**: `npm install x402-mcp-validator`
+
+<InstallNote repo="x402-mcp-validator" />

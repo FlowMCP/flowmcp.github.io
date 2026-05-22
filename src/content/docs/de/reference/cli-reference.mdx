@@ -2,17 +2,17 @@
 title: CLI-Referenz
 description: Vollstaendige FlowMCP CLI Befehlsreferenz
 ---
-<!-- PAGEFIND-META-START -->
+import InstallNote from '../../../../components/InstallNote.astro';
+
+{/* PAGEFIND-META-START */}
 <span style="display:none" data-pagefind-meta="section">Docs > Reference</span>
-<!-- PAGEFIND-META-END -->
+{/* PAGEFIND-META-END */}
 
 Die FlowMCP CLI ist ein Kommandozeilen-Tool fuer die Entwicklung, Validierung und Verwaltung von FlowMCP-Schemas. Sie behandelt Schema-Imports, Gruppen-Verwaltung, Live-API-Tests, Migration und kann als MCP-Server fuer KI-Agent-Integration laufen.
 
 ## Installation
 
-```bash
-npm install -g github:FlowMCP/flowmcp-cli
-```
+<InstallNote repo="flowmcp-cli" global />
 
 Oder lokal klonen und verlinken:
 
@@ -71,6 +71,12 @@ Interaktives Setup, das globale und lokale Konfiguration erstellt. Einmal pro Pr
 flowmcp init
 ```
 
+Das macht Folgendes:
+- Erstellt `~/.flowmcp/`, falls noch nicht vorhanden
+- Importiert optional das Standard-Schema-Repository
+- Erstellt `.flowmcp/` im aktuellen Projekt
+- Richtet eine Standard-Gruppe ein
+
 #### `flowmcp status`
 
 Config, Quellen, Gruppen und Health-Info anzeigen.
@@ -93,7 +99,7 @@ flowmcp mode agent  # In Agent-Modus wechseln
 
 #### `flowmcp search <query>`
 
-Verfuegbare Tools per Stichwort finden.
+Verfuegbare Tools per Stichwort finden. Liefert passende Tool-Namen mit Beschreibungen.
 
 ```bash
 flowmcp search etherscan
@@ -109,11 +115,15 @@ Alle verfuegbaren Schemas und ihre Tools auflisten. **Nur im Dev-Modus.**
 flowmcp schemas
 ```
 
+:::caution
+Der `schemas`-Befehl kann bei grossen Schema-Sammlungen lange Ausgaben produzieren. Erst `search` verwenden, um Ergebnisse einzugrenzen.
+:::
+
 ### Schema-Verwaltung
 
 #### `flowmcp add <tool-name>`
 
-Tool fuer dieses Projekt aktivieren.
+Tool fuer dieses Projekt aktivieren. Fuegt es zur Standard-Gruppe hinzu.
 
 ```bash
 flowmcp add coingecko_simplePrice
@@ -144,6 +154,14 @@ flowmcp import https://github.com/FlowMCP/flowmcp-schemas
 flowmcp import https://github.com/FlowMCP/flowmcp-schemas --branch develop
 ```
 
+#### `flowmcp import-registry <url>`
+
+Schemas aus einer Registry-URL importieren. **Nur im Dev-Modus.**
+
+```bash
+flowmcp import-registry https://registry.example.com/schemas
+```
+
 #### `flowmcp update [source-name]`
 
 Schemas von Remote-Registries per Hash-basiertem Delta-Sync aktualisieren.
@@ -160,10 +178,29 @@ flowmcp update flowmcp-schemas    # Bestimmte Quelle aktualisieren
 Schemas von v2 zu v3 migrieren. Benennt `routes` in `tools` um und aktualisiert das Versions-Feld. **Nur im Dev-Modus.**
 
 ```bash
+# Einzelne Schema-Datei migrieren
 flowmcp migrate ./schemas/coingecko/Ping.mjs
+
+# Alle Schemas in einem Verzeichnis migrieren
 flowmcp migrate --all ./schemas/
+
+# Aenderungen vorab anzeigen, ohne Dateien zu schreiben
 flowmcp migrate --dry-run ./schemas/coingecko/Ping.mjs
 ```
+
+**Flags:**
+
+| Flag | Beschreibung |
+|------|-------------|
+| `--all` | Alle `.mjs`-Schema-Dateien im Verzeichnis rekursiv migrieren |
+| `--dry-run` | Aenderungen vorab anzeigen, ohne Dateien zu modifizieren |
+
+**Was passiert:**
+1. Liest die Schema-Datei
+2. Benennt den `routes`-Key in `tools` um
+3. Aktualisiert `version` von `2.x.x` auf `4.0.0`
+4. Schreibt die aktualisierte Datei in-place
+5. Fuehrt Validierung auf dem Ergebnis aus
 
 :::tip
 Immer zuerst `--dry-run` verwenden, um Aenderungen vorab zu pruefen. Der migrate-Befehl modifiziert Dateien direkt.
@@ -189,6 +226,14 @@ Tools zu einer Gruppe hinzufuegen. Erstellt die Gruppe, wenn sie nicht existiert
 flowmcp group append crypto --tools "flowmcp-schemas/coingecko/simplePrice.mjs,flowmcp-schemas/etherscan/getBalance.mjs"
 ```
 
+#### `flowmcp group remove <name> --tools "refs"`
+
+Tools aus einer Gruppe entfernen.
+
+```bash
+flowmcp group remove crypto --tools "flowmcp-schemas/coingecko/simplePrice.mjs"
+```
+
 #### `flowmcp group set-default <name>`
 
 Standard-Gruppe fuer `call`, `test` und `run` setzen.
@@ -204,9 +249,9 @@ flowmcp group set-default crypto
 Schema-Struktur gegen die FlowMCP-Spezifikation validieren.
 
 ```bash
-flowmcp validate
-flowmcp validate ./my-schema.mjs
-flowmcp validate --group crypto
+flowmcp validate                          # Standard-Gruppe validieren
+flowmcp validate ./my-schema.mjs          # Einzelne Datei validieren
+flowmcp validate --group crypto           # Bestimmte Gruppe validieren
 ```
 
 #### `flowmcp test project [--route name] [--group name]`
@@ -214,8 +259,17 @@ flowmcp validate --group crypto
 Standard-Gruppen-Schemas mit Live-API-Aufrufen testen.
 
 ```bash
-flowmcp test project
-flowmcp test project --route getBalance
+flowmcp test project                          # Alle Tools testen
+flowmcp test project --route getBalance       # Bestimmtes Tool testen
+flowmcp test project --group crypto           # Bestimmte Gruppe testen
+```
+
+#### `flowmcp test user [--route name]`
+
+Alle benutzererstellten Schemas mit Live-API-Aufrufen testen.
+
+```bash
+flowmcp test user
 ```
 
 #### `flowmcp test single <path> [--route name]`
@@ -229,12 +283,22 @@ flowmcp test single ./my-schema.mjs --route getBalance
 
 ### Ausfuehrung
 
+#### `flowmcp call list-tools [--group name]`
+
+Verfuegbare Tools in der Standard- oder angegebenen Gruppe auflisten.
+
+```bash
+flowmcp call list-tools
+flowmcp call list-tools --group crypto
+```
+
 #### `flowmcp call <tool-name> [json] [--group name]`
 
 Ein Tool mit optionalem JSON-Input aufrufen.
 
 ```bash
 flowmcp call coingecko_simplePrice '{"ids":"bitcoin","vs_currencies":"usd"}'
+flowmcp call etherscan_getBalance '{"address":"0x..."}'  --group crypto
 ```
 
 #### `flowmcp run [--group name]`
@@ -259,7 +323,62 @@ source/file.mjs                        # Alle Tools aus einem Schema
 source/file.mjs::tool::toolName        # Einzelnes Tool (v3-Format)
 source/file.mjs::resource::resName     # Einzelne Resource (v3-Format)
 source/file.mjs::skill::skillName      # Einzelner Skill (v3-Format)
+source/file.mjs::toolName              # Einzelnes Tool (v2-Kompatibilitaetsformat)
 ```
+
+Beispiel:
+```
+flowmcp-schemas/coingecko/simplePrice.mjs                    # Alle Tools
+flowmcp-schemas/coingecko/simplePrice.mjs::tool::getPrice    # Einzelnes Tool
+```
+
+## Workflow-Beispiel
+
+1. **Initialisieren**
+
+   Interaktives Setup ausfuehren. Importiert Schemas und erstellt eine Standard-Gruppe.
+
+   ```bash
+   flowmcp init
+   ```
+
+2. **Schemas importieren (optional)**
+
+   Falls der Import beim init uebersprungen wurde, Schemas manuell hinzufuegen:
+
+   ```bash
+   flowmcp import https://github.com/FlowMCP/flowmcp-schemas
+   ```
+
+3. **Gruppe anlegen**
+
+   Tools in einer benannten Gruppe organisieren:
+
+   ```bash
+   flowmcp group append crypto --tools "flowmcp-schemas/coingecko/simplePrice.mjs,flowmcp-schemas/etherscan/getBalance.mjs"
+   flowmcp group set-default crypto
+   ```
+
+4. **Validieren und testen**
+
+   Sicherstellen, dass Schemas korrekt sind und APIs antworten:
+
+   ```bash
+   flowmcp validate
+   flowmcp test project
+   ```
+
+5. **Tools nutzen**
+
+   Tools direkt aufrufen oder den MCP-Server starten:
+
+   ```bash
+   flowmcp call list-tools
+   flowmcp call coingecko_simplePrice '{"ids":"bitcoin","vs_currencies":"usd"}'
+
+   # Oder als MCP-Server starten
+   flowmcp run
+   ```
 
 ## Umgebungsvariablen
 

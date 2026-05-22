@@ -69,6 +69,9 @@ export default defineConfig({
         '/docs/specification/groups-prompts/':      '/specification/groups-prompts/',
         '/docs/specification/tests/':               '/specification/tests/',
         '/docs/specification/prompt-architecture/': '/specification/prompt-architecture/',
+
+        // PRD-27: DE Slug-Vereinheitlichung (Memo 052 Phase 7)
+        '/de/about/fuer-entscheider/': '/de/about/for-decision-makers/',
     },
     integrations: [
         starlight({
@@ -131,6 +134,7 @@ export default defineConfig({
                         { label: 'Use Cases', translations: { de: 'Anwendungsfaelle' }, slug: 'introduction/use-cases' },
                         { label: 'FAQ', translations: { de: 'Haeufige Fragen' }, slug: 'introduction/faq' },
                         { label: 'For LLMs', translations: { de: 'Fuer LLMs' }, slug: 'introduction/for-llms' },
+                        { label: 'License & ToS FAQ', translations: { de: 'Lizenz & AGB FAQ' }, slug: 'license-faq' },
                     ],
                 },
                 {
@@ -139,8 +143,8 @@ export default defineConfig({
                     collapsed: true,
                     items: [
                         { label: 'What is FlowMCP', translations: { de: 'Was ist FlowMCP' }, slug: 'quickstart/what-is-flowmcp' },
-                        { label: 'Installation', slug: 'quickstart/installation' },
-                        { label: 'Quickstart', slug: 'quickstart/quickstart' },
+                        { label: 'Installation', translations: { de: 'Installation' }, slug: 'quickstart/installation' },
+                        { label: 'Quickstart', translations: { de: 'Schnellstart' }, slug: 'quickstart/quickstart' },
                         { label: 'How It Works', translations: { de: 'Wie es funktioniert' }, slug: 'quickstart/how-it-works' },
                     ],
                 },
@@ -151,13 +155,13 @@ export default defineConfig({
                     items: [
                         { label: 'Schemas & Tools', translations: { de: 'Schemas und Tools' }, slug: 'concepts/schemas-and-tools' },
                         { label: 'Schema Catalog', translations: { de: 'Schema-Katalog' }, slug: 'concepts/schema-catalog' },
-                        { label: 'Schemas Overview', slug: 'concepts/schemas-overview' },
-                        { label: 'Tools', slug: 'concepts/schemas-tools' },
+                        { label: 'Schemas Overview', translations: { de: 'Schemas-Uebersicht' }, slug: 'concepts/schemas-overview' },
+                        { label: 'Tools', translations: { de: 'Tools' }, slug: 'concepts/schemas-tools' },
                         { label: 'Resources', translations: { de: 'Ressourcen' }, slug: 'concepts/schemas-resources' },
-                        { label: 'Prompts', slug: 'concepts/schemas-prompts' },
-                        { label: 'Skills', slug: 'concepts/schemas-skills' },
-                        { label: 'Agents', slug: 'concepts/agents' },
-                        { label: 'Agents Overview', slug: 'concepts/agents-overview' },
+                        { label: 'Prompts', translations: { de: 'Prompts' }, slug: 'concepts/schemas-prompts' },
+                        { label: 'Skills', translations: { de: 'Skills' }, slug: 'concepts/schemas-skills' },
+                        { label: 'Agents', translations: { de: 'Agents' }, slug: 'concepts/agents' },
+                        { label: 'Agents Overview', translations: { de: 'Agents-Uebersicht' }, slug: 'concepts/agents-overview' },
                         { label: 'Clients', translations: { de: 'Clients' }, slug: 'concepts/clients' },
                     ],
                 },
@@ -166,24 +170,45 @@ export default defineConfig({
                     translations: { de: 'Spezifikation' },
                     collapsed: true,
                     items: [
-                        { label: 'Overview',            slug: 'specification/overview' },
-                        { label: 'Schema Format',       slug: 'specification/schema-format' },
-                        { label: 'Parameters',          slug: 'specification/parameters' },
-                        { label: 'Shared Lists',        slug: 'specification/shared-lists' },
-                        { label: 'Skills',              slug: 'specification/skills' },
-                        { label: 'Agents',              slug: 'specification/agents' },
-                        { label: 'Resources',           slug: 'specification/resources' },
-                        { label: 'Catalog',             slug: 'specification/catalog' },
-                        { label: 'ID Schema',           slug: 'specification/id-schema' },
-                        { label: 'Validation Rules',    slug: 'specification/validation-rules' },
-                        { label: 'Migration',           slug: 'specification/migration' },
-                        { label: 'Security',            slug: 'specification/security' },
-                        { label: 'Output Schema',       slug: 'specification/output-schema' },
-                        { label: 'Route Tests',         slug: 'specification/route-tests' },
-                        { label: 'Preload',             slug: 'specification/preload' },
-                        { label: 'Groups & Prompts',    slug: 'specification/groups-prompts' },
-                        { label: 'Tests',               slug: 'specification/tests' },
-                        { label: 'Prompt Architecture', slug: 'specification/prompt-architecture' },
+                        {
+                            label: 'Core',
+                            translations: { de: 'Kern' },
+                            collapsed: false,
+                            items: [
+                                { label: 'Overview', translations: { de: 'Uebersicht' }, slug: 'specification/overview' },
+                                { label: 'Schema Format', translations: { de: 'Schema-Format' }, slug: 'specification/schema-format' },
+                                { label: 'Parameters', translations: { de: 'Parameter' }, slug: 'specification/parameters' },
+                                { label: 'Shared Lists', translations: { de: 'Geteilte Listen' }, slug: 'specification/shared-lists' },
+                                { label: 'Output Schema', translations: { de: 'Output-Schema' }, slug: 'specification/output-schema' },
+                            ],
+                        },
+                        {
+                            label: 'Primitives',
+                            translations: { de: 'Primitives' },
+                            collapsed: false,
+                            items: [
+                                { label: 'Resources', translations: { de: 'Ressourcen' }, slug: 'specification/resources' },
+                                { label: 'Prompts', translations: { de: 'Prompts' }, slug: 'specification/prompt-architecture' },
+                                { label: 'Skills', translations: { de: 'Skills' }, slug: 'specification/skills' },
+                                { label: 'Agents', translations: { de: 'Agents' }, slug: 'specification/agents' },
+                                { label: 'Route Tests', translations: { de: 'Route-Tests' }, slug: 'specification/route-tests' },
+                                { label: 'Preload', translations: { de: 'Preload' }, slug: 'specification/preload' },
+                                { label: 'Catalog', translations: { de: 'Katalog' }, slug: 'specification/catalog' },
+                                { label: 'ID Schema', translations: { de: 'ID-Schema' }, slug: 'specification/id-schema' },
+                            ],
+                        },
+                        {
+                            label: 'Operations',
+                            translations: { de: 'Operations' },
+                            collapsed: false,
+                            items: [
+                                { label: 'Validation Rules', translations: { de: 'Validierungsregeln' }, slug: 'specification/validation-rules' },
+                                { label: 'Migration', translations: { de: 'Migration' }, slug: 'specification/migration' },
+                                { label: 'Security', translations: { de: 'Sicherheit' }, slug: 'specification/security' },
+                                { label: 'Tests', translations: { de: 'Tests' }, slug: 'specification/tests' },
+                                { label: 'Prompt Architecture', translations: { de: 'Prompt-Architektur' }, slug: 'specification/prompt-architecture' },
+                            ],
+                        },
                     ],
                 },
                 {
@@ -193,9 +218,9 @@ export default defineConfig({
                     items: [
                         { label: 'Core Methods', translations: { de: 'Kern-Methoden' }, slug: 'reference/core-methods' },
                         { label: 'CLI Reference', translations: { de: 'CLI-Referenz' }, slug: 'reference/cli-reference' },
-                        { label: 'CLI', slug: 'reference/cli' },
-                        { label: 'MCP Server', slug: 'reference/mcp-server' },
-                        { label: 'Tags Reference', slug: 'reference/tags-reference' },
+                        { label: 'CLI', translations: { de: 'CLI' }, slug: 'reference/cli' },
+                        { label: 'MCP Server', translations: { de: 'MCP-Server' }, slug: 'reference/mcp-server' },
+                        { label: 'Tags Reference', translations: { de: 'Tags-Referenz' }, slug: 'reference/tags-reference' },
                         { label: 'Troubleshooting', translations: { de: 'Fehlerbehebung' }, slug: 'reference/troubleshooting' },
                     ],
                 },
@@ -205,7 +230,7 @@ export default defineConfig({
                     collapsed: true,
                     items: [
                         { label: 'Schema Creation', translations: { de: 'Schema erstellen' }, slug: 'guides/schema-creation' },
-                        { label: 'Server Integration', slug: 'guides/server-integration' },
+                        { label: 'Server Integration', translations: { de: 'Server-Integration' }, slug: 'guides/server-integration' },
                         { label: 'Examples', translations: { de: 'Beispiele' }, slug: 'guides/examples' },
                     ],
                 },
@@ -215,9 +240,22 @@ export default defineConfig({
                     collapsed: true,
                     items: [
                         { label: 'Schema Library', translations: { de: 'Schema-Bibliothek' }, slug: 'ecosystem/schema-library' },
-                        { label: 'Agent Server', slug: 'ecosystem/agent-server' },
-                        { label: 'AgentProbe', slug: 'ecosystem/agentprobe' },
-                        { label: 'x402', slug: 'ecosystem/x402' },
+                        { label: 'Agent Server', translations: { de: 'Agent-Server' }, slug: 'ecosystem/agent-server' },
+                        { label: 'AgentProbe', translations: { de: 'AgentProbe' }, slug: 'ecosystem/agentprobe' },
+                        { label: 'x402', translations: { de: 'x402' }, slug: 'ecosystem/x402' },
+                    ],
+                },
+                {
+                    label: 'Blog',
+                    translations: { de: 'Blog' },
+                    collapsed: true,
+                    // SIDEBAR-STRATEGIE (PRD-29, Memo 052):
+                    // Manuelle Pflege bis Memo 047 die ersten 4 Blog-Posts liefert.
+                    // Danach Umstieg auf Auto-list via Astro getCollection('docs')
+                    // mit Filter data.section === 'Blog' erwaegen.
+                    items: [
+                        { label: 'Blog', translations: { de: 'Blog' }, link: '/blog/' },
+                        { label: 'Welcome', translations: { de: 'Willkommen' }, slug: 'blog/welcome' },
                     ],
                 },
                 {
@@ -226,9 +264,9 @@ export default defineConfig({
                     collapsed: true,
                     items: [
                         { label: 'Overview', translations: { de: 'Uebersicht' }, slug: 'roadmap/overview' },
-                        { label: 'Integration', slug: 'roadmap/integration' },
-                        { label: 'Community Hub', slug: 'roadmap/community' },
-                        { label: 'Team', slug: 'roadmap/team' },
+                        { label: 'Integration', translations: { de: 'Integration' }, slug: 'roadmap/integration' },
+                        { label: 'Community Hub', translations: { de: 'Community-Hub' }, slug: 'roadmap/community' },
+                        { label: 'Team', translations: { de: 'Team' }, slug: 'roadmap/team' },
                     ],
                 },
             ],

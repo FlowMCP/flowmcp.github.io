@@ -2,9 +2,11 @@
 title: Schema Creation
 description: Write your own FlowMCP schemas from scratch
 ---
-<!-- PAGEFIND-META-START -->
+import InstallNote from '../../../components/InstallNote.astro';
+
+{/* PAGEFIND-META-START */}
 <span style="display:none" data-pagefind-meta="section">Docs > Guides</span>
-<!-- PAGEFIND-META-END -->
+{/* PAGEFIND-META-END */}
 
 This guide walks you through creating FlowMCP v4.0.0 schemas. A schema is a `.mjs` file that describes how to interact with a REST API -- what endpoints exist, what parameters they accept, and how responses should be transformed.
 
@@ -14,7 +16,9 @@ Before creating a schema, you need:
 - The API documentation for the service you want to wrap
 - An API key if the service requires authentication
 - Node.js 18+ installed
-- FlowMCP CLI installed (`npm install -g github:FlowMCP/flowmcp-cli`)
+- FlowMCP CLI installed:
+
+<InstallNote repo="flowmcp-cli" global />
 
 ## Creation Process
 

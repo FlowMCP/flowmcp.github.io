@@ -1,0 +1,41 @@
+---
+interface Props {
+    repo: string;
+    global?: boolean;
+    scope?: string;
+}
+
+const { repo, global = false, scope = 'FlowMCP' } = Astro.props;
+const flag = global ? ' -g' : '';
+---
+
+<div class="install-note">
+    <p class="install-note__label">Install via GitHub:</p>
+    <pre><code>npm install{flag} github:{scope}/{repo}</code></pre>
+    <p class="install-note__hint">FlowMCP packages are not published to NPM. They are installed directly from GitHub.</p>
+</div>
+
+<style>
+    .install-note {
+        margin: 1rem 0;
+        padding: 1rem;
+        border-left: 3px solid var(--sl-color-accent);
+        background: var(--sl-color-bg-nav);
+        border-radius: 4px;
+    }
+
+    .install-note__label {
+        margin: 0 0 0.5rem;
+        font-weight: 600;
+    }
+
+    .install-note pre {
+        margin: 0;
+    }
+
+    .install-note__hint {
+        font-size: 0.85rem;
+        color: var(--sl-color-text-muted);
+        margin: 0.5rem 0 0;
+    }
+</style>
