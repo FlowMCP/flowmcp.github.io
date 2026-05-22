@@ -39,16 +39,19 @@ Not every endpoint supports all protocols. AgentProbe gracefully handles unsuppo
 
 ## Architecture
 
-```
-URL Input  -->  Server  -->  mcp-agent-assessment
-                                    |
-                    +-------+-------+-------+-------+
-                    |       |       |       |       |
-                   HTTP    MCP   A2A/AP2   x402   OAuth
-                    |       |       |       |       |
-                    +-------+-------+-------+-------+
-                                    |
-                               Results UI
+```mermaid
+flowchart TD
+    U[URL Input] --> S[Server] --> A[mcp-agent-assessment]
+    A --> H[HTTP]
+    A --> M[MCP]
+    A --> AP[A2A / AP2]
+    A --> X[x402]
+    A --> O[OAuth]
+    H --> R[Results UI]
+    M --> R
+    AP --> R
+    X --> R
+    O --> R
 ```
 
 The server receives a URL, passes it to the unified assessment pipeline, and returns structured results for each protocol layer.

@@ -27,7 +27,7 @@ Der `main` Export ist ein statisches, JSON-serialisierbares Objekt. Keine Funkti
 | `namespace` | `string` | Provider-Bezeichner, nur Kleinbuchstaben (`/^[a-z]+$/`). |
 | `name` | `string` | Schema-Name in PascalCase (z.B. `SmartContractExplorer`). |
 | `description` | `string` | Was dieses Schema tut, 1-2 Saetze. |
-| `version` | `string` | Muss `3.\d+.\d+` entsprechen (Semver, Major muss `3` sein). |
+| `version` | `string` | Muss `4.\d+.\d+` entsprechen (Semver, Major muss `4` sein). |
 | `root` | `string` | Basis-URL fuer alle Tools. Muss mit `https://` beginnen (kein Trailing Slash). |
 | `tools` | `object` | Tool-Definitionen. Keys sind camelCase Tool-Namen. Maximal 8 Tools. |
 
@@ -287,8 +287,12 @@ Dieses Beispiel demonstriert: feste Parameter (`module`, `action`), User-Paramet
 | Einschraenkung | Wert | Begruendung |
 |----------------|------|-------------|
 | Max Tools pro Schema | 8 | Haelt Schemas fokussiert. Grosse APIs auf mehrere Schema-Dateien aufteilen. |
-| Version Major | `3` | Muss `3.\d+.\d+` entsprechen. |
+| Version Major | `4` | Muss `4.\d+.\d+` entsprechen. |
 | Namespace-Muster | `^[a-z]+$` | Nur Buchstaben. Keine Zahlen, Bindestriche oder Unterstriche. |
 | Root-URL-Protokoll | `https://` | HTTP ist nicht erlaubt. |
 | Root-URL Trailing Slash | Verboten | `root` darf nicht mit `/` enden. |
 | Schema-Datei-Imports | Null | Alle Abhaengigkeiten werden via die `handlers`-Factory injiziert. |
+
+## Siehe auch
+
+- [Schemas und Tools (Basics)](/de/concepts/schemas-and-tools/)

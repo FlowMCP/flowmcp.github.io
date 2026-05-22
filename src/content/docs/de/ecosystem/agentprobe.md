@@ -39,16 +39,19 @@ Nicht jeder Endpunkt unterstuetzt alle Protokolle. AgentProbe behandelt nicht un
 
 ## Architektur
 
-```
-URL Input  -->  Server  -->  mcp-agent-assessment
-                                    |
-                    +-------+-------+-------+-------+
-                    |       |       |       |       |
-                   HTTP    MCP   A2A/AP2   x402   OAuth
-                    |       |       |       |       |
-                    +-------+-------+-------+-------+
-                                    |
-                               Results UI
+```mermaid
+flowchart TD
+    U[URL Input] --> S[Server] --> A[mcp-agent-assessment]
+    A --> H[HTTP]
+    A --> M[MCP]
+    A --> AP[A2A / AP2]
+    A --> X[x402]
+    A --> O[OAuth]
+    H --> R[Results UI]
+    M --> R
+    AP --> R
+    X --> R
+    O --> R
 ```
 
 Der Server empfaengt eine URL, leitet sie an die einheitliche Assessment-Pipeline weiter und gibt strukturierte Ergebnisse fuer jede Protokoll-Ebene zurueck.

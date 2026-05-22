@@ -27,7 +27,7 @@ The `main` export is a static, JSON-serializable object. No functions, no dynami
 | `namespace` | `string` | Provider identifier, lowercase letters only (`/^[a-z]+$/`). |
 | `name` | `string` | Schema name in PascalCase (e.g. `SmartContractExplorer`). |
 | `description` | `string` | What this schema does, 1-2 sentences. |
-| `version` | `string` | Must match `3.\d+.\d+` (semver, major must be `3`). |
+| `version` | `string` | Must match `4.\d+.\d+` (semver, major must be `4`). |
 | `root` | `string` | Base URL for all tools. Must start with `https://` (no trailing slash). |
 | `tools` | `object` | Tool definitions. Keys are camelCase tool names. Maximum 8 tools. |
 
@@ -287,8 +287,12 @@ This example demonstrates: fixed parameters (`module`, `action`), user parameter
 | Constraint | Value | Rationale |
 |------------|-------|-----------|
 | Max tools per schema | 8 | Keeps schemas focused. Split large APIs into multiple schema files. |
-| Version major | `3` | Must match `3.\d+.\d+`. |
+| Version major | `4` | Must match `4.\d+.\d+`. |
 | Namespace pattern | `^[a-z]+$` | Letters only. No numbers, hyphens, or underscores. |
 | Root URL protocol | `https://` | HTTP is not allowed. |
 | Root URL trailing slash | Forbidden | `root` must not end with `/`. |
 | Schema file imports | Zero | All dependencies are injected via the `handlers` factory. |
+
+## See also
+
+- [Schemas and Tools (Basics)](/concepts/schemas-and-tools/)
