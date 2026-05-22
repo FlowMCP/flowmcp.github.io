@@ -66,6 +66,7 @@ if( !status ) {
     console.error( 'Schema loading failed' )
 }
 
+// Das geladene Schema nutzen
 const result = await FlowMCP.fetch( {
     main,
     handlerMap,
@@ -93,6 +94,12 @@ Validiert ein `main`-Export-Objekt gegen die FlowMCP-Spezifikation. Fuehrt Valid
 const { status, messages } = FlowMCP.validateMain( { main } )
 ```
 
+**Parameter**
+
+| Key | Typ | Beschreibung | Erforderlich |
+|-----|-----|-------------|-------------|
+| `main` | object | Der `main`-Export aus einer Schema-Datei. Akzeptiert sowohl `tools` als auch `routes` (veralteter Alias) | Ja |
+
 **Beispiel**
 ```javascript
 import { FlowMCP } from 'flowmcp-core'
@@ -108,6 +115,14 @@ if( status ) {
 }
 ```
 
+**Rueckgabe**
+```javascript
+{
+    status: true,      // true wenn alle Regeln bestehen
+    messages: []       // Array mit Fehlermeldungen, wenn status false ist
+}
+```
+
 :::tip
 `validateMain()` waehrend der Entwicklung verwenden, um Schema-Fehler frueh zu erkennen. In Produktion `loadSchema()` verwenden, das Validierung als Teil der vollstaendigen Pipeline einschliesst.
 :::
@@ -119,6 +134,34 @@ Fuehrt einen statischen Sicherheitsscan auf einer Schema-Datei aus. Prueft auf v
 **Methode**
 ```javascript
 const { status, messages } = await FlowMCP.scanSecurity( { filePath } )
+```
+
+**Parameter**
+
+| Key | Typ | Beschreibung | Erforderlich |
+|-----|-----|-------------|-------------|
+| `filePath` | string | Pfad zur zu scannenden `.mjs`-Schema-Datei | Ja |
+
+**Beispiel**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const { status, messages } = await FlowMCP.scanSecurity( {
+    filePath: './schemas/my-schema.mjs'
+} )
+
+if( !status ) {
+    console.error( 'Security violations found:' )
+    messages.forEach( ( msg ) => console.error( `  - ${msg}` ) )
+}
+```
+
+**Rueckgabe**
+```javascript
+{
+    status: true,      // false wenn verbotene Muster erkannt werden
+    messages: []       // Beschreibungen der Sicherheitsverletzungen
+}
 ```
 
 ---
@@ -146,6 +189,12 @@ const result = await FlowMCP.fetch( { main, handlerMap, userParams, serverParams
 
 **Beispiel**
 ```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const { status, main, handlerMap } = await FlowMCP.loadSchema( {
+    filePath: './schemas/coingecko-price.mjs'
+} )
+
 const result = await FlowMCP.fetch( {
     main,
     handlerMap,
@@ -158,6 +207,15 @@ if( result.status ) {
     console.log( 'Response:', result.dataAsString )
 } else {
     console.error( 'Request failed:', result.messages )
+}
+```
+
+**Rueckgabe**
+```javascript
+{
+    status: true,                              // false wenn der Request fehlschlaegt
+    dataAsString: '{"bitcoin":{"usd":45000}}', // Response-Body als String
+    messages: []                               // Fehlermeldungen, wenn status false ist
 }
 ```
 
@@ -178,6 +236,36 @@ Loest Shared-List-Referenzen aus einem Verzeichnis mit List-Dateien auf. Shared 
 const { sharedLists } = await FlowMCP.resolveSharedLists( { sharedListRefs, listsDir } )
 ```
 
+**Parameter**
+
+| Key | Typ | Beschreibung | Erforderlich |
+|-----|-----|-------------|-------------|
+| `sharedListRefs` | array | Array von Shared-List-Referenzen aus dem Schema | Ja |
+| `listsDir` | string | Verzeichnispfad mit Shared-List `.mjs`-Dateien | Ja |
+
+**Beispiel**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const { sharedLists } = await FlowMCP.resolveSharedLists( {
+    sharedListRefs: [ 'evmChains', 'stablecoins' ],
+    listsDir: './lists/'
+} )
+
+console.log( 'Resolved lists:', Object.keys( sharedLists ) )
+// Output: ['evmChains', 'stablecoins']
+```
+
+**Rueckgabe**
+```javascript
+{
+    sharedLists: {
+        evmChains: [ 'ethereum', 'polygon', 'arbitrum', ... ],
+        stablecoins: [ 'USDT', 'USDC', 'DAI', ... ]
+    }
+}
+```
+
 ### .interpolateEnum()
 
 Interpoliert Shared-List-Werte in einen Enum-Template-String. Ersetzt `$listName`-Referenzen durch tatsaechliche Werte aus aufgeloesten Shared Lists.
@@ -185,6 +273,37 @@ Interpoliert Shared-List-Werte in einen Enum-Template-String. Ersetzt `$listName
 **Methode**
 ```javascript
 const { result } = FlowMCP.interpolateEnum( { template, sharedLists } )
+```
+
+**Parameter**
+
+| Key | Typ | Beschreibung | Erforderlich |
+|-----|-----|-------------|-------------|
+| `template` | string | Enum-Template mit `$listName`-Referenzen | Ja |
+| `sharedLists` | object | Aufgeloeste Shared Lists aus `resolveSharedLists()` | Ja |
+
+**Beispiel**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const sharedLists = {
+    evmChains: [ 'ethereum', 'polygon', 'arbitrum' ]
+}
+
+const { result } = FlowMCP.interpolateEnum( {
+    template: '$evmChains',
+    sharedLists
+} )
+
+console.log( result )
+// Output: ['ethereum', 'polygon', 'arbitrum']
+```
+
+**Rueckgabe**
+```javascript
+{
+    result: [ 'ethereum', 'polygon', 'arbitrum' ]  // Aufgeloeste Enum-Werte
+}
 ```
 
 ### .loadLibraries()
@@ -196,6 +315,36 @@ Laedt npm-Pakete, die in `requiredLibraries` eines Schemas deklariert sind. Nur 
 const { libraries } = await FlowMCP.loadLibraries( { requiredLibraries, allowlist } )
 ```
 
+**Parameter**
+
+| Key | Typ | Beschreibung | Erforderlich |
+|-----|-----|-------------|-------------|
+| `requiredLibraries` | array | Im Schema deklarierte Library-Namen | Ja |
+| `allowlist` | array | Erlaubte Library-Namen. `getDefaultAllowlist()` fuer Standardwerte verwenden | Ja |
+
+**Beispiel**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const { allowlist } = FlowMCP.getDefaultAllowlist()
+
+const { libraries } = await FlowMCP.loadLibraries( {
+    requiredLibraries: [ 'ethers' ],
+    allowlist
+} )
+
+// libraries.ethers ist nun fuer Handler-Injection verfuegbar
+```
+
+**Rueckgabe**
+```javascript
+{
+    libraries: {
+        ethers: { ... }  // Das geladene Library-Modul
+    }
+}
+```
+
 ### .getDefaultAllowlist()
 
 Gibt die Standard-Library-Allowlist zurueck. Das sind die npm-Pakete, die Handler ueber Dependency Injection verwenden duerfen.
@@ -203,6 +352,25 @@ Gibt die Standard-Library-Allowlist zurueck. Das sind die npm-Pakete, die Handle
 **Methode**
 ```javascript
 const { allowlist } = FlowMCP.getDefaultAllowlist()
+```
+
+**Parameter**
+
+Keine.
+
+**Beispiel**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const { allowlist } = FlowMCP.getDefaultAllowlist()
+console.log( 'Allowed libraries:', allowlist )
+```
+
+**Rueckgabe**
+```javascript
+{
+    allowlist: [ 'ethers', 'viem', ... ]  // Array erlaubter Library-Namen
+}
 ```
 
 ---
@@ -216,6 +384,45 @@ Erstellt eine Handler-Map durch Aufruf der `handlers`-Factory-Funktion mit injiz
 **Methode**
 ```javascript
 const { handlerMap } = FlowMCP.createHandlers( { handlersFn, sharedLists, libraries, routeNames } )
+```
+
+**Parameter**
+
+| Key | Typ | Beschreibung | Erforderlich |
+|-----|-----|-------------|-------------|
+| `handlersFn` | function | Die `handlers`-Factory-Funktion aus einem Schema | Ja |
+| `sharedLists` | object | Aufgeloeste Shared Lists fuer die Injection | Ja |
+| `libraries` | object | Geladene Libraries fuer die Injection | Ja |
+| `routeNames` | array | Erwartete Tool-Namen zur Validierung | Ja |
+
+**Beispiel**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+import { handlers } from './schemas/my-schema.mjs'
+
+const { handlerMap } = FlowMCP.createHandlers( {
+    handlersFn: handlers,
+    sharedLists: { evmChains: [ 'ethereum', 'polygon' ] },
+    libraries: {},
+    routeNames: [ 'getPrice', 'getHistory' ]
+} )
+
+// handlerMap.getPrice.postProcess ist nun verfuegbar
+```
+
+**Rueckgabe**
+```javascript
+{
+    handlerMap: {
+        getPrice: {
+            postProcess: async ( { data } ) => { ... }
+        },
+        getHistory: {
+            preProcess: async ( { params } ) => { ... },
+            postProcess: async ( { data } ) => { ... }
+        }
+    }
+}
 ```
 
 :::tip
@@ -235,6 +442,33 @@ Erkennt, ob ein geladenes Modul das v1-Schema-Format verwendet. Gibt die erkannt
 const { isLegacy, format } = FlowMCP.detectLegacy( { module } )
 ```
 
+**Parameter**
+
+| Key | Typ | Beschreibung | Erforderlich |
+|-----|-----|-------------|-------------|
+| `module` | object | Das importierte Modul aus einer `.mjs`-Schema-Datei | Ja |
+
+**Beispiel**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const schemaModule = await import( './schemas/old-schema.mjs' )
+const { isLegacy, format } = FlowMCP.detectLegacy( { module: schemaModule } )
+
+if( isLegacy ) {
+    console.log( `Legacy format detected: ${format}` )
+    // Mit adaptLegacy() konvertieren
+}
+```
+
+**Rueckgabe**
+```javascript
+{
+    isLegacy: true,    // true wenn das Modul v1-Format verwendet
+    format: 'v1'       // Erkannte Format-Version als String
+}
+```
+
 ### .adaptLegacy()
 
 Konvertiert ein v1-Schema-Objekt in das v2-Zwei-Export-Format. Gibt den adaptierten `main`-Export, optionale Handler-Factory-Funktion und Konvertierungswarnungen zurueck.
@@ -242,6 +476,46 @@ Konvertiert ein v1-Schema-Objekt in das v2-Zwei-Export-Format. Gibt den adaptier
 **Methode**
 ```javascript
 const { main, handlersFn, hasHandlers, warnings } = FlowMCP.adaptLegacy( { legacySchema } )
+```
+
+**Parameter**
+
+| Key | Typ | Beschreibung | Erforderlich |
+|-----|-----|-------------|-------------|
+| `legacySchema` | object | Ein Schema-Objekt im v1-Format | Ja |
+
+**Beispiel**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const oldSchema = { namespace: 'myapi', root: '...', routes: { ... } }
+const { main, handlersFn, hasHandlers, warnings } = FlowMCP.adaptLegacy( {
+    legacySchema: oldSchema
+} )
+
+if( warnings.length > 0 ) {
+    console.log( 'Migration warnings:' )
+    warnings.forEach( ( w ) => console.log( `  - ${w}` ) )
+}
+
+// Das adaptierte Schema mit aktuellen Methoden verwenden
+const result = await FlowMCP.fetch( {
+    main,
+    handlerMap: {},
+    userParams: { ... },
+    serverParams: {},
+    routeName: 'myRoute'
+} )
+```
+
+**Rueckgabe**
+```javascript
+{
+    main: { ... },             // Konvertierter main-Export
+    handlersFn: Function|null, // Handler-Factory (null wenn keine Handler)
+    hasHandlers: false,        // Ob das Schema Handler hatte
+    warnings: []               // Konvertierungswarnungen (veraltete Features etc.)
+}
 ```
 
 ---
@@ -255,6 +529,36 @@ Generiert ein Output-Schema aus einer erfassten API-Antwort. Das Output-Schema d
 **Methode**
 ```javascript
 const { output } = FlowMCP.generateOutputSchema( { response, mimeType } )
+```
+
+**Parameter**
+
+| Key | Typ | Beschreibung | Erforderlich |
+|-----|-----|-------------|-------------|
+| `response` | string | Roher API-Response-Body | Ja |
+| `mimeType` | string | Response-MIME-Typ (z. B. `application/json`) | Ja |
+
+**Beispiel**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const { output } = FlowMCP.generateOutputSchema( {
+    response: '{"bitcoin":{"usd":45000,"eur":38000}}',
+    mimeType: 'application/json'
+} )
+
+console.log( output )
+// { type: 'object', fields: { bitcoin: { type: 'object', fields: { ... } } } }
+```
+
+**Rueckgabe**
+```javascript
+{
+    output: {
+        type: 'object',
+        fields: { ... }    // Abgeleitete Feldstruktur aus der Antwort
+    }
+}
 ```
 
 :::tip
@@ -272,9 +576,28 @@ import { v1 } from 'flowmcp-core'
 const { FlowMCP } = v1
 ```
 
+<details>
+<summary>v1-Methodenuebersicht</summary>
+
+Die v1-API verwendet ein flaches Schema-Format (Einzelexport) mit anderen Methoden-Signaturen.
+
+| Methode | v1-Signatur | Aktuelles Aequivalent |
+|--------|-------------|---------------|
+| `.validateSchema()` | `FlowMCP.validateSchema( { schema } )` | `.validateMain( { main } )` |
+| `.fetch()` | `FlowMCP.fetch( { schema, userParams, serverParams, routeName } )` | `.fetch( { main, handlerMap, ... } )` |
+| `.activateServerTools()` | `FlowMCP.activateServerTools( { server, schema, serverParams } )` | MCP-SDK direkt mit `.loadSchema()` verwenden |
+| `.activateServerTool()` | `FlowMCP.activateServerTool( { server, schema, routeName, serverParams } )` | MCP-SDK direkt verwenden |
+| `.prepareServerTool()` | `FlowMCP.prepareServerTool( { schema, serverParams, routeName } )` | `.loadSchema()` + `.fetch()` verwenden |
+| `.filterArrayOfSchemas()` | `FlowMCP.filterArrayOfSchemas( { arrayOfSchemas, ... } )` | Gleich (nur v1) |
+| `.getArgvParameters()` | `FlowMCP.getArgvParameters( { argv } )` | Gleich (nur v1) |
+| `.getZodInterfaces()` | `FlowMCP.getZodInterfaces( { schema } )` | Zod-Schemas werden waehrend `.loadSchema()` generiert |
+| `.getAllTests()` | `FlowMCP.getAllTests( { schema } )` | Testwerte stehen in den `test`-Feldern der Parameter |
+
 :::caution
 Die v1-API wird fuer Rueckwaertskompatibilitaet gepflegt, erhaelt aber keine neuen Features. Alle neuen Schemas sollten das v3-Format verwenden.
 :::
+
+</details>
 
 ---
 
