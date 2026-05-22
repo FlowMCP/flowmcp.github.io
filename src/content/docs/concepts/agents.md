@@ -16,6 +16,15 @@ From the schema catalog, individual tools are selected and assembled into a **To
 
 ![Agent Structure: LLM, System Prompt, Skills, Tool Set with Agentic Loop](/images/agent-manifest-aufbau.png)
 
+An agent is declared in an `agent.mjs` file. The manifest has four content fields:
+
+- **tools** — references to schema tools the agent may call, using the ID format `namespace/type/name` (slash-separated). External tools have `null` as value; inline tools carry an object definition.
+- **prompts** — explanations of how tools behave (e.g., "CoinGecko returns base-currency prices").
+- **skills** — step-by-step instructions for multi-tool workflows.
+- **resources** — local data the agent can read (files, SQLite snippets).
+
+Details, the full manifest schema, and the Slash Rule: [Agents Overview](/concepts/agents-overview/).
+
 An agent is more than a simple tool query. While a tool asks a single question to a data source ("What's the weather in Berlin?"), an agent can **combine multiple tools, reason, and independently decide** what information it still needs.
 
 The key difference: an agent has its **own language model (LLM)** that thinks for it. It's not just a program executing commands, but an expert that understands questions, selects tools, and formulates answers.

@@ -27,6 +27,15 @@ Ein Agent besteht aus:
 
 ![Agent-Aufbau: LLM, System Prompt, Skills, Tool Set mit Agentic Loop](/images/agent-manifest-aufbau.png)
 
+Ein Agent wird in einer `agent.mjs`-Datei deklariert. Das Manifest hat vier inhaltliche Felder:
+
+- **tools** — Verweise auf Schema-Tools, die der Agent aufrufen darf, im ID-Format `namespace/type/name` (Slash-getrennt). Externe Tools haben `null` als Wert; Inline-Tools tragen eine Objekt-Definition.
+- **prompts** — Erklaerungen, wie Tools sich verhalten (z. B. "CoinGecko liefert Preise in Basiswaehrung").
+- **skills** — Schritt-fuer-Schritt-Anleitungen fuer Multi-Tool-Workflows.
+- **resources** — Lokale Daten, die der Agent lesen kann (Dateien, SQLite-Auszuege).
+
+Details, das vollstaendige Manifest-Schema und die Slash-Regel: [Agents Uebersicht](/de/concepts/agents-overview/).
+
 **Beispiel:** Ein Mobility Agent kombiniert Tools aus dem DB-Fahrplan-Schema (getConnections), dem OpenWeather-Schema (getWeather) und dem nextbike-Schema (findStations). Er hat als LLM Claude Haiku und weiss durch seinen System-Prompt, dass er Mobilitaetsfragen beantworten soll.
 
 ## Der Agentic Loop
