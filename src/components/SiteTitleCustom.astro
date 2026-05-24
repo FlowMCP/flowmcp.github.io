@@ -32,10 +32,17 @@ const homeHref = isDE ? '/de/' : '/'
     line-height: 1;
 }
 
-/* Mobile: nur Icon, kein Wordmark (REV-05 Kap. 8.3) */
+/* Memo 057 PRD-09 (V1) — Wordmark "FlowMCP" auf Mobile sichtbar.
+   Ersetzt vorherige Regel aus REV-05 Kap. 8.3 (display:none < 800px).
+   Begruendung: User-Variante V1 "Logo+Wordmark Left, Hamburger Right". */
 @media (max-width: 800px) {
     .site-title-wordmark {
-        display: none;
+        display: inline;
+        font-size: 16px;
+    }
+    .site-title-icon {
+        width: 24px;
+        height: 24px;
     }
 }
 </style>
