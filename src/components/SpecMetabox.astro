@@ -1,0 +1,67 @@
+---
+// Memo 056 PRD-20: Spec-Metabox am Seitenanfang.
+// Integriert SpecRef-Funktionalitaet (Memo Kap. 7.7 / F-7).
+// Props sind Pflicht — keine Defaults, kein Silent-Fallback.
+const { version, date, source, inSync } = Astro.props
+
+if( typeof version !== 'string' ) {
+    throw new Error( 'SpecMetabox: "version" prop is required (string)' )
+}
+if( typeof date !== 'string' ) {
+    throw new Error( 'SpecMetabox: "date" prop is required (string)' )
+}
+if( source === undefined || typeof source.commit !== 'string' || typeof source.url !== 'string' ) {
+    throw new Error( 'SpecMetabox: "source" prop is required ({ commit, url })' )
+}
+if( typeof inSync !== 'boolean' ) {
+    throw new Error( 'SpecMetabox: "inSync" prop is required (boolean)' )
+}
+
+const badgeClass = inSync === true ? 'spec-metabox__badge--ok' : 'spec-metabox__badge--stale'
+const badgeLabel = inSync === true ? 'In sync' : 'Out of sync'
+const shortSha = source.commit.length > 7 ? source.commit.slice( 0, 7 ) : source.commit
+---
+
+<aside class="spec-metabox" aria-label="Specification metadata">
+    <dl class="spec-metabox__list">
+        <div class="spec-metabox__row">
+            <dt>Version</dt>
+            <dd>{ version }</dd>
+        </div>
+        <div class="spec-metabox__row">
+            <dt>Generated</dt>
+            <dd>{ date }</dd>
+        </div>
+        <div class="spec-metabox__row">
+            <dt>Source</dt>
+            <dd>
+                <a href={ source.url } target="_blank" rel="noopener noreferrer">View source on GitHub</a>
+                <code>{ shortSha }</code>
+            </dd>
+        </div>
+    </dl>
+    <span class={ `spec-metabox__badge ${ badgeClass }` }>{ badgeLabel }</span>
+</aside>
+
+<style>
+    .spec-metabox {
+        border: 1px solid var( --sl-color-gray-5 );
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        margin: 0 0 1.5rem;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    .spec-metabox__list { display: flex; gap: 1.5rem; margin: 0; flex-wrap: wrap; }
+    .spec-metabox__row { display: flex; gap: 0.4rem; align-items: baseline; margin: 0; }
+    .spec-metabox__row dt { font-weight: 600; color: var( --sl-color-text-accent ); margin: 0; }
+    .spec-metabox__row dd { margin: 0; }
+    .spec-metabox__row code { font-size: 0.75rem; padding: 0 0.3rem; border-radius: 4px; background: var( --sl-color-gray-6 ); }
+    .spec-metabox__badge { padding: 0.15rem 0.6rem; border-radius: 999px; font-weight: 600; font-size: 0.75rem; }
+    .spec-metabox__badge--ok { background: var( --sl-color-green-low ); color: var( --sl-color-green-high ); }
+    .spec-metabox__badge--stale { background: var( --sl-color-orange-low ); color: var( --sl-color-orange-high ); }
+</style>
