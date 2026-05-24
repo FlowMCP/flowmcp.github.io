@@ -11,6 +11,16 @@ const PLACEHOLDER_REGEX = /\{\{([a-zA-Z0-9_.:-]+)\}\}/g
 const INCLUDE_MINI_SKILL_TOKEN = '{{include:mini-skill}}'
 
 
+// A token is a refs-placeholder if it contains a dot (e.g. spec.currentVersion)
+// or starts with "include:" (e.g. include:mini-skill). Plain identifiers like
+// {{API_KEY}} or {{CHAIN}} are documentation/code-example markers and are left
+// untouched by both reverseCheck and applyPlaceholders.
+const isRefsPlaceholder = ( { key } ) => {
+    if( key.startsWith( 'include:' ) ) return true
+    return key.includes( '.' )
+}
+
+
 export const resolveDotPath = ( { obj, dotPath } ) => {
     const segments = dotPath.split( '.' )
     const value = segments.reduce( ( acc, key ) => {
@@ -26,6 +36,7 @@ export const extractPlaceholders = ( { content } ) => {
     const keys = matches
         .map( ( m ) => m[ 1 ] )
         .filter( ( key ) => !key.startsWith( 'include:' ) )
+        .filter( ( key ) => key.includes( '.' ) )
     const unique = [ ...new Set( keys ) ]
     return { keys: unique }
 }
@@ -45,6 +56,7 @@ export const reverseCheck = ( { templatePath, content, refs } ) => {
 
 export const forwardCheck = ( { outputPath, content } ) => {
     const remaining = [ ...content.matchAll( PLACEHOLDER_REGEX ) ]
+        .filter( ( m ) => isRefsPlaceholder( { key: m[ 1 ] } ) )
     if( remaining.length > 0 ) {
         const tokens = remaining
             .map( ( m ) => m[ 0 ] )
@@ -68,6 +80,7 @@ export const applyPlaceholders = ( { content, refs } ) => {
     let count = 0
     const replaced = content.replace( PLACEHOLDER_REGEX, ( match, key ) => {
         if( key.startsWith( 'include:' ) ) return match
+        if( !key.includes( '.' ) ) return match
         const { value } = resolveDotPath( { obj: refs, dotPath: key } )
         if( value === undefined ) return match
         count += 1
