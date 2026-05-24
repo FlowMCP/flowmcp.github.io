@@ -6,9 +6,9 @@ spec_file: "08-migration.md"
 order: 8
 section: "Specification"
 normative: false
-source_commit: "1ce7230"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/1ce7230/spec/v4.1.0/08-migration.md"
-generated_at: "2026-05-24T09:44:07.759Z"
+source_commit: "38be5f4"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/38be5f4/spec/v4.1.0/08-migration.md"
+generated_at: "2026-05-24T19:10:00.397Z"
 generated_from: "spec/v4.1.0/08-migration.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.1.0/08-migration.md."
@@ -16,8 +16,6 @@ edit_warning: "This file is auto-generated. Source: spec/v4.1.0/08-migration.md.
 <aside class="edit-warning" role="note">
   <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/08-migration.md.
 </aside>
-
-# FlowMCP Specification v4.0.0 — Migration Guide
 
 This guide covers migrating schemas between FlowMCP versions. Section 1 covers v2.0.0 to v3.0.0 migration. Section 2 preserves the v1.2.0 to v2.0.0 guide for reference.
 

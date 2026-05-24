@@ -6,9 +6,9 @@ spec_file: "10-tests.md"
 order: 10
 section: "Specification"
 normative: true
-source_commit: "1ce7230"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/1ce7230/spec/v4.1.0/10-tests.md"
-generated_at: "2026-05-24T09:44:07.759Z"
+source_commit: "38be5f4"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/38be5f4/spec/v4.1.0/10-tests.md"
+generated_at: "2026-05-24T19:10:00.397Z"
 generated_from: "spec/v4.1.0/10-tests.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.1.0/10-tests.md."
@@ -17,9 +17,7 @@ edit_warning: "This file is auto-generated. Source: spec/v4.1.0/10-tests.md."
   <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/10-tests.md.
 </aside>
 
-# FlowMCP Specification v4.0.0 — Tests
-
-> Normative language (MUST/SHOULD/MAY) follows the conventions defined in [00-overview.md](./00-overview.md) (Conformance Language).
+> Normative language (MUST/SHOULD/MAY) follows the conventions defined in [Conformance Language](/specification/overview/#conformance-language).
 
 Tests are executable examples embedded in tool and resource query definitions. For agents, tests are prompts with expected tool usage and content assertions. They serve three purposes: they document what a tool or resource query can do, they provide the input data needed to capture real responses, and those captured responses are the basis for generating accurate output schemas. This document defines the test format for both tools and resources, design principles, the response capture lifecycle, and validation rules.
 

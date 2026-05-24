@@ -1,6 +1,6 @@
 {
   "spec_version": "4.1.0",
-  "generated_at": "2026-05-24T09:44:07.825Z",
+  "generated_at": "2026-05-24T19:10:00.480Z",
   "generator": "scripts/generate-manifest.mjs",
   "files": [
     {
@@ -400,5 +400,17 @@
     "normative_files": 21,
     "prose_files": 3,
     "average_grade": 5
+  },
+  "meta": {
+    "stats": {
+      "count_schemas": 365,
+      "count_unique_datasources": 288,
+      "count_tools": 1575,
+      "count_resources": 0,
+      "count_skills": 0,
+      "timestamp": "2026-05-24T18:20:39.289Z",
+      "schema_version": "v4.0.0",
+      "build_hash": "326a272"
+    }
   }
 }

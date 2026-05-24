@@ -6,9 +6,9 @@ spec_file: "22-scoring-protocol.md"
 order: 22
 section: "Specification"
 normative: true
-source_commit: "1ce7230"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/1ce7230/spec/v4.1.0/22-scoring-protocol.md"
-generated_at: "2026-05-24T09:44:07.759Z"
+source_commit: "38be5f4"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/38be5f4/spec/v4.1.0/22-scoring-protocol.md"
+generated_at: "2026-05-24T19:10:00.397Z"
 generated_from: "spec/v4.1.0/22-scoring-protocol.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.1.0/22-scoring-protocol.md."
@@ -17,9 +17,7 @@ edit_warning: "This file is auto-generated. Source: spec/v4.1.0/22-scoring-proto
   <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/22-scoring-protocol.md.
 </aside>
 
-# Scoring Protocol v1
-
-> Normative language (MUST/SHOULD/MAY) follows the conventions defined in [00-overview.md](./00-overview.md) (Conformance Language).
+> Normative language (MUST/SHOULD/MAY) follows the conventions defined in [Conformance Language](/specification/overview/#conformance-language).
 
 Specification for grading FlowMCP v4 schemas via LLM evaluation. Documents the data formats exchanged between the CLI and an external Grader (e.g. Claude Code harness, third-party implementation).
 

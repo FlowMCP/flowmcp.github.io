@@ -6,9 +6,9 @@ spec_file: "00-overview.md"
 order: 0
 section: "Specification"
 normative: false
-source_commit: "1ce7230"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/1ce7230/spec/v4.1.0/00-overview.md"
-generated_at: "2026-05-24T09:44:07.759Z"
+source_commit: "38be5f4"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/38be5f4/spec/v4.1.0/00-overview.md"
+generated_at: "2026-05-24T19:10:00.397Z"
 generated_from: "spec/v4.1.0/00-overview.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.1.0/00-overview.md."
@@ -16,8 +16,6 @@ edit_warning: "This file is auto-generated. Source: spec/v4.1.0/00-overview.md."
 <aside class="edit-warning" role="note">
   <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/00-overview.md.
 </aside>
-
-# FlowMCP Specification v4.0.0 — Overview
 
 FlowMCP is a **Tool Catalog with pre-built API templates** and a **Knowledge Base for API workflows**. It unifies access to APIs through two equal channels:
 
