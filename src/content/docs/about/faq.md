@@ -36,15 +36,11 @@ Yes — for schemas that hit local resources (e.g. the `gtfs-sqlite-toolkit` add
 
 ## Why is FlowMCP "MCP" if it is CLI-first?
 
-The name dates from the project's start as an MCP server experiment. The substance shifted. A naming refresh is under discussion — see internal Memo 042 follow-up D.
-
-## How does FlowMCP compare to LangChain tools or other agent libraries?
-
-Different scope. FlowMCP focuses on the **schema layer** — normalised access to data sources. Agent libraries focus on the **orchestration layer** — LLM-loop, memory, planning. They are complementary; you can use FlowMCP schemas inside a LangChain agent.
+The name dates from the project's start as an MCP server experiment. The substance shifted toward a CLI-first schema layer; the name persists for continuity with the MCP ecosystem.
 
 ## Where can I report issues?
 
-GitHub Issues per repo. For general questions: [GitHub Discussions](https://github.com/FlowMCP).
+GitHub Issues per repo. Find the most relevant repository under [github.com/FlowMCP](https://github.com/FlowMCP) and open an issue there. For schema-related questions, use `flowmcp-schemas`. For CLI bugs, use `flowmcp-cli`.
 
 ## What is the v4 Self-Contained Skill Pattern?
 
