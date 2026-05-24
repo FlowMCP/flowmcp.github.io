@@ -26,7 +26,10 @@
         "test:replace-placeholders": "node --test tests/replace-placeholders.test.mjs",
         "preview:mermaid": "node scripts/render-mermaid-previews.mjs",
         "eval:page-quality": "node evals/evaluator-page-quality/runner.mjs",
-        "check:links": "node scripts/check-external-links.mjs"
+        "check:links": "node scripts/check-external-links.mjs",
+        "check:published-links": "node scripts/check-published-llms.mjs",
+        "check:placeholders": "node scripts/check-placeholder-coverage.mjs",
+        "postbuild": "node scripts/check-placeholder-coverage.mjs"
     },
     "dependencies": {
         "@astrojs/rss": "^4.0.18",
