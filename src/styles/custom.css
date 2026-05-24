@@ -16,10 +16,15 @@
     border: 0 !important;
 }
 
-/* Skip-Link — visible on :focus only (Memo 057 PRD-07) */
+/* Skip-Link — visible on :focus only (Memo 057 PRD-07).
+ * Memo 059 PRD-003 (A4 fix): the previous top: -40px combined with the
+ * link's natural height (≈44px from padding+text) left a ~4px Babyblau
+ * sliver visible at the very top of every page on initial load. Switched
+ * to clip-path which keeps the element in the DOM, focusable, and at
+ * size 0 in the layout — so no bleed regardless of computed height. */
 .skip-link {
     position: absolute;
-    top: -40px;
+    top: 0;
     left: 0;
     background: var(--accent);
     color: var(--bg-canvas);
@@ -28,10 +33,11 @@
     text-decoration: none;
     font-weight: 700;
     border-radius: 0 0 6px 0;
+    clip-path: inset(100% 100% 100% 100%);
 }
 
 .skip-link:focus {
-    top: 0;
+    clip-path: none;
     outline: 2px solid var(--text-primary);
     outline-offset: 2px;
 }
@@ -102,6 +108,41 @@ starlight-theme-select {
 /* Force dark mode */
 html {
     color-scheme: dark;
+}
+
+/* ============ SITE-WIDE BACKGROUND GRADIENT (Memo 059 PRD-003) ============
+ *
+ * A2 (Safari/Chrome parity): rgba() stops, no color-mix dependency.
+ * A3 (even across all pages): applied on html (covers full document), with
+ *   background-attachment: fixed so the gradient stays in place on scroll
+ *   and renders consistently on landing, docs, blog, 404.
+ * A15 style guideline: accent uses Babyblau (#79c0ff).
+ *
+ * Gradient is deliberately subtle — it adds depth without competing with
+ * the hero's stronger mouse-tracking gradient (PRD-002). */
+html {
+    background-color: var(--bg-canvas);
+    background-image:
+        radial-gradient( ellipse 80% 60% at 20% 0%, rgba( 121, 192, 255, 0.06 ) 0%, rgba( 121, 192, 255, 0 ) 60% ),
+        radial-gradient( ellipse 70% 50% at 80% 100%, rgba( 121, 192, 255, 0.04 ) 0%, rgba( 121, 192, 255, 0 ) 60% );
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* Body must be transparent so html's gradient shows through across all
+ * Starlight layouts. Body is forced to var(--bg-canvas) elsewhere as
+ * fallback; we override it on root only. */
+body {
+    background-color: transparent;
+}
+
+/* Starlight wrappers paint over the gradient by default (.page, .content-panel,
+ * .main-frame). Drop the background-color on the outer frames so the html
+ * gradient remains visible. Content cards/cards/sidebar keep their own bg. */
+body > .page,
+body > .page > .main-frame,
+.main-pane {
+    background-color: transparent !important;
 }
 
 /* ============ HEADER (Pencil REV-14 Kap. 5 Regeln 4, 9, 10, 11) ============ */
@@ -260,8 +301,12 @@ nav.sidebar {
 
 /* ============ CONTENT ============ */
 
+/* Memo 059 PRD-003: content-panel is transparent so the site-wide
+ * gradient (defined on html, see top of file) shows through evenly.
+ * Header / sidebar / footer keep their opaque var(--bg-canvas) bg
+ * so the chrome remains crisp. */
 .content-panel {
-    background: var(--bg-canvas);
+    background: transparent;
 }
 
 /* ============ HERO HEADLINE OVERRIDE (PRD-01, REV-05 RC-1) ============
