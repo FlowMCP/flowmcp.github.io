@@ -30,6 +30,14 @@ const REQUIRED_FRONTMATTER = [
 ]
 
 
+// Memo 055 R5 / Memo 056 PRD-17: Legacy-Files werden NICHT ins Docs-Repo synct.
+// Konfiguration als Konstante — kein implizites Filtern, kein Silent-Default.
+const LEGACY_FILES = [ 'route-tests.md' ]
+
+const DATA_DIR = path.resolve( REPO_ROOT, 'src', 'data' )
+const DATA_MANIFEST = path.join( DATA_DIR, 'manifest.json' )
+
+
 class SpecSync {
     static async run() {
         SpecSync.#assertSource()
@@ -44,12 +52,18 @@ class SpecSync {
             syncedContent: 0,
             hashChecked: 0,
             hashSkipped: 0,
-            frontmatterChecked: 0
+            frontmatterChecked: 0,
+            legacyFiltered: 0
         }
 
         await SpecSync.#prepareTargetDirs()
 
         const tasks = manifest.files.map( async ( fileEntry ) => {
+            if( LEGACY_FILES.includes( fileEntry.filename ) ) {
+                stats.legacyFiltered += 1
+                return
+            }
+
             const srcPath = path.join( SPEC_REPO_PAYLOAD, fileEntry.filename )
             if( !existsSync( srcPath ) ) {
                 throw new Error( `Manifest references missing payload file: ${fileEntry.filename}` )
@@ -77,6 +91,14 @@ class SpecSync {
 
         await writeFile(
             path.join( PUBLIC_PAYLOAD_DIR, 'manifest.json' ),
+            JSON.stringify( manifest, null, 2 ) + '\n',
+            'utf-8'
+        )
+
+        // PRD-16: Sidebar-Loader liest aus src/data/manifest.json
+        await mkdir( DATA_DIR, { recursive: true } )
+        await writeFile(
+            DATA_MANIFEST,
             JSON.stringify( manifest, null, 2 ) + '\n',
             'utf-8'
         )
