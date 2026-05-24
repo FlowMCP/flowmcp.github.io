@@ -244,6 +244,22 @@ nav.sidebar {
     content: counter(sidebar-group) ". ";
 }
 
+/* Memo 059 PRD-007 (C4 + C5 + C6 + C7): nested sub-group labels inside the
+ * Specification group (Introduction, Core Specification, Guides) inherit the
+ * same .large styling as top-level groups, which made hierarchy unreadable.
+ * Render them smaller and without uppercase/counter so the top-level group
+ * remains the visual anchor and the colour stays consistent. */
+.sidebar-content sl-sidebar-state-persist > ul > li > details ul > li > details > summary > .group-label > .large {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.4px !important;
+    text-transform: none !important;
+}
+
+.sidebar-content sl-sidebar-state-persist > ul > li > details ul > li > details > summary > .group-label > .large::before {
+    content: none !important;
+}
+
 /* Items — 14 px, weight 400, padding 4px 12px */
 .sidebar-content a {
     color: var(--text-inactive) !important;

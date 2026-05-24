@@ -6,7 +6,11 @@ import { SidebarLoader } from './src/data/sidebar.mjs';
 
 
 // Memo 056 PRD-16: Sidebar Specification-Section wird aus dem Manifest geladen.
+// Memo 059 PRD-007: specVersion from manifest.spec_version (single source of truth)
+// surfaced as a single badge on the top-level Specification group label.
 const specSidebar = SidebarLoader.buildSidebar();
+const specVersionShort = specSidebar.specVersion.replace( /\.0$/, '' );
+const specBadge = { text: `v${ specVersionShort }`, variant: 'note' };
 
 
 export default defineConfig({
@@ -189,6 +193,7 @@ export default defineConfig({
                     label: 'Specification',
                     translations: { de: 'Spezifikation' },
                     collapsed: true,
+                    badge: specBadge,
                     items: specSidebar.items,
                 },
                 {

@@ -30,7 +30,16 @@ class SidebarLoader {
         const groups = SidebarLoader.#groupByCategory( { files: filtered } )
         const items = SidebarLoader.#renderGroups( { groups } )
 
-        return { items, totalFiles: filtered.length }
+        // Memo 059 PRD-007 (C2 + C3): Single source of truth for the spec
+        // version surfaced as a sidebar badge — read from manifest.spec_version
+        // (synced from flowmcp-spec/package.json via generate-docs-payload.mjs).
+        // Strict mode: no silent default, fail loudly if missing.
+        if( typeof manifest.spec_version !== 'string' || manifest.spec_version.length === 0 ) {
+            throw new Error( '[sidebar] manifest.spec_version missing or empty' )
+        }
+        const specVersion = manifest.spec_version
+
+        return { items, totalFiles: filtered.length, specVersion }
     }
 
 
@@ -77,10 +86,12 @@ class SidebarLoader {
                     items: []
                 }
             }
+            // Memo 059 PRD-007 (C1 + C2): no per-item badges. The version is
+            // surfaced once on the top-level Specification group only (set in
+            // astro.config.mjs via buildSidebar().specVersion).
             groups[ key ].items.push( {
                 label: file.title,
-                slug: `specification/${ file.slug }`,
-                badge: file.version_added ? { text: `v${ file.version_added }`, variant: 'note' } : null
+                slug: `specification/${ file.slug }`
             } )
         } )
         return Object.values( groups )
@@ -94,9 +105,7 @@ class SidebarLoader {
                 translations: { de: group.label.de },
                 collapsed: group.collapsed,
                 items: group.items.map( ( item ) => {
-                    const entry = { label: item.label, slug: item.slug }
-                    if( item.badge ) entry.badge = item.badge
-                    return entry
+                    return { label: item.label, slug: item.slug }
                 } )
             }
         } )
