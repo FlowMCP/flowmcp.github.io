@@ -75,33 +75,44 @@ const t = isDE ? {
     padding: 0 1.5rem;
 }
 
+/* Memo 059 PRD-002 (A1): mouse-following radial gradient
+ *   - explicit rgba (Safari + Chrome parity, no color-mix dependency)
+ *   - higher alpha + opacity so the effect is actually visible on dark canvas
+ *   - --color-accent-babyblue token (PRD-005) used as accent
+ *   - Safari note: rgba is universally supported; color-mix requires 16.4+
+ */
 .pencil-hero::before {
     content: '';
     position: absolute;
     inset: -2rem;
-    z-index: -1;
+    z-index: 0;
     pointer-events: none;
     border-radius: 24px;
     background: radial-gradient(
-        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        color-mix(in srgb, var(--accent) 12%, transparent) 0%,
-        color-mix(in srgb, var(--accent) 4%, transparent) 35%,
-        transparent 70%
+        circle 600px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(121, 192, 255, 0.22) 0%,
+        rgba(121, 192, 255, 0.10) 35%,
+        rgba(121, 192, 255, 0) 70%
     );
-    opacity: 0.55;
+    opacity: 0.9;
     animation: pencil-hero-pulse 8s ease-in-out infinite;
-    transition: background-position 0.6s ease-out;
+}
+
+/* Keep all hero children above the gradient layer */
+.pencil-hero > * {
+    position: relative;
+    z-index: 1;
 }
 
 @keyframes pencil-hero-pulse {
-    0%, 100% { opacity: 0.45; transform: scale(1); }
-    50%      { opacity: 0.70; transform: scale(1.02); }
+    0%, 100% { opacity: 0.80; transform: scale(1); }
+    50%      { opacity: 1.00; transform: scale(1.02); }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .pencil-hero::before {
         animation: none;
-        opacity: 0.5;
+        opacity: 0.85;
     }
 }
 
