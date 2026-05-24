@@ -1,0 +1,96 @@
+---
+// BlogTopnav — Top-Navigation for standalone Blog (Memo 057 PRD-11)
+// Replaces sidebar nav with horizontal topnav: About / Docs / Roadmap / Blog
+const { active = 'blog' } = Astro.props
+
+const items = [
+    { id: 'about',    label: 'About',    href: '/about/for-decision-makers/' },
+    { id: 'docs',     label: 'Docs',     href: '/quickstart/what-is-flowmcp/' },
+    { id: 'roadmap',  label: 'Roadmap',  href: '/roadmap/overview/' },
+    { id: 'blog',     label: 'Blog',     href: '/blog/' }
+]
+---
+
+<nav class="blog-topnav" aria-label="Blog navigation">
+    <a class="blog-topnav__brand" href="/" aria-label="FlowMCP Home">
+        <img src="/logo.svg" alt="" width="24" height="24" />
+        <span>FlowMCP</span>
+    </a>
+    <ul class="blog-topnav__items">
+        {items.map( ( item ) => (
+            <li>
+                <a
+                    href={item.href}
+                    class={`blog-topnav__link ${active === item.id ? 'is-active' : ''}`}
+                    aria-current={active === item.id ? 'page' : undefined}
+                >
+                    {item.label}
+                </a>
+            </li>
+        ) )}
+    </ul>
+</nav>
+
+<style>
+.blog-topnav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1rem 2rem;
+    background: var(--bg-canvas);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.blog-topnav__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+}
+
+.blog-topnav__items {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.blog-topnav__link {
+    color: var(--text-inactive);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 0.4rem 0.2rem;
+    transition: color 0.15s;
+}
+
+.blog-topnav__link:hover {
+    color: var(--text-primary);
+}
+
+.blog-topnav__link.is-active {
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+}
+
+@media (max-width: 640px) {
+    .blog-topnav {
+        padding: 0.75rem 1rem;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    .blog-topnav__items {
+        gap: 1rem;
+        font-size: 13px;
+    }
+}
+</style>

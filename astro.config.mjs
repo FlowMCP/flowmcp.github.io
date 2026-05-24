@@ -210,19 +210,7 @@ export default defineConfig({
                         { label: 'x402', translations: { de: 'x402' }, slug: 'ecosystem/x402' },
                     ],
                 },
-                {
-                    label: 'Blog',
-                    translations: { de: 'Blog' },
-                    collapsed: true,
-                    // SIDEBAR-STRATEGIE (PRD-29, Memo 052):
-                    // Manuelle Pflege bis Memo 047 die ersten 4 Blog-Posts liefert.
-                    // Danach Umstieg auf Auto-list via Astro getCollection('docs')
-                    // mit Filter data.section === 'Blog' erwaegen.
-                    items: [
-                        { label: 'Blog', translations: { de: 'Blog' }, link: '/blog/' },
-                        { label: 'Welcome', translations: { de: 'Willkommen' }, slug: 'blog/welcome' },
-                    ],
-                },
+                // Blog removed from sidebar — now standalone view at /blog/ (Memo 057 PRD-11)
                 {
                     label: 'Roadmap & Team',
                     translations: { de: 'Roadmap & Team' },
