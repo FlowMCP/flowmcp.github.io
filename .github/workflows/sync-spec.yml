@@ -1,4 +1,4 @@
-# v4.0.0 spec source — synced from FlowMCP/flowmcp-spec/spec/v4.0.0
+# Sync Spec from flowmcp-spec (Source of Truth) — Targets: src/content/docs/specification/ + public/spec-generated/docs-payload/
 name: Sync Spec from flowmcp-spec
 
 on:
@@ -33,7 +33,7 @@ jobs:
       - name: Check for changes
         id: check
         run: |
-          if [ -n "$(git status --porcelain public/spec-source/)" ]; then
+          if [ -n "$(git status --porcelain src/content/docs/specification/ public/spec-generated/docs-payload/ src/data/manifest.json)" ]; then
             echo "changed=true" >> $GITHUB_OUTPUT
           else
             echo "changed=false" >> $GITHUB_OUTPUT
@@ -44,6 +44,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/spec-source/
+          git add src/content/docs/specification/ public/spec-generated/docs-payload/ src/data/manifest.json
           git commit -m "chore: sync spec from flowmcp-spec [auto]"
           git push
