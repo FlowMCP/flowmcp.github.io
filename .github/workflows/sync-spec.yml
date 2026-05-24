@@ -13,11 +13,20 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout flowmcp.github.io
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
+          path: flowmcp.github.io
+          ref: ${{ github.ref_name }}
+
+      - name: Checkout flowmcp-spec (sibling for sync-spec.mjs)
+        uses: actions/checkout@v4
+        with:
+          repository: FlowMCP/flowmcp-spec
+          path: flowmcp-spec
+          ref: main
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -25,13 +34,16 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
+        working-directory: flowmcp.github.io
         run: npm ci
 
       - name: Sync spec
+        working-directory: flowmcp.github.io
         run: npm run sync-spec
 
       - name: Check for changes
         id: check
+        working-directory: flowmcp.github.io
         run: |
           if [ -n "$(git status --porcelain src/content/docs/specification/ public/spec-generated/docs-payload/ src/data/manifest.json)" ]; then
             echo "changed=true" >> $GITHUB_OUTPUT
@@ -41,9 +53,10 @@ jobs:
 
       - name: Commit and push
         if: steps.check.outputs.changed == 'true'
+        working-directory: flowmcp.github.io
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add src/content/docs/specification/ public/spec-generated/docs-payload/ src/data/manifest.json
           git commit -m "chore: sync spec from flowmcp-spec [auto]"
-          git push
+          git push origin HEAD:${{ github.ref_name }}
