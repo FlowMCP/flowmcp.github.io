@@ -7,3 +7,6 @@ dist/
 # Playwright test output
 test-results/
 playwright-report/
+
+# Local trash (Memo 060 PRD-007 etc.)
+.trash/

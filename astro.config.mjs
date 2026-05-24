@@ -25,9 +25,11 @@ export default defineConfig({
         '/specification': '/specification/overview/',
 
         // PRD-06: IA-Refactor URL-Mappings (REV-05 Kap. 6.3)
-        '/basics/schemas-and-tools/':         '/concepts/schemas-and-tools/',
-        '/basics/schema-catalog/':            '/concepts/schema-catalog/',
-        '/basics/agents/':                    '/concepts/agents/',
+        // Memo 060 PRD-007 (Phase 2): Concepts auf 4 Eintraege konsolidiert,
+        // alte URLs zeigen jetzt auf die neuen Ziele (schemas, tools, primitives, clients).
+        '/basics/schemas-and-tools/':         '/concepts/schemas/',
+        '/basics/schema-catalog/':            '/concepts/schemas/',
+        '/basics/agents/':                    '/concepts/primitives/',
         '/basics/clients/':                   '/concepts/clients/',
 
         '/docs/getting-started/what-is-flowmcp/': '/quickstart/what-is-flowmcp/',
@@ -35,18 +37,39 @@ export default defineConfig({
         '/docs/getting-started/quickstart/':      '/quickstart/quickstart/',
         '/docs/getting-started/how-it-works/':    '/quickstart/how-it-works/',
 
-        '/docs/schemas/overview/':       '/concepts/schemas-overview/',
-        '/docs/schemas/tools/':          '/concepts/schemas-tools/',
-        '/docs/schemas/resources/':      '/concepts/schemas-resources/',
-        '/docs/schemas/prompts/':        '/concepts/schemas-prompts/',
-        '/docs/schemas/skills/':         '/concepts/schemas-skills/',
-        '/docs/schemas/tags-reference/': '/concepts/tag-search/',
-        '/reference/tags-reference/':    '/concepts/tag-search/',
-        '/de/reference/tags-reference/': '/de/concepts/tag-search/',
+        // Memo 060 PRD-007: alte Concepts-Sub-Pages -> neue 4-Eintrag-Struktur
+        '/docs/schemas/overview/':       '/concepts/schemas/',
+        '/docs/schemas/tools/':          '/concepts/tools/',
+        '/docs/schemas/resources/':      '/concepts/primitives/',
+        '/docs/schemas/prompts/':        '/concepts/primitives/',
+        '/docs/schemas/skills/':         '/concepts/primitives/',
+        '/docs/schemas/tags-reference/': '/concepts/schemas/',
+        '/reference/tags-reference/':    '/concepts/schemas/',
+        '/de/reference/tags-reference/': '/de/concepts/schemas/',
 
-        '/docs/agents/overview/':        '/concepts/agents/',
-        '/concepts/agents-overview/':    '/concepts/agents/',
-        '/de/concepts/agents-overview/': '/de/concepts/agents/',
+        // Memo 060 PRD-007: Concepts-Sidebar-Loeschungen -> Redirects auf neue Ziele
+        '/concepts/schema-catalog/':       '/concepts/schemas/',
+        '/concepts/tag-search/':           '/concepts/schemas/',
+        '/concepts/schemas-overview/':     '/concepts/schemas/',
+        '/concepts/schemas-and-tools/':    '/concepts/schemas/',
+        '/concepts/schemas-tools/':        '/concepts/tools/',
+        '/concepts/schemas-resources/':    '/concepts/primitives/',
+        '/concepts/schemas-prompts/':      '/concepts/primitives/',
+        '/concepts/schemas-skills/':       '/concepts/primitives/',
+        '/concepts/agents/':               '/concepts/primitives/',
+        '/de/concepts/schema-catalog/':    '/de/concepts/schemas/',
+        '/de/concepts/tag-search/':        '/de/concepts/schemas/',
+        '/de/concepts/schemas-overview/':  '/de/concepts/schemas/',
+        '/de/concepts/schemas-and-tools/': '/de/concepts/schemas/',
+        '/de/concepts/schemas-tools/':     '/de/concepts/tools/',
+        '/de/concepts/schemas-resources/': '/de/concepts/primitives/',
+        '/de/concepts/schemas-prompts/':   '/de/concepts/primitives/',
+        '/de/concepts/schemas-skills/':    '/de/concepts/primitives/',
+        '/de/concepts/agents/':            '/de/concepts/primitives/',
+
+        '/docs/agents/overview/':        '/concepts/primitives/',
+        '/concepts/agents-overview/':    '/concepts/primitives/',
+        '/de/concepts/agents-overview/': '/de/concepts/primitives/',
 
         '/docs/usage/cli/':              '/reference/cli/',
         '/docs/usage/mcp-server/':       '/reference/mcp-server/',
@@ -176,21 +199,19 @@ export default defineConfig({
                         { label: 'GTFS Pilot', translations: { de: 'GTFS-Pilot' }, slug: 'guides/gtfs-pilot' },
                     ],
                 },
+                // Memo 060 PRD-007 (Phase 2): Concepts reduziert auf 4 Eintraege
+                // (Variante C). Schema Catalog, Tag Search, Schemas Overview,
+                // Schemas & Tools, Resources, Prompts, Skills, Agents -> in
+                // schemas.md / tools.md / primitives.md / clients.md konsolidiert.
                 {
                     label: 'Concepts',
                     translations: { de: 'Konzepte' },
                     collapsed: true,
                     items: [
-                        { label: 'Schemas & Tools', translations: { de: 'Schemas und Tools' }, slug: 'concepts/schemas-and-tools' },
-                        { label: 'Schema Catalog', translations: { de: 'Schema-Katalog' }, slug: 'concepts/schema-catalog' },
-                        { label: 'Schemas Overview', translations: { de: 'Schemas-Uebersicht' }, slug: 'concepts/schemas-overview' },
-                        { label: 'Tools', translations: { de: 'Tools' }, slug: 'concepts/schemas-tools' },
-                        { label: 'Resources', translations: { de: 'Ressourcen' }, slug: 'concepts/schemas-resources' },
-                        { label: 'Prompts', translations: { de: 'Prompts' }, slug: 'concepts/schemas-prompts' },
-                        { label: 'Skills', translations: { de: 'Skills' }, slug: 'concepts/schemas-skills' },
-                        { label: 'Agents', translations: { de: 'Agents' }, slug: 'concepts/agents' },
-                        { label: 'Clients', translations: { de: 'Clients' }, slug: 'concepts/clients' },
-                        { label: 'Tag Search', translations: { de: 'Tag-Suche' }, slug: 'concepts/tag-search' },
+                        { label: 'Schemas',    translations: { de: 'Schemas' },    slug: 'concepts/schemas' },
+                        { label: 'Tools',      translations: { de: 'Tools' },      slug: 'concepts/tools' },
+                        { label: 'Primitives', translations: { de: 'Primitive' },  slug: 'concepts/primitives' },
+                        { label: 'Clients',    translations: { de: 'Clients' },    slug: 'concepts/clients' },
                     ],
                 },
                 {
