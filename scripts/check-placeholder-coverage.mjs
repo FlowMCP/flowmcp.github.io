@@ -32,12 +32,25 @@ const walkDir = async ( { dir } ) => {
 }
 
 
+// Strip content that is documentation about placeholders:
+// - inside <code>...</code> (Markdown backticks render to <code>)
+// - inside <pre>...</pre> (fenced code blocks)
+// - inside Markdown backticks (raw .md/.txt scans)
+const stripDocumentationContexts = ( { line } ) => {
+    return line
+        .replace( /<code\b[^>]*>[\s\S]*?<\/code>/g, '' )
+        .replace( /<pre\b[^>]*>[\s\S]*?<\/pre>/g, '' )
+        .replace( /`[^`]*`/g, '' )
+}
+
+
 const scanFile = async ( { file } ) => {
     const content = await readFile( file, 'utf-8' )
     const lines = content.split( '\n' )
     const hits = []
     lines.forEach( ( line, index ) => {
-        const matches = line.match( REFS_PLACEHOLDER_REGEX )
+        const stripped = stripDocumentationContexts( { line } )
+        const matches = stripped.match( REFS_PLACEHOLDER_REGEX )
         if( matches !== null ) {
             matches.forEach( ( match ) => {
                 hits.push( {
