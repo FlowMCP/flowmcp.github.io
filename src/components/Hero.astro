@@ -5,7 +5,7 @@ const path = Astro.url.pathname;
 const isDE = path.startsWith('/de/') || path === '/de';
 
 const t = isDE ? {
-    pill: 'FlowMCP v4.0 · Lies die Ankündigung',
+    pill: 'FlowMCP v4.0 · Ankündigung lesen',
     headlineLine1: 'Beliebige Datenquellen',
     headlineLine2: 'für KI-Agenten.',
     tagline: '288 Datenquellen · 1.534 KI-aufrufbare Tools · KI-nativ, fuer tiefe Recherche.',
@@ -167,7 +167,7 @@ const t = isDE ? {
 
 .pencil-hero__hackathon {
     font-size: 11px;
-    color: var(--accent);
+    color: var(--text-inactive);
     font-weight: 500;
     margin-top: 0.2rem;
 }
