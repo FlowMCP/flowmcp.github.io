@@ -5,8 +5,6 @@ sidebar:
   order: 10
 ---
 
-import { Aside } from '@astrojs/starlight/components';
-
 Diese Seite beschreibt, wie eine einzige manuelle Aenderung an `data/refs.manual.json` im Spec-Repo automatisch zu aktualisierten Docs, Org-Profile, llms.txt-Varianten und robots.txt fuehrt.
 
 ## Architektur-Regeln R1-R8
@@ -197,6 +195,6 @@ Wie eine neue Minor-Version (z. B. v4.2.0) ausgerollt wird:
 
 Das alte v4.1.0-Verzeichnis bleibt unberuehrt als historisches Release.
 
-<Aside type="note">
+:::note
 Die R6a-R6b-Trennung gilt auch fuer neue Versionen: `spec/v4.2.0/` ist English-Only, die DE-Webseite in `src/content/docs/de/...` wird parallel aktualisiert.
-</Aside>
+:::
