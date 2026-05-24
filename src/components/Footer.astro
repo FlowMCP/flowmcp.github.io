@@ -1,14 +1,91 @@
 ---
 // Custom Footer — Pencil-Stil (Mockup Gdy0k Bottom)
-// Pencil zeigt nur: Logo "FlowMCP" links + "© 2026 FlowMCP · MIT" + GitHub-Icon rechts
+// Memo 059 PRD-012: 3-column widget (Project / Resources / Community).
+// PRD-013: DE-Mirror via prefix + isDE branch on labels.
 const year = new Date().getFullYear();
 const path = Astro.url.pathname;
 const isDE = path.startsWith('/de/') || path === '/de';
+const prefix = isDE ? '/de' : '';
 
-const copy = isDE ? `© ${year} FlowMCP · MIT` : `© ${year} FlowMCP · MIT`;
+const copy = `© ${year} FlowMCP · MIT`;
+
+const t = isDE ? {
+    project: 'Projekt',
+    resources: 'Ressourcen',
+    community: 'Community',
+    about: 'Ueber',
+    blog: 'Blog',
+    license: 'Lizenz',
+    quickstart: 'Schnellstart',
+    specification: 'Spezifikation',
+    schemas: 'Schemas',
+    roadmap: 'Roadmap',
+    team: 'Team',
+    github: 'GitHub',
+} : {
+    project: 'Project',
+    resources: 'Resources',
+    community: 'Community',
+    about: 'About',
+    blog: 'Blog',
+    license: 'License',
+    quickstart: 'Quickstart',
+    specification: 'Specification',
+    schemas: 'Schemas',
+    roadmap: 'Roadmap',
+    team: 'Team',
+    github: 'GitHub',
+};
+
+// Note: /license route does not exist — link to /license-faq/ (existing route).
+// Schemas page is unlocalized (single /schemas route).
+const columns = [
+    {
+        title: t.project,
+        links: [
+            { label: t.about,   href: prefix + '/about/' },
+            { label: t.blog,    href: prefix + '/blog/' },
+            { label: t.license, href: prefix + '/license-faq/' },
+        ],
+    },
+    {
+        title: t.resources,
+        links: [
+            { label: t.quickstart,    href: prefix + '/quickstart/quickstart/' },
+            { label: t.specification, href: prefix + '/specification/overview/' },
+            { label: t.schemas,       href: '/schemas/' },
+        ],
+    },
+    {
+        title: t.community,
+        links: [
+            { label: t.roadmap, href: prefix + '/roadmap/' },
+            { label: t.team,    href: prefix + '/team/' },
+            { label: t.github,  href: 'https://github.com/FlowMCP', external: true },
+        ],
+    },
+];
 ---
 
 <footer class="pencil-footer">
+    <div class="pencil-footer__widget">
+        {columns.map( ( col ) => (
+            <div class="pencil-footer__col">
+                <h3 class="pencil-footer__col-title">{col.title}</h3>
+                <ul class="pencil-footer__col-list">
+                    {col.links.map( ( link ) => (
+                        <li>
+                            {link.external ? (
+                                <a href={link.href} rel="noopener" target="_blank">{link.label}</a>
+                            ) : (
+                                <a href={link.href}>{link.label}</a>
+                            )}
+                        </li>
+                    ) )}
+                </ul>
+            </div>
+        ) )}
+    </div>
     <div class="pencil-footer__inner">
         <div class="pencil-footer__brand">
             <span class="pencil-footer__logo">FlowMCP</span>
@@ -27,13 +104,47 @@ const copy = isDE ? `© ${year} FlowMCP · MIT` : `© ${year} FlowMCP · MIT`;
 .pencil-footer {
     border-top: 1px solid var(--border);
     background: var(--bg-canvas);
-    padding: 1.25rem 0;
+    padding: 2rem 0 1.25rem;
     margin-top: 4rem;
+}
+.pencil-footer__widget {
+    max-width: 1100px;
+    margin: 0 auto 1.5rem;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+.pencil-footer__col-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.75rem;
+}
+.pencil-footer__col-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+.pencil-footer__col-list a {
+    color: var(--text-inactive);
+    font-size: 13px;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+.pencil-footer__col-list a:hover {
+    color: var(--text-primary);
 }
 .pencil-footer__inner {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 1rem 1.5rem 0;
+    border-top: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -63,6 +174,12 @@ const copy = isDE ? `© ${year} FlowMCP · MIT` : `© ${year} FlowMCP · MIT`;
 .pencil-footer__github:hover {
     color: var(--text-primary);
 }
+@media (max-width: 768px) {
+    .pencil-footer__widget {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
 @media (max-width: 640px) {
     .pencil-footer__inner {
         flex-direction: row;
@@ -73,3 +190,5 @@ const copy = isDE ? `© ${year} FlowMCP · MIT` : `© ${year} FlowMCP · MIT`;
     }
 }
 </style>
+</content>
+</invoke>
