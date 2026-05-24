@@ -108,6 +108,14 @@ starlight-theme-select {
 /* Force dark mode */
 html {
     color-scheme: dark;
+    /* Memo 059 PRD-009 (E2): smooth-scroll for anchor clicks (TOC + in-page).
+     * CSS-only variant — robust, no JS, plays nicely with reduced-motion
+     * (browsers automatically respect prefers-reduced-motion for this). */
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
 }
 
 /* ============ SITE-WIDE BACKGROUND GRADIENT (Memo 059 PRD-003) ============
@@ -297,10 +305,23 @@ nav.sidebar {
     }
 }
 
-/* ============ RIGHT SIDEBAR (On this page) ============ */
+/* ============ RIGHT SIDEBAR (On this page) — Memo 059 PRD-009 ============
+ *
+ * E1: active heading is highlighted via aria-current — Starlight's built-in
+ *     IntersectionObserver already sets this; we just style it like the main
+ *     sidebar's active item so the visual vocabulary is shared.
+ * E2: smooth-scroll handled globally on html (see top of file).
+ * E3 + E4: typography + spacing matched to the left sidebar items.
+ */
 
 .right-sidebar a {
     color: var(--text-inactive) !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    padding: 4px 12px !important;
+    display: block !important;
+    border-radius: 6px;
+    transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .right-sidebar a:hover {
@@ -308,11 +329,22 @@ nav.sidebar {
 }
 
 .right-sidebar a[aria-current="true"] {
+    background: var(--sidebar-active-bg);
     color: var(--accent) !important;
+    font-weight: 500 !important;
 }
 
 .right-sidebar h2 {
     color: var(--group-title) !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.8px !important;
+    text-transform: uppercase;
+}
+
+/* Indent depth-1 entries to mirror the left-sidebar sub-item indent (16 px). */
+.right-sidebar ul ul a {
+    padding-left: 28px !important;
 }
 
 /* ============ CONTENT ============ */
