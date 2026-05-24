@@ -1,0 +1,205 @@
+---
+// 404 Page — Memo 057 PRD-03 (vormals PRD-09)
+// User-Entscheidung: Logo + Headline + Pagefind-Search (autofocus) + 4 Top-Links
+// Bewusst OHNE "Open Issue"-Button (REV-03: "zu extrem")
+---
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>404 — Page not found | FlowMCP</title>
+    <meta name="description" content="The page you requested could not be found. Search the docs or jump to a key page." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <main id="main-content" class="notfound-page" role="main">
+        <header class="notfound-page__brand">
+            <a href="/" aria-label="FlowMCP home">
+                <img src="/favicon.svg" alt="" width="48" height="48" class="notfound-page__logo" />
+                <span class="notfound-page__wordmark">FlowMCP</span>
+            </a>
+        </header>
+
+        <h1 class="notfound-page__headline">404 — This page took a wrong turn</h1>
+
+        <p class="notfound-page__lead">
+            The link is broken or the page has moved.<br/>
+            Help yourself with one of these:
+        </p>
+
+        <section class="notfound-page__search" aria-label="Search the documentation">
+            <label for="notfound-search" class="notfound-page__search-label">Search the docs</label>
+            <div id="search" class="notfound-page__search-wrapper"></div>
+        </section>
+
+        <section class="notfound-page__jump" aria-labelledby="jump-heading">
+            <h2 id="jump-heading">Or jump to:</h2>
+            <ul class="notfound-page__links">
+                <li><a href="/">&rarr; Home</a></li>
+                <li><a href="/quickstart/what-is-flowmcp/">&rarr; Quickstart &mdash; What is FlowMCP?</a></li>
+                <li><a href="/specification/overview/">&rarr; Specification &mdash; Overview</a></li>
+                <li><a href="/schemas/">&rarr; Schema Catalog</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <script src="/pagefind/pagefind-ui.js" is:inline></script>
+    <script is:inline>
+        ( function() {
+            const init = () => {
+                if( !window.PagefindUI ) { return }
+                new window.PagefindUI( {
+                    element: '#search',
+                    showSubResults: true,
+                    autofocus: true,
+                    showImages: false
+                } )
+            }
+            if( document.readyState === 'loading' ) {
+                document.addEventListener( 'DOMContentLoaded', init )
+            } else {
+                init()
+            }
+        } )()
+    </script>
+
+    <style>
+        /* PRD-07: Skip-Link visible on focus */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--notfound-accent, #8c5dff);
+            color: #fff;
+            padding: 8px 16px;
+            z-index: 9999;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 0 0 6px 0;
+        }
+        .skip-link:focus {
+            top: 0;
+            outline: 2px solid #fff;
+            outline-offset: 2px;
+        }
+
+        :root {
+            --notfound-bg: #0e0f12;
+            --notfound-fg: #e7e9ee;
+            --notfound-muted: #8a8f99;
+            --notfound-accent: #8c5dff;
+            --notfound-border: #1f2128;
+        }
+
+        body {
+            margin: 0;
+            background: var(--notfound-bg);
+            color: var(--notfound-fg);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .notfound-page {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem 6rem;
+            text-align: center;
+        }
+
+        .notfound-page__brand a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: inherit;
+            margin-bottom: 3rem;
+        }
+
+        .notfound-page__wordmark {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .notfound-page__headline {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 0 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .notfound-page__lead {
+            color: var(--notfound-muted);
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0 auto 2.5rem;
+            max-width: 520px;
+        }
+
+        .notfound-page__search {
+            margin: 0 auto 3rem;
+            max-width: 560px;
+            text-align: left;
+        }
+
+        .notfound-page__search-label {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--notfound-muted);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .notfound-page__jump {
+            margin-top: 3rem;
+            text-align: left;
+            max-width: 560px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .notfound-page__jump h2 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--notfound-muted);
+            font-weight: 700;
+            margin: 0 0 1rem;
+        }
+
+        .notfound-page__links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 0.6rem;
+        }
+
+        .notfound-page__links a {
+            color: var(--notfound-fg);
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--notfound-border);
+            border-radius: 8px;
+            display: block;
+            transition: border-color 0.15s, color 0.15s;
+        }
+
+        .notfound-page__links a:hover {
+            color: var(--notfound-accent);
+            border-color: var(--notfound-accent);
+        }
+
+        @media (max-width: 640px) {
+            .notfound-page { padding: 2rem 1rem 4rem; }
+            .notfound-page__headline { font-size: 24px; }
+            .notfound-page__lead { font-size: 14px; }
+        }
+    </style>
+</body>
+</html>
