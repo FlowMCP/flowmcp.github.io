@@ -20,5 +20,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Playwright Chromium (for mermaid inline-svg)
+        run: npx playwright install --with-deps chromium
+
       - name: Build (Astro + Starlight)
         run: npm run build
