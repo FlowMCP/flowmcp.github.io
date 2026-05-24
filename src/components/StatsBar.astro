@@ -1,13 +1,12 @@
 ---
 // StatsBar — Pencil-Stil (Frame Gdy0k, REV-05 Kap. 2.1)
-// KEINE Kacheln (User-Entscheidung REV-03). 4 Spalten, identische Hoehe.
+// KEINE Kacheln (User-Entscheidung REV-03). 3 Spalten (Memo 057 PRD-13: Provider-Kategorien Cell entfernt).
 const path = Astro.url.pathname
 const isDE = path.startsWith( '/de/' ) || path === '/de'
 
 const stats = [
     { value: '288',    label: isDE ? 'Datenquellen'           : 'Data sources' },
     { value: '1,534',  label: isDE ? 'KI-aufrufbare Tools'    : 'AI-callable tools' },
-    { value: '13',     label: isDE ? 'Provider-Kategorien'    : 'Provider categories' },
     { value: 'MIT',    label: isDE ? 'Open-Source-Lizenz'     : 'Open source license' },
 ]
 ---
@@ -24,7 +23,7 @@ const stats = [
 <style>
 .stats-bar {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     align-items: start;
     gap: 3rem;
     margin: 2rem auto 3rem;
