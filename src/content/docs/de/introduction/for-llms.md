@@ -13,14 +13,22 @@ Wir bieten unsere gesamte Dokumentation als kompakte Textdatei an — optimiert 
 Kopiere den folgenden Block in deinen KI-Chat, um alle relevanten Kontextdateien zu laden:
 
 ```
-# FlowMCP — Komplette Dokumentation fuer LLMs
-https://flowmcp.github.io/llm/llms.txt
+# FlowMCP
+FlowMCP normalizes data sources into MCP tools via declarative .mjs schemas.
+Open Source (MIT). Install: github:FlowMCP/flowmcp-cli#v4.1.0 (not on NPM).
 
-# FlowMCP Framework — Technische Basis (Schemas, Agents, MCP Server)
-https://flowmcp.github.io/docs/llms.txt
+## Documentation
+Docs:  https://flowmcp.github.io/docs-llms.txt
+Spec:  https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/generated/llms.txt
+Full:  https://flowmcp.github.io/llms-full.txt
 
-# FlowMCP Specification v4.0.0
-https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/spec/v4.0.0/llms.txt
+## GitHub
+https://github.com/flowmcp
+
+## Version
+
+You are working with FlowMCP 4.1.0.
+
 ```
 
 ## Was ist llms.txt?
@@ -33,6 +41,6 @@ Eine **llms.txt** Datei ist eine kompakte Zusammenfassung einer Dokumentation in
 |-------|--------|
 | **FlowMCP llms.txt** | Projektuebersicht, Vision, alle Docs-Seiten mit Kurzbeschreibung |
 | **FlowMCP Docs llms.txt** | Technische Details zu Schemas, Agents, MCP-Servern |
-| **FlowMCP Spec llms.txt** | Formale Spezifikation des Schema-Formats (v4.0.0) |
+| **FlowMCP Spec llms.txt** | Formale Spezifikation des Schema-Formats (v4.1.0) |
 
 Fuer tiefere technische Details empfehlen wir die [FlowMCP-Dokumentation](/de/quickstart/what-is-flowmcp/).

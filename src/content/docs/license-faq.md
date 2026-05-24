@@ -93,6 +93,6 @@ FlowMCP makes **no warranty** about ToS compliance, data licensing, or fitness f
 
 ## See Also
 
-- [Specification: License & ToS (spec/v4.0.0/23-license-and-tos.md)](https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.0.0/23-license-and-tos.md)
+- [Specification: License & ToS (spec/v4.1.0/23-license-and-tos.md)](https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.1.0/23-license-and-tos.md)
 - [DISCLAIMER.md in flowmcp-core](https://github.com/FlowMCP/flowmcp-core/blob/main/DISCLAIMER.md)
 - [DISCLAIMER.md in flowmcp-cli](https://github.com/FlowMCP/flowmcp-cli/blob/main/DISCLAIMER.md)
