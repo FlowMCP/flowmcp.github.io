@@ -10,7 +10,9 @@ description: Was FlowMCP ist, warum es existiert, und wo es heute steht.
 
 FlowMCP begann als Versuch, mehrere Datenquellen an einen einzigen MCP-Server anzubinden. Heute ist es eine Schema-Library — **— produktionsreife Definitionen, — Datenquellen, — aufrufbare Tools** — alle ueber eine zentrale, auditierbare Engine geleitet. AI-Agenten rufen FlowMCP — nie die zugrundeliegenden APIs direkt. Deine API-Keys bleiben in deiner Kontrolle.
 
-## Was FlowMCP ist
+## Was FlowMCP ist — und nicht ist
+
+### Was es ist
 
 | Aspekt | Beschreibung |
 |--------|--------------|
@@ -25,7 +27,7 @@ FlowMCP begann als Versuch, mehrere Datenquellen an einen einzigen MCP-Server an
 | **v4.1** | Add-on-Konzept — externe Toolkits wie `gtfs-sqlite-toolkit` erweitern FlowMCP |
 | **Datenklassen** | Crypto (EVM, Solana, DeFi, Identity, NFT), Open Data (DE/EU), Wetter/Geo, Web3 Social, News, Dev-Tools |
 
-## Was FlowMCP NICHT (mehr) ist
+### Was es nicht (mehr) ist
 
 | Missverstaendnis | Realitaet |
 |------------------|-----------|
@@ -36,7 +38,11 @@ FlowMCP begann als Versuch, mehrere Datenquellen an einen einzigen MCP-Server an
 
 ## Warum wir es gebaut haben
 
+### Das Problem
+
 Open Data existiert in grosser Menge — Fahrplaene, Wetter, Behoerdendaten, Geodaten, Umweltdaten. Sie ist verstreut ueber hunderte Portale, in unterschiedlichen Formaten, hinter verschiedenen Zugriffsmethoden. Fuer Menschen muehsam. Fuer AI-Agenten — ohne Vorbereitung — praktisch unmoeglich.
+
+### Was FlowMCP tut
 
 FlowMCP macht diese Vorbereitung **einmal, fuer alle**:
 
@@ -44,6 +50,8 @@ FlowMCP macht diese Vorbereitung **einmal, fuer alle**:
 - **Eine Quelle = eine Antwort. Viele Quellen = eine nuetzliche Antwort.** Echte Fragen brauchen Kombinationen.
 - **Energieeffizienz.** Ohne Schema liest jede AI die API-Doku pro Anfrage neu — tausende Tokens, inkonsistente Ergebnisse. Ein Schema ist eine einmalige Investition: jede AI nutzt es danach effizient. Ueber tausende Anfragen ~10x Energieersparnis.
 - **Sicherheit durch Transparenz.** Schemas sind Open Source, auditierbar, verifizierbar.
+
+### Wie es aussieht
 
 ![Datenquellen werden normalisiert](/images/diagram-1-data-normalization.png)
 
@@ -56,6 +64,8 @@ FlowMCP macht diese Vorbereitung **einmal, fuer alle**:
 - **Hackathons und Prototypen** mit vorbereiteten Schemas und Mock-Mode
 
 ## Wie FlowMCP vergleicht
+
+Dasselbe Problem, drei Loesungen. Hier ist, wie sich FlowMCP gegenueber Custom-Integration und generischen Agent-Bibliotheken positioniert.
 
 | Aspekt | FlowMCP | Custom-Integration | Generische Agent-Bibliotheken |
 |--------|---------|---------------------|-------------------------------|
@@ -82,17 +92,12 @@ FlowMCP macht diese Vorbereitung **einmal, fuer alle**:
 - **Open Source von Tag eins.** Schemas, Core, CLI — alle MIT, alle auf GitHub.
 - **Eine Engine auditieren, tausende Endpunkte abdecken.** Engine zentral, Schemas duenn.
 - **API-Keys bleiben bei dir.** FlowMCP haelt Keys zur Laufzeit; AI sieht Calls + Antworten, nie Credentials.
-- **Maintainer sichtbar.** Team-Seite mit GitHub + LinkedIn. Keine anonymen Packages.
 - **Spec-Evolution dokumentiert.** v3 → v4 → v4.1 im [CHANGELOG](https://github.com/FlowMCP/flowmcp-spec/blob/main/CHANGELOG.md).
 
 ## Community
 
 - [GitHub Issues](https://github.com/FlowMCP) — Bug-Reports, Feature-Requests, Design-Diskussionen im relevanten Repo
 - [Roadmap](/de/roadmap/) fuer Now/Next/Later
-
-## FAQ
-
-Typische Fragen zu Installation, MCP-Client-Kompatibilitaet, Schema-Beitrag: [FAQ →](/de/about/faq/).
 
 ## Naechste Schritte
 
