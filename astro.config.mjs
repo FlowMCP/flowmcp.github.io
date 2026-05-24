@@ -2,13 +2,18 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import rehypeMermaid from 'rehype-mermaid';
+import { SidebarLoader } from './src/data/sidebar.mjs';
+
+
+// Memo 056 PRD-16: Sidebar Specification-Section wird aus dem Manifest geladen.
+const specSidebar = SidebarLoader.buildSidebar();
 
 
 export default defineConfig({
     site: 'https://flowmcp.github.io',
     markdown: {
         rehypePlugins: [
-            [ rehypeMermaid, { strategy: 'pre-mermaid' } ],
+            [ rehypeMermaid, { strategy: 'inline-svg' } ],
         ],
     },
     redirects: {
@@ -169,47 +174,7 @@ export default defineConfig({
                     label: 'Specification',
                     translations: { de: 'Spezifikation' },
                     collapsed: true,
-                    items: [
-                        {
-                            label: 'Core',
-                            translations: { de: 'Kern' },
-                            collapsed: false,
-                            items: [
-                                { label: 'Overview', translations: { de: 'Uebersicht' }, slug: 'specification/overview' },
-                                { label: 'Schema Format', translations: { de: 'Schema-Format' }, slug: 'specification/schema-format' },
-                                { label: 'Parameters', translations: { de: 'Parameter' }, slug: 'specification/parameters' },
-                                { label: 'Shared Lists', translations: { de: 'Geteilte Listen' }, slug: 'specification/shared-lists' },
-                                { label: 'Output Schema', translations: { de: 'Output-Schema' }, slug: 'specification/output-schema' },
-                            ],
-                        },
-                        {
-                            label: 'Primitives',
-                            translations: { de: 'Primitives' },
-                            collapsed: false,
-                            items: [
-                                { label: 'Resources', translations: { de: 'Ressourcen' }, slug: 'specification/resources' },
-                                { label: 'Prompts', translations: { de: 'Prompts' }, slug: 'specification/prompt-architecture' },
-                                { label: 'Skills', translations: { de: 'Skills' }, slug: 'specification/skills' },
-                                { label: 'Agents', translations: { de: 'Agents' }, slug: 'specification/agents' },
-                                { label: 'Route Tests', translations: { de: 'Route-Tests' }, slug: 'specification/route-tests' },
-                                { label: 'Preload', translations: { de: 'Preload' }, slug: 'specification/preload' },
-                                { label: 'Catalog', translations: { de: 'Katalog' }, slug: 'specification/catalog' },
-                                { label: 'ID Schema', translations: { de: 'ID-Schema' }, slug: 'specification/id-schema' },
-                            ],
-                        },
-                        {
-                            label: 'Operations',
-                            translations: { de: 'Operations' },
-                            collapsed: false,
-                            items: [
-                                { label: 'Validation Rules', translations: { de: 'Validierungsregeln' }, slug: 'specification/validation-rules' },
-                                { label: 'Migration', translations: { de: 'Migration' }, slug: 'specification/migration' },
-                                { label: 'Security', translations: { de: 'Sicherheit' }, slug: 'specification/security' },
-                                { label: 'Tests', translations: { de: 'Tests' }, slug: 'specification/tests' },
-                                { label: 'Prompt Architecture', translations: { de: 'Prompt-Architektur' }, slug: 'specification/prompt-architecture' },
-                            ],
-                        },
-                    ],
+                    items: specSidebar.items,
                 },
                 {
                     label: 'Reference',
