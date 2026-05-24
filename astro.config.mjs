@@ -163,6 +163,8 @@ export default defineConfig({
                 },
                 // Memo 059 PRD-011: Quickstart + Guides merged into "Get Started" (B3/B7).
                 // Inline-Listing (Variant A) — flat list, no sub-group. AC-3: exactly 4 items.
+                // PRD-013 audit: DE-Mirror via Starlight `translations` keys — both locales
+                // render 6 groups with localized labels (Loslegen, Konzepte, etc.).
                 {
                     label: 'Get Started',
                     translations: { de: 'Loslegen' },

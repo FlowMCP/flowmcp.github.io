@@ -16,6 +16,8 @@ const prefix = isDE ? '/de' : '';
 
 // Memo 059 PRD-010 + PRD-013: Top-Nav reduced to About / Docs / Blog.
 // Roadmap and Team moved to Footer-Widget (PRD-012).
+// PRD-013 audit: DE-Mirror complete — navLinks branch on isDE; both locales
+// show 3 entries. EN: About/Docs/Blog. DE: Über/Docs/Blog.
 const navLinks = isDE ? [
     { text: 'Über',  href: prefix + '/about/',                      match: '/about' },
     { text: 'Docs',  href: prefix + '/quickstart/what-is-flowmcp/', match: '/quickstart' },

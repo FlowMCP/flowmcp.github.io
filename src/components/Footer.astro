@@ -1,7 +1,9 @@
 ---
 // Custom Footer — Pencil-Stil (Mockup Gdy0k Bottom)
 // Memo 059 PRD-012: 3-column widget (Project / Resources / Community).
-// PRD-013: DE-Mirror via prefix + isDE branch on labels.
+// PRD-013 audit: DE-Mirror complete — labels + hrefs locale-aware via isDE.
+// Both locales render 3 columns × 3 links. DE labels: Projekt/Ressourcen/Community.
+// /schemas/ is intentionally unlocalized (single global route).
 const year = new Date().getFullYear();
 const path = Astro.url.pathname;
 const isDE = path.startsWith('/de/') || path === '/de';
