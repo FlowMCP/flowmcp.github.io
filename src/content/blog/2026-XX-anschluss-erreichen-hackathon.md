@@ -28,7 +28,7 @@ Testfelder waren Berlin Hbf, S+U Jannowitzbruecke, Potsdam (4 Bahnhoefe) und Bad
 
 Unser Beitrag adressierte die **Mobilitaetsdaten-Challenge**. Die Aufgabe: aus einem heterogenen Set deutscher Mobility-APIs einen Agenten bauen, der Anschluss-Fragen beantwortet — "Wie komme ich von Berlin Hbf nach Bad Belzig mit dem Anschluss-Rad?", "Welche Sharing-Optionen gibt es am Ziel-Bahnhof?".
 
-Vorher hatten wir in mehreren Sprints (`.memo/003-hackathon-anschluss-erreichen`) ein Inventar deutscher Mobility-Provider erstellt und systematisch als FlowMCP-Schemas vorbereitet — ÖPNV (DELFI, VBB), Fernverkehr, Sharing-APIs, Radparken-Datensaetze. Am Hackathon-Tag mussten wir die Schemas nicht mehr schreiben — wir mussten sie nur noch komponieren.
+In mehreren Vorbereitungs-Sprints haben wir die deutschen Mobility-Provider als REST-API-Schemas in FlowMCP eingepflegt — DELFI, VBB, Sharing-APIs, Radparken-Datensaetze. Damals noch ohne GTFS-Add-on: jede Schedule-Abfrage ging als REST-Call durch.
 
 ### Was hat sich bewaehrt
 
@@ -42,7 +42,7 @@ Vorher hatten wir in mehreren Sprints (`.memo/003-hackathon-anschluss-erreichen`
 
 Mobility-Daten sind **zeitlich** strukturiert. GTFS-Feeds, Service-Calendars, Realtime-Endpoints — ohne deterministische Time-Window-Abfragen verliert sich die LLM in Fragen wie "welcher der drei Trains ist morgen?". Hier zeigte sich die spaetere Antwort von v4: **Skills mit Prefill** und **Pipes mit Output-Schema**.
 
-Aus dieser Friction entstand v4.1: GTFS als erste vollwertige Datenklasse mit eigenem Add-on (`gtfs-sqlite-toolkit`). Mehr dazu im Folge-Beitrag.
+Mobility-Daten ueber REST-Calls funktioniert, ist aber teuer fuer Time-Window-Queries (jede Frage = ein API-Call). Aus dieser Friction entstand v4.1: GTFS-Feeds werden einmal lokal zu SQLite konvertiert, danach laufen tausende Queries ohne weiteren Netzwerk-Hit. Mehr im Folge-Beitrag.
 
 ## Ergebnis
 
