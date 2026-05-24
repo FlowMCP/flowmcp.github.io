@@ -4,9 +4,11 @@
 const path = Astro.url.pathname
 const isDE = path.startsWith( '/de/' ) || path === '/de'
 
+// Stats source: .memo/058-content-strecke/rollout/stats-verification.md (2026-05-24)
+// 365 schemas (v4 production), 288 providers, 3,102 callable tools
 const stats = [
     { value: '288',    label: isDE ? 'Datenquellen'           : 'Data sources' },
-    { value: '1,534',  label: isDE ? 'KI-aufrufbare Tools'    : 'AI-callable tools' },
+    { value: '3,100+', label: isDE ? 'KI-aufrufbare Tools'    : 'AI-callable tools' },
     { value: 'MIT',    label: isDE ? 'Open-Source-Lizenz'     : 'Open source license' },
 ]
 ---

@@ -4,11 +4,15 @@
 const path = Astro.url.pathname;
 const isDE = path.startsWith('/de/') || path === '/de';
 
+// Mission sub-headline test (Memo 058 PRD-08, User-Bestaetigung Q13):
+// Vision-Satz aus Kap. 2.4 als Sub-Headline unter dem H1. Wenn er nicht schaerft,
+// bleibt er nur in About. Stats updated to v4 production numbers (Memo 058 PRD-08).
 const t = isDE ? {
     pill: 'FlowMCP v4.0 · Ankündigung lesen',
     headlineLine1: 'Beliebige Datenquellen',
     headlineLine2: 'für KI-Agenten.',
-    tagline: '288 Datenquellen · 1.534 KI-aufrufbare Tools · KI-nativ, fuer tiefe Recherche.',
+    mission: 'FlowMCP normalisiert hunderte Datenquellen zu einer durchsuchbaren Library aus AI-bereiten Tools — damit deine Agenten suchen, kombinieren und antworten können, ohne dass du sie zu Integrations-Maintainern machst.',
+    tagline: '288 Datenquellen · 3.100+ KI-aufrufbare Tools · KI-nativ, fuer tiefe Recherche.',
     ctaPrimary: 'Dokumentation lesen →',
     ctaSecondary: 'FlowMCP GPT fragen',
     trust: 'Open Source · MIT · GitHub-nativ · Kein Vendor-Lock-in',
@@ -19,7 +23,8 @@ const t = isDE ? {
     pill: 'FlowMCP v4.0 · Read the announcement',
     headlineLine1: 'Normalize any data source',
     headlineLine2: 'for AI agents.',
-    tagline: '288 data sources · 1,534 AI-callable tools · AI-native, built for deep research.',
+    mission: 'FlowMCP normalises hundreds of data sources into a searchable library of AI-ready tools — so your agents can search, combine, and answer without turning you into an integrations maintainer.',
+    tagline: '288 data sources · 3,100+ AI-callable tools · AI-native, built for deep research.',
     ctaPrimary: 'Read the Docs →',
     ctaSecondary: 'Ask FlowMCP GPT',
     trust: 'Open source · MIT · GitHub-native · No vendor lock-in',
@@ -38,6 +43,10 @@ const t = isDE ? {
     <h1 class="pencil-hero__headline">
         {t.headlineLine1}<br/>{t.headlineLine2}
     </h1>
+
+    <p class="pencil-hero__mission">
+        {t.mission}
+    </p>
 
     <p class="pencil-hero__tagline">
         {t.tagline}
@@ -115,8 +124,18 @@ const t = isDE ? {
 
 /* .pencil-hero__headline — siehe custom.css HERO HEADLINE OVERRIDE Block */
 
+.pencil-hero__mission {
+    font-size: 17px;
+    color: var(--text-secondary, var(--text-primary));
+    margin: 0 auto 1.5rem;
+    max-width: 760px;
+    line-height: 1.5;
+    font-style: italic;
+    opacity: 0.95;
+}
+
 .pencil-hero__tagline {
-    font-size: 20px;
+    font-size: 16px;
     color: var(--text-inactive);
     margin: 0 auto 2.5rem;
     max-width: 680px;
@@ -176,7 +195,8 @@ const t = isDE ? {
     .pencil-hero { margin: 3rem auto 2rem; }
     .pencil-hero__pill { font-size: 11px; }
     /* .pencil-hero__headline mobile rule — siehe custom.css HERO HEADLINE OVERRIDE */
-    .pencil-hero__tagline { font-size: 14px; }
+    .pencil-hero__mission { font-size: 14px; }
+    .pencil-hero__tagline { font-size: 13px; }
     .pencil-hero::before {
         animation-duration: 10s;
         opacity: 0.4;
