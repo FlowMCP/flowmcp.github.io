@@ -22,7 +22,7 @@ No custom server code. No boilerplate. One schema per provider.
 
 ## Four Primitives
 
-FlowMCP v4.0.0 supports four primitives in a single schema file:
+FlowMCP v4.1.0 supports four primitives in a single schema file:
 
 :::note[Tools]
 REST API endpoints (GET/POST/PUT/DELETE). Map parameters to URLs, inject authentication, validate inputs. The core primitive.
@@ -49,7 +49,7 @@ export const main = {
     namespace: 'coingecko',
     name: 'CoinGecko Prices',
     description: 'Cryptocurrency price data from CoinGecko',
-    version: '4.0.0',
+    version: '4.1.0',
     root: 'https://api.coingecko.com/api/v3',
     tools: {
         simplePrice: {
@@ -127,5 +127,5 @@ Write your own schemas from scratch. See [Schema Creation](/guides/schema-creati
 :::
 
 :::note[Specification]
-Full v4.0.0 specification with all primitives and validation rules. See [Specification](/specification/overview/).
+Full v4.1.0 specification with all primitives and validation rules. See [Specification](/specification/overview/).
 :::

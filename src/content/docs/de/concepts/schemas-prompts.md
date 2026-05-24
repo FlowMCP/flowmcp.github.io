@@ -81,7 +81,7 @@ Ein CoinGecko-Schema mit einem `about`-Prompt:
 export const main = {
     namespace: 'coingecko',
     name: 'CoinData',
-    version: '4.0.0',
+    version: '4.1.0',
     root: 'https://api.coingecko.com/api/v3',
     tools: {
         simplePrice: { /* ... */ },

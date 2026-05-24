@@ -6,7 +6,7 @@ description: 187+ pre-built API schemas ready to use
 <span style="display:none" data-pagefind-meta="section">Docs > Ecosystem</span>
 <!-- PAGEFIND-META-END -->
 
-The [FlowMCP Schema Library](https://github.com/FlowMCP/flowmcp-schemas) is a curated collection of 187+ production-ready schemas covering DeFi, blockchain analytics, utilities, and more. Each schema follows the FlowMCP v2.0.0 specification and is validated, tested, and ready to use.
+The [FlowMCP Schema Library](https://github.com/FlowMCP/flowmcp-schemas) is a curated collection of 187+ production-ready schemas covering DeFi, blockchain analytics, utilities, and more. Each schema follows the FlowMCP v4.1.0 specification and is validated, tested, and ready to use.
 
 **Browse schemas:** [flowmcp.github.io/flowmcp-schemas](https://flowmcp.github.io/flowmcp-schemas/)
 
@@ -190,7 +190,7 @@ New schemas are welcome. Follow these steps:
 
 All schemas in the library must meet these requirements:
 
-- **v2.0.0 format** with all required fields (`namespace`, `name`, `description`, `version`, `routes`)
+- **v4.1.0 format** with all required fields (`namespace`, `name`, `description`, `version`, `routes`)
 - **Output schemas** for all routes (`output.schema` with JSON Schema describing the response)
 - **Documentation links** in the `docs` field
 - **Tags** for discoverability

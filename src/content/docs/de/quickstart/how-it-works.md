@@ -29,7 +29,7 @@ Die Schema-Schicht ist dein Arbeitsbereich. Alles andere wird von der Runtime ue
        namespace: 'coingecko',
        name: 'Ping',
        description: 'Check CoinGecko API server status',
-       version: '4.0.0',
+       version: '4.1.0',
        root: 'https://api.coingecko.com/api/v3',
        requiredServerParams: [],
        requiredLibraries: [],
@@ -90,7 +90,7 @@ Die Schema-Schicht ist dein Arbeitsbereich. Alles andere wird von der Runtime ue
 
 ## Schema-Anatomie
 
-Jedes FlowMCP v4.0.0 Schema nutzt das **Two-Export-Pattern**:
+Jedes FlowMCP v4.1.0 Schema nutzt das **Two-Export-Pattern**:
 
 ### main (erforderlich)
 
@@ -102,7 +102,7 @@ export const main = {
     namespace: 'provider',       // Provider-Name (Kleinbuchstaben)
     name: 'ToolName',            // Lesbarer Name
     description: 'What it does', // Wird von KI-Clients genutzt
-    version: '4.0.0',            // Schema-Format-Version
+    version: '4.1.0',            // Schema-Format-Version
 
     // Verbindung
     root: 'https://api.example.com', // Basis-URL
@@ -227,5 +227,5 @@ Schemas, die versuchen Module zu importieren, auf das Dateisystem zuzugreifen od
 :::
 
 :::note
-Fuer die vollstaendige Spezifikation einschliesslich aller Validierungsregeln, Parameterformate und Sicherheitsdetails, siehe die [Spezifikation v4.0.0](/de/specification/overview/).
+Fuer die vollstaendige Spezifikation einschliesslich aller Validierungsregeln, Parameterformate und Sicherheitsdetails, siehe die [Spezifikation v4.1.0](/de/specification/overview/).
 :::

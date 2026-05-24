@@ -8,7 +8,7 @@ import InstallNote from '../../../components/InstallNote.astro';
 <span style="display:none" data-pagefind-meta="section">Docs > Guides</span>
 {/* PAGEFIND-META-END */}
 
-This guide walks you through creating FlowMCP v4.0.0 schemas. A schema is a `.mjs` file that describes how to interact with a REST API -- what endpoints exist, what parameters they accept, and how responses should be transformed.
+This guide walks you through creating FlowMCP v4.1.0 schemas. A schema is a `.mjs` file that describes how to interact with a REST API -- what endpoints exist, what parameters they accept, and how responses should be transformed.
 
 ## Prerequisites
 
@@ -44,7 +44,7 @@ Before creating a schema, you need:
        namespace: 'myapi',
        name: 'MyAPI',
        description: 'Access data from MyAPI service',
-       version: '4.0.0',
+       version: '4.1.0',
        docs: [ 'https://docs.myapi.com' ],
        tags: [ 'data', 'utility' ],
        root: 'https://api.myapi.com/v1',
@@ -323,5 +323,5 @@ Use `flowmcp test single` to verify against the real API. Schema validation alon
 - Forgetting `requiredServerParams` when using `{{SERVER_PARAM:...}}` in parameters
 - Using `location: 'insert'` without a matching `{{key}}` placeholder in the path
 - Declaring `requiredLibraries` without a corresponding `handlers` export that uses them
-- Omitting the `version: '4.0.0'` field (required for all schemas)
+- Omitting the `version: '4.1.0'` field (required for all schemas)
 :::

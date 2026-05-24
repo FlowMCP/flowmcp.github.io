@@ -42,7 +42,7 @@ Resources are declared inside `main.resources`. Each resource points to a SQLite
 export const main = {
     namespace: 'offeneregister',
     name: 'OffeneRegister',
-    version: '4.0.0',
+    version: '4.1.0',
     root: '',
     tools: {},
     resources: {
@@ -126,7 +126,7 @@ export const main = {
     namespace: 'offeneregister',
     name: 'OffeneRegister',
     description: 'German company register — local SQLite database',
-    version: '4.0.0',
+    version: '4.1.0',
     tags: ['open-data', 'germany', 'companies'],
     root: '',
     tools: {},

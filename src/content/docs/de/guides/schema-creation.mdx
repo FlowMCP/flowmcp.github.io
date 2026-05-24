@@ -8,7 +8,7 @@ import InstallNote from '../../../../components/InstallNote.astro';
 <span style="display:none" data-pagefind-meta="section">Docs > Guides</span>
 {/* PAGEFIND-META-END */}
 
-Diese Anleitung fuehrt dich durch die Erstellung von FlowMCP v4.0.0 Schemas. Ein Schema ist eine `.mjs`-Datei, die beschreibt, wie man mit einer REST-API interagiert -- welche Endpunkte existieren, welche Parameter sie akzeptieren und wie Antworten transformiert werden sollen.
+Diese Anleitung fuehrt dich durch die Erstellung von FlowMCP v4.1.0 Schemas. Ein Schema ist eine `.mjs`-Datei, die beschreibt, wie man mit einer REST-API interagiert -- welche Endpunkte existieren, welche Parameter sie akzeptieren und wie Antworten transformiert werden sollen.
 
 ## Voraussetzungen
 
@@ -44,7 +44,7 @@ Bevor du ein Schema erstellst, brauchst du:
        namespace: 'myapi',
        name: 'MyAPI',
        description: 'Access data from MyAPI service',
-       version: '4.0.0',
+       version: '4.1.0',
        docs: [ 'https://docs.myapi.com' ],
        tags: [ 'data', 'utility' ],
        root: 'https://api.myapi.com/v1',
@@ -323,5 +323,5 @@ Immer `output.schema` fuer jedes Tool definieren. Das hilft KI-Clients zu verste
 - `requiredServerParams` vergessen, wenn `{{SERVER_PARAM:...}}` in Parametern verwendet wird
 - `location: 'insert'` ohne passenden `{{key}}`-Platzhalter im Pfad verwenden
 - `requiredLibraries` deklarieren ohne einen entsprechenden `handlers`-Export, der sie nutzt
-- Das `version: '4.0.0'`-Feld weglassen (erforderlich fuer alle Schemas)
+- Das `version: '4.1.0'`-Feld weglassen (erforderlich fuer alle Schemas)
 :::

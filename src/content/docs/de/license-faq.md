@@ -93,6 +93,6 @@ FlowMCP gibt **keine Gewaehrleistung** fuer ToS-Compliance, Daten-Lizenzierung o
 
 ## Siehe auch
 
-- [Spezifikation: License & ToS (spec/v4.0.0/23-license-and-tos.md)](https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.0.0/23-license-and-tos.md)
+- [Spezifikation: License & ToS (spec/v4.1.0/23-license-and-tos.md)](https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.1.0/23-license-and-tos.md)
 - [DISCLAIMER.md in flowmcp-core](https://github.com/FlowMCP/flowmcp-core/blob/main/DISCLAIMER.md)
 - [DISCLAIMER.md in flowmcp-cli](https://github.com/FlowMCP/flowmcp-cli/blob/main/DISCLAIMER.md)

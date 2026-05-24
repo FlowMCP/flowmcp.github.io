@@ -127,5 +127,5 @@ Dieses Muster funktioniert in jeder Domaene, in der mehrere Datenquellen kombini
 ## Mehr erfahren
 
 - **Agent-Manifeste und Validation-Regeln:** [Agents Specification](/specification/agents/)
-- **FlowMCP Spezifikation:** [FlowMCP Spec v4.0.0](https://github.com/FlowMCP/flowmcp-spec)
+- **FlowMCP Spezifikation:** [FlowMCP Spec v4.1.0](https://github.com/FlowMCP/flowmcp-spec)
 - **MCP Clients:** [modelcontextprotocol.io/clients](https://modelcontextprotocol.io/clients)

@@ -8,7 +8,7 @@ description: "FlowMCP schemas define how data sources become MCP-compatible tool
 
 A schema is a single `.mjs` file that wraps a data source for AI agents. Each schema declares its tools, resources, prompts, and skills in a static `main` export. An optional `handlers` export adds response transformation.
 
-FlowMCP v4.0.0 supports four primitives:
+FlowMCP v4.1.0 supports four primitives:
 
 :::note[Tools]
 REST API endpoints. Map parameters to URLs, inject authentication, validate inputs. The core primitive — every schema has at least one tool. See [Tools](/concepts/schemas-tools/).

@@ -90,9 +90,9 @@ Die Community kann Schemas ueber eine [5-Stufen-Pipeline](/de/about/#community) 
 
 ## Eigene Schemas erstellen
 
-Schemas folgen der FlowMCP Spezifikation v4.0.0:
+Schemas folgen der FlowMCP Spezifikation v4.1.0:
 
 - **Dokumentation:** [Schema Uebersicht](/de/concepts/schemas-overview/)
-- **Spezifikation:** [FlowMCP Spec v4.0.0](https://github.com/FlowMCP/flowmcp-spec)
+- **Spezifikation:** [FlowMCP Spec v4.1.0](https://github.com/FlowMCP/flowmcp-spec)
 - **Wie du beitragen kannst:** [Community Hub →](/de/about/#community)
 - **Schema-Repository:** [github.com/flowmcp/flowmcp-schemas-public](https://github.com/flowmcp/flowmcp-schemas-public)

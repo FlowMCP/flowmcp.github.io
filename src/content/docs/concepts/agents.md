@@ -133,5 +133,5 @@ This pattern works across any domain where multiple data sources need to be comb
 ## Learn More
 
 - **Agent manifests and validation rules:** [Agents Specification](/specification/agents/)
-- **FlowMCP Specification:** [FlowMCP Spec v4.0.0](https://github.com/FlowMCP/flowmcp-spec)
+- **FlowMCP Specification:** [FlowMCP Spec v4.1.0](https://github.com/FlowMCP/flowmcp-spec)
 - **MCP Clients:** [modelcontextprotocol.io/clients](https://modelcontextprotocol.io/clients)

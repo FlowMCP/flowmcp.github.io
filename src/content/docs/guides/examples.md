@@ -6,7 +6,7 @@ description: Practical FlowMCP schema examples for common patterns
 <span style="display:none" data-pagefind-meta="section">Docs > Guides</span>
 <!-- PAGEFIND-META-END -->
 
-These examples demonstrate the four most common FlowMCP schema patterns, from the simplest possible schema to multi-step async workflows. All examples use the v4.0.0 format.
+These examples demonstrate the four most common FlowMCP schema patterns, from the simplest possible schema to multi-step async workflows. All examples use the v4.1.0 format.
 
 ## 1. Minimal Schema
 
