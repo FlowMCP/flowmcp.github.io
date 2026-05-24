@@ -1,6 +1,11 @@
 ---
-// Search Override — Pagefind-UI mit Section-Tag (PRD-05, REV-05 Kap. 5)
-// Uses pagefind.search() API to look up section meta for each visible result.
+// Search Override — Pagefind-UI mit Section-Tag + UX-Refactor (Memo 057 PRD-04)
+// 1. Section-Tag-Injektion (bestehend, REV-05 Kap. 5)
+// 2. Permanenter Empty-State statt leeres Modal
+// 3. Mobile-Cancel-Button-Fix
+// 4. Ein Hover-Bereich pro Result-Item
+// 5. Result-Highlighting via Pagefind-default <mark>
+// Search-Keyboard-Shortcuts: separate Datei (PRD-05) — wird via <script src> nachgeladen.
 import Default from '@astrojs/starlight/components/Search.astro'
 ---
 
@@ -62,6 +67,54 @@ import Default from '@astrojs/starlight/components/Search.astro'
             } ) )
         }
 
+        // -------- PRD-04: Empty-State permanent sichtbar --------
+        const ensureEmptyState = () => {
+            const drawer = document.querySelector( '.pagefind-ui' )
+            if( !drawer ) { return }
+            const input = drawer.querySelector( '.pagefind-ui__search-input' )
+            const results = drawer.querySelector( '.pagefind-ui__results' )
+            const hasQuery = input && input.value && input.value.trim().length > 0
+            let emptyMsg = drawer.querySelector( '.search-empty-state' )
+
+            if( !hasQuery ) {
+                if( !emptyMsg ) {
+                    emptyMsg = document.createElement( 'div' )
+                    emptyMsg.className = 'search-empty-state'
+                    emptyMsg.setAttribute( 'role', 'status' )
+                    emptyMsg.textContent = 'Type to search the docs…'
+                    const area = drawer.querySelector( '.pagefind-ui__drawer' ) || drawer
+                    area.appendChild( emptyMsg )
+                }
+                emptyMsg.style.display = ''
+                if( results ) { results.style.minHeight = '120px' }
+            } else if( emptyMsg ) {
+                emptyMsg.style.display = 'none'
+            }
+        }
+
+        // -------- PRD-04: Mobile-Cancel-Button-Fix --------
+        const wireMobileCancel = () => {
+            const dialog = document.querySelector( 'dialog[data-starlight-search]' ) || document.querySelector( '.starlight-search-dialog' )
+            const clearBtn = document.querySelector( '.pagefind-ui__search-clear' )
+            const closeAll = () => {
+                if( dialog && typeof dialog.close === 'function' ) { dialog.close() }
+                document.body.removeAttribute( 'data-mobile-menu-expanded' )
+            }
+            // Mobile-Cancel: Starlight rendert ggf. eigenen Cancel-Button — beide Selektoren anbinden
+            const cancelMobile = document.querySelector( '.starlight-search-cancel, [data-search-cancel]' )
+            if( cancelMobile && !cancelMobile.dataset.prd04Wired ) {
+                cancelMobile.dataset.prd04Wired = 'true'
+                cancelMobile.addEventListener( 'click', closeAll )
+            }
+            // Pagefind-Clear leert das Input (bestehendes Verhalten) — Empty-State wird re-rendert
+            if( clearBtn && !clearBtn.dataset.prd04Wired ) {
+                clearBtn.dataset.prd04Wired = 'true'
+                clearBtn.addEventListener( 'click', () => {
+                    setTimeout( ensureEmptyState, 0 )
+                } )
+            }
+        }
+
         let scheduled = false
         const schedule = () => {
             if( scheduled ) { return }
@@ -69,15 +122,84 @@ import Default from '@astrojs/starlight/components/Search.astro'
             setTimeout( () => {
                 scheduled = false
                 processResults()
+                ensureEmptyState()
+                wireMobileCancel()
             }, 80 )
         }
 
         const wire = () => {
             const observer = new MutationObserver( () => schedule() )
             observer.observe( document.body, { childList: true, subtree: true } )
+            schedule()
         }
 
         document.addEventListener( 'DOMContentLoaded', wire )
         document.addEventListener( 'astro:page-load', wire )
     } )()
 </script>
+
+<script>
+    // PRD-05: Search-Keyboard-Shortcuts (5 Shortcuts, Esc-Cross-Scope via Custom-Event)
+    import { init } from '../scripts/search-keyboard.mjs'
+    init()
+</script>
+
+<script>
+    // PRD-07: Search-Modal a11y enhancements (dialog role, focus-trap, return-focus, live-region)
+    import { initSearchA11y } from '../scripts/search-a11y.mjs'
+    initSearchA11y()
+</script>
+
+<style is:global>
+    /* PRD-04: Ein Hover-Bereich pro Result-Item ----------------------- */
+    .pagefind-ui__result {
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+    }
+    .pagefind-ui__result:hover,
+    .pagefind-ui__result:focus-within {
+        background-color: var(--sidebar-active-bg, rgba(140, 93, 255, 0.08));
+    }
+    /* Sub-Element-Hover-Zonen neutralisieren (keine eigenen Backgrounds) */
+    .pagefind-ui__result .pagefind-ui__result-title:hover,
+    .pagefind-ui__result .pagefind-ui__result-link:hover,
+    .pagefind-ui__result .pagefind-ui__result-excerpt:hover {
+        background-color: transparent;
+    }
+
+    /* PRD-04: Result-Highlighting Search-Term ------------------------- */
+    .pagefind-ui__result mark,
+    .pagefind-ui__result .pagefind-ui__result-excerpt mark {
+        background-color: var(--accent, #8c5dff);
+        color: var(--bg-canvas, #fff);
+        padding: 0 0.15em;
+        border-radius: 3px;
+        font-weight: 600;
+    }
+
+    /* PRD-04: Empty-State permanent sichtbar -------------------------- */
+    .search-empty-state {
+        text-align: center;
+        color: var(--text-inactive, #8a8f99);
+        padding: 1.5rem 1rem;
+        font-size: 14px;
+        font-style: italic;
+    }
+
+    /* PRD-04: Results-Container hat sichtbare Mindesthoehe ------------ */
+    .pagefind-ui__results {
+        min-height: 80px;
+    }
+
+    /* PRD-04: Mobile-Cancel-Button sichtbar + klickbar ---------------- */
+    @media (max-width: 800px) {
+        .starlight-search-cancel,
+        [data-search-cancel] {
+            display: inline-flex !important;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            min-height: 44px; /* Touch-Target */
+        }
+    }
+</style>
