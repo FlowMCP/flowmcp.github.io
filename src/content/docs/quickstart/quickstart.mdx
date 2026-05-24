@@ -8,6 +8,9 @@ description: "Create your first FlowMCP schema and call an API in 5 minutes"
 
 import { Aside } from '@astrojs/starlight/components'
 import InstallNote from '../../../components/InstallNote.astro'
+import refs from '../../../data/refs.json'
+
+export const schemaCount = refs?.stats?.count_schemas ?? '—'
 
 <Aside type="tip" title="Hackathon participants">
     Building at a hackathon? Run `claude /flowmcp-hackathon-onboarding` for a pre-filled skill that scaffolds your MCP server in under 60 seconds.
@@ -158,7 +161,7 @@ Learn the full schema format with authentication, parameters, and handlers. See 
 :::
 
 :::note[CLI Reference]
-Search, activate, and call 365+ pre-built schemas from the command line. See [CLI Usage](/reference/cli/).
+Search, activate, and call {schemaCount} pre-built schemas from the command line. See [CLI Usage](/reference/cli/).
 :::
 
 :::note[Examples]

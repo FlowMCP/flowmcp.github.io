@@ -3,6 +3,9 @@
 // More-Button-Ziel angepasst: Memo 057 PRD-01 (Schema Catalog statt Tags Reference)
 // Pencil-Anker: Frame Gdy0k Landing Desktop v2 Dark
 // Pencil: Formate, nicht Provider (User-Korrektur)
+// Stats source: refs.stats from flowmcp-spec manifest.meta.stats (Memo 059 PRD-017).
+import refs from '../data/refs.json'
+
 const providers = [
     { label: 'JSON',    icon: '{ }' },
     { label: 'XML',     icon: '〈/〉' },
@@ -10,6 +13,9 @@ const providers = [
     { label: 'GTFS',    icon: '🚇' },
     { label: 'CSV',     icon: '⊞' },
 ]
+
+const dataSourcesLabel = refs.stats?.count_unique_datasources ?? '—'
+const moreAriaLabel = `Browse all ${ dataSourcesLabel } data sources in the Schema Catalog`
 ---
 
 <div class="logo-strip">
@@ -22,7 +28,7 @@ const providers = [
             </li>
         ))}
         <li class="logo-strip__item logo-strip__item--more">
-            <a href="/schemas/" aria-label="Browse all 288 data sources in the Schema Catalog">+ more →</a>
+            <a href="/schemas/" aria-label={moreAriaLabel}>+ more →</a>
         </li>
     </ul>
 </div>

@@ -5,7 +5,7 @@ description: Frequently asked questions about FlowMCP — installation, MCP clie
 
 ## What is FlowMCP exactly?
 
-FlowMCP is a schema library + engine that normalises data sources into AI-callable tools. The library currently contains — production-ready schemas (v4) covering — data sources. The engine routes calls, validates inputs/outputs, and handles authentication. AI agents call FlowMCP; FlowMCP calls the underlying APIs.
+FlowMCP is a schema library + engine that normalises data sources into AI-callable tools. The library currently contains {{stats.count_schemas}} production-ready schemas (v4) covering {{stats.count_unique_datasources}} data sources. The engine routes calls, validates inputs/outputs, and handles authentication. AI agents call FlowMCP; FlowMCP calls the underlying APIs.
 
 ## Do I need an MCP-compatible client?
 
@@ -13,7 +13,7 @@ No. FlowMCP is **CLI-first**. The MCP server mode is optional. If you have a cli
 
 ## What does CLI-first mean in practice?
 
-You run `flowmcp call <schema>.<tool> '{...}'` from your terminal, an LLM call, or a Node/Python script. Tools are loaded on demand — no need to keep — tools in context.
+You run `flowmcp call <schema>.<tool> '{...}'` from your terminal, an LLM call, or a Node/Python script. Tools are loaded on demand — no need to keep {{stats.count_tools}} tools in context.
 
 ## Where do API keys live?
 

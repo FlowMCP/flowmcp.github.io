@@ -8,15 +8,15 @@ description: Was FlowMCP ist, warum es existiert, und wo es heute steht.
 
 > *FlowMCP normalisiert hunderte Datenquellen zu einer durchsuchbaren Library aus AI-bereiten Tools — damit deine Agenten suchen, kombinieren und antworten können, ohne dass du sie zu Integrations-Maintainern machst.*
 
-FlowMCP begann als Versuch, mehrere Datenquellen an einen einzigen MCP-Server anzubinden. Heute ist es eine Schema-Library — **— produktionsreife Definitionen, — Datenquellen, — aufrufbare Tools** — alle ueber eine zentrale, auditierbare Engine geleitet. AI-Agenten rufen FlowMCP — nie die zugrundeliegenden APIs direkt. Deine API-Keys bleiben in deiner Kontrolle.
+FlowMCP begann als Versuch, mehrere Datenquellen an einen einzigen MCP-Server anzubinden. Heute ist es eine Schema-Library — **{{stats.count_schemas}} produktionsreife Definitionen, {{stats.count_unique_datasources}} Datenquellen, {{stats.count_tools}} aufrufbare Tools** — alle ueber eine zentrale, auditierbare Engine geleitet. AI-Agenten rufen FlowMCP — nie die zugrundeliegenden APIs direkt. Deine API-Keys bleiben in deiner Kontrolle.
 
 ## Was FlowMCP ist
 
 | Aspekt | Beschreibung |
 |--------|--------------|
 | **Primitive Idee** | Ein Fluss von Daten — aus heterogenen Quellen, durch normalisierte Schemas, in AI-Pipelines |
-| **Schema-Library** | — Schemas (v4-Produktion), — Datenquellen, — Tool-Routes |
-| **Primaerer Use** | CLI-Tool — kein MCP-Client haelt — Tools im Kontext, die CLI laedt sie dynamisch |
+| **Schema-Library** | {{stats.count_schemas}} Schemas (v4-Produktion), {{stats.count_unique_datasources}} Datenquellen, {{stats.count_tools}} Tool-Routes |
+| **Primaerer Use** | CLI-Tool — kein MCP-Client haelt {{stats.count_tools}} Tools im Kontext, die CLI laedt sie dynamisch |
 | **Sekundaerer Use** | MCP-Server-Modus weiter unterstuetzt, aber nicht der Default |
 | **Mehrwert** | Kombinatorik: viele Quellen + automatische Auffindbarkeit + AI-getriebene Verkettung |
 | **Sicherheits-Plus** | Keys leben in FlowMCP, nie im AI-Kontext. Ein direkter REST-Call aus der AI wuerde sie exposeen |
@@ -60,7 +60,7 @@ FlowMCP macht diese Vorbereitung **einmal, fuer alle**:
 | Aspekt | FlowMCP | Custom-Integration | Generische Agent-Bibliotheken |
 |--------|---------|---------------------|-------------------------------|
 | Time-to-first-call | unter 5 min | Tage | Stunden |
-| Quellen-Abdeckung | — Quellen | 1 Quelle/Integration | variiert |
+| Quellen-Abdeckung | {{stats.count_unique_datasources}} Quellen | 1 Quelle/Integration | variiert |
 | Open Source | MIT | n/a | variiert |
 | Schema-Validierung | strikte v4-Spec | keine | partiell |
 | Key-Isolation | ja (in FlowMCP) | je nach Setup | selten |

@@ -83,6 +83,12 @@ export const applyPlaceholders = ( { content, refs } ) => {
         if( !key.includes( '.' ) ) return match
         const { value } = resolveDotPath( { obj: refs, dotPath: key } )
         if( value === undefined ) return match
+        // Memo 059 PRD-017: null stats (spec-payload fallback or first build)
+        // render as em-dash, not the literal string "null".
+        if( value === null && key.startsWith( 'stats.' ) ) {
+            count += 1
+            return '—'
+        }
         count += 1
         return String( value )
     } )

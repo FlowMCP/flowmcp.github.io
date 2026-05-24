@@ -1,6 +1,8 @@
 ---
 // /schemas page — Tag-Filter via URL-Param (PRD-18, Memo 045 REV-14 Punkt 16)
+// Stats source: refs.stats from flowmcp-spec manifest.meta.stats (Memo 059 PRD-017).
 import { standardTags, tagBySlug } from '../data/standard-tags.mjs';
+import refs from '../data/refs.json';
 
 const url = new URL(Astro.request.url);
 const tagParam = url.searchParams.get('tag');
@@ -18,6 +20,7 @@ if (selectedCluster) {
 }
 
 const allClusters = [...new Set(standardTags.map(t => t.cluster))];
+const dataSourcesValue = refs.stats?.count_unique_datasources ?? '—';
 ---
 
 <html lang="en">
@@ -34,7 +37,7 @@ const allClusters = [...new Set(standardTags.map(t => t.cluster))];
 
         <header>
             <h1>Schema Catalog</h1>
-            <p>288 data sources, organized by topic. Filter by tag or cluster.</p>
+            <p>{dataSourcesValue} data sources, organized by topic. Filter by tag or cluster.</p>
         </header>
 
         <section class="schemas-page__filter">

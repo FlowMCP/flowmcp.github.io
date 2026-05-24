@@ -1,15 +1,24 @@
 ---
 // StatsBar — Pencil-Stil (Frame Gdy0k, REV-05 Kap. 2.1)
 // KEINE Kacheln (User-Entscheidung REV-03). 3 Spalten (Memo 057 PRD-13: Provider-Kategorien Cell entfernt).
+//
+// Stats source: refs.stats from flowmcp-spec manifest.meta.stats (Memo 059 PRD-017).
+// Single-Source-of-Truth — never fetch flowmcp-schemas-public directly.
+import refs from '../data/refs.json'
+
 const path = Astro.url.pathname
 const isDE = path.startsWith( '/de/' ) || path === '/de'
 
-// Stats source: .memo/058-content-strecke/rollout/stats-verification.md (2026-05-24)
-// 365 schemas (v4 production), 288 providers, 3,102 callable tools
+const statsBlock = refs.stats || {}
+const dataSourcesValue = statsBlock.count_unique_datasources ?? '—'
+const toolsValue = statsBlock.count_tools !== null && statsBlock.count_tools !== undefined
+    ? statsBlock.count_tools.toLocaleString( isDE ? 'de-DE' : 'en-US' )
+    : '—'
+
 const stats = [
-    { value: '288',    label: isDE ? 'Datenquellen'           : 'Data sources' },
-    { value: '3,100+', label: isDE ? 'KI-aufrufbare Tools'    : 'AI-callable tools' },
-    { value: 'MIT',    label: isDE ? 'Open-Source-Lizenz'     : 'Open source license' },
+    { value: String( dataSourcesValue ), label: isDE ? 'Datenquellen'           : 'Data sources' },
+    { value: String( toolsValue ),       label: isDE ? 'KI-aufrufbare Tools'    : 'AI-callable tools' },
+    { value: 'MIT',                      label: isDE ? 'Open-Source-Lizenz'     : 'Open source license' },
 ]
 ---
 
