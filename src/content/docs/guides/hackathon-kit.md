@@ -1,0 +1,87 @@
+---
+title: Hackathon Kit
+description: 5-minute setup for hackathon teams — mock mode, ready-made tool sets, mobility + crypto demos.
+---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Guides</span>
+<!-- PAGEFIND-META-END -->
+
+Hackathons are short. FlowMCP is built so a team can prototype a working multi-tool agent in under 30 minutes — without writing API integrations, without exposing keys, and without an internet connection in mock mode.
+
+## 5-minute setup
+
+```bash
+# 1. Install the CLI
+npm install -g github:FlowMCP/flowmcp-cli
+
+# 2. Run the initial setup (creates ~/.flowmcp/)
+flowmcp init
+
+# 3. Verify
+flowmcp status
+```
+
+That is enough to run mock-mode demos. For live data, add API keys to `~/.flowmcp/.env` per the schemas you activate.
+
+## Mock mode
+
+For demos at conference venues with flaky wifi, mock mode returns stable example responses without hitting the upstream APIs. Activate per-call:
+
+```bash
+FLOWMCP_MOCK=1 flowmcp call coingecko-tokens.simplePrice '{"id":"bitcoin"}'
+```
+
+Every schema ships with a `tests` block that defines its mock response. Mock-mode means: the same input always returns the same output. Perfect for live demos.
+
+## Ready-made tool sets
+
+Three curated bundles cover the common hackathon themes:
+
+### Mobility (Berlin / Germany)
+
+```bash
+flowmcp add gtfsvbb           # Berlin / Brandenburg transit
+flowmcp add gtfsde            # Germany-wide schedules
+flowmcp add overpass-osm      # OpenStreetMap geo queries
+flowmcp add dwd-weather       # German weather forecasts
+```
+
+Pairs naturally with the [GTFS Pilot Guide](/guides/gtfs-pilot/).
+
+### Crypto / DeFi
+
+```bash
+flowmcp add coingecko-tokens       # Token prices, market data
+flowmcp add etherscan-tokens       # On-chain contract data
+flowmcp add defillama-tvl          # DeFi TVL
+flowmcp add dexscreener            # DEX pairs + boosts
+```
+
+### Government / Open Data
+
+```bash
+flowmcp add arbeitsagentur         # German job market
+flowmcp add dpma                   # Patents / trademarks
+flowmcp add bundesgesetzblatt      # German federal law
+flowmcp add dip                    # German parliament docs
+```
+
+## Live demo pattern
+
+Three principles that survive contact with audience questions:
+
+1. **API keys never in the LLM context.** They live in `~/.flowmcp/.env`. Show this to security-minded judges.
+2. **Mock mode for demo, live mode for Q&A.** Have both ready. Toggle with `FLOWMCP_MOCK=1`.
+3. **One tool per question first.** Resist the urge to chain four tools on stage. Chain in v2 after the audience understands what FlowMCP does.
+
+## Used at
+
+- DB InfraGO "Anschluss erreichen" Hackathon (Berlin Hbf, March 2026, Mobility Data challenge)
+
+If your team has used FlowMCP at an event, open a PR adding the line above.
+
+## Next
+
+- [Agent Creation Guide](/guides/agent-creation/) — how to build a multi-tool agent
+- [GTFS Pilot Guide](/guides/gtfs-pilot/) — mobility-specific tooling
+- [Schema Creation Guide](/guides/schema-creation/) — write your own schema for a missing API

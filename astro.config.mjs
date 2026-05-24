@@ -206,8 +206,12 @@ export default defineConfig({
                     translations: { de: 'Anleitungen' },
                     collapsed: true,
                     items: [
+                        { label: 'Hackathon Kit', translations: { de: 'Hackathon-Kit' }, slug: 'guides/hackathon-kit' },
+                        { label: 'Agent Creation', translations: { de: 'Agent erstellen' }, slug: 'guides/agent-creation' },
+                        { label: 'GTFS Pilot', translations: { de: 'GTFS-Pilot' }, slug: 'guides/gtfs-pilot' },
                         { label: 'Schema Creation', translations: { de: 'Schema erstellen' }, slug: 'guides/schema-creation' },
                         { label: 'Server Integration', translations: { de: 'Server-Integration' }, slug: 'guides/server-integration' },
+                        { label: 'Integration', translations: { de: 'Integration' }, slug: 'guides/integration' },
                         { label: 'Examples', translations: { de: 'Beispiele' }, slug: 'guides/examples' },
                     ],
                 },

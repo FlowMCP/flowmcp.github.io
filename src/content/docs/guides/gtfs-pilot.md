@@ -1,0 +1,132 @@
+---
+title: GTFS Pilot
+description: Download a GTFS feed, convert it to SQLite with quality seal, and query it from FlowMCP — Berlin + Germany.
+---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Guides</span>
+<!-- PAGEFIND-META-END -->
+
+This guide reproduces the FlowMCP v4.1 GTFS pilot. By the end, you have two queryable mobility databases (VBB Berlin, DELFI Germany) and can ask transit-routing questions in seconds.
+
+> 📖 Background: [Blog — FlowMCP v4.1 GTFS Add-on](/blog/) (Phase 3 pilot results).
+
+## What you set up
+
+- DELFI feed (Germany-wide, ~245 MB ZIP, CC-BY 4.0)
+- VBB feed (Berlin / Brandenburg, ~83 MB ZIP, CC-BY 4.0)
+- `gtfs-sqlite-toolkit` for conversion
+- A FlowMCP schema (`sqlite-gtfs`) that auto-injects routing tools
+
+Total time: 20–30 minutes (mostly waiting for downloads + conversion).
+
+## Prerequisites
+
+- Node.js 22+ with `--max-old-space-size=8192` for the DELFI conversion (default 4 GB heap is too small)
+- ~3 GB free disk space
+- FlowMCP CLI installed
+- `gtfs-sqlite-toolkit` cloned or installed from `github:FlowMCP/gtfs-sqlite-toolkit`
+
+## Step 1 — Download both feeds
+
+```bash
+mkdir -p ~/.flowmcp/resources/gtfs
+cd ~/.flowmcp/resources/gtfs
+
+# Germany-wide (~245 MB)
+curl -L -o gtfs-delfi.zip https://download.gtfs.de/germany/free/latest.zip
+
+# Berlin / Brandenburg (~83 MB)
+curl -L -o gtfs-vbb.zip https://www.vbb.de/vbbgtfs
+
+# Verify hashes for reproducibility
+shasum -a 256 *.zip
+```
+
+The DELFI feed is regenerated daily — pin the hash + date if you need exact reproducibility.
+
+## Step 2 — Convert to SQLite
+
+```javascript
+import { GtfsSqliteConverter } from 'gtfs-sqlite-toolkit'
+
+// VBB — passes validation, gets quality seal
+const vbb = await GtfsSqliteConverter.start( {
+    input:     '/Users/you/.flowmcp/resources/gtfs/gtfs-vbb.zip',
+    inputType: 'zip',
+    dbPath:    '/Users/you/.flowmcp/resources/gtfs/gtfs-vbb.db',
+    sourceUrl: 'https://www.vbb.de/vbbgtfs'
+} )
+
+// DELFI — needs force mode (97k validation errors in pilot)
+const delfi = await GtfsSqliteConverter.start( {
+    input:     '/Users/you/.flowmcp/resources/gtfs/gtfs-delfi.zip',
+    inputType: 'zip',
+    dbPath:    '/Users/you/.flowmcp/resources/gtfs/gtfs-delfi.db',
+    sourceUrl: 'https://download.gtfs.de/germany/free/latest.zip',
+    force:     true
+} )
+
+console.log( 'VBB seal:',  vbb.seal )      // 'sqlite-gtfs'
+console.log( 'DELFI seal:', delfi.seal )   // null (no seal in force mode)
+console.log( 'DELFI caps:', delfi.capabilities ) // routing: false → no findRoute injected
+```
+
+Run with `node --max-old-space-size=8192 convert.mjs`.
+
+## Step 3 — Query the database
+
+Direct SQLite:
+
+```bash
+sqlite3 ~/.flowmcp/resources/gtfs/gtfs-vbb.db <<EOF
+SELECT r.route_short_name, t.trip_headsign,
+       st1.departure_time AS dep, st2.arrival_time AS arr
+  FROM stop_times st1
+  JOIN trips t ON st1.trip_id = t.trip_id
+  JOIN routes r ON t.route_id = r.route_id
+  JOIN stop_times st2 ON st2.trip_id = t.trip_id
+  JOIN stops s1 ON st1.stop_id = s1.stop_id
+  JOIN stops s2 ON st2.stop_id = s2.stop_id
+ WHERE s1.stop_name LIKE 'S+U Berlin Hauptbahnhof%'
+   AND s2.stop_name = 'S Spandau Bhf (Berlin)'
+   AND st2.stop_sequence > st1.stop_sequence
+ ORDER BY dep LIMIT 5;
+EOF
+```
+
+Or via FlowMCP (when the schema is active):
+
+```bash
+flowmcp call gtfsvbb.findRoute '{"origin":"Berlin Hbf","destination":"Spandau"}'
+```
+
+## Step 4 — Read the capability matrix
+
+The DB has a `meta` table with the seal, capabilities, and validation report:
+
+```bash
+sqlite3 ~/.flowmcp/resources/gtfs/gtfs-vbb.db \
+  "SELECT key, substr(value, 1, 100) FROM meta;"
+```
+
+The FlowMCP-CLI reads `capabilities` and **only injects tools that the feed can answer**. DELFI without routing capability sees `searchStops` and `findStopsByGeo`, but not `findRoute` — no 404, no hallucination, the tool simply does not exist in the agent's tool set.
+
+## License attribution
+
+CC-BY 4.0 requires attribution in every response that uses the data:
+
+```json
+{
+    "data": { "route_id": "ICE793", "dep_time": "09:34" },
+    "licenseAttribution": "Daten: DELFI e.V. / VBB GmbH, CC-BY 4.0",
+    "source": "gtfs-de | gtfs-vbb"
+}
+```
+
+FlowMCP carries this in the output object — your downstream code must surface it to end users.
+
+## Next
+
+- [Blog — FlowMCP v4.1 GTFS Add-on](/blog/) — full pilot results, 5 use cases, performance
+- [Specification → Resources](/specification/) — `source: 'sqlite-gtfs'` semantics
+- [`gtfs-sqlite-toolkit` README](https://github.com/FlowMCP/gtfs-sqlite-toolkit) — converter API
