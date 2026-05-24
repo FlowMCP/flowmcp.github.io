@@ -1,112 +1,84 @@
 ---
 title: Use Cases
-description: Concrete examples of how multiple data sources become useful answers through a single prompt.
+description: Two scenarios that show FlowMCP + AI in action — how scattered data becomes one answer.
 ---
 <!-- PAGEFIND-META-START -->
 <span style="display:none" data-pagefind-meta="section">Introduction</span>
 <!-- PAGEFIND-META-END -->
 
-## How It Works
-
-The user enters a sentence in natural language. The agent automatically creates a workflow — with cron jobs, calendar integration, and multiple data sources. No programming, no configuration.
+Two scenarios that show FlowMCP + AI in action — not how to build an agent, but how FlowMCP turns scattered data sources into one usable answer. Both cases assume an AI agent (Claude, GPT, or similar) connected to a research tool, planning software, or CLI workflow, with FlowMCP-CLI running as the data-access layer.
 
 ---
 
-## Use Case 1: Dentist Appointment
+## Use Case 1: Deep Research
+
+### Setup
+
+A research workflow — a custom pipeline, an internal dashboard, or a Notion / Obsidian workspace — has an AI agent attached. The agent's job is to pull together data from many sources to scope or answer a research question. FlowMCP-CLI runs alongside as the agent's tool for finding and calling normalized data sources.
 
 ### The Prompt
 
-> Whenever there is a dentist appointment in my calendar: send me a message the day before at 6 PM with the expected weather and which transport option works best. On the morning of the appointment, by 7:30 AM at the latest, give me the exact route.
+> We are planning an open-data project on air quality in German inner cities. Find data sources for fine-dust measurement stations, the open-data portals of Berlin, Munich, and Hamburg, weather stations for correlation, and give me a list with provider, license, sample endpoint, and update frequency.
 
-### What the Agent Does
+### What FlowMCP Does
 
-The agent automatically creates a cron job that checks the calendar daily. When it finds a dentist appointment, it schedules two briefings.
-
-**Evening before (6:00 PM):**
-
-1. **Calendar** → Dentist appointment tomorrow 10:00 AM, Musterstrasse 5
-2. **Weather** → 8°C, light rain from 11 AM
-3. **Recommendation via chat:** "Tomorrow light rain from 11 AM. Biking to the appointment is fine (dry), return trip better by public transit."
-
-**Morning of the appointment (7:30 AM):**
-
-1. **Weather update** → Rain postponed to noon
-2. **Public transit** → S-Bahn running on schedule, no disruptions
-3. **Bike sharing** → nextbike at starting location: 3 bikes available
-4. **Route** → Bike: 18 min (depart 9:40), Public transit: 25 min (depart 9:30)
-5. **Recommendation via chat:** "Bike recommended (18 min, dry). nextbike Alexanderplatz, 3 bikes free. Return: S-Bahn recommended — rain expected from noon."
+1. **Search the catalog** — The agent calls `flowmcp search` with tags like `airquality`, `opendata`, `berlin`, `weather`. FlowMCP returns matching schemas across many providers with provider name, license, and short description.
+2. **Sample each schema** — For promising hits, the agent runs a sample call (`flowmcp call <schema> <route>`). FlowMCP holds the API keys, signs the request, and returns the normalized response. The agent sees the data shape without seeing credentials.
+3. **Combine and summarize** — The agent merges results from federal, city, and weather sources, deduplicates overlapping stations, and produces a table the user can act on.
 
 ### Which Data Sources Are Combined?
 
 | Data Source | What It Provides |
-|-------------|-----------------|
-| **Calendar** (Google/iCal via OpenClaw) | Appointment, time, address |
-| **Bright Sky** (German Weather Service) | Weather, forecast, rain probability |
-| **Deutsche Bahn** (transport.rest) | S-Bahn/U-Bahn connections, disruptions |
-| **VBB** (transport.rest) | Regional public transit Berlin-Brandenburg |
-| **nextbike** | Bike availability nearby |
-| **Nominatim** (OpenStreetMap) | Convert address to coordinates |
+|-------------|------------------|
+| **Umweltbundesamt API** | Federal air-quality measurements (PM10, PM2.5, NO2) |
+| **Berlin Open Data** | City-specific stations, metadata, hourly updates |
+| **DWD (Deutscher Wetterdienst)** | Weather data for correlation with pollution events |
+| **OpenStreetMap / Nominatim** | Geocoding of station locations and addresses |
+| **govdata.de (Bund OpenData)** | Federal open-data index across all German states |
+| **Eurostat / EEA** | EU-wide comparison values and methodology |
 
-**6 data sources for one answer.** None of them alone could fully answer the question. Only the combination makes the difference — the agent knows that biking there and taking the train back is the best option because it will rain in the afternoon.
+**6 data sources, one answer.** Without FlowMCP, the agent would have to read six different API documentations per request — thousands of tokens, inconsistent formats, no shared auth. With FlowMCP, the schemas are normalized once and reused by every agent.
+
+> Instead of feeding the AI hundreds of tokens of API docs per request, it searches a normalized catalog. One schema investment, any number of agents.
+
+### Next steps
+
+- [Schema Catalog →](/concepts/schema-catalog/) — browse what's already covered
+- [CLI Setup →](/quickstart/) — first call in under 5 minutes
 
 ---
 
-## Use Case 2: Business Trip
+## Use Case 2: Mobility — Catching the Connection
+
+### Setup
+
+The GTFS pilot is real and documented (see [GTFS Pilot Guide](/guides/gtfs-pilot/)). FlowMCP v4.1 ships an add-on concept: external toolkits like `gtfs-sqlite-toolkit` extend the CLI with local SQLite databases for static schedules. The combination — static GTFS lookup plus live REST API for delays — is what makes this case work as a single CLI call instead of a juggling act between two agents.
 
 ### The Prompt
 
-> When there is an appointment with the keyword "business trip" in my calendar: two days before, summarize the train connections to the destination, check the weather there, and show me the nearest stop to the meeting point. On the travel day at 7 AM, give me the current connection with real-time data.
+> I'm at Berlin Hbf, heading to Munich. My ICE at 8:05 is 12 minutes late. Do I still catch the connecting IC in Nuremberg at 12:33? If not, what's the next option?
 
-### What the Agent Does
+### What FlowMCP Does
 
-**2 days before the trip:**
-
-1. **Calendar** → "Business trip Berlin → Munich", Meeting Leopoldstrasse 10
-2. **Train connections** → ICE 8:05 Berlin Hbf (arrival 12:17), ICE 10:05 (arrival 14:13)
-3. **Weather Munich** → 15°C, sunny, no rain
-4. **Geocoding** → Leopoldstrasse 10 → coordinates → nearest stop: U-Bahn Giselastrasse (300m)
-5. **Summary via chat:** "ICE 8:05 recommended (4h12). Munich sunny, 15°C. From station U3 direction Moosach → Giselastrasse, 300m to meeting."
-
-**Travel day (7:00 AM):**
-
-1. **Real-time** → ICE 8:05 on schedule, platform 7
-2. **Alternative** → If missed: ICE 10:05
-3. **Recommendation via chat:** "ICE 8:05 from Berlin Hbf, platform 7, on schedule. Arrival Munich Hbf 12:17. U3 Giselastrasse 300m from meeting. Weather: 15°C, sunny."
+1. **GTFS-SQLite lookup** (via `gtfs-sqlite-toolkit` add-on, local DB) — Static schedule for ICE 8:05 → connecting IC 12:33, scheduled transfer time 9 min, platform layout in Nuremberg.
+2. **Live delay query** (Deutsche Bahn REST API via FlowMCP schema) — Current arrival forecast in Nuremberg 12:29 (was 12:17), so transfer time is now 4 min — critical.
+3. **Alternative search** (GTFS-SQLite + REST combined) — Next IC 13:33 as fallback, arriving Munich 14:55.
+4. **AI answer** — "IC 12:33 with only 4 min transfer is not reliable. Backup: IC 13:33, arriving Munich 14:55 instead of 13:13."
 
 ### Which Data Sources Are Combined?
 
 | Data Source | What It Provides |
-|-------------|-----------------|
-| **Calendar** (Google/iCal via OpenClaw) | Appointment, destination, meeting address |
-| **Deutsche Bahn** (transport.rest) | Long-distance connections, real-time data, platform |
-| **Bright Sky** (German Weather Service) | Weather at destination |
-| **Nominatim** (OpenStreetMap) | Meeting address to coordinates, nearest stop |
+|-------------|------------------|
+| **gtfs-sqlite-toolkit** (local) | Static schedule, stops, transfer windows |
+| **Deutsche Bahn timetables API** | Live delays, real-time arrival forecasts |
+| **DB Stations API** | Station metadata: platforms, walking distances |
 
-**4 data sources.** The agent plans the entire trip — from train connection through weather to the last mile to the meeting. On the travel day, it updates with real-time data.
+**Local SQLite for static lookup + Live API through FlowMCP — one CLI call, one answer.** Without FlowMCP, the agent would have to orchestrate the static GTFS query and the live REST API separately, parse different formats, and merge them by hand.
 
----
+### Next steps
 
-## What These Examples Show
-
-Both use cases share something:
-
-1. **A single prompt** is enough — the agent creates the complete workflow
-2. **Multiple data sources** are combined automatically — the user does not need to know where the data comes from
-3. **Cron jobs** make it automatic — the agent works in the background, the user gets the result at the right time
-4. **Calendar integration** makes it personal — the agent knows when and where
-
-**One data source = one answer. Many data sources = a useful answer.**
-
-Our schemas make this combination possible — and any developer can build their own use cases with them.
-
-## Beyond Mobility
-
-These examples show mobility as one domain — but FlowMCP works wherever data needs to be aggregated and made accessible to AI agents. The same pattern applies to environmental data, public administration, health, finance, or any other domain with structured data sources. Every schema-based integration follows the same approach.
-
-- **Environment:** Air quality + weather + pollen count → "Should I go jogging outside today?"
-- **Government:** Tenders + business registry + federal gazette → "Are there new relevant tenders in my field?"
-- **Health:** Counseling centers + geocoding + public transit → "Which free counseling is near me and how do I get there?"
-- **Education:** School holidays + events + weather → "What can I do with the kids during the break?"
+- [GTFS Pilot Guide →](/guides/gtfs-pilot/) — the full mobility add-on story
+- [CLI Setup →](/quickstart/) — first call in under 5 minutes
 
 ---
 
