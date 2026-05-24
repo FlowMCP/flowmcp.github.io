@@ -36,9 +36,13 @@ export default defineConfig({
         '/docs/schemas/resources/':      '/concepts/schemas-resources/',
         '/docs/schemas/prompts/':        '/concepts/schemas-prompts/',
         '/docs/schemas/skills/':         '/concepts/schemas-skills/',
-        '/docs/schemas/tags-reference/': '/reference/tags-reference/',
+        '/docs/schemas/tags-reference/': '/concepts/tag-search/',
+        '/reference/tags-reference/':    '/concepts/tag-search/',
+        '/de/reference/tags-reference/': '/de/concepts/tag-search/',
 
-        '/docs/agents/overview/':        '/concepts/agents-overview/',
+        '/docs/agents/overview/':        '/concepts/agents/',
+        '/concepts/agents-overview/':    '/concepts/agents/',
+        '/de/concepts/agents-overview/': '/de/concepts/agents/',
 
         '/docs/usage/cli/':              '/reference/cli/',
         '/docs/usage/mcp-server/':       '/reference/mcp-server/',
@@ -48,8 +52,12 @@ export default defineConfig({
         '/docs/guides/server-integration/': '/guides/server-integration/',
 
         '/docs/reference/core-methods/':    '/reference/core-methods/',
-        '/docs/reference/cli-reference/':   '/reference/cli-reference/',
-        '/docs/reference/troubleshooting/': '/reference/troubleshooting/',
+        '/docs/reference/cli-reference/':   '/reference/cli/',
+        '/reference/cli-reference/':        '/reference/cli/',
+        '/de/reference/cli-reference/':     '/de/reference/cli/',
+        '/docs/reference/troubleshooting/': '/about/faq/',
+        '/reference/troubleshooting/':      '/about/faq/',
+        '/de/reference/troubleshooting/':   '/de/about/faq/',
 
         '/docs/ecosystem/schema-library/':  '/ecosystem/schema-library/',
         '/docs/ecosystem/agent-server/':    '/ecosystem/agent-server/',
@@ -173,8 +181,8 @@ export default defineConfig({
                         { label: 'Prompts', translations: { de: 'Prompts' }, slug: 'concepts/schemas-prompts' },
                         { label: 'Skills', translations: { de: 'Skills' }, slug: 'concepts/schemas-skills' },
                         { label: 'Agents', translations: { de: 'Agents' }, slug: 'concepts/agents' },
-                        { label: 'Agents Overview', translations: { de: 'Agents-Uebersicht' }, slug: 'concepts/agents-overview' },
                         { label: 'Clients', translations: { de: 'Clients' }, slug: 'concepts/clients' },
+                        { label: 'Tag Search', translations: { de: 'Tag-Suche' }, slug: 'concepts/tag-search' },
                     ],
                 },
                 {
@@ -188,12 +196,9 @@ export default defineConfig({
                     translations: { de: 'Referenz' },
                     collapsed: true,
                     items: [
-                        { label: 'Core Methods', translations: { de: 'Kern-Methoden' }, slug: 'reference/core-methods' },
-                        { label: 'CLI Reference', translations: { de: 'CLI-Referenz' }, slug: 'reference/cli-reference' },
-                        { label: 'CLI', translations: { de: 'CLI' }, slug: 'reference/cli' },
-                        { label: 'MCP Server', translations: { de: 'MCP-Server' }, slug: 'reference/mcp-server' },
-                        { label: 'Tags Reference', translations: { de: 'Tags-Referenz' }, slug: 'reference/tags-reference' },
-                        { label: 'Troubleshooting', translations: { de: 'Fehlerbehebung' }, slug: 'reference/troubleshooting' },
+                        { label: 'CLI Usage', translations: { de: 'CLI-Nutzung' }, slug: 'reference/cli' },
+                        { label: 'Programmatic API', translations: { de: 'Programmatic API' }, slug: 'reference/core-methods' },
+                        { label: 'MCP Server Mode', translations: { de: 'MCP Server Mode' }, slug: 'reference/mcp-server' },
                     ],
                 },
                 {

@@ -34,7 +34,7 @@ Ein Agent wird in einer `agent.mjs`-Datei deklariert. Das Manifest hat vier inha
 - **skills** — Schritt-fuer-Schritt-Anleitungen fuer Multi-Tool-Workflows.
 - **resources** — Lokale Daten, die der Agent lesen kann (Dateien, SQLite-Auszuege).
 
-Details, das vollstaendige Manifest-Schema und die Slash-Regel: [Agents Uebersicht](/de/concepts/agents-overview/).
+Manifest-Details und Validation-Regeln: [Agents Specification](/specification/agents/).
 
 **Beispiel:** Ein Mobility Agent kombiniert Tools aus dem DB-Fahrplan-Schema (getConnections), dem OpenWeather-Schema (getWeather) und dem nextbike-Schema (findStations). Er hat als LLM Claude Haiku und weiss durch seinen System-Prompt, dass er Mobilitaetsfragen beantworten soll.
 
@@ -126,6 +126,6 @@ Dieses Muster funktioniert in jeder Domaene, in der mehrere Datenquellen kombini
 
 ## Mehr erfahren
 
-- **Agent-Manifeste und Konfiguration:** [Agents Uebersicht](/de/concepts/agents-overview/)
+- **Agent-Manifeste und Validation-Regeln:** [Agents Specification](/specification/agents/)
 - **FlowMCP Spezifikation:** [FlowMCP Spec v4.0.0](https://github.com/FlowMCP/flowmcp-spec)
 - **MCP Clients:** [modelcontextprotocol.io/clients](https://modelcontextprotocol.io/clients)

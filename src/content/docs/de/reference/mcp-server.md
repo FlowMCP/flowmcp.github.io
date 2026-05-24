@@ -1,5 +1,5 @@
 ---
-title: MCP Server
+title: MCP Server Mode
 description: FlowMCP als MCP-Server betreiben fuer die Integration mit Claude Desktop, Cursor und anderen KI-Tools
 ---
 <!-- PAGEFIND-META-START -->

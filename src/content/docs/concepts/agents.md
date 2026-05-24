@@ -1,10 +1,16 @@
 ---
-title: Agents and Architectures
-description: What an agent is, how the agentic loop works, three usage architectures, and why elicitation matters.
+title: Agents
+description: What an agent is, how the agentic loop works, three usage architectures, and the agent manifest format.
 ---
 <!-- PAGEFIND-META-START -->
-<span style="display:none" data-pagefind-meta="section">Basics</span>
+<span style="display:none" data-pagefind-meta="section">Concepts</span>
 <!-- PAGEFIND-META-END -->
+
+## Overview
+
+An agent is a purpose-driven composition that bundles tools from multiple providers into a single, testable unit. Where individual schemas wrap a single API, agents combine the right tools for a specific task — for example, a crypto research agent might pull from CoinGecko, Etherscan, and DeFi Llama simultaneously.
+
+This page covers concept, agentic loop, usage architectures, and the manifest format. The full specification and validation rules live in [Agents Specification](/specification/agents/).
 
 ## How Tools Are Selected
 
@@ -23,7 +29,7 @@ An agent is declared in an `agent.mjs` file. The manifest has four content field
 - **skills** — step-by-step instructions for multi-tool workflows.
 - **resources** — local data the agent can read (files, SQLite snippets).
 
-Details, the full manifest schema, and the Slash Rule: [Agents Overview](/concepts/agents-overview/).
+Manifest details and validation rules: [Agents Specification](/specification/agents/).
 
 An agent is more than a simple tool query. While a tool asks a single question to a data source ("What's the weather in Berlin?"), an agent can **combine multiple tools, reason, and independently decide** what information it still needs.
 
@@ -126,6 +132,6 @@ This pattern works across any domain where multiple data sources need to be comb
 
 ## Learn More
 
-- **Agent manifests and configuration:** [Agents Overview](/concepts/agents-overview/)
+- **Agent manifests and validation rules:** [Agents Specification](/specification/agents/)
 - **FlowMCP Specification:** [FlowMCP Spec v4.0.0](https://github.com/FlowMCP/flowmcp-spec)
 - **MCP Clients:** [modelcontextprotocol.io/clients](https://modelcontextprotocol.io/clients)

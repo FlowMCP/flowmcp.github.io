@@ -1,5 +1,5 @@
 ---
-title: Kern-Methoden
+title: Programmatic API
 description: Vollstaendige FlowMCP Core Methoden-Referenz
 ---
 <!-- PAGEFIND-META-START -->
