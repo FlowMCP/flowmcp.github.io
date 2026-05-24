@@ -11,7 +11,23 @@ const posts = ( await getCollection( 'blog', ( { data } ) => showDrafts || !data
 const featured = posts[ 0 ]
 const rest = posts.slice( 1 )
 
-const filterTabs = [ 'All', 'Releases', 'Tutorials', 'Hackathon', 'Architecture', 'Case Studies' ]
+// Memo 059 PRD-006 (A7, F4 Variante c): derive filter categories from the
+// actual posts collection. Use the first tag (tags[0]) as the primary
+// category — matches the display logic on the cards. Empty / unpopulated
+// categories are simply never rendered. 'All' is the default pseudo-category.
+const categorySet = new Set()
+posts.forEach( ( post ) => {
+    const primary = ( post.data.tags && post.data.tags[ 0 ] ) || ''
+    if( primary.length > 0 ) { categorySet.add( primary ) }
+} )
+const sortedCategories = Array.from( categorySet ).sort( ( a, b ) => a.localeCompare( b ) )
+const filterTabs = [ 'All', ...sortedCategories ]
+
+// Helper to humanise a tag slug for the button label
+const labelFor = ( tag ) => {
+    if( tag === 'All' ) { return 'All' }
+    return tag.charAt( 0 ).toUpperCase() + tag.slice( 1 )
+}
 ---
 
 <!DOCTYPE html>
@@ -41,14 +57,23 @@ const filterTabs = [ 'All', 'Releases', 'Tutorials', 'Hackathon', 'Architecture'
 
     <nav class="blog-index__filters" aria-label="Blog filter">
         {filterTabs.map( ( tab, i ) => (
-            <button class={`blog-index__filter ${i === 0 ? 'is-active' : ''}`} data-filter={tab}>
-                {tab}
+            <button
+                class={`blog-index__filter ${i === 0 ? 'is-active' : ''}`}
+                type="button"
+                data-filter={tab}
+                aria-pressed={i === 0 ? 'true' : 'false'}
+            >
+                {labelFor( tab )}
             </button>
         ) )}
     </nav>
 
     {featured && (
-        <a class="blog-index__featured" href={`/blog/${featured.id}/`}>
+        <a
+            class="blog-index__featured"
+            href={`/blog/${featured.id}/`}
+            data-category={( featured.data.tags && featured.data.tags[ 0 ] ) || ''}
+        >
             <span class="blog-index__featured-badge">FEATURED</span>
             <h2 class="blog-index__featured-title">{featured.data.title}</h2>
             <p class="blog-index__featured-desc">{featured.data.description}</p>
@@ -59,7 +84,11 @@ const filterTabs = [ 'All', 'Releases', 'Tutorials', 'Hackathon', 'Architecture'
     {rest.length > 0 && (
         <div class="blog-index__grid">
             {rest.map( ( post ) => (
-                <a class="blog-index__card" href={`/blog/${post.id}/`}>
+                <a
+                    class="blog-index__card"
+                    href={`/blog/${post.id}/`}
+                    data-category={( post.data.tags && post.data.tags[ 0 ] ) || ''}
+                >
                     <span class="blog-index__card-tag">{post.data.tags[ 0 ] || 'post'}</span>
                     <h3 class="blog-index__card-title">{post.data.title}</h3>
                     <p class="blog-index__card-desc">{post.data.description}</p>
@@ -68,6 +97,39 @@ const filterTabs = [ 'All', 'Releases', 'Tutorials', 'Hackathon', 'Architecture'
         </div>
     )}
 </main>
+
+<script>
+    // Memo 059 PRD-006: client-side filtering for blog index.
+    // 'All' shows everything; any other category shows only posts whose
+    // data-category attribute matches the button's data-filter.
+    ( function() {
+        const buttons = document.querySelectorAll( '.blog-index__filter' )
+        const items = document.querySelectorAll( '[data-category]' )
+
+        const applyFilter = ( filter ) => {
+            items.forEach( ( el ) => {
+                const cat = el.getAttribute( 'data-category' )
+                const show = filter === 'All' || cat === filter
+                if( show ) {
+                    el.removeAttribute( 'hidden' )
+                } else {
+                    el.setAttribute( 'hidden', '' )
+                }
+            } )
+            buttons.forEach( ( btn ) => {
+                const isActive = btn.dataset.filter === filter
+                btn.classList.toggle( 'is-active', isActive )
+                btn.setAttribute( 'aria-pressed', isActive ? 'true' : 'false' )
+            } )
+        }
+
+        buttons.forEach( ( btn ) => {
+            btn.addEventListener( 'click', () => {
+                applyFilter( btn.dataset.filter )
+            } )
+        } )
+    } )()
+</script>
 
 <Footer />
 
