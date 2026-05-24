@@ -2,15 +2,12 @@
 title: Clients und Kompatibilitaet
 description: Wo man Schemas und Agents nutzen kann, welche Clients was unterstuetzen, und was CLI bedeutet.
 ---
-<!-- PAGEFIND-META-START -->
-<span style="display:none" data-pagefind-meta="section">Basics</span>
-<!-- PAGEFIND-META-END -->
 
 ## MCP — Das verbindende Protokoll
 
 Das **Model Context Protocol (MCP)** ist der Standard, ueber den KI-Clients auf Tools zugreifen. Es definiert, wie Tools beschrieben, aufgerufen und wie Ergebnisse zurueckgeliefert werden. Ueber 100 Clients unterstuetzen MCP bereits — von Claude ueber ChatGPT bis Cursor.
 
-Unsere Schemas basieren auf MCP und funktionieren mit jedem kompatiblen Client. Du bist nicht an einen bestimmten Anbieter gebunden.
+FlowMCP-Schemas basieren auf MCP und funktionieren mit jedem kompatiblen Client. Du bist nicht an einen bestimmten Anbieter gebunden.
 
 ![MCP-Kompatibilitaet](../../../../assets/diagram-3-mcp-compatibility.png)
 
@@ -24,9 +21,9 @@ Nicht jeder Client kann alles. Die Faehigkeiten haengen davon ab, welche MCP-Fea
 | **Level 2+3: Elicitation** | Alles aus Level 1 + Agent kann Rueckfragen stellen | 16 Clients | Claude Code, Claude Desktop, OpenClaw, Codex, Cursor, Postman |
 | **Custom CLI** | Commandline-Interfaces fuer direkten Zugriff | FlowMCP CLI, OpenClaw Plugin | Fuer Entwickler und Automatisierung |
 
-Was die Levels bedeuten: [Agents und Architekturen →](/de/concepts/agents/)
+Was die Levels bedeuten: [Primitive — Agents](/de/concepts/primitives/#agents)
 
-**Stand:** Maerz 2026. Aktuelle Liste: [modelcontextprotocol.io/clients](https://modelcontextprotocol.io/clients)
+**Stand:** 2026-05-24. Aktuelle MCP-Client-Liste: [modelcontextprotocol.io/clients](https://modelcontextprotocol.io/clients)
 
 ## Clients mit Elicitation (Level 2+3)
 
@@ -49,8 +46,6 @@ Diese 16 Clients unterstuetzen Elicitation — der Agent kann Rueckfragen stelle
 15. VS Code GitHub Copilot
 16. VT Code
 
-Warum Elicitation so wichtig ist: [Agents und Architekturen → Elicitation](/de/concepts/agents/#elicitation-wenn-der-agent-rueckfragen-stellt)
-
 ## CLI — Commandline-Interfaces
 
 Neben grafischen Clients gibt es Commandline-Interfaces, die besonders fuer Entwickler und Automatisierung relevant sind.
@@ -70,14 +65,14 @@ Dokumentation: [CLI Nutzung](/de/reference/cli/)
 
 [OpenClaw](https://docs.openclaw.ai) ist ein Open-Source AI Assistant Gateway mit Plugin-System. Die Besonderheit: **Cron Jobs** — wiederkehrende Abfragen, die automatisch laufen. Zum Beispiel jeden Morgen um 7:30 Uhr eine Mobilitaetsempfehlung.
 
-Mehr dazu: [Integration →](/de/guides/integration/)
+Mehr dazu: [Integration Guide](/de/guides/integration/)
 
 ## Welcher Client fuer wen?
 
 | Du bist... | Empfohlener Client | Warum |
 |-----------|-------------------|-------|
-| **Privatperson** | OpenClaw (WhatsApp, Telegram, Slack) oder Claude Desktop | Dort wo du bereits bist, Cron Jobs fuer Automatisierung |
+| **Privatperson** | OpenClaw oder Claude Desktop | Dort wo du bereits bist, Cron Jobs fuer Automatisierung |
 | **Entwickler** | Claude Code, Cursor oder FlowMCP CLI | Direkte Kontrolle, schnelles Testen, IDE-Integration |
 | **Unternehmen** | NemoClaw (Enterprise-Sicherheit) | Deny-by-default Policies, Sandbox-Isolation, Audit-Trail |
 
-Details zu Enterprise-Integration: [Integration → NemoClaw](/de/guides/integration/#enterprise-sicherheit-mit-nemoclaw)
+Details zu Enterprise-Integration: [Integration Guide](/de/guides/integration/)
