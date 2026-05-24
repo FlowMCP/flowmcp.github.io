@@ -17,3 +17,48 @@ import Default from '@astrojs/starlight/components/Head.astro'
     document.documentElement.setAttribute( 'data-theme', 'dark' )
     document.documentElement.dataset.theme = 'dark'
 </script>
+
+<script is:inline>
+    // Memo 057 PRD-07 — Skip-Link as first interactive element on every page.
+    // Injected client-side so it works across Starlight templates without
+    // overriding internals. Targets the Starlight main content (.main-frame main
+    // or any [role="main"] / main element).
+    ( function() {
+        const ensureSkipLink = () => {
+            if( document.getElementById( 'flowmcp-skip-link' ) ) { return }
+            const link = document.createElement( 'a' )
+            link.id = 'flowmcp-skip-link'
+            link.className = 'skip-link'
+            link.href = '#main-content'
+            link.textContent = 'Skip to main content'
+            const body = document.body
+            if( ! body ) { return }
+            body.insertBefore( link, body.firstChild )
+        }
+        const ensureMainTarget = () => {
+            // Find the primary <main> in Starlight templates and give it id+role
+            const main = document.querySelector( 'main' )
+            if( ! main ) { return }
+            if( ! main.id ) { main.id = 'main-content' }
+            if( main.getAttribute( 'role' ) !== 'main' ) {
+                main.setAttribute( 'role', 'main' )
+            }
+        }
+        const run = () => {
+            ensureSkipLink()
+            ensureMainTarget()
+        }
+        if( document.readyState === 'loading' ) {
+            document.addEventListener( 'DOMContentLoaded', run )
+        } else {
+            run()
+        }
+        document.addEventListener( 'astro:page-load', run )
+    } )()
+</script>
+
+<script>
+    // Memo 057 PRD-07 — TOC a11y (aside aria-label + aria-current="location")
+    import { initTocA11y } from '../scripts/toc-a11y.mjs'
+    initTocA11y()
+</script>

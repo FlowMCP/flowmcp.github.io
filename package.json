@@ -19,6 +19,7 @@
         "generate-llms-txt": "node scripts/generate-llms-txt.mjs",
         "favicons": "node scripts/generate-favicons.mjs",
         "test:e2e": "playwright test",
+        "test:a11y": "playwright test tests/a11y/",
         "test:pagefind": "node scripts/test-pagefind.mjs",
         "test:lighthouse": "node scripts/test-lighthouse.mjs",
         "test:mermaid": "node scripts/check-mermaid-renders.mjs",
@@ -39,6 +40,7 @@
         "sharp": "^0.34.2"
     },
     "devDependencies": {
+        "@axe-core/playwright": "^4.11.3",
         "@mermaid-js/mermaid-cli": "^11.15.0",
         "@playwright/test": "^1.60.0",
         "playwright": "^1.60.0"
