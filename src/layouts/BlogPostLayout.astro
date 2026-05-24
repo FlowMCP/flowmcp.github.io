@@ -1,0 +1,180 @@
+---
+// BlogPostLayout.astro
+// Renders a single blog post inside the Starlight frame (Header + Footer).
+// Replaces the previous standalone src/pages/blog/[...slug].astro
+// (Memo 060 PRD-005).
+//
+// Why <StarlightPage>: see BlogIndexLayout.astro and the ADR in
+// .memo/060-webseite-detail-audit/rollout/phase-1a/research/
+// ADR-blog-starlight-strategy.md.
+//
+// Custom features preserved 1:1 from the previous standalone page:
+//   - Author / Date / Tags header
+//   - Reading-Progress-Bar (fixed top, scroll-driven width)
+//   - Custom TOC sidebar (sticky, IntersectionObserver active-highlight)
+//   - Share buttons (Twitter, LinkedIn, Copy link)
+//   - Related-Posts grid
+
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro'
+import { getCollection, render } from 'astro:content'
+
+const { post } = Astro.props
+
+const { Content, headings } = await render( post )
+
+const formattedDate = post.data.date.toLocaleDateString( 'en-US', { year: 'numeric', month: 'long', day: 'numeric' } )
+
+const showDrafts = import.meta.env.DEV
+const allPosts = ( await getCollection( 'blog', ( { data } ) => showDrafts || !data.draft ) )
+    .filter( ( p ) => p.id !== post.id )
+    .slice( 0, 3 )
+
+const canonicalUrl = `/blog/${ post.id }/`
+
+// Filtering down to depth <= 3 outside the JSX expression. The Astro
+// template compiler misreads "h.depth <= 3" inside curly braces as the
+// start of an HTML opening tag (`<= 3`) — keeping the comparison in
+// plain TypeScript avoids the parser ambiguity.
+const tocHeadings = headings.filter( ( h ) => h.depth <= 3 )
+
+// The custom in-content TOC mirrors Starlight's On-this-page widget.
+// We hide Starlight's built-in TOC (tableOfContents: false) because the
+// post layout renders its own sticky aside.
+const frontmatter = {
+    title: post.data.title,
+    description: post.data.description || '',
+    template: 'splash',
+    tableOfContents: false,
+    pagefind: true
+}
+---
+
+<StarlightPage frontmatter={frontmatter}>
+    <div class="blog-post__progress" id="reading-progress" aria-hidden="true"></div>
+
+    <div class="blog-post" id="main-content">
+        <a class="blog-post__back" href="/blog/">← All posts</a>
+
+        <article class="blog-post__article">
+            <header class="blog-post__header">
+                <h1 class="blog-post__title">{post.data.title}</h1>
+
+                <div class="blog-post__author">
+                    <div class="blog-post__avatar" aria-hidden="true"></div>
+                    <div class="blog-post__meta">
+                        <div class="blog-post__author-name">{post.data.author}</div>
+                        <div class="blog-post__date">{formattedDate}</div>
+                    </div>
+                </div>
+
+                { post.data.tags.length > 0 && (
+                    <div class="blog-post__tags">
+                        { post.data.tags.map( ( tag ) => (
+                            <span class="blog-post__tag">#{tag}</span>
+                        ) )}
+                    </div>
+                )}
+            </header>
+
+            <div class="blog-post__layout">
+                <div class="blog-post__content">
+                    <Content />
+
+                    <div class="blog-post__share">
+                        <span class="blog-post__share-label">Share:</span>
+                        <a class="blog-post__share-link" href={`https://twitter.com/intent/tweet?text=${ encodeURIComponent( post.data.title ) }&url=https://flowmcp.org${ canonicalUrl }`} target="_blank" rel="noopener">Twitter</a>
+                        <a class="blog-post__share-link" href={`https://www.linkedin.com/sharing/share-offsite/?url=https://flowmcp.org${ canonicalUrl }`} target="_blank" rel="noopener">LinkedIn</a>
+                        <button class="blog-post__share-link" data-copy-url={canonicalUrl}>Copy link</button>
+                    </div>
+                </div>
+
+                { headings.length > 0 && (
+                    <aside class="blog-post__toc" aria-label="On this page">
+                        <div class="blog-post__toc-title">ON THIS PAGE</div>
+                        <ul class="blog-post__toc-list">
+                            { tocHeadings.map( ( h ) => (
+                                <li class={`blog-post__toc-item blog-post__toc-item--depth-${ h.depth }`}>
+                                    <a href={`#${ h.slug }`}>{h.text}</a>
+                                </li>
+                            ) )}
+                        </ul>
+                    </aside>
+                )}
+            </div>
+        </article>
+
+        { allPosts.length > 0 && (
+            <section class="blog-post__related" aria-label="Related posts">
+                <h2 class="blog-post__related-title">Related Posts</h2>
+                <div class="blog-post__related-grid">
+                    { allPosts.map( ( p ) => (
+                        <a class="blog-post__related-card" href={`/blog/${ p.id }/`}>
+                            <span class="blog-post__related-tag">{p.data.tags[ 0 ] || 'post'}</span>
+                            <h3 class="blog-post__related-card-title">{p.data.title}</h3>
+                            <p class="blog-post__related-card-desc">{p.data.description}</p>
+                        </a>
+                    ) )}
+                </div>
+            </section>
+        )}
+    </div>
+</StarlightPage>
+
+<script>
+    const progressBar = document.getElementById( 'reading-progress' )
+    if( progressBar ) {
+        const update = () => {
+            const h = document.documentElement
+            const scrolled = h.scrollTop
+            const total = h.scrollHeight - h.clientHeight
+            const pct = total > 0 ? ( scrolled / total ) * 100 : 0
+            progressBar.style.width = pct + '%'
+        }
+        window.addEventListener( 'scroll', update, { passive: true } )
+        update()
+    }
+
+    document.querySelectorAll( '[data-copy-url]' ).forEach( ( btn ) => {
+        btn.addEventListener( 'click', async () => {
+            const url = 'https://flowmcp.org' + btn.dataset.copyUrl
+            await navigator.clipboard.writeText( url )
+            const original = btn.textContent
+            btn.textContent = 'Copied!'
+            setTimeout( () => { btn.textContent = original }, 2000 )
+        } )
+    } )
+
+    // Memo 059 PRD-009 (E1): active-position highlighting in the blog TOC.
+    // Mirrors Starlight's built-in TOC behaviour — IntersectionObserver flags
+    // the heading currently in view, the TOC link for that heading gets
+    // aria-current="true", styling is handled via CSS.
+    const tocLinks = Array.from( document.querySelectorAll( '.blog-post__toc-item a' ) )
+    const headings = tocLinks
+        .map( ( link ) => {
+            const id = link.getAttribute( 'href' )?.slice( 1 )
+            return id ? document.getElementById( id ) : null
+        } )
+        .filter( ( el ) => el !== null )
+
+    if( headings.length > 0 && 'IntersectionObserver' in window ) {
+        const setCurrent = ( id ) => {
+            tocLinks.forEach( ( link ) => {
+                const match = link.getAttribute( 'href' ) === '#' + id
+                link.toggleAttribute( 'aria-current', match )
+                link.parentElement?.classList.toggle( 'blog-post__toc-item--active', match )
+            } )
+        }
+
+        const visible = new Set()
+        const observer = new IntersectionObserver( ( entries ) => {
+            entries.forEach( ( entry ) => {
+                if( entry.isIntersecting ) visible.add( entry.target.id )
+                else visible.delete( entry.target.id )
+            } )
+            const first = headings.find( ( h ) => visible.has( h.id ) )
+            if( first ) setCurrent( first.id )
+        }, { rootMargin: '-80px 0px -70% 0px' } )
+
+        headings.forEach( ( h ) => observer.observe( h ) )
+    }
+</script>

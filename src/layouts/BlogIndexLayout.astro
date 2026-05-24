@@ -1,0 +1,136 @@
+---
+// BlogIndexLayout.astro
+// Renders the blog landing (Featured + Filter + Grid) inside the Starlight frame.
+// Replaces the previous standalone src/pages/blog/index.astro (Memo 060 PRD-005).
+//
+// Why <StarlightPage>: the previous standalone Astro page used a custom
+// top-nav component because it could not access virtual:starlight/components/*
+// (LanguageSelect, Search, SiteTitle). Wrapping the content in <StarlightPage>
+// puts the page back
+// into the Starlight render context, so the global Header.astro override applies
+// — same Header / Search / LanguageSelect as /about/. See ADR
+// `.memo/060-webseite-detail-audit/rollout/phase-1a/research/
+// ADR-blog-starlight-strategy.md`.
+
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro'
+import { getCollection } from 'astro:content'
+
+// Show drafts in dev mode for local review; hide in production builds.
+const showDrafts = import.meta.env.DEV
+const posts = ( await getCollection( 'blog', ( { data } ) => showDrafts || !data.draft ) )
+    .sort( ( a, b ) => b.data.date.valueOf() - a.data.date.valueOf() )
+
+const featured = posts[ 0 ]
+const rest = posts.slice( 1 )
+
+// Memo 059 PRD-006 (A7, F4 Variante c): derive filter categories from the
+// actual posts collection. Use the first tag (tags[0]) as the primary
+// category — matches the display logic on the cards. Empty / unpopulated
+// categories are simply never rendered. 'All' is the default pseudo-category.
+const categorySet = new Set()
+posts.forEach( ( post ) => {
+    const primary = ( post.data.tags && post.data.tags[ 0 ] ) || ''
+    if( primary.length > 0 ) { categorySet.add( primary ) }
+} )
+const sortedCategories = Array.from( categorySet ).sort( ( a, b ) => a.localeCompare( b ) )
+const filterTabs = [ 'All', ...sortedCategories ]
+
+// Helper to humanise a tag slug for the button label
+const labelFor = ( tag ) => {
+    if( tag === 'All' ) { return 'All' }
+    return tag.charAt( 0 ).toUpperCase() + tag.slice( 1 )
+}
+
+const frontmatter = {
+    title: 'Blog',
+    description: 'Releases, hackathon stories, integration guides — from the FlowMCP team.',
+    template: 'splash',
+    tableOfContents: false,
+    pagefind: true
+}
+---
+
+<StarlightPage frontmatter={frontmatter}>
+    <section class="blog-index" id="main-content">
+        <header class="blog-index__header">
+            <h1 class="blog-index__title">Blog</h1>
+            <p class="blog-index__subtitle">Updates, tutorials, and release notes for FlowMCP.</p>
+            <a class="blog-index__rss" href="/blog/rss.xml">RSS Feed →</a>
+        </header>
+
+        <nav class="blog-index__filters" aria-label="Blog filter">
+            { filterTabs.map( ( tab, i ) => (
+                <button
+                    class={`blog-index__filter ${ i === 0 ? 'is-active' : '' }`}
+                    type="button"
+                    data-filter={tab}
+                    aria-pressed={i === 0 ? 'true' : 'false'}
+                >
+                    { labelFor( tab ) }
+                </button>
+            ) )}
+        </nav>
+
+        { featured && (
+            <a
+                class="blog-index__featured"
+                href={`/blog/${ featured.id }/`}
+                data-category={( featured.data.tags && featured.data.tags[ 0 ] ) || ''}
+            >
+                <span class="blog-index__featured-badge">FEATURED</span>
+                <h2 class="blog-index__featured-title">{featured.data.title}</h2>
+                <p class="blog-index__featured-desc">{featured.data.description}</p>
+                <span class="blog-index__featured-cta">Read more →</span>
+            </a>
+        )}
+
+        { rest.length > 0 && (
+            <div class="blog-index__grid">
+                { rest.map( ( post ) => (
+                    <a
+                        class="blog-index__card"
+                        href={`/blog/${ post.id }/`}
+                        data-category={( post.data.tags && post.data.tags[ 0 ] ) || ''}
+                    >
+                        <span class="blog-index__card-tag">{post.data.tags[ 0 ] || 'post'}</span>
+                        <h3 class="blog-index__card-title">{post.data.title}</h3>
+                        <p class="blog-index__card-desc">{post.data.description}</p>
+                    </a>
+                ) )}
+            </div>
+        )}
+    </section>
+</StarlightPage>
+
+<script>
+    // Memo 059 PRD-006: client-side filtering for blog index.
+    // 'All' shows everything; any other category shows only posts whose
+    // data-category attribute matches the button's data-filter.
+    ( function() {
+        const buttons = document.querySelectorAll( '.blog-index__filter' )
+        const items = document.querySelectorAll( '[data-category]' )
+
+        const applyFilter = ( filter ) => {
+            items.forEach( ( el ) => {
+                const cat = el.getAttribute( 'data-category' )
+                const show = filter === 'All' || cat === filter
+                if( show ) {
+                    el.removeAttribute( 'hidden' )
+                } else {
+                    el.setAttribute( 'hidden', '' )
+                }
+            } )
+            buttons.forEach( ( btn ) => {
+                const isActive = btn.dataset.filter === filter
+                btn.classList.toggle( 'is-active', isActive )
+                btn.setAttribute( 'aria-pressed', isActive ? 'true' : 'false' )
+            } )
+        }
+
+        buttons.forEach( ( btn ) => {
+            btn.addEventListener( 'click', () => {
+                applyFilter( btn.dataset.filter )
+            } )
+        } )
+    } )()
+</script>

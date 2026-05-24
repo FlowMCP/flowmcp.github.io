@@ -221,7 +221,16 @@ export default defineConfig({
                         { label: 'x402 (experimental)', translations: { de: 'x402 (experimentell)' }, slug: 'ecosystem/x402' },
                     ],
                 },
-                // Blog removed from sidebar — now standalone view at /blog/ (Memo 057 PRD-11)
+                // Memo 060 PRD-005 (Phase 1a.7): Blog wird wieder als Top-Level-
+                // Sidebar-Eintrag eingehaengt, jetzt im Starlight-Frame. Index-
+                // Seite rendert via template: 'splash' ohne Sidebar (siehe
+                // BlogIndexLayout.astro), aber andere Starlight-Pages zeigen
+                // den Eintrag in der linken Spalte.
+                {
+                    label: 'Blog',
+                    translations: { de: 'Blog' },
+                    link: '/blog/',
+                },
                 // Memo 059 PRD-011 (B4/B5): Roadmap + Team removed from sidebar.
                 // Reachable via Footer-Widget (PRD-012). Pages remain at /roadmap, /team.
             ],
