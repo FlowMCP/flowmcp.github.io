@@ -161,15 +161,17 @@ export default defineConfig({
                         { label: 'License & ToS FAQ', translations: { de: 'Lizenz & AGB FAQ' }, slug: 'license-faq' },
                     ],
                 },
+                // Memo 059 PRD-011: Quickstart + Guides merged into "Get Started" (B3/B7).
+                // Inline-Listing (Variant A) — flat list, no sub-group. AC-3: exactly 4 items.
                 {
-                    label: 'Quickstart',
-                    translations: { de: 'Schnellstart' },
+                    label: 'Get Started',
+                    translations: { de: 'Loslegen' },
                     collapsed: true,
                     items: [
-                        { label: 'What is FlowMCP', translations: { de: 'Was ist FlowMCP' }, slug: 'quickstart/what-is-flowmcp' },
-                        { label: 'Installation', translations: { de: 'Installation' }, slug: 'quickstart/installation' },
                         { label: 'Quickstart', translations: { de: 'Schnellstart' }, slug: 'quickstart/quickstart' },
-                        { label: 'How It Works', translations: { de: 'Wie es funktioniert' }, slug: 'quickstart/how-it-works' },
+                        { label: 'Hackathon Kit', translations: { de: 'Hackathon-Kit' }, slug: 'guides/hackathon-kit' },
+                        { label: 'Agent Creation', translations: { de: 'Agent-Erstellung' }, slug: 'guides/agent-creation' },
+                        { label: 'GTFS Pilot', translations: { de: 'GTFS-Pilot' }, slug: 'guides/gtfs-pilot' },
                     ],
                 },
                 {
@@ -207,20 +209,6 @@ export default defineConfig({
                     ],
                 },
                 {
-                    label: 'Guides',
-                    translations: { de: 'Anleitungen' },
-                    collapsed: true,
-                    items: [
-                        { label: 'Hackathon Kit', translations: { de: 'Hackathon-Kit' }, slug: 'guides/hackathon-kit' },
-                        { label: 'Agent Creation', translations: { de: 'Agent erstellen' }, slug: 'guides/agent-creation' },
-                        { label: 'GTFS Pilot', translations: { de: 'GTFS-Pilot' }, slug: 'guides/gtfs-pilot' },
-                        { label: 'Schema Creation', translations: { de: 'Schema erstellen' }, slug: 'guides/schema-creation' },
-                        { label: 'Server Integration', translations: { de: 'Server-Integration' }, slug: 'guides/server-integration' },
-                        { label: 'Integration', translations: { de: 'Integration' }, slug: 'guides/integration' },
-                        { label: 'Examples', translations: { de: 'Beispiele' }, slug: 'guides/examples' },
-                    ],
-                },
-                {
                     label: 'Ecosystem',
                     translations: { de: 'Oekosystem' },
                     collapsed: true,
@@ -232,23 +220,8 @@ export default defineConfig({
                     ],
                 },
                 // Blog removed from sidebar — now standalone view at /blog/ (Memo 057 PRD-11)
-                // Memo 058 PRD-06: Roadmap split — Team top-level, Community in About, Integration in Guides.
-                {
-                    label: 'Roadmap',
-                    translations: { de: 'Roadmap' },
-                    collapsed: true,
-                    items: [
-                        { label: 'Now / Next / Later', translations: { de: 'Now / Next / Later' }, slug: 'roadmap' },
-                    ],
-                },
-                {
-                    label: 'Team',
-                    translations: { de: 'Team' },
-                    collapsed: true,
-                    items: [
-                        { label: 'Team', translations: { de: 'Team' }, slug: 'team' },
-                    ],
-                },
+                // Memo 059 PRD-011 (B4/B5): Roadmap + Team removed from sidebar.
+                // Reachable via Footer-Widget (PRD-012). Pages remain at /roadmap, /team.
             ],
         }),
     ],
