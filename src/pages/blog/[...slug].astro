@@ -2,8 +2,12 @@
 import { getCollection, render } from 'astro:content'
 import BlogTopnav from '../../components/BlogTopnav.astro'
 
+// Show drafts in dev mode for local review; hide in production builds.
+const showDrafts = import.meta.env.DEV
+
 export async function getStaticPaths() {
-    const posts = await getCollection( 'blog', ( { data } ) => !data.draft )
+    const includeDrafts = import.meta.env.DEV
+    const posts = await getCollection( 'blog', ( { data } ) => includeDrafts || !data.draft )
     return posts.map( ( post ) => ( { params: { slug: post.id }, props: { post } } ) )
 }
 
@@ -12,8 +16,8 @@ const { Content, headings } = await render( post )
 
 const formattedDate = post.data.date.toLocaleDateString( 'en-US', { year: 'numeric', month: 'long', day: 'numeric' } )
 
-const allPosts = ( await getCollection( 'blog', ( { data } ) => !data.draft ) )
-    .filter( ( p ) => p.slug !== post.id )
+const allPosts = ( await getCollection( 'blog', ( { data } ) => showDrafts || !data.draft ) )
+    .filter( ( p ) => p.id !== post.id )
     .slice( 0, 3 )
 
 const canonicalUrl = `/blog/${post.id}/`
@@ -97,7 +101,7 @@ const canonicalUrl = `/blog/${post.id}/`
             <h2 class="blog-post__related-title">Related Posts</h2>
             <div class="blog-post__related-grid">
                 {allPosts.map( ( p ) => (
-                    <a class="blog-post__related-card" href={`/blog/${p.slug}/`}>
+                    <a class="blog-post__related-card" href={`/blog/${p.id}/`}>
                         <span class="blog-post__related-tag">{p.data.tags[ 0 ] || 'post'}</span>
                         <h3 class="blog-post__related-card-title">{p.data.title}</h3>
                         <p class="blog-post__related-card-desc">{p.data.description}</p>

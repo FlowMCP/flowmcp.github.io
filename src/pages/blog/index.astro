@@ -2,7 +2,9 @@
 import { getCollection } from 'astro:content'
 import BlogTopnav from '../../components/BlogTopnav.astro'
 
-const posts = ( await getCollection( 'blog', ( { data } ) => !data.draft ) )
+// Show drafts in dev mode for local review; hide in production builds.
+const showDrafts = import.meta.env.DEV
+const posts = ( await getCollection( 'blog', ( { data } ) => showDrafts || !data.draft ) )
     .sort( ( a, b ) => b.data.date.valueOf() - a.data.date.valueOf() )
 
 const featured = posts[ 0 ]
@@ -45,7 +47,7 @@ const filterTabs = [ 'All', 'Releases', 'Tutorials', 'Hackathon', 'Architecture'
     </nav>
 
     {featured && (
-        <a class="blog-index__featured" href={`/blog/${featured.slug}/`}>
+        <a class="blog-index__featured" href={`/blog/${featured.id}/`}>
             <span class="blog-index__featured-badge">FEATURED</span>
             <h2 class="blog-index__featured-title">{featured.data.title}</h2>
             <p class="blog-index__featured-desc">{featured.data.description}</p>
@@ -56,7 +58,7 @@ const filterTabs = [ 'All', 'Releases', 'Tutorials', 'Hackathon', 'Architecture'
     {rest.length > 0 && (
         <div class="blog-index__grid">
             {rest.map( ( post ) => (
-                <a class="blog-index__card" href={`/blog/${post.slug}/`}>
+                <a class="blog-index__card" href={`/blog/${post.id}/`}>
                     <span class="blog-index__card-tag">{post.data.tags[ 0 ] || 'post'}</span>
                     <h3 class="blog-index__card-title">{post.data.title}</h3>
                     <p class="blog-index__card-desc">{post.data.description}</p>
