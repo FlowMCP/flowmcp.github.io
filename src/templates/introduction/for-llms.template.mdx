@@ -1,0 +1,34 @@
+---
+title: For LLMs
+description: Machine-readable documentation for AI agents and LLMs.
+---
+import InstallNote from '../../../components/InstallNote.astro';
+
+{/* PAGEFIND-META-START */}
+<span style="display:none" data-pagefind-meta="section">Introduction</span>
+{/* PAGEFIND-META-END */}
+
+## Install
+
+<InstallNote repo="flowmcp-cli" global />
+
+## Mini-Skill
+
+Copy this block into your AI chat to give it full FlowMCP context:
+
+```
+{{include:mini-skill}}
+```
+
+## Available Files
+
+| File | Content | Size |
+|------|---------|------|
+| [llms.txt](https://flowmcp.github.io/llms.txt) | Standard index — overview and links | ~25 lines |
+| [docs-llms.txt](https://flowmcp.github.io/docs-llms.txt) | Practical docs — getting started, schemas, agents, CLI | ~8500 lines |
+| [llms-full.txt](https://flowmcp.github.io/llms-full.txt) | Full website content embedded | ~9500 lines |
+| [Spec llms.txt]({{spec.llmsTxtUrl}}) | Formal v{{spec.currentVersion}} specification (auto-generated from spec repo) | ~9200 lines |
+
+## What is llms.txt?
+
+The [llms.txt standard](https://github.com/answerdotai/llms-txt) (Jeremy Howard, answer.ai) defines a compact, machine-readable format for project documentation. It allows AI agents to load all relevant context in one step instead of crawling individual pages.
