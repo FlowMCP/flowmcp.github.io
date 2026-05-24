@@ -28,6 +28,12 @@ import { Icon } from '@astrojs/starlight/components';
             if (parentNav) {
                 parentNav.addEventListener('keyup', (e) => this.closeOnEscape(e as KeyboardEvent));
             }
+
+            // Memo 057 PRD-05 — Cross-Scope-Close via Custom-Event
+            // search-keyboard.mjs sendet 'flowmcp:close-all' bei Esc
+            window.addEventListener('flowmcp:close-all', () => {
+                this.setExpanded(false);
+            });
         }
 
         setExpanded(expanded: boolean) {
