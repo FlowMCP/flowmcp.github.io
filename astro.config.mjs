@@ -76,7 +76,16 @@ export default defineConfig({
         '/docs/specification/prompt-architecture/': '/specification/prompt-architecture/',
 
         // PRD-27: DE Slug-Vereinheitlichung (Memo 052 Phase 7)
-        '/de/about/fuer-entscheider/': '/de/about/for-decision-makers/',
+        // Memo 058 PRD-04: for-decision-makers consolidated into /about/.
+        '/de/about/fuer-entscheider/': '/de/about/',
+        '/about/for-decision-makers/': '/about/',
+        '/de/about/for-decision-makers/': '/de/about/',
+        '/introduction/about/': '/about/',
+        '/de/introduction/about/': '/de/about/',
+        '/introduction/why/': '/about/',
+        '/de/introduction/why/': '/de/about/',
+        '/introduction/faq/': '/about/faq/',
+        '/de/introduction/faq/': '/de/about/faq/',
     },
     integrations: [
         starlight({
@@ -129,15 +138,13 @@ export default defineConfig({
             ],
             sidebar: [
                 {
-                    label: 'Introduction',
-                    translations: { de: 'Einfuehrung' },
+                    label: 'About',
+                    translations: { de: 'Ueber FlowMCP' },
                     collapsed: true,
                     items: [
-                        { label: 'For Decision Makers', translations: { de: 'Fuer Entscheider' }, slug: 'about/for-decision-makers' },
-                        { label: 'About', translations: { de: 'Ueber FlowMCP' }, slug: 'introduction/about' },
-                        { label: 'Why We Do This', translations: { de: 'Warum wir das machen' }, slug: 'introduction/why' },
+                        { label: 'About FlowMCP', translations: { de: 'Ueber FlowMCP' }, slug: 'about' },
+                        { label: 'FAQ', translations: { de: 'Haeufige Fragen' }, slug: 'about/faq' },
                         { label: 'Use Cases', translations: { de: 'Anwendungsfaelle' }, slug: 'introduction/use-cases' },
-                        { label: 'FAQ', translations: { de: 'Haeufige Fragen' }, slug: 'introduction/faq' },
                         { label: 'For LLMs', translations: { de: 'Fuer LLMs' }, slug: 'introduction/for-llms' },
                         { label: 'License & ToS FAQ', translations: { de: 'Lizenz & AGB FAQ' }, slug: 'license-faq' },
                     ],

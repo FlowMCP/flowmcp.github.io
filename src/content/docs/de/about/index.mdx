@@ -1,0 +1,103 @@
+---
+title: Ueber FlowMCP
+description: Was FlowMCP ist, warum es existiert, und wo es heute steht.
+---
+{/* PAGEFIND-META-START */}
+<span style="display:none" data-pagefind-meta="section">Ueber FlowMCP</span>
+{/* PAGEFIND-META-END */}
+
+> *FlowMCP normalisiert hunderte Datenquellen zu einer durchsuchbaren Library aus AI-bereiten Tools — damit deine Agenten suchen, kombinieren und antworten können, ohne dass du sie zu Integrations-Maintainern machst.*
+
+FlowMCP begann als Versuch, mehrere Datenquellen an einen einzigen MCP-Server anzubinden. Heute ist es eine Schema-Library — **365 produktionsreife Definitionen, 288 Datenquellen, 3.100+ aufrufbare Tools** — alle ueber eine zentrale, auditierbare Engine geleitet. AI-Agenten rufen FlowMCP — nie die zugrundeliegenden APIs direkt. Deine API-Keys bleiben in deiner Kontrolle.
+
+## Was FlowMCP ist
+
+| Aspekt | Beschreibung |
+|--------|--------------|
+| **Primitive Idee** | Ein Fluss von Daten — aus heterogenen Quellen, durch normalisierte Schemas, in AI-Pipelines |
+| **Schema-Library** | 365 Schemas (v4-Produktion), 288 Datenquellen, 3.100+ Tool-Routes |
+| **Primaerer Use** | CLI-Tool — kein MCP-Client haelt 3.100+ Tools im Kontext, die CLI laedt sie dynamisch |
+| **Sekundaerer Use** | MCP-Server-Modus weiter unterstuetzt, aber nicht der Default |
+| **Mehrwert** | Kombinatorik: viele Quellen + automatische Auffindbarkeit + AI-getriebene Verkettung |
+| **Sicherheits-Plus** | Keys leben in FlowMCP, nie im AI-Kontext. Ein direkter REST-Call aus der AI wuerde sie exposeen |
+| **Killer-Feature** | Rueckwaertssuche ueber Shared Lists — Schemas tragen sich in Listen ein wie "Ethereum Mainnet" oder "Berlin", AI kann fragen: "Welche Schemas decken X ab?" |
+| **v4** | Skills, Prefill, Selections, Output-Schema, Pipes |
+| **v4.1** | Add-on-Konzept — externe Toolkits wie `gtfs-sqlite-toolkit` erweitern FlowMCP |
+| **Datenklassen** | Crypto (EVM, Solana, DeFi, Identity, NFT), Open Data (DE/EU), Wetter/Geo, Web3 Social, News, Dev-Tools |
+
+## Was FlowMCP NICHT (mehr) ist
+
+| Missverstaendnis | Realitaet |
+|------------------|-----------|
+| "Ein MCP-Server" | Nein — CLI-First. MCP-Server-Modus ist optional. |
+| "Eine Krypto-Library" | Begann dort, ist seit Oktober 2025 mit Open Data deutlich breiter. |
+| "Eine API-Wrapper-Sammlung" | Nein — Engine ist zentral, Schemas sind duenne Deklarationen. Ein Audit der Engine deckt Tausende Endpunkte ab. |
+| "Ein API-Key-Manager" | Nicht primaer. Key-Management ist Nebenprodukt der Trennung AI ↔ Key. |
+
+## Warum wir es gebaut haben
+
+Open Data existiert in grosser Menge — Fahrplaene, Wetter, Behoerdendaten, Geodaten, Umweltdaten. Sie ist verstreut ueber hunderte Portale, in unterschiedlichen Formaten, hinter verschiedenen Zugriffsmethoden. Fuer Menschen muehsam. Fuer AI-Agenten — ohne Vorbereitung — praktisch unmoeglich.
+
+FlowMCP macht diese Vorbereitung **einmal, fuer alle**:
+
+- **Offene Protokolle statt geschlossene Plattformen.** Eine fehlgeschlagene Implementierung kann ersetzt werden, ohne dass Schemas oder Clients aendern.
+- **Eine Quelle = eine Antwort. Viele Quellen = eine nuetzliche Antwort.** Echte Fragen brauchen Kombinationen.
+- **Energieeffizienz.** Ohne Schema liest jede AI die API-Doku pro Anfrage neu — tausende Tokens, inkonsistente Ergebnisse. Ein Schema ist eine einmalige Investition: jede AI nutzt es danach effizient. Ueber tausende Anfragen ~10x Energieersparnis.
+- **Sicherheit durch Transparenz.** Schemas sind Open Source, auditierbar, verifizierbar.
+
+![Datenquellen werden normalisiert](/images/diagram-1-data-normalization.png)
+
+## Anwendungsfaelle
+
+- **Research-Agenten**, die Open Data + APIs nutzen, ohne Custom-Integrationen
+- **Compliance-Tooling** mit EU- und deutschen Behoerden-Schema-Katalogen
+- **DeFi- und Blockchain-Analytics** mit 230+ Schemas (EVM + Solana)
+- **Mobility-Agenten** mit nativer GTFS-Unterstuetzung ueber das v4.1-Add-on
+- **Hackathons und Prototypen** mit vorbereiteten Schemas und Mock-Mode
+
+## Wie FlowMCP vergleicht
+
+| Aspekt | FlowMCP | Custom-Integration | Generische Agent-Bibliotheken |
+|--------|---------|---------------------|-------------------------------|
+| Time-to-first-call | unter 5 min | Tage | Stunden |
+| Quellen-Abdeckung | 288 Quellen | 1 Quelle/Integration | variiert |
+| Open Source | MIT | n/a | variiert |
+| Schema-Validierung | strikte v4-Spec | keine | partiell |
+| Key-Isolation | ja (in FlowMCP) | je nach Setup | selten |
+| Vendor-Lock-in | keiner | gering | mittel |
+
+## Production-Posture
+
+| Signal | Status |
+|--------|--------|
+| Lizenz | **MIT** — nutzen, forken, verbreiten |
+| Quelle | [github.com/FlowMCP](https://github.com/FlowMCP) |
+| Test-Coverage | Pro Repo, via Codecov |
+| Spec-Version | v4 aktiv, v4.1 Add-on-Layer, v3 im Archiv |
+| Schema-Lifecycle | Definiert pro Provider |
+| Maintainer-Status | Sichtbar — Kontakt ueber [Team](/de/team/) |
+
+## Trust-Signale
+
+- **Open Source von Tag eins.** Schemas, Core, CLI — alle MIT, alle auf GitHub.
+- **Eine Engine auditieren, tausende Endpunkte abdecken.** Engine zentral, Schemas duenn.
+- **API-Keys bleiben bei dir.** FlowMCP haelt Keys zur Laufzeit; AI sieht Calls + Antworten, nie Credentials.
+- **Maintainer sichtbar.** Team-Seite mit GitHub + LinkedIn. Keine anonymen Packages.
+- **Spec-Evolution dokumentiert.** v3 → v4 → v4.1 im [CHANGELOG](https://github.com/FlowMCP/flowmcp-spec/blob/main/CHANGELOG.md).
+
+## Community
+
+- [GitHub Discussions](https://github.com/FlowMCP) fuer Design- und Roadmap-Fragen
+- [Roadmap](/de/roadmap/) fuer Now/Next/Later
+
+## FAQ
+
+Typische Fragen zu Installation, MCP-Client-Kompatibilitaet, Schema-Beitrag: [FAQ →](/de/about/faq/).
+
+## Naechste Schritte
+
+- [Schnellstart →](/de/quickstart/) — erster Call in unter 5 Minuten
+- [Konzepte →](/de/concepts/) — Schemas, Skills, Selections, Pipes
+- [Specification →](/specification/) — v4-Spec, Validation Rules (EN, Source of Truth)
+- [Roadmap →](/de/roadmap/) — Now/Next/Later
+- [Team →](/de/team/) — wer FlowMCP betreut

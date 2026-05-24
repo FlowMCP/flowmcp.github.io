@@ -1,0 +1,68 @@
+---
+// FooterBadges — Trust signals row (Memo 058 PRD-04 / P16)
+// 5 shields: MIT license, GitHub stars, CI status, Coverage, Last release.
+const path = Astro.url.pathname
+const isDE = path.startsWith( '/de/' ) || path === '/de'
+
+const t = isDE ? {
+    ariaLabel: 'Vertrauenssignale',
+    altLicense: 'MIT-Lizenz',
+    altStars: 'GitHub-Sterne',
+    altCi: 'CI-Status',
+    altCoverage: 'Test-Coverage',
+    altRelease: 'Letztes Release',
+} : {
+    ariaLabel: 'Trust signals',
+    altLicense: 'MIT License',
+    altStars: 'GitHub stars',
+    altCi: 'CI Status',
+    altCoverage: 'Test Coverage',
+    altRelease: 'Latest release',
+}
+
+const org = 'FlowMCP'
+const repo = 'flowmcp-core'
+---
+
+<section class="footer-badges" aria-label={t.ariaLabel}>
+    <a href={`https://github.com/${org}/${repo}`} rel="noopener" target="_blank">
+        <img alt={t.altLicense} src={`https://img.shields.io/github/license/${org}/${repo}?style=flat-square`} />
+    </a>
+    <a href={`https://github.com/${org}`} rel="noopener" target="_blank">
+        <img alt={t.altStars} src={`https://img.shields.io/github/stars/${org}/${repo}?style=flat-square`} />
+    </a>
+    <a href={`https://github.com/${org}/${repo}/actions`} rel="noopener" target="_blank">
+        <img alt={t.altCi} src={`https://img.shields.io/github/actions/workflow/status/${org}/${repo}/test-on-push.yml?style=flat-square`} />
+    </a>
+    <a href={`https://app.codecov.io/gh/${org}/${repo}`} rel="noopener" target="_blank">
+        <img alt={t.altCoverage} src={`https://img.shields.io/codecov/c/github/${org}/${repo}?style=flat-square`} />
+    </a>
+    <a href={`https://github.com/${org}/${repo}/releases`} rel="noopener" target="_blank">
+        <img alt={t.altRelease} src={`https://img.shields.io/github/v/release/${org}/${repo}?style=flat-square&include_prereleases`} />
+    </a>
+</section>
+
+<style>
+.footer-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: center;
+    padding: 1rem 0;
+    opacity: 0.85;
+}
+
+.footer-badges img {
+    height: 20px;
+    width: auto;
+}
+
+@media (max-width: 640px) {
+    .footer-badges {
+        gap: 0.3rem;
+    }
+    .footer-badges img {
+        height: 18px;
+    }
+}
+</style>
