@@ -1,18 +1,20 @@
 ---
 title: "Prompt Architecture"
 description: "FlowMCP uses a two-tier prompt system to bridge deterministic tools with non-deterministic AI orchestration. **Provider-Prompts** explain how to use a single provider's tools effectively...."
-spec_version: "4.0.0"
+spec_version: "4.1.0"
 spec_file: "12-prompt-architecture.md"
 order: 12
 section: "Specification"
 normative: true
-generated_at: "2026-05-21T21:05:42.677Z"
-generated_from: "spec/v4.0.0/12-prompt-architecture.md"
+source_commit: "0223c78"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/0223c78/spec/v4.1.0/12-prompt-architecture.md"
+generated_at: "2026-05-24T02:54:06.611Z"
+generated_from: "spec/v4.1.0/12-prompt-architecture.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.0.0/12-prompt-architecture.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.1.0/12-prompt-architecture.md."
 ---
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/12-prompt-architecture.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/12-prompt-architecture.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Prompt Architecture

@@ -1,15 +1,17 @@
 ---
 title: "Skills"
 description: "Skills are reusable instructions for AI agents. They map to the MCP `server.prompt` primitive. Each skill is a `.mjs` file with a structured `export const skill` object that combines Markdown..."
-spec_version: "4.0.0"
+spec_version: "4.1.0"
 spec_file: "14-skills.md"
 order: 14
 section: "Specification"
 normative: true
-generated_at: "2026-05-21T21:05:42.677Z"
-generated_from: "spec/v4.0.0/14-skills.md"
+source_commit: "0223c78"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/0223c78/spec/v4.1.0/14-skills.md"
+generated_at: "2026-05-24T02:54:06.611Z"
+generated_from: "spec/v4.1.0/14-skills.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.0.0/14-skills.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.1.0/14-skills.md."
 ---
 
 # FlowMCP Specification v4.0.0 — Skills

@@ -1,15 +1,17 @@
 ---
 title: "Resources"
 description: "Resources provide local data access via SQLite databases and Markdown documents. They map to the MCP `server.resource` primitive and are defined in `main.resources` alongside `main.tools`. This..."
-spec_version: "4.0.0"
+spec_version: "4.1.0"
 spec_file: "13-resources.md"
 order: 13
 section: "Specification"
 normative: true
-generated_at: "2026-05-21T21:05:42.677Z"
-generated_from: "spec/v4.0.0/13-resources.md"
+source_commit: "0223c78"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/0223c78/spec/v4.1.0/13-resources.md"
+generated_at: "2026-05-24T02:54:06.611Z"
+generated_from: "spec/v4.1.0/13-resources.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.0.0/13-resources.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.1.0/13-resources.md."
 ---
 
 # FlowMCP Specification v4.0.0 — Resources

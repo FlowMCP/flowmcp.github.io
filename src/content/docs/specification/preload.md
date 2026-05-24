@@ -1,18 +1,20 @@
 ---
 title: "Preload & Caching"
 description: "This document defines the optional `preload` field on route level. It signals that a route returns a static or slow-changing dataset and that the runtime MAY cache the response locally."
-spec_version: "4.0.0"
+spec_version: "4.1.0"
 spec_file: "11-preload.md"
 order: 11
 section: "Specification"
 normative: true
-generated_at: "2026-05-21T21:05:42.677Z"
-generated_from: "spec/v4.0.0/11-preload.md"
+source_commit: "0223c78"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/0223c78/spec/v4.1.0/11-preload.md"
+generated_at: "2026-05-24T02:54:06.611Z"
+generated_from: "spec/v4.1.0/11-preload.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.0.0/11-preload.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.1.0/11-preload.md."
 ---
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/11-preload.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/11-preload.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Preload & Caching

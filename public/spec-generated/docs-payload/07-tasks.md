@@ -1,15 +1,17 @@
 ---
 title: "MCP Tasks"
 description: "**Deferred to v2.1.0.** This section is a placeholder."
-spec_version: "4.0.0"
+spec_version: "4.1.0"
 spec_file: "07-tasks.md"
 order: 7
 section: "Specification"
 normative: true
-generated_at: "2026-05-21T21:05:42.677Z"
-generated_from: "spec/v4.0.0/07-tasks.md"
+source_commit: "0223c78"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/0223c78/spec/v4.1.0/07-tasks.md"
+generated_at: "2026-05-24T02:54:06.611Z"
+generated_from: "spec/v4.1.0/07-tasks.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.0.0/07-tasks.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.1.0/07-tasks.md."
 ---
 
 # FlowMCP Specification v4.0.0 — MCP Tasks

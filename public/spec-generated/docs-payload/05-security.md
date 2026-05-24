@@ -1,15 +1,17 @@
 ---
 title: "Security Model"
 description: "FlowMCP enforces a layered security model that prevents schema files from accessing the network, filesystem, or process environment. All potentially dangerous operations are restricted to the trusted..."
-spec_version: "4.0.0"
+spec_version: "4.1.0"
 spec_file: "05-security.md"
 order: 5
 section: "Specification"
 normative: true
-generated_at: "2026-05-21T21:05:42.677Z"
-generated_from: "spec/v4.0.0/05-security.md"
+source_commit: "0223c78"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/0223c78/spec/v4.1.0/05-security.md"
+generated_at: "2026-05-24T02:54:06.611Z"
+generated_from: "spec/v4.1.0/05-security.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.0.0/05-security.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.1.0/05-security.md."
 ---
 
 # FlowMCP Specification v4.0.0 — Security Model

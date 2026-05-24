@@ -1,15 +1,17 @@
 ---
 title: "Tests"
 description: "Tests are executable examples embedded in tool and resource query definitions. For agents, tests are prompts with expected tool usage and content assertions. They serve three purposes: they document..."
-spec_version: "4.0.0"
+spec_version: "4.1.0"
 spec_file: "10-tests.md"
 order: 10
 section: "Specification"
 normative: true
-generated_at: "2026-05-21T21:05:42.677Z"
-generated_from: "spec/v4.0.0/10-tests.md"
+source_commit: "0223c78"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/0223c78/spec/v4.1.0/10-tests.md"
+generated_at: "2026-05-24T02:54:06.611Z"
+generated_from: "spec/v4.1.0/10-tests.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.0.0/10-tests.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.1.0/10-tests.md."
 ---
 
 # FlowMCP Specification v4.0.0 — Tests

@@ -1,15 +1,17 @@
 ---
 title: "MCP Server Integration"
 description: "**Version:** FlowMCP 4.0.0"
-spec_version: "4.0.0"
+spec_version: "4.1.0"
 spec_file: "19-mcp-integration.md"
 order: 19
 section: "Specification"
 normative: true
-generated_at: "2026-05-21T21:05:42.677Z"
-generated_from: "spec/v4.0.0/19-mcp-integration.md"
+source_commit: "0223c78"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/0223c78/spec/v4.1.0/19-mcp-integration.md"
+generated_at: "2026-05-24T02:54:06.611Z"
+generated_from: "spec/v4.1.0/19-mcp-integration.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.0.0/19-mcp-integration.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.1.0/19-mcp-integration.md."
 ---
 
 # FlowMCP Specification v4.0.0 — MCP Server Integration

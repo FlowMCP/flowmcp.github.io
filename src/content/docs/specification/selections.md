@@ -1,18 +1,20 @@
 ---
 title: "Selections"
 description: "**Version:** FlowMCP 4.0.0"
-spec_version: "4.0.0"
+spec_version: "4.1.0"
 spec_file: "17-selections.md"
 order: 17
 section: "Specification"
 normative: true
-generated_at: "2026-05-21T21:05:42.677Z"
-generated_from: "spec/v4.0.0/17-selections.md"
+source_commit: "0223c78"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/0223c78/spec/v4.1.0/17-selections.md"
+generated_at: "2026-05-24T02:54:06.611Z"
+generated_from: "spec/v4.1.0/17-selections.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.0.0/17-selections.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.1.0/17-selections.md."
 ---
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/17-selections.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/17-selections.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Selections

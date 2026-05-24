@@ -1,18 +1,20 @@
 ---
 title: "Output Schema"
 description: "Output schemas make tool responses predictable. AI clients can know in advance what shape the data will have, enabling structured reasoning without parsing guesswork. This document defines the output..."
-spec_version: "4.0.0"
+spec_version: "4.1.0"
 spec_file: "04-output-schema.md"
 order: 4
 section: "Specification"
 normative: true
-generated_at: "2026-05-21T21:05:42.677Z"
-generated_from: "spec/v4.0.0/04-output-schema.md"
+source_commit: "0223c78"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/0223c78/spec/v4.1.0/04-output-schema.md"
+generated_at: "2026-05-24T02:54:06.611Z"
+generated_from: "spec/v4.1.0/04-output-schema.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.0.0/04-output-schema.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.1.0/04-output-schema.md."
 ---
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/04-output-schema.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/04-output-schema.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Output Schema

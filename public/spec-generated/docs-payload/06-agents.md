@@ -1,15 +1,17 @@
 ---
 title: "Agents"
 description: "An Agent is a complete, purpose-driven definition that bundles tools from multiple providers for a specific task. Agents replace Groups from v2. Where Groups were simple tool lists, Agents are full..."
-spec_version: "4.0.0"
+spec_version: "4.1.0"
 spec_file: "06-agents.md"
 order: 6
 section: "Specification"
 normative: true
-generated_at: "2026-05-21T21:05:42.677Z"
-generated_from: "spec/v4.0.0/06-agents.md"
+source_commit: "0223c78"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/0223c78/spec/v4.1.0/06-agents.md"
+generated_at: "2026-05-24T02:54:06.611Z"
+generated_from: "spec/v4.1.0/06-agents.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.0.0/06-agents.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.1.0/06-agents.md."
 ---
 
 # FlowMCP Specification v4.0.0 — Agents
