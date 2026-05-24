@@ -70,7 +70,7 @@ Dokumentation: [CLI Nutzung](/de/reference/cli/)
 
 [OpenClaw](https://docs.openclaw.ai) ist ein Open-Source AI Assistant Gateway mit Plugin-System. Die Besonderheit: **Cron Jobs** — wiederkehrende Abfragen, die automatisch laufen. Zum Beispiel jeden Morgen um 7:30 Uhr eine Mobilitaetsempfehlung.
 
-Mehr dazu: [Integration →](/de/roadmap/integration/)
+Mehr dazu: [Integration →](/de/guides/integration/)
 
 ## Welcher Client fuer wen?
 
@@ -80,4 +80,4 @@ Mehr dazu: [Integration →](/de/roadmap/integration/)
 | **Entwickler** | Claude Code, Cursor oder FlowMCP CLI | Direkte Kontrolle, schnelles Testen, IDE-Integration |
 | **Unternehmen** | NemoClaw (Enterprise-Sicherheit) | Deny-by-default Policies, Sandbox-Isolation, Audit-Trail |
 
-Details zu Enterprise-Integration: [Integration → NemoClaw](/de/roadmap/integration/#enterprise-sicherheit-mit-nemoclaw)
+Details zu Enterprise-Integration: [Integration → NemoClaw](/de/guides/integration/#enterprise-sicherheit-mit-nemoclaw)

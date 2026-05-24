@@ -216,22 +216,28 @@ export default defineConfig({
                     translations: { de: 'Oekosystem' },
                     collapsed: true,
                     items: [
-                        { label: 'Schema Library', translations: { de: 'Schema-Bibliothek' }, slug: 'ecosystem/schema-library' },
-                        { label: 'Agent Server', translations: { de: 'Agent-Server' }, slug: 'ecosystem/agent-server' },
-                        { label: 'AgentProbe', translations: { de: 'AgentProbe' }, slug: 'ecosystem/agentprobe' },
-                        { label: 'x402', translations: { de: 'x402' }, slug: 'ecosystem/x402' },
+                        { label: 'Schema Library (stable)', translations: { de: 'Schema-Bibliothek (stable)' }, slug: 'ecosystem/schema-library' },
+                        { label: 'Agent Server (experimental)', translations: { de: 'Agent-Server (experimentell)' }, slug: 'ecosystem/agent-server' },
+                        { label: 'AgentProbe (external)', translations: { de: 'AgentProbe (extern)' }, slug: 'ecosystem/agentprobe' },
+                        { label: 'x402 (experimental)', translations: { de: 'x402 (experimentell)' }, slug: 'ecosystem/x402' },
                     ],
                 },
                 // Blog removed from sidebar — now standalone view at /blog/ (Memo 057 PRD-11)
+                // Memo 058 PRD-06: Roadmap split — Team top-level, Community in About, Integration in Guides.
                 {
-                    label: 'Roadmap & Team',
-                    translations: { de: 'Roadmap & Team' },
+                    label: 'Roadmap',
+                    translations: { de: 'Roadmap' },
                     collapsed: true,
                     items: [
-                        { label: 'Overview', translations: { de: 'Uebersicht' }, slug: 'roadmap/overview' },
-                        { label: 'Integration', translations: { de: 'Integration' }, slug: 'roadmap/integration' },
-                        { label: 'Community Hub', translations: { de: 'Community-Hub' }, slug: 'roadmap/community' },
-                        { label: 'Team', translations: { de: 'Team' }, slug: 'roadmap/team' },
+                        { label: 'Now / Next / Later', translations: { de: 'Now / Next / Later' }, slug: 'roadmap' },
+                    ],
+                },
+                {
+                    label: 'Team',
+                    translations: { de: 'Team' },
+                    collapsed: true,
+                    items: [
+                        { label: 'Team', translations: { de: 'Team' }, slug: 'team' },
                     ],
                 },
             ],

@@ -112,4 +112,4 @@ These examples show mobility as one domain — but FlowMCP works wherever data n
 
 All schemas used: [Schema Catalog →](/concepts/schema-catalog/)
 
-Contribute schemas: [Community Hub →](/roadmap/community/)
+Contribute schemas: [Community Hub →](/about/#community)

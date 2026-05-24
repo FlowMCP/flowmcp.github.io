@@ -86,7 +86,7 @@ Das Ergebnis: Ein Tool, das in einem Schema definiert wurde, kann von jeder MCP-
 
 Schemas werden von der Community und dem FlowMCP-Team erstellt und gepflegt — basierend auf oeffentlich zugaenglichen API-Dokumentationen und in Zusammenarbeit mit Datenpartnern. Jedes Schema wird getestet (mindestens 3 Tests pro Tool), validiert und dokumentiert, bevor es verfuegbar wird.
 
-Die Community kann Schemas ueber eine [5-Stufen-Pipeline](/de/roadmap/community/) mit automatischer Validierung, KI-Pruefung und menschlicher Freigabe beitragen. Das Prinzip dahinter: **"Validated once, for all."** Was einmal sorgfaeltig geprueft wurde, steht danach allen zur Verfuegung.
+Die Community kann Schemas ueber eine [5-Stufen-Pipeline](/de/about/#community) mit automatischer Validierung, KI-Pruefung und menschlicher Freigabe beitragen. Das Prinzip dahinter: **"Validated once, for all."** Was einmal sorgfaeltig geprueft wurde, steht danach allen zur Verfuegung.
 
 ## Eigene Schemas erstellen
 
@@ -94,5 +94,5 @@ Schemas folgen der FlowMCP Spezifikation v4.0.0:
 
 - **Dokumentation:** [Schema Uebersicht](/de/concepts/schemas-overview/)
 - **Spezifikation:** [FlowMCP Spec v4.0.0](https://github.com/FlowMCP/flowmcp-spec)
-- **Wie du beitragen kannst:** [Community Hub →](/de/roadmap/community/)
+- **Wie du beitragen kannst:** [Community Hub →](/de/about/#community)
 - **Schema-Repository:** [github.com/flowmcp/flowmcp-schemas-public](https://github.com/flowmcp/flowmcp-schemas-public)

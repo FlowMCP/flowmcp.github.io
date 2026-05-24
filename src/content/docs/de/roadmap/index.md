@@ -33,7 +33,7 @@ die Entwickler bereits nutzen.
 - [ ] OpenClaw-Integration
 - [ ] Dokumentation und Getting-Started-Guides
 
-[Details →](/de/roadmap/integration/)
+[Details →](/de/guides/integration/)
 
 ---
 
@@ -48,12 +48,12 @@ und validieren kann — ueber eine strukturierte Pipeline.
 - [ ] Automatische Validierung und Scoring
 - [ ] Community-Governance-Prozess
 
-[Details →](/de/roadmap/community/)
+[Details →](/de/about/#community)
 
 ---
 
 ## Mitmachen
 
 - **Schemas nutzen** — [Schema-Katalog →](/de/concepts/schema-catalog/)
-- **Schemas beitragen** — [Community Hub →](/de/roadmap/community/)
+- **Schemas beitragen** — [Community Hub →](/de/about/#community)
 - **Entwicklung verfolgen** — [GitHub](https://github.com/flowmcp)

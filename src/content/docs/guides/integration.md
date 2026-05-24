@@ -77,7 +77,7 @@ financial data, or any combination of structured data sources.
 
 In parallel with technical integration, we are looking for **data partners** who want to co-develop AI connections for public data. We are not looking for money or labor — we are looking for data sources and the willingness to review a finished connection.
 
-**[Meet the team →](/roadmap/team/)**
+**[Meet the team →](/team/)**
 
 ## Next Steps
 
@@ -88,4 +88,4 @@ This phase is in preparation. Specifically, we are working on:
 3. **OpenClaw integration** — the plugin that makes schemas available as tools
 4. **Local operation** — testing with llama.cpp on Raspberry Pi
 
-More on the timeline: [Roadmap](/roadmap/overview/)
+More on the timeline: [Roadmap](/roadmap/)

@@ -86,7 +86,7 @@ The result: a tool defined in a schema can be called by any MCP-compatible AI. D
 
 Schemas are created and maintained by the community and the FlowMCP team — based on publicly accessible API documentation and in collaboration with data partners. Each schema is tested (at least 3 tests per tool), validated, and documented before it becomes available.
 
-The community can contribute schemas through a [5-stage pipeline](/roadmap/community/) with automatic validation, AI review, and human approval. The principle: **"Validated once, for all."** What has been carefully reviewed once is available to everyone afterward.
+The community can contribute schemas through a [5-stage pipeline](/about/#community) with automatic validation, AI review, and human approval. The principle: **"Validated once, for all."** What has been carefully reviewed once is available to everyone afterward.
 
 ## Create Your Own Schemas
 
@@ -94,5 +94,5 @@ Schemas follow the FlowMCP Specification v4.0.0:
 
 - **Documentation:** [Schema Overview](/concepts/schemas-overview/)
 - **Specification:** [FlowMCP Spec v4.0.0](https://github.com/FlowMCP/flowmcp-spec)
-- **How to contribute:** [Community Hub →](/roadmap/community/)
+- **How to contribute:** [Community Hub →](/about/#community)
 - **Schema repository:** [github.com/flowmcp/flowmcp-schemas-public](https://github.com/flowmcp/flowmcp-schemas-public)

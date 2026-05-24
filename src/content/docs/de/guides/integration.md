@@ -85,7 +85,7 @@ Finanzdaten oder jede andere Kombination strukturierter Datenquellen.
 
 Parallel zur technischen Integration suchen wir **Datenpartner**, die gemeinsam mit uns KI-Anbindungen fuer oeffentliche Daten entwickeln. Wir suchen nicht nach Geld oder Arbeitszeit — wir suchen nach Datenquellen und der Bereitschaft, eine fertige Anbindung zu pruefen.
 
-**[Team kennenlernen →](/de/roadmap/team/)**
+**[Team kennenlernen →](/de/team/)**
 
 ## Naechste Schritte
 
@@ -96,4 +96,4 @@ Diese Phase ist in Vorbereitung. Konkret arbeiten wir an:
 3. **OpenClaw-Integration** — das Plugin, das Schemas als Tools verfuegbar macht
 4. **Lokaler Betrieb** — Tests mit llama.cpp auf Raspberry Pi
 
-Mehr zum Zeitplan: [Roadmap](/de/roadmap/overview/)
+Mehr zum Zeitplan: [Roadmap](/de/roadmap/)
