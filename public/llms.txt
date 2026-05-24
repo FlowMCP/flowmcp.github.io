@@ -4,7 +4,7 @@
 
 - Practical documentation: /docs-llms.txt
 - Full website content: /llms-full.txt
-- Schema specification (v4.0.0): https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/generated/llms.txt
+- Schema specification (v4.1.0): https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/generated/llms.txt
 
 Spec source: https://github.com/FlowMCP/flowmcp-spec
 Docs: https://flowmcp.github.io/docs

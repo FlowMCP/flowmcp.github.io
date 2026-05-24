@@ -6,44 +6,75 @@ import diagramDescriptions from './diagram-descriptions.mjs'
 // Schema-spec generation moved to flowmcp-spec/generated/llms-schema-spec.txt.
 // This script now only produces site-content layers (llms.txt index, llms-full.txt,
 // docs-llms.txt). Schema-spec is pulled via sync-spec.mjs into public/spec-generated/.
+//
+// Memo 056 PRD-25: Header strings now read from src/data/refs.json (R8 Placeholder-First).
 
 const DOCS_DIR = 'src/content/docs'
 const OUTPUT_FULL = 'public/llms-full.txt'
 const OUTPUT_DOCS = 'public/docs-llms.txt'
 const OUTPUT_INDEX = 'public/llms.txt'
+const REFS_PATH = 'src/data/refs.json'
 
-const HEADER_FULL = `# FlowMCP — Complete Website Content
+
+// Memo 056 PRD-25: Strict-Mode refs loading — no silent defaults.
+const loadRefs = async () => {
+    const raw = await readFile( REFS_PATH, 'utf8' )
+    const refs = JSON.parse( raw )
+    const checks = [
+        [ 'spec.currentVersion', refs.spec?.currentVersion ],
+        [ 'llmsFiles.specUrl', refs.llmsFiles?.specUrl ],
+        [ 'imports.cli.npmInstallCommand', refs.imports?.cli?.npmInstallCommand ]
+    ]
+    const missing = checks
+        .filter( ( [ , value ] ) => typeof value !== 'string' )
+        .map( ( [ field ] ) => field )
+    if( missing.length > 0 ) {
+        throw new Error( `[generate-llms-txt] missing required fields in ${ REFS_PATH }: ${ missing.join( ', ' ) }` )
+    }
+    return { refs }
+}
+
+
+const buildHeaders = ( { refs } ) => {
+    const specVersion = refs.spec.currentVersion
+    const specUrl = refs.llmsFiles.specUrl
+    const installCommand = refs.imports.cli.npmInstallCommand
+
+    const HEADER_FULL = `# FlowMCP — Complete Website Content
 
 > Normalize any data source and make it usable for AI agents.
-> Open Source (MIT). Install: npm install -g github:FlowMCP/flowmcp-cli
+> Open Source (MIT). Install: ${ installCommand }
 
 Docs: https://flowmcp.github.io/docs
 GitHub: https://github.com/flowmcp
-Spec: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v4.0.0/llms.txt
+Spec: ${ specUrl }
 `
 
-const HEADER_DOCS = `# FlowMCP — Practical Documentation
+    const HEADER_DOCS = `# FlowMCP — Practical Documentation
 
 > Normalize any data source and make it usable for AI agents.
-> Open Source (MIT). Install: npm install -g github:FlowMCP/flowmcp-cli
+> Open Source (MIT). Install: ${ installCommand }
 
 This file contains practical documentation: getting started, schemas, agents, CLI reference.
-For the formal specification, see: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v4.0.0/llms.txt
+For the formal specification, see: ${ specUrl }
 For a brief index, see: https://flowmcp.github.io/llms.txt
 `
 
-const HEADER_INDEX = `# FlowMCP — llms.txt Index
+    const HEADER_INDEX = `# FlowMCP — llms.txt Index
 
 > Layered LLM context for FlowMCP. Pick the layer you need.
 
 - Practical documentation: /docs-llms.txt
 - Full website content: /llms-full.txt
-- Schema specification (v4.0.0): https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/generated/llms.txt
+- Schema specification (v${ specVersion }): ${ specUrl }
 
 Spec source: https://github.com/FlowMCP/flowmcp-spec
 Docs: https://flowmcp.github.io/docs
 GitHub: https://github.com/flowmcp
 `
+
+    return { HEADER_FULL, HEADER_DOCS, HEADER_INDEX }
+}
 
 const SIDEBAR_ORDER = [
     'introduction/about',
@@ -103,6 +134,9 @@ const collectMdFiles = async (dir, baseDir) => {
 }
 
 const run = async () => {
+    const { refs } = await loadRefs()
+    const { HEADER_FULL, HEADER_DOCS, HEADER_INDEX } = buildHeaders( { refs } )
+
     const mdFiles = await collectMdFiles(DOCS_DIR, DOCS_DIR)
 
     const pages = await Promise.all(

@@ -1,10 +1,10 @@
 # FlowMCP — Practical Documentation
 
 > Normalize any data source and make it usable for AI agents.
-> Open Source (MIT). Install: npm install -g github:FlowMCP/flowmcp-cli
+> Open Source (MIT). Install: npm install -g github:FlowMCP/flowmcp-cli#v4.1.0
 
 This file contains practical documentation: getting started, schemas, agents, CLI reference.
-For the formal specification, see: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v4.0.0/llms.txt
+For the formal specification, see: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/generated/llms.txt
 For a brief index, see: https://flowmcp.github.io/llms.txt
 
 

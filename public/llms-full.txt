@@ -1,11 +1,11 @@
 # FlowMCP — Complete Website Content
 
 > Normalize any data source and make it usable for AI agents.
-> Open Source (MIT). Install: npm install -g github:FlowMCP/flowmcp-cli
+> Open Source (MIT). Install: npm install -g github:FlowMCP/flowmcp-cli#v4.1.0
 
 Docs: https://flowmcp.github.io/docs
 GitHub: https://github.com/flowmcp
-Spec: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/refs/heads/main/spec/v4.0.0/llms.txt
+Spec: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/generated/llms.txt
 
 ---
 
@@ -3455,7 +3455,7 @@ FlowMCP makes **no warranty** about ToS compliance, data licensing, or fitness f
 
 ## See Also
 
-- Specification: License & ToS (spec/v4.0.0/23-license-and-tos.md) (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.0.0/23-license-and-tos.md)
+- Specification: License & ToS (spec/v4.1.0/23-license-and-tos.md) (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.1.0/23-license-and-tos.md)
 - DISCLAIMER.md in flowmcp-core (https://github.com/FlowMCP/flowmcp-core/blob/main/DISCLAIMER.md)
 - DISCLAIMER.md in flowmcp-cli (https://github.com/FlowMCP/flowmcp-cli/blob/main/DISCLAIMER.md)
 
@@ -3552,7 +3552,7 @@ The schema layer is where you work. Everything else is handled by the runtime.
 
 ## Schema Anatomy
 
-Every FlowMCP v4.0.0 schema uses the **two-export pattern**:
+Every FlowMCP v4.1.0 schema uses the **two-export pattern**:
 
 ### main (required)
 
@@ -3689,7 +3689,7 @@ Schemas that attempt to import modules, access the filesystem, or use undeclared
 :::
 
 :::note
-For the full specification including all validation rules, parameter formats, and security details, see the Specification v4.0.0.
+For the full specification including all validation rules, parameter formats, and security details, see the Specification v4.1.0.
 :::
 
 ---
@@ -4992,7 +4992,7 @@ What actually happens
 /specification/agents
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/06-agents.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/06-agents.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Agents
@@ -6059,7 +6059,7 @@ export const agent = {
 /specification/catalog
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/15-catalog.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/15-catalog.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Catalog
@@ -6459,7 +6459,7 @@ The command runs all CAT rules and reports errors and warnings. A catalog with a
 /specification/id-schema
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/16-id-schema.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/16-id-schema.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — ID Schema
@@ -6846,7 +6846,7 @@ The ID schema provides a single, consistent format that replaces these context-s
 /specification/license-and-tos
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/23-license-and-tos.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/23-license-and-tos.md.
 </aside>
 
 # License & Terms of Services
@@ -6958,7 +6958,7 @@ ToS change. FlowMCP recommends:
 /specification/mcp-integration
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/19-mcp-integration.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/19-mcp-integration.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — MCP Server Integration
@@ -7057,7 +7057,7 @@ Empty array `[]` is valid — means no aliases.
 /specification/migration
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/08-migration.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/08-migration.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Migration Guide
@@ -7658,7 +7658,7 @@ Per schema:
 /specification/output-schema
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/04-output-schema.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/04-output-schema.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Output Schema
@@ -8172,7 +8172,7 @@ The diagram shows the non-blocking validation flow: mismatches produce warnings 
 /specification/overview
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/00-overview.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/00-overview.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Overview
@@ -8530,7 +8530,7 @@ The migration path from v1.2.0 to v2.0.0 is documented in `08-migration.md`.
 /specification/parameters
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/02-parameters.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/02-parameters.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Parameters
@@ -9167,7 +9167,7 @@ See `14-skills.md` for the complete skill specification.
 /specification/prefill
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/18-prefill.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/18-prefill.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Prefill and Placeholders
@@ -9257,7 +9257,7 @@ This ensures the Skill is always delivered — even if some references are broke
 /specification/preload
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/11-preload.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/11-preload.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Preload & Caching
@@ -9471,7 +9471,7 @@ The output schema (`04-output-schema.md`) describes the response shape regardles
 /specification/prompt-architecture
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/12-prompt-architecture.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/12-prompt-architecture.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Prompt Architecture
@@ -10387,7 +10387,7 @@ agents/
 /specification/resources
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/13-resources.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/13-resources.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Resources
@@ -12007,7 +12007,7 @@ capture/
 /specification/schema-format
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/01-schema-format.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/01-schema-format.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Schema Format
@@ -12647,7 +12647,7 @@ export const handlers = ( { sharedLists } ) => ({
 /specification/schema-lifecycle
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/21-schema-lifecycle.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/21-schema-lifecycle.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Schema Lifecycle
@@ -12780,7 +12780,7 @@ A primitive passes when at least one of its test cases returns a 2xx response wi
 /specification/scoring-protocol
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/22-scoring-protocol.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/22-scoring-protocol.md.
 </aside>
 
 # Scoring Protocol v1
@@ -13001,7 +13001,7 @@ A Grader MUST NOT:
 /specification/security
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/05-security.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/05-security.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Security Model
@@ -13344,7 +13344,7 @@ All violations in a single file are reported together (the scan does not stop at
 /specification/selections
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/17-selections.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/17-selections.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Selections
@@ -13482,7 +13482,7 @@ If a Selection includes inline-skill objects, the SelectionValidator additionall
 /specification/shared-lists
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/03-shared-lists.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/03-shared-lists.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Shared Lists
@@ -14034,7 +14034,7 @@ Each `.mjs` file contains exactly one shared list. Combining multiple lists in a
 /specification/skills
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/14-skills.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/14-skills.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Skills
@@ -14968,7 +14968,7 @@ etherscan/
 /specification/tasks
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/07-tasks.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/07-tasks.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — MCP Tasks
@@ -15011,7 +15011,7 @@ Schema authors MAY include an `async` field in route definitions for forward com
 /specification/tests
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/10-tests.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/10-tests.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Tests
@@ -15694,7 +15694,7 @@ See `14-skills.md` (One-Shot Design Principle) for authoring guidelines.
 /specification/validation-rules
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/09-validation-rules.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/09-validation-rules.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Validation Rules
@@ -16141,7 +16141,7 @@ flowmcp validate --security etherscan/contracts.mjs
 /specification/validation-strategy
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.0.0/20-validation-strategy.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/20-validation-strategy.md.
 </aside>
 
 # FlowMCP Specification v4.0.0 — Validation Strategy
