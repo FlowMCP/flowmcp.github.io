@@ -19,7 +19,7 @@
     <main id="main-content" class="notfound-page" role="main">
         <header class="notfound-page__brand">
             <a href="/" aria-label="FlowMCP home">
-                <img src="/favicon.svg" alt="" width="48" height="48" class="notfound-page__logo" />
+                <img src="/logo.svg" alt="" width="48" height="48" class="notfound-page__logo" />
                 <span class="notfound-page__wordmark">FlowMCP</span>
             </a>
         </header>
@@ -73,7 +73,7 @@
             position: absolute;
             top: -40px;
             left: 0;
-            background: var(--notfound-accent, #8c5dff);
+            background: var(--notfound-accent, #79c0ff);
             color: #fff;
             padding: 8px 16px;
             z-index: 9999;
@@ -87,11 +87,15 @@
             outline-offset: 2px;
         }
 
+        /* Memo 059 PRD-005 (A13, A14, A15):
+         *   - logo (via /logo.svg) renders in Babyblau by default
+         *   - --notfound-accent is the Babyblau brand colour (was purple #8c5dff)
+         *   - --notfound-muted aligns with --color-text-secondary token in custom.css */
         :root {
             --notfound-bg: #0e0f12;
             --notfound-fg: #e7e9ee;
-            --notfound-muted: #8a8f99;
-            --notfound-accent: #8c5dff;
+            --notfound-muted: #8b949e;
+            --notfound-accent: #79c0ff;
             --notfound-border: #1f2128;
         }
 

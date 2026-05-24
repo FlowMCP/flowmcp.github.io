@@ -68,6 +68,13 @@ starlight-theme-select {
     --text-inactive: #8b949e;
     --group-title: #6e7681;
 
+    /* Canonical brand tokens (Memo 059 PRD-005, A15):
+     *   --color-accent-babyblue   = primary accent (Babyblau) — used site-wide
+     *   --color-text-secondary    = secondary text colour (grey) — docs & blog parity
+     * Both are aliases over the existing pencil tokens so legacy references continue to work. */
+    --color-accent-babyblue: var(--accent);
+    --color-text-secondary: var(--text-inactive);
+
     /* Mapping auf Starlight-Tokens */
     --sl-color-accent-low: #0a1a2e;
     --sl-color-accent: var(--accent);
