@@ -1,0 +1,76 @@
+# Link Audit Workflow — Memo 057 PRD-06
+#
+# Mode: PHASE 1 (Warning-Only)
+#   - Beide Scripts laufen via continue-on-error: true
+#   - Output via GitHub Annotations als ::warning::
+#   - CI bleibt gruen, auch wenn Links broken sind
+#   - 2-Wochen-Beobachtung der wochentlichen Cron-Reports
+#
+# Mode: PHASE 2 (Hard-Fail) — TODO: manuell aktivieren wenn:
+#   - 2 aufeinanderfolgende Wochen-Reports zeigen <3 broken Links
+#   - Dokumentiert in proofs/link-audit-rollout.md (Datum + Owner)
+#   - Aenderung: continue-on-error entfernen, Annotations auf ::error:: umstellen
+#
+# Schwellwert-Regel REV-04 F-C: <3 broken Links in 2 consecutive weekly reports → Phase 2 flip
+
+name: Link Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 6 * * 1"  # Mo 06:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site (triggers prebuild → fetch-refs, sync-schemas, check:spec-links)
+        run: npm run build
+
+      # PHASE 1: continue-on-error: true → CI bleibt gruen
+      # PHASE 2 (spaeter): continue-on-error entfernen, Annotations auf ::error:: umstellen
+      - name: Check external links (warning mode)
+        id: check_links
+        continue-on-error: true
+        run: |
+          npm run check:links 2>&1 | tee link-check-output.txt
+          if grep -q "BROKEN" link-check-output.txt; then
+            echo "::warning::External link audit found broken links — see proofs/flowmcp.github.io/link-check-052.md"
+          fi
+
+      - name: Check spec cross-links (warning mode)
+        id: check_spec_links
+        continue-on-error: true
+        run: |
+          npm run check:spec-links 2>&1 | tee spec-link-output.txt
+          if grep -qi "broken" spec-link-output.txt; then
+            echo "::warning::Spec cross-link audit found broken references"
+          fi
+
+      - name: Upload link audit artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: link-audit-reports
+          path: |
+            proofs/flowmcp.github.io/link-check-052.md
+            link-check-output.txt
+            spec-link-output.txt
+          retention-days: 30
+          if-no-files-found: warn
