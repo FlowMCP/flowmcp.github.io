@@ -1,5 +1,42 @@
 /* Custom Theme — FlowMCP Pencil Dark-Style (REV-14 Kap. 5) */
 
+/* ============ A11Y UTILITIES (Memo 057 PRD-07) ============ */
+
+/* Visually-hidden helper (screenreader-only) */
+.visually-hidden,
+.sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* Skip-Link — visible on :focus only (Memo 057 PRD-07) */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--accent);
+    color: var(--bg-canvas);
+    padding: 8px 16px;
+    z-index: 9999;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 0 0 6px 0;
+}
+
+.skip-link:focus {
+    top: 0;
+    outline: 2px solid var(--text-primary);
+    outline-offset: 2px;
+}
+
+
 /*
  * SPEZIFITAETS-HIERARCHIE (PRD-01, REV-05):
  *   Hoechste Prioritaet: body :where(.pencil-hero) .pencil-hero__headline
@@ -105,18 +142,22 @@ header.header .social-icons {
         padding: 0 0.75rem;
     }
 
-    /* Hamburger LINKS Mobile (Regel 4) — starlight-menu-button is in nav.sidebar, absolute-positioned */
+    /* Hamburger RECHTS Mobile (Memo 057 PRD-09 V1) — Logo+Wordmark Left, Hamburger Right.
+       Ersetzt vorherige LINKS-Positionierung aus REV-14 Kap. 5 Regel 4.
+       starlight-menu-button is in nav.sidebar, fixed-positioned, min-touch-target 44px. */
     starlight-menu-button {
         position: fixed !important;
         top: 8px !important;
-        left: 8px !important;
-        right: auto !important;
+        right: 8px !important;
+        left: auto !important;
         z-index: 100 !important;
     }
     starlight-menu-button button {
         background: var(--bg-card) !important;
         border: 1px solid var(--border) !important;
         border-radius: 6px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
     }
 
     /* Search-Globe-Gap 14px Mobile (Regel 10) */
@@ -181,11 +222,15 @@ nav.sidebar {
     padding-left: 28px !important;
 }
 
-/* "On this page" Dropdown abschalten (PRD-03, REV-05 Kap. 3.6) */
-.right-sidebar details,
-.right-sidebar .right-sidebar-panel,
-mobile-starlight-toc {
-    display: none !important;
+/* "On this page" TOC — Desktop AKTIV (Memo 057 PRD-02), Mobile versteckt
+   Original: Memo 050 PRD-03 versteckte TOC global (Pencil-Parity).
+   Memo 057 PRD-02: User-Entscheidung F-B — Desktop reaktivieren, Mobile bleibt aus. */
+@media (max-width: 800px) {
+    .right-sidebar details,
+    .right-sidebar .right-sidebar-panel,
+    mobile-starlight-toc {
+        display: none !important;
+    }
 }
 
 /* ============ RIGHT SIDEBAR (On this page) ============ */
