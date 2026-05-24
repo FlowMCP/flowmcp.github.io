@@ -1,17 +1,34 @@
 ---
+import refs from '../data/refs.json';
+
+
 interface Props {
     repo: string;
     global?: boolean;
     scope?: string;
+    pinTag?: boolean;
 }
 
-const { repo, global = false, scope = 'FlowMCP' } = Astro.props;
+const { repo, global = false, scope = 'FlowMCP', pinTag = false } = Astro.props;
 const flag = global ? ' -g' : '';
+
+let tagSuffix = '';
+if( pinTag ) {
+    const importString = refs?.imports?.cli?.github;
+    if( !importString || typeof importString !== 'string' ) {
+        throw new Error( 'InstallNote: pinTag=true but refs.imports.cli.github missing in src/data/refs.json' );
+    }
+    const hashIndex = importString.indexOf( '#' );
+    if( hashIndex === -1 ) {
+        throw new Error( `InstallNote: pinTag=true but refs.imports.cli.github has no #<tag> suffix (got "${ importString }")` );
+    }
+    tagSuffix = importString.slice( hashIndex );
+}
 ---
 
 <div class="install-note">
     <p class="install-note__label">Install via GitHub:</p>
-    <pre><code>npm install{flag} github:{scope}/{repo}</code></pre>
+    <pre><code>npm install{flag} github:{scope}/{repo}{tagSuffix}</code></pre>
     <p class="install-note__hint">FlowMCP packages are not published to NPM. They are installed directly from GitHub.</p>
 </div>
 
