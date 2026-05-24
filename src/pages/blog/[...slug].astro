@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content'
 import BlogTopnav from '../../components/BlogTopnav.astro'
+import Footer from '../../components/Footer.astro'
 
 // Show drafts in dev mode for local review; hide in production builds.
 const showDrafts = import.meta.env.DEV
@@ -111,10 +112,9 @@ const canonicalUrl = `/blog/${post.id}/`
         </section>
     )}
 
-    <footer class="blog-post__footer">
-        <p>FlowMCP · MIT License · v1.0</p>
-    </footer>
 </main>
+
+<Footer />
 
 <script>
 const progressBar = document.getElementById( 'reading-progress' )
@@ -228,7 +228,7 @@ body {
 .blog-post__related-card-title { font-size: 1rem; font-weight: 700; margin: 0.5rem 0; }
 .blog-post__related-card-desc { color: var(--text-inactive); font-size: 13px; margin: 0; }
 
-.blog-post__footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center; color: var(--text-inactive); font-size: 12px; }
+/* .blog-post__footer removed (Memo 059 PRD-004) — site Footer.astro is now used */
 
 @media (max-width: 800px) {
     .blog-post__layout { grid-template-columns: 1fr; }

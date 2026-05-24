@@ -33,10 +33,13 @@ const items = [
 </nav>
 
 <style>
+/* Memo 059 PRD-004 (A6): blog header aligned LEFT to match landing/docs.
+ * Brand + nav items sit on the left as a single group (was: justify-content:
+ * space-between which pushed nav to the right). */
 .blog-topnav {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 2rem;
     padding: 1rem 2rem;
     background: var(--bg-canvas);

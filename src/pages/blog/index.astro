@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content'
 import BlogTopnav from '../../components/BlogTopnav.astro'
+import Footer from '../../components/Footer.astro'
 
 // Show drafts in dev mode for local review; hide in production builds.
 const showDrafts = import.meta.env.DEV
@@ -67,6 +68,8 @@ const filterTabs = [ 'All', 'Releases', 'Tutorials', 'Hackathon', 'Architecture'
         </div>
     )}
 </main>
+
+<Footer />
 
 <style is:global>
 :root {
