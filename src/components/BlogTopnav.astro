@@ -1,14 +1,12 @@
 ---
 // BlogTopnav — Top-Navigation for standalone Blog (Memo 057 PRD-11)
-// Replaces sidebar nav with horizontal topnav: About / Docs / Roadmap / Blog
+// Memo 059 PRD-010: Reduced to About / Docs / Blog. Roadmap + Team via Footer.
 const { active = 'blog' } = Astro.props
 
 const items = [
-    { id: 'about',    label: 'About',    href: '/about/' },
-    { id: 'docs',     label: 'Docs',     href: '/quickstart/what-is-flowmcp/' },
-    { id: 'roadmap',  label: 'Roadmap',  href: '/roadmap/' },
-    { id: 'team',     label: 'Team',     href: '/team/' },
-    { id: 'blog',     label: 'Blog',     href: '/blog/' }
+    { id: 'about', label: 'About', href: '/about/' },
+    { id: 'docs',  label: 'Docs',  href: '/quickstart/what-is-flowmcp/' },
+    { id: 'blog',  label: 'Blog',  href: '/blog/' }
 ]
 ---
 

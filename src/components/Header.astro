@@ -14,18 +14,16 @@ const path = Astro.url.pathname;
 const isDE = path.startsWith('/de/') || path === '/de';
 const prefix = isDE ? '/de' : '';
 
+// Memo 059 PRD-010 + PRD-013: Top-Nav reduced to About / Docs / Blog.
+// Roadmap and Team moved to Footer-Widget (PRD-012).
 const navLinks = isDE ? [
-    { text: 'Über',     href: prefix + '/about/',                      match: '/about' },
-    { text: 'Docs',     href: prefix + '/quickstart/what-is-flowmcp/', match: '/quickstart' },
-    { text: 'Roadmap',  href: prefix + '/roadmap/',                    match: '/roadmap' },
-    { text: 'Team',     href: prefix + '/team/',                       match: '/team' },
-    { text: 'Blog',     href: prefix + '/blog/',                       match: '/blog' },
+    { text: 'Über',  href: prefix + '/about/',                      match: '/about' },
+    { text: 'Docs',  href: prefix + '/quickstart/what-is-flowmcp/', match: '/quickstart' },
+    { text: 'Blog',  href: prefix + '/blog/',                       match: '/blog' },
 ] : [
-    { text: 'About',   href: prefix + '/about/',                      match: '/about' },
-    { text: 'Docs',    href: prefix + '/quickstart/what-is-flowmcp/', match: '/quickstart' },
-    { text: 'Roadmap', href: prefix + '/roadmap/',                    match: '/roadmap' },
-    { text: 'Team',    href: prefix + '/team/',                       match: '/team' },
-    { text: 'Blog',    href: prefix + '/blog/',                       match: '/blog' },
+    { text: 'About', href: prefix + '/about/',                      match: '/about' },
+    { text: 'Docs',  href: prefix + '/quickstart/what-is-flowmcp/', match: '/quickstart' },
+    { text: 'Blog',  href: prefix + '/blog/',                       match: '/blog' },
 ];
 ---
 
