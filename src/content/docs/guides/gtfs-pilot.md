@@ -26,6 +26,16 @@ Total time: 20–30 minutes (mostly waiting for downloads + conversion).
 - FlowMCP CLI installed
 - `gtfs-sqlite-toolkit` cloned or installed from `github:FlowMCP/gtfs-sqlite-toolkit`
 
+## Step 0 — Install the FlowMCP CLI
+
+```bash
+npm install -g github:FlowMCP/flowmcp-cli
+flowmcp --version
+flowmcp list
+```
+
+The CLI is needed to register the GTFS schema in Step 5. If you only want the SQLite files for direct queries, you can skip the CLI install — but the recommended hackathon flow uses it.
+
 ## Step 1 — Download both feeds
 
 ```bash

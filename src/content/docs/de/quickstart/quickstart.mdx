@@ -17,12 +17,39 @@ export const schemaCount = refs?.stats?.count_schemas ?? '—'
     [Mehr auf der Entscheider-Seite →](/de/about/fuer-entscheider/#hackathon)
 </Aside>
 
+## CLI installieren
+
+Die FlowMCP CLI ist der schnellste Weg zu einem funktionierenden Setup. Sie laesst dich den Katalog mit 728 Tools durchsuchen, Schemas hinzufuegen und APIs aufrufen — ohne Code zu schreiben.
+
+<InstallNote repo="flowmcp-cli" global />
+
+Installation pruefen:
+
+```bash
+flowmcp --version
+flowmcp list
+```
+
+`flowmcp list` ist nach frischer Installation leer — das ist erwartet. Weiter unten fuegst du dein erstes Schema hinzu.
+
+## Erstes Schema hinzufuegen (CLI-Modus)
+
+```bash
+flowmcp search coingecko
+flowmcp add coingecko-tokens
+flowmcp call coingecko-tokens.simplePrice '{"ids":"bitcoin","vs_currencies":"usd"}'
+```
+
+Drei Befehle und du hast einen Live-API-Aufruf. Die CLI ist der empfohlene Weg fuer Hackathons, schnelle Prototypen und das Erkunden des Katalogs.
+
 ## Voraussetzungen
 
 - **Node.js 22+** — pruefen mit `node --version`
 - **npm** — wird mit Node.js ausgeliefert
 
-## Dein erstes Schema erstellen
+## Library-Modus (fortgeschritten)
+
+Du moechtest FlowMCP in deinen eigenen Node.js-Code einbetten? Installiere die Core Library statt der CLI:
 
 1. **FlowMCP Core installieren**
 
@@ -155,6 +182,10 @@ Der Tool-Name wird automatisch aus `namespace` + Tool-Name generiert: **coingeck
 Das gleiche Muster funktioniert fuer jede REST API — fuege Authentifizierung via `requiredServerParams` und `headers` hinzu, Parameter via das `parameters` Array, Antwort-Transformation via den `handlers` Export.
 
 ## Naechste Schritte
+
+### Empfohlener naechster Schritt
+
+Schreibe dein eigenes Schema fuer eine API, die nicht im Katalog ist. Siehe [Schema-Erstellung](/de/guides/schema-creation/).
 
 :::note[Schema-Erstellung]
 Lerne das vollstaendige Schema-Format mit Authentifizierung, Parametern und Handlern. Siehe [Schema-Erstellung](/de/guides/schema-creation/).
