@@ -10,3 +10,6 @@ playwright-report/
 
 # Local trash (Memo 060 PRD-007 etc.)
 .trash/
+
+# Generated markdown sources (Memo 060 Phase 7 PRD-021 — CopyMarkdown build artefact)
+public/markdown-sources/
