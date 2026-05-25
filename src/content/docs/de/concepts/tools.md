@@ -6,7 +6,6 @@ description: Was ein FlowMCP-Tool ist, wie Tools ausgewaehlt werden und wie der 
 <span style="display:none" data-pagefind-meta="section">Concepts</span>
 <!-- PAGEFIND-META-END -->
 
-
 ## Was ist ein Tool?
 
 Ein Tool ist eine einzelne, benannte Operation, die ein KI-Agent aufrufen kann. Aus Sicht des Agenten ist das Tool die kleinste Handlungs-Einheit: typisierte Eingaben uebergeben, strukturiertes Ergebnis empfangen. Unter der Haube kapselt das Tool einen einzelnen HTTP-Request an die API eines Daten-Anbieters — der Agent muss das aber nicht wissen. Die Tool-Beschreibung, Parameter-Liste und Result-Form sind alles, was der Agent sieht. Jedes Tool gehoert zu genau einem [Schema](/de/concepts/schemas/), und ein Schema enthaelt typischerweise 2-8 Tools.

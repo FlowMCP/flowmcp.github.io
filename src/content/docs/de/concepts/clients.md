@@ -6,7 +6,6 @@ description: Wo man Schemas und Agents nutzen kann, welche Clients was unterstue
 <span style="display:none" data-pagefind-meta="section">Concepts</span>
 <!-- PAGEFIND-META-END -->
 
-
 ## MCP — Das verbindende Protokoll
 
 Das **Model Context Protocol (MCP)** ist der Standard, ueber den KI-Clients auf Tools zugreifen. Es definiert, wie Tools beschrieben, aufgerufen und wie Ergebnisse zurueckgeliefert werden. Ueber 100 Clients unterstuetzen MCP bereits — von Claude ueber ChatGPT bis Cursor.

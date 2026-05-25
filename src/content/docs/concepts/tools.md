@@ -6,7 +6,6 @@ description: What a FlowMCP tool is, how tools are selected, and how the tool ex
 <span style="display:none" data-pagefind-meta="section">Concepts</span>
 <!-- PAGEFIND-META-END -->
 
-
 ## What is a Tool?
 
 A tool is a single, named operation that an AI agent can call. From the agent's perspective the tool is the smallest unit of action: pass typed inputs, receive a structured result. Under the hood the tool wraps one HTTP request to a data provider's API — but the agent does not need to know that. The tool description, parameter list, and result shape are all the agent sees. Each tool belongs to exactly one [schema](/concepts/schemas/), and a schema typically contains 2-8 tools.

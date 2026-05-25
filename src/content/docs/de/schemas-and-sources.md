@@ -6,7 +6,6 @@ description: Arbeit mit Third-Party-Schemas — wie FlowMCP Community-Beitraege,
 <span style="display:none" data-pagefind-meta="section">About</span>
 <!-- PAGEFIND-META-END -->
 
-
 FlowMCP-Schemas sind Community-Beitraege. Jede:r kann ein Schema fuer eine API oder Datenquelle beitragen. Jeder Nutzende ist selbst dafuer verantwortlich zu pruefen, ob ein Schema fuer den eigenen Anwendungsfall geeignet ist — inklusive Pruefung der zugrundeliegenden API-Terms-of-Services, Daten-Lizenz und Rate-Limits.
 
 Um diese Pruefung zu ermoeglichen, arbeitet FlowMCP in einem dreischichtigen Lizenzmodell. Das Verstaendnis aller drei Schichten hilft beim Einsatz in Produktion oder im kommerziellen Kontext.
