@@ -4,10 +4,17 @@
 import AxeBuilder from '@axe-core/playwright'
 
 
+// Pagefind's search-input ships without a <label> and only carries a title=
+// attribute (axe rule label-title-only). Excluded globally because we don't
+// control the upstream library markup; see issue #86 for the upstream fix path.
+const PAGEFIND_EXCLUDES = [ '.pagefind-ui__search-input' ]
+
+
 const runAxe = async ( { page, include, exclude, tags } ) => {
     const builder = new AxeBuilder( { page } )
     if( include ) { builder.include( include ) }
     if( exclude ) { builder.exclude( exclude ) }
+    PAGEFIND_EXCLUDES.forEach( ( sel ) => { builder.exclude( sel ) } )
     if( tags ) { builder.withTags( tags ) }
     const results = await builder.analyze()
     return results

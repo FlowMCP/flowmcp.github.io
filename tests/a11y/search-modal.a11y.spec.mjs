@@ -18,7 +18,7 @@ test.describe( 'Search Modal a11y', () => {
 
     test( '1. no axe violations when search modal is open', async ( { page } ) => {
         await openModalViaShortcut( { page } )
-        const dialog = page.locator( 'dialog[data-starlight-search], .starlight-search-dialog, dialog.pagefind-ui' ).first()
+        const dialog = page.locator( 'dialog[aria-label="Search"], dialog[data-starlight-search], .starlight-search-dialog, dialog.pagefind-ui' ).first()
         await expect( dialog ).toBeVisible()
         const results = await runAxe( { page, include: 'dialog' } )
         assertNoViolations( { results, expect, label: 'search-modal' } )
@@ -26,7 +26,7 @@ test.describe( 'Search Modal a11y', () => {
 
     test( '2. role=dialog and aria-modal=true are present', async ( { page } ) => {
         await openModalViaShortcut( { page } )
-        const dialog = page.locator( 'dialog[data-starlight-search], .starlight-search-dialog, dialog.pagefind-ui' ).first()
+        const dialog = page.locator( 'dialog[aria-label="Search"], dialog[data-starlight-search], .starlight-search-dialog, dialog.pagefind-ui' ).first()
         await expect( dialog ).toHaveAttribute( 'role', 'dialog' )
         await expect( dialog ).toHaveAttribute( 'aria-modal', 'true' )
     } )
@@ -35,7 +35,7 @@ test.describe( 'Search Modal a11y', () => {
         await openModalViaShortcut( { page } )
         await page.keyboard.press( 'Escape' )
         await page.waitForTimeout( 200 )
-        const dialog = page.locator( 'dialog[data-starlight-search], .starlight-search-dialog, dialog.pagefind-ui' ).first()
+        const dialog = page.locator( 'dialog[aria-label="Search"], dialog[data-starlight-search], .starlight-search-dialog, dialog.pagefind-ui' ).first()
         const isOpen = await dialog.evaluate( ( el ) => el.open === true )
         expect( isOpen ).toBe( false )
     } )
@@ -43,7 +43,7 @@ test.describe( 'Search Modal a11y', () => {
     test( '4. Tab inside modal stays within modal (focus trap)', async ( { page } ) => {
         await openModalViaShortcut( { page } )
         const initialInside = await page.evaluate( () => {
-            const dialog = document.querySelector( 'dialog[data-starlight-search], .starlight-search-dialog, dialog.pagefind-ui' )
+            const dialog = document.querySelector( 'dialog[aria-label="Search"], dialog[data-starlight-search], .starlight-search-dialog, dialog.pagefind-ui' )
             return dialog ? dialog.contains( document.activeElement ) : false
         } )
         expect( initialInside ).toBeTruthy()
@@ -53,7 +53,7 @@ test.describe( 'Search Modal a11y', () => {
         await page.keyboard.press( 'Tab' )
         await page.keyboard.press( 'Tab' )
         const stillInside = await page.evaluate( () => {
-            const dialog = document.querySelector( 'dialog[data-starlight-search], .starlight-search-dialog, dialog.pagefind-ui' )
+            const dialog = document.querySelector( 'dialog[aria-label="Search"], dialog[data-starlight-search], .starlight-search-dialog, dialog.pagefind-ui' )
             return dialog ? dialog.contains( document.activeElement ) : false
         } )
         expect( stillInside ).toBeTruthy()
