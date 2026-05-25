@@ -20,9 +20,8 @@ FlowMCP begann als Versuch, mehrere Datenquellen an einen einzigen MCP-Server an
 | **Schema-Library** | 365 Schemas (v4-Produktion), 288 Datenquellen, 1575 Tool-Routes |
 | **Primaerer Use** | CLI-Tool — kein MCP-Client haelt 1575 Tools im Kontext, die CLI laedt sie dynamisch |
 | **Sekundaerer Use** | MCP-Server-Modus weiter unterstuetzt, aber nicht der Default |
-| **Mehrwert** | Kombinatorik: viele Quellen + automatische Auffindbarkeit + AI-getriebene Verkettung |
-| **Sicherheits-Plus** | Keys leben in FlowMCP, nie im AI-Kontext. Ein direkter REST-Call aus der AI wuerde sie exposeen |
-| **Killer-Feature** | Rueckwaertssuche ueber Shared Lists — Schemas tragen sich in Listen ein wie "Ethereum Mainnet" oder "Berlin", AI kann fragen: "Welche Schemas decken X ab?" |
+| **Key-Isolation** | Keys leben in FlowMCP, nie im AI-Kontext — die AI sieht Calls und Antworten, nie Credentials |
+| **Rueckwaertssuche** | Schemas tragen sich in Shared Lists ein wie "Ethereum Mainnet" oder "Berlin", sodass eine AI fragen kann, welche Schemas ein Thema abdecken |
 | **v4** | Skills, Prefill, Selections, Output-Schema, Pipes |
 | **v4.1** | Add-on-Konzept — externe Toolkits wie `gtfs-sqlite-toolkit` erweitern FlowMCP |
 | **Datenklassen** | Crypto (EVM, Solana, DeFi, Identity, NFT), Open Data (DE/EU), Wetter/Geo, Web3 Social, News, Dev-Tools |
@@ -61,19 +60,6 @@ Zwei Szenarien, die FlowMCP + AI im Einsatz zeigen — nicht wie man einen Agent
 
 - **Deep Research** — Eine Recherche- oder Planungssoftware bindet einen Agent an. Der Agent fragt FlowMCP nach passenden Datenquellen ueber Open-Data-Portale, Behoerden-APIs und Krypto-Kataloge — in Sekunden. [Voller Case →](/de/introduction/use-cases/#use-case-1-deep-research)
 - **Mobility — Anschluss erreichen** — Ein Live-Reiseplaner kombiniert statische GTFS-Daten (ueber das `gtfs-sqlite-toolkit` v4.1 Add-on) mit Echtzeit-Verspaetungen. Ein CLI-Call, eine Antwort. [Voller Case →](/de/introduction/use-cases/#use-case-2-mobility--anschluss-erreichen)
-
-## Wie FlowMCP vergleicht
-
-Dasselbe Problem, drei Loesungen. Hier ist, wie sich FlowMCP gegenueber Custom-Integration und generischen Agent-Bibliotheken positioniert.
-
-| Aspekt | FlowMCP | Custom-Integration | Generische Agent-Bibliotheken |
-|--------|---------|---------------------|-------------------------------|
-| Time-to-first-call | unter 5 min | Tage | Stunden |
-| Quellen-Abdeckung | 288 Quellen | 1 Quelle/Integration | variiert |
-| Open Source | MIT | n/a | variiert |
-| Schema-Validierung | strikte v4-Spec | keine | partiell |
-| Key-Isolation | ja (in FlowMCP) | je nach Setup | selten |
-| Vendor-Lock-in | keiner | gering | mittel |
 
 ## Production-Posture
 

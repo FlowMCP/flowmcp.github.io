@@ -1,95 +1,28 @@
 ---
 title: Schemas & Quellen
-description: Arbeit mit Third-Party-Schemas — wie FlowMCP Community-Beitraege, API Terms of Services und Daten-Lizenzen handhabt.
+description: Die drei Schichten von FlowMCP — Engine, Schemas und Datenbetreiber — und warum FlowMCP Schemas weder publiziert noch anzeigt.
 ---
 <!-- PAGEFIND-META-START -->
 <span style="display:none" data-pagefind-meta="section">About</span>
 <!-- PAGEFIND-META-END -->
 
-FlowMCP-Schemas sind Community-Beitraege. Jede:r kann ein Schema fuer eine API oder Datenquelle beitragen. Jeder Nutzende ist selbst dafuer verantwortlich zu pruefen, ob ein Schema fuer den eigenen Anwendungsfall geeignet ist — inklusive Pruefung der zugrundeliegenden API-Terms-of-Services, Daten-Lizenz und Rate-Limits.
+FlowMCP besteht aus drei Schichten, die leicht zu verwechseln sind, aber strikt getrennt bleiben. Sie auseinanderzuhalten ist der Schluessel zum Verstaendnis, wofuer FlowMCP verantwortlich ist und wofuer nicht.
 
-Um diese Pruefung zu ermoeglichen, arbeitet FlowMCP in einem dreischichtigen Lizenzmodell. Das Verstaendnis aller drei Schichten hilft beim Einsatz in Produktion oder im kommerziellen Kontext.
+## Engine, Schemas und Datenbetreiber
 
-## Die drei Schichten
+Die **Engine** ist der Teil, den FlowMCP baut und pflegt. Sie ist die Core-Bibliothek und die CLI, die ein Schema laden, die Anfrage signieren, die Quelle aufrufen und die Antwort normalisieren. Die Engine ist MIT-lizenziert, Open Source, und derselbe Audit deckt jeden Call ab, der durch sie laeuft.
 
-| Schicht | Was | Wer entscheidet | Was FlowMCP tut |
-|-------|------|-------------|---------------------|
-| **1. FlowMCP Schema Code** | Schema-Definitionen (`.mjs`), Core-Bibliothek, CLI | FlowMCP (wir) | **MIT-lizenziert** |
-| **2. API Provider ToS** | Was mit der aufgerufenen API erlaubt ist | API Provider | **Nur Verlinkung — keine Klassifikation** |
-| **3. Data License** | Was mit den zurueckgegebenen Daten erlaubt ist | Daten-Publisher | **Nur Verlinkung — keine Klassifikation** |
+Ein **Schema** ist eine duenne Deklaration, die der Engine sagt, wie sie eine Datenquelle erreicht und wie sie deren Antwort formt. Schemas sind Community-Beitraege: jede:r kann eines fuer eine API oder einen Datensatz schreiben. Sie sind nicht Teil der Engine, und ein Schema kann hinzugefuegt, ersetzt oder entfernt werden, ohne die Engine anzufassen.
 
-## Was wir tun
+Ein **Datenbetreiber** ist, wer die API betreibt oder den Datensatz hinter einem Schema publiziert. Er entscheidet ueber seine eigenen Terms of Service, die Daten-Lizenz und die Rate-Limits. FlowMCP hat keine Kontrolle ueber diese Schicht — es reicht den Call nur durch und gibt die Antwort zurueck.
 
-- Wir dokumentieren die ToS-URL sofern verfuegbar (`meta.termsOfService` pro Schema)
-- Wir dokumentieren das Datum der letzten Pruefung (`meta.termsOfServiceCheckedAt`)
-- Wir dokumentieren die Sprache des ToS-Dokuments (`meta.termsOfServiceLanguage`)
-- Wir spiegeln den Daten-Lizenznamen, sofern der Provider ihn explizit publiziert (`meta.dataLicenseName`)
+Diese drei Schichten verschmelzen nie. Die Engine bewegt Daten, Schemas beschreiben Quellen, und Betreiber besitzen die Daten. Sie zu verwechseln ist die haeufigste Quelle von Missverstaendnissen darueber, was FlowMCP tut.
 
-## Was wir NICHT tun
+## Was FlowMCP nicht tut
 
-- Wir klassifizieren Terms of Services **nicht** in rechtliche Kategorien
-- Wir geben **keine** Empfehlungen zur kommerziellen Nutzung
-- Wir reproduzieren **keine** ToS-Inhalte in unseren Schemas
+FlowMCP **publiziert keine Schemas und zeigt keine Schemas auf dieser Website.** Es gibt hier keine Katalog-Seite, keinen Schema-Browser und keine gehostete Liste von Quellen. Schemas liegen in eigenen Repositories und werden von der CLI bei Bedarf geladen; die Website erklaert die Engine und das Modell, nicht die einzelnen Schemas.
 
-## Warum wir nicht klassifizieren
-
-Terms of Services sind lebende Dokumente — sie aendern sich ohne Vorwarnung. Eine Klassifikation erfordert juristische Expertise, die wir nicht haben, und unsere Jurisdiktion ist begrenzt. Compliance ist deine Verantwortung.
-
-## Wie pruefe ich die Terms of Services einer API?
-
-1. Schema-Datei oeffnen — `meta.termsOfService` enthaelt die URL (oder `null` wenn unbekannt)
-2. URL aufrufen — Hinweis: sie kann sich seit `termsOfServiceCheckedAt` geaendert haben
-3. Pruefen auf:
-   - Free vs. kommerzieller Tier
-   - Attributionspflichten
-   - LLM-Training-Beschraenkungen
-   - Re-Distribution-Regeln
-
-## Ist `meta.dataLicense` rechtsverbindlich?
-
-Nein. Wir spiegeln nur, was der Provider auf seiner Seite publiziert. Die tatsaechlichen Bedingungen des Providers haben Vorrang. Wir geben keine Gewaehrleistung.
-
-## Was, wenn ein Schema keine `termsOfService`-URL hat?
-
-Das bedeutet entweder:
-- Wir haben den Provider noch nicht recherchiert, ODER
-- Der Provider publiziert keine ToS (z. B. NASA APOD — Public-Domain-Daten der US-Regierung)
-
-In beiden Faellen: vor kommerzieller Nutzung selbst pruefen.
-
-## Wie oft pruefen wir ToS-URLs erneut?
-
-Wir streben eine Re-Pruefung alle 6 Monate an. Ein Background-Audit-Script markiert veraltete Eintraege. Reaktive Updates erfolgen, wenn groessere ToS-Aenderungen oeffentlich bekannt sind.
-
-## CLI-Disclaimer-Ausgabe
-
-Du kannst Opt-in-Lizenz-Disclaimer in der CLI aktivieren:
-
-```bash
-# In flowmcp.config.json (global oder projekt-lokal):
-{
-    "licenseDisclaimer": true
-}
-
-# Dann:
-flowmcp call coingecko_market_chart
-# [License Info] Provider: coingecko
-# [License Info] ToS: https://www.coingecko.com/en/terms (last checked: 2026-05-18)
-# [License Info] We do not interpret ToS. Please review before commercial use.
-```
-
-Standard: `licenseDisclaimer: false` (aus).
-
-## Verantwortung der Nutzenden
-
-Du bist allein verantwortlich fuer:
-
-- Die Pruefung der Terms of Services jedes API-Providers vor der Nutzung
-- Die Einhaltung von Rate-Limits, Attributionspflichten und Daten-Lizenzen
-- Die Entscheidung ueber Eignung fuer kommerzielle, Forschungs- oder Produktiv-Nutzung
-- Die Einhaltung von LLM-Training-Beschraenkungen und Re-Distribution-Klauseln
-
-FlowMCP gibt **keine Gewaehrleistung** fuer ToS-Compliance, Daten-Lizenzierung oder Eignung fuer einen bestimmten Zweck. Nutzung auf eigenes Risiko.
+Weil die Datenbetreiber die Quelle und ihre Bedingungen besitzen, faellt FlowMCP auch kein Urteil darueber. Wir halten einige neutrale Fakten fest, sofern ein Provider sie publiziert — die Terms-of-Service-URL (`meta.termsOfService`), das Datum der letzten Pruefung (`meta.termsOfServiceCheckedAt`) und den Daten-Lizenznamen, sofern einer genannt ist (`meta.dataLicenseName`) — und verlinken auf das Original. Wir klassifizieren diese Bedingungen nicht, interpretieren sie nicht und beraten nicht zur kommerziellen Nutzung. Die Pruefung der Terms of Service, Rate-Limits und Daten-Lizenz eines Providers, bevor du dich auf eine Quelle verlaesst, bleibt deine Verantwortung, und FlowMCP gibt keine Gewaehrleistung fuer Eignung zu irgendeinem Zweck.
 
 ## Siehe auch
 

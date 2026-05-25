@@ -1,92 +1,25 @@
 ---
 title: Schemas & Sources
-description: Working with third-party schemas — how FlowMCP handles community contributions, API Terms of Services, and data licenses.
+description: The three layers of FlowMCP — engine, schemas, and data operators — and why FlowMCP neither publishes nor displays schemas.
 ---
 
-FlowMCP schemas are community contributions. Anyone can contribute a schema for an API or data source. Each user is responsible for verifying that a schema works as intended for their use case — including reviewing the underlying API's Terms of Service, data license, and rate limits.
+FlowMCP is built from three layers that are easy to confuse but stay strictly separate. Keeping them apart is the key to understanding what FlowMCP is responsible for and what it is not.
 
-To make this verification possible, FlowMCP operates in a three-layer license model. Understanding all three layers helps when using FlowMCP in production or commercial contexts.
+## Engine, Schemas, and Data Operators
 
-## The Three Layers
+The **engine** is the part FlowMCP builds and maintains. It is the Core library and the CLI that load a schema, sign the request, call the source, and normalize the response. The engine is MIT-licensed, open source, and the same audit covers every call that flows through it.
 
-| Layer | What | Who Decides | What FlowMCP Does |
-|-------|------|-------------|---------------------|
-| **1. FlowMCP Schema Code** | Schema definitions (`.mjs`), Core library, CLI | FlowMCP (we) | **MIT-licensed** |
-| **2. API Provider ToS** | What you may do with the called API | API Provider | **Link only — no classification** |
-| **3. Data License** | What you may do with the returned data | Data publisher | **Link only — no classification** |
+A **schema** is a thin declaration that tells the engine how to reach one data source and how to shape its response. Schemas are community contributions: anyone can write one for an API or dataset. They are not part of the engine, and a schema can be added, replaced, or removed without touching the engine at all.
 
-## What We Do
+A **data operator** is whoever runs the API or publishes the dataset behind a schema. They decide their own Terms of Service, data license, and rate limits. FlowMCP has no control over that layer — it only passes the call through and returns the answer.
 
-- Document the ToS URL where available (`meta.termsOfService` per schema)
-- Document the date we last verified the link (`meta.termsOfServiceCheckedAt`)
-- Document the language of the ToS document (`meta.termsOfServiceLanguage`)
-- Mirror data license name when provider explicitly publishes one (`meta.dataLicenseName`)
+These three layers never merge. The engine moves data, schemas describe sources, and operators own the data. Confusing them is the most common source of misunderstanding about what FlowMCP does.
 
-## What We Do NOT Do
+## What FlowMCP Does Not Do
 
-- We **do not** classify Terms of Services into legal categories
-- We **do not** make recommendations about commercial use
-- We **do not** reproduce ToS content in our schemas
+FlowMCP **does not publish schemas, and it does not show schemas on this website.** There is no catalog page, no schema browser, and no hosted list of sources here. Schemas live in their own repositories and are loaded by the CLI on demand; the website explains the engine and the model, not the individual schemas.
 
-## Why We Don't Classify
-
-Terms of Services are living documents — they change without notice. Classifying them requires legal expertise we don't have, and our jurisdiction is limited. Compliance is your responsibility.
-
-## How Do I Check an API's Terms of Services?
-
-1. Look at the schema file — `meta.termsOfService` has the URL (or `null` if unknown)
-2. Visit the URL — note: it may have been updated since `termsOfServiceCheckedAt`
-3. Review for:
-   - Free vs commercial tier
-   - Attribution requirements
-   - LLM-training restrictions
-   - Re-distribution rules
-
-## Is `meta.dataLicense` Legally Binding?
-
-No. We only mirror what the provider publishes on their site. The provider's actual terms control. We make no warranty.
-
-## What If a Schema Has No `termsOfService` URL?
-
-It means:
-- We have not yet researched that provider, OR
-- The provider does not publish a ToS (e.g. NASA APOD — Public Domain US Government data)
-
-In either case, verify yourself before commercial use.
-
-## How Often Do You Re-Check ToS URLs?
-
-We aim to re-check every 6 months. A background audit script flags stale entries. Reactive updates happen when major ToS changes are publicly known.
-
-## CLI Disclaimer Output
-
-You can enable opt-in license disclaimers in the CLI:
-
-```bash
-# In flowmcp.config.json (global or project-local):
-{
-    "licenseDisclaimer": true
-}
-
-# Then:
-flowmcp call coingecko_market_chart
-# [License Info] Provider: coingecko
-# [License Info] ToS: https://www.coingecko.com/en/terms (last checked: 2026-05-18)
-# [License Info] We do not interpret ToS. Please review before commercial use.
-```
-
-Default: `licenseDisclaimer: false` (off).
-
-## User Responsibility
-
-You are solely responsible for:
-
-- Reviewing each API provider's Terms of Services before use
-- Complying with rate limits, attribution requirements, and data licenses
-- Determining suitability for commercial, research, or production use
-- Adhering to LLM-training restrictions and re-distribution clauses
-
-FlowMCP makes **no warranty** about ToS compliance, data licensing, or fitness for any purpose. Use at your own risk.
+Because the data operators own the source and its terms, FlowMCP also makes no judgment about them. We record a few neutral facts where a provider publishes them — the Terms of Service URL (`meta.termsOfService`), the date we last checked it (`meta.termsOfServiceCheckedAt`), and the data license name when one is stated (`meta.dataLicenseName`) — and we link out to the original. We do not classify those terms, interpret them, or advise on commercial use. Reviewing a provider's Terms of Service, rate limits, and data license before you rely on a source remains your responsibility, and FlowMCP makes no warranty about fitness for any purpose.
 
 ## See Also
 
