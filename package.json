@@ -26,6 +26,8 @@
         "test:mermaid": "node scripts/check-mermaid-renders.mjs",
         "test:autogen-sync": "node scripts/test-autogen-sync.mjs",
         "test:replace-placeholders": "node --test tests/replace-placeholders.test.mjs",
+        "test:markdown-map": "node --test tests/generate-markdown-map.test.mjs",
+        "test:copy-markdown": "node --test tests/generate-markdown-map.test.mjs && npx playwright test tests/playwright/copy-markdown.spec.mjs",
         "preview:mermaid": "node scripts/render-mermaid-previews.mjs",
         "eval:page-quality": "node evals/evaluator-page-quality/runner.mjs",
         "check:links": "node scripts/check-external-links.mjs",
