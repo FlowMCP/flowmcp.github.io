@@ -184,7 +184,7 @@ export default defineConfig({
                         { label: 'About FlowMCP', translations: { de: 'Ueber FlowMCP' }, slug: 'about' },
                         { label: 'FAQ', translations: { de: 'Haeufige Fragen' }, slug: 'about/faq' },
                         { label: 'Use Cases', translations: { de: 'Anwendungsfaelle' }, slug: 'introduction/use-cases' },
-                        { label: 'For LLMs', translations: { de: 'Fuer LLMs' }, slug: 'introduction/for-llms' },
+                        // Memo 060 PRD-016 (LM1): For LLMs verschoben von About-Gruppe nach Get Started.
                         { label: 'Schemas & Sources', translations: { de: 'Schemas & Quellen' }, slug: 'schemas-and-sources' },
                     ],
                 },
@@ -192,12 +192,15 @@ export default defineConfig({
                 // Inline-Listing (Variant A) — flat list, no sub-group. AC-3: exactly 4 items.
                 // PRD-013 audit: DE-Mirror via Starlight `translations` keys — both locales
                 // render 6 groups with localized labels (Loslegen, Konzepte, etc.).
+                // Memo 060 PRD-016 (QS3 + LM1): "Quickstart" -> "CLI Setup", For LLMs aufgenommen.
                 {
                     label: 'Get Started',
                     translations: { de: 'Loslegen' },
                     collapsed: true,
                     items: [
-                        { label: 'Quickstart', translations: { de: 'Schnellstart' }, slug: 'quickstart/quickstart' },
+                        // Memo 060 PRD-016 (QS3): "Quickstart" -> "CLI Setup" (DE bewusst englisch, analog "Tag Search").
+                        { label: 'CLI Setup', translations: { de: 'CLI Setup' }, slug: 'quickstart/quickstart' },
+                        { label: 'For LLMs', translations: { de: 'Fuer LLMs' }, slug: 'introduction/for-llms' },
                         { label: 'Hackathon Kit', translations: { de: 'Hackathon-Kit' }, slug: 'guides/hackathon-kit' },
                         { label: 'Agent Creation', translations: { de: 'Agent-Erstellung' }, slug: 'guides/agent-creation' },
                         { label: 'GTFS Pilot', translations: { de: 'GTFS-Pilot' }, slug: 'guides/gtfs-pilot' },
