@@ -8,7 +8,7 @@ description: Was FlowMCP ist, warum es existiert, und wo es heute steht.
 
 > *FlowMCP normalisiert hunderte Datenquellen zu einer durchsuchbaren Library aus AI-bereiten Tools — damit deine Agenten suchen, kombinieren und antworten können, ohne dass du sie zu Integrations-Maintainern machst.*
 
-FlowMCP begann als Versuch, mehrere Datenquellen an einen einzigen MCP-Server anzubinden. Heute ist es eine Schema-Library — **— produktionsreife Definitionen, — Datenquellen, — aufrufbare Tools** — alle ueber eine zentrale, auditierbare Engine geleitet. AI-Agenten rufen FlowMCP — nie die zugrundeliegenden APIs direkt. Deine API-Keys bleiben in deiner Kontrolle.
+FlowMCP begann als Versuch, mehrere Datenquellen an einen einzigen MCP-Server anzubinden. Heute ist es eine Schema-Library — **365 produktionsreife Definitionen, 288 Datenquellen, 1575 aufrufbare Tools** — alle ueber eine zentrale, auditierbare Engine geleitet. AI-Agenten rufen FlowMCP — nie die zugrundeliegenden APIs direkt. Deine API-Keys bleiben in deiner Kontrolle.
 
 ## Was FlowMCP ist — und nicht ist
 
@@ -17,8 +17,8 @@ FlowMCP begann als Versuch, mehrere Datenquellen an einen einzigen MCP-Server an
 | Aspekt | Beschreibung |
 |--------|--------------|
 | **Primitive Idee** | Ein Fluss von Daten — aus heterogenen Quellen, durch normalisierte Schemas, in AI-Pipelines |
-| **Schema-Library** | — Schemas (v4-Produktion), — Datenquellen, — Tool-Routes |
-| **Primaerer Use** | CLI-Tool — kein MCP-Client haelt — Tools im Kontext, die CLI laedt sie dynamisch |
+| **Schema-Library** | 365 Schemas (v4-Produktion), 288 Datenquellen, 1575 Tool-Routes |
+| **Primaerer Use** | CLI-Tool — kein MCP-Client haelt 1575 Tools im Kontext, die CLI laedt sie dynamisch |
 | **Sekundaerer Use** | MCP-Server-Modus weiter unterstuetzt, aber nicht der Default |
 | **Mehrwert** | Kombinatorik: viele Quellen + automatische Auffindbarkeit + AI-getriebene Verkettung |
 | **Sicherheits-Plus** | Keys leben in FlowMCP, nie im AI-Kontext. Ein direkter REST-Call aus der AI wuerde sie exposeen |
@@ -69,7 +69,7 @@ Dasselbe Problem, drei Loesungen. Hier ist, wie sich FlowMCP gegenueber Custom-I
 | Aspekt | FlowMCP | Custom-Integration | Generische Agent-Bibliotheken |
 |--------|---------|---------------------|-------------------------------|
 | Time-to-first-call | unter 5 min | Tage | Stunden |
-| Quellen-Abdeckung | — Quellen | 1 Quelle/Integration | variiert |
+| Quellen-Abdeckung | 288 Quellen | 1 Quelle/Integration | variiert |
 | Open Source | MIT | n/a | variiert |
 | Schema-Validierung | strikte v4-Spec | keine | partiell |
 | Key-Isolation | ja (in FlowMCP) | je nach Setup | selten |
