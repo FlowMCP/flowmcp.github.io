@@ -2,9 +2,39 @@
 title: Agent Creation
 description: Step-by-step guide for building a FlowMCP-driven AI agent — schema selection, skill definition, LLM loop.
 ---
-<!-- PAGEFIND-META-START -->
-<span style="display:none" data-pagefind-meta="section">Guides</span>
-<!-- PAGEFIND-META-END -->
+{/* PAGEFIND-META-START */}
+<span style="display:none" data-pagefind-meta="section">Get Started</span>
+{/* PAGEFIND-META-END */}
+
+import CopyMarkdown from '../../../components/CopyMarkdown.astro'
+
+<CopyMarkdown slug="guides/agent-creation" lang="en" />
+
+<CopyMarkdown mode="slot" lang="en" label="Copy this skill to ~/.claude/skills/">
+{`---
+name: flowmcp-agent-creation
+description: Help a user build a FlowMCP-driven AI agent — schema selection, skill definition, LLM loop
+---
+
+# FlowMCP Agent Creation
+
+Use this skill when a user wants to build an AI agent that uses FlowMCP schemas as its tool layer. Guide them through schema selection, skill definition, and the LLM loop so they end up with a working multi-tool agent.
+
+## Steps
+
+1. Pick the data sources: \`flowmcp search <topic>\` then \`flowmcp add <schema>\` (e.g. one crypto + one mobility schema)
+2. Verify the active toolset: \`flowmcp list\`
+3. Define the agent skill in \`~/.claude/skills/<agent-name>/SKILL.md\` — describe purpose, allowed tools, output shape
+4. Wire the LLM loop: call FlowMCP with the user query, pass tool results back into the next turn
+5. Test with a real prompt and verify the agent invokes the expected schemas
+6. Reference the full tutorial: https://flowmcp.github.io/guides/agent-creation/
+
+## References
+
+- Tutorial: https://flowmcp.github.io/guides/agent-creation/
+- FlowMCP CLI: https://github.com/FlowMCP/flowmcp-cli
+`}
+</CopyMarkdown>
 
 This guide walks through building an AI agent that uses FlowMCP schemas as its tool layer. By the end, you have a working agent that pulls from multiple data sources and reasons across them with a single LLM loop.
 

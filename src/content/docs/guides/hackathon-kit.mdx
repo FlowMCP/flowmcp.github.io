@@ -2,9 +2,39 @@
 title: Hackathon Kit
 description: 5-minute setup for hackathon teams — mock mode, ready-made tool sets, mobility + crypto demos.
 ---
-<!-- PAGEFIND-META-START -->
-<span style="display:none" data-pagefind-meta="section">Guides</span>
-<!-- PAGEFIND-META-END -->
+{/* PAGEFIND-META-START */}
+<span style="display:none" data-pagefind-meta="section">Get Started</span>
+{/* PAGEFIND-META-END */}
+
+import CopyMarkdown from '../../../components/CopyMarkdown.astro'
+
+<CopyMarkdown slug="guides/hackathon-kit" lang="en" />
+
+<CopyMarkdown mode="slot" lang="en" label="Copy this skill to ~/.claude/skills/">
+{`---
+name: flowmcp-hackathon-kit
+description: Help a user complete the FlowMCP Hackathon Kit setup in under 30 minutes
+---
+
+# FlowMCP Hackathon Kit
+
+Use this skill when a user is preparing for a hackathon with FlowMCP. Walk them through the 5-minute setup, activating mock mode for offline demos, and pointing them at ready-made tool sets so they can prototype a multi-tool agent fast.
+
+## Steps
+
+1. Install the CLI: \`npm install -g github:FlowMCP/flowmcp-cli\`
+2. Run \`flowmcp init\` to create \`~/.flowmcp/\`
+3. Verify with \`flowmcp status\`
+4. For offline demos: activate mock mode per call with \`--mock\`
+5. Activate a ready-made tool set (mobility or crypto) via \`flowmcp add <schema>\`
+6. Reference the live tutorial for full context: https://flowmcp.github.io/guides/hackathon-kit/
+
+## References
+
+- Tutorial: https://flowmcp.github.io/guides/hackathon-kit/
+- FlowMCP CLI: https://github.com/FlowMCP/flowmcp-cli
+`}
+</CopyMarkdown>
 
 Hackathons are short. FlowMCP is built so a team can prototype a working multi-tool agent in under 30 minutes — without writing API integrations, without exposing keys, and without an internet connection in mock mode.
 

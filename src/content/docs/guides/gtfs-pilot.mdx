@@ -2,9 +2,40 @@
 title: GTFS Pilot
 description: Download a GTFS feed, convert it to SQLite with quality seal, and query it from FlowMCP — Berlin + Germany.
 ---
-<!-- PAGEFIND-META-START -->
-<span style="display:none" data-pagefind-meta="section">Guides</span>
-<!-- PAGEFIND-META-END -->
+{/* PAGEFIND-META-START */}
+<span style="display:none" data-pagefind-meta="section">Get Started</span>
+{/* PAGEFIND-META-END */}
+
+import CopyMarkdown from '../../../components/CopyMarkdown.astro'
+
+<CopyMarkdown slug="guides/gtfs-pilot" lang="en" />
+
+<CopyMarkdown mode="slot" lang="en" label="Copy this skill to ~/.claude/skills/">
+{`---
+name: flowmcp-gtfs-pilot
+description: Help a user reproduce the FlowMCP v4.1 GTFS pilot — download a feed, build local SQLite, query from FlowMCP
+---
+
+# FlowMCP GTFS Pilot
+
+Use this skill when a user wants to set up local mobility databases (VBB Berlin, DELFI Germany) from a GTFS feed and query them through FlowMCP. Guide them from raw feed to running transit-routing queries.
+
+## Steps
+
+1. Pick the feed: VBB Berlin (~30 MB) for a small demo, DELFI (~245 MB) for nationwide coverage
+2. Download the GTFS ZIP and unpack it into a working directory
+3. Convert the GTFS files to SQLite with the quality-seal converter from the tutorial
+4. Activate the FlowMCP GTFS schema: \`flowmcp add gtfs-de\`
+5. Point the schema at the local SQLite via its required server param
+6. Run a transit-routing query end-to-end (e.g. stops near a coordinate, departures within 30 min)
+7. Reference the full tutorial: https://flowmcp.github.io/guides/gtfs-pilot/
+
+## References
+
+- Tutorial: https://flowmcp.github.io/guides/gtfs-pilot/
+- FlowMCP CLI: https://github.com/FlowMCP/flowmcp-cli
+`}
+</CopyMarkdown>
 
 This guide reproduces the FlowMCP v4.1 GTFS pilot. By the end, you have two queryable mobility databases (VBB Berlin, DELFI Germany) and can ask transit-routing questions in seconds.
 
