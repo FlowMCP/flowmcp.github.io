@@ -18,6 +18,8 @@ test.beforeAll( () => {
 
 test.describe( 'Blog Starlight Header Parity (Memo 060 Phase 1a)', () => {
 
+    test.skip( ( { browserName } ) => browserName === 'webkit', 'Mobile-safari collapses header into hamburger menu; tests assert desktop layout' )
+
     test( 'BH1: Logo-Groesse auf /blog/ ist identisch zu /about/', async ( { page } ) => {
         await page.goto( `${ BASE }/blog/` )
         const blogLogo = await page.locator( 'header.header img.site-title-icon' ).first().boundingBox()
