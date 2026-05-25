@@ -3,7 +3,7 @@ title: Use Cases
 description: Zwei Szenarien, die FlowMCP + AI im Einsatz zeigen — wie verstreute Daten zu einer Antwort werden.
 ---
 <!-- PAGEFIND-META-START -->
-<span style="display:none" data-pagefind-meta="section">Introduction</span>
+<span style="display:none" data-pagefind-meta="section">About</span>
 <!-- PAGEFIND-META-END -->
 
 Zwei Szenarien, die FlowMCP + AI im Einsatz zeigen — nicht wie man einen Agent baut, sondern wie FlowMCP aus verstreuten Datenquellen eine nutzbare Antwort macht. Beide Cases setzen voraus, dass ein AI-Agent (Claude, GPT oder aehnlich) an ein Recherche-Tool, eine Planungssoftware oder einen CLI-Workflow angebunden ist und FlowMCP-CLI als Datenzugriffs-Schicht laeuft.

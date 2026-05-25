@@ -2,6 +2,10 @@
 title: Schemas & Quellen
 description: Arbeit mit Third-Party-Schemas — wie FlowMCP Community-Beitraege, API Terms of Services und Daten-Lizenzen handhabt.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">About</span>
+<!-- PAGEFIND-META-END -->
+
 
 FlowMCP-Schemas sind Community-Beitraege. Jede:r kann ein Schema fuer eine API oder Datenquelle beitragen. Jeder Nutzende ist selbst dafuer verantwortlich zu pruefen, ob ein Schema fuer den eigenen Anwendungsfall geeignet ist — inklusive Pruefung der zugrundeliegenden API-Terms-of-Services, Daten-Lizenz und Rate-Limits.
 

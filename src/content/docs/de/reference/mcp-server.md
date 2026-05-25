@@ -2,11 +2,11 @@
 title: MCP Server Mode
 description: FlowMCP als MCP-Server betreiben fuer die Integration mit Claude Desktop, Cursor und anderen KI-Tools
 ---
-<!-- RF4 Discovery (PRD-019, 2026-05-25): CLI-Befehl ist `flowmcp run` (frueher in Doku: `flowmcp server`). Implementierung: repos/flowmcp-cli/src/task/FlowMcpCli.mjs:2450ff via @modelcontextprotocol/sdk/server/mcp.js mit StdioServerTransport. -->
 <!-- PAGEFIND-META-START -->
-<span style="display:none" data-pagefind-meta="section">Docs > Usage</span>
+<span style="display:none" data-pagefind-meta="section">Reference</span>
 <!-- PAGEFIND-META-END -->
 
+<!-- RF4 Discovery (PRD-019, 2026-05-25): CLI-Befehl ist `flowmcp run` (frueher in Doku: `flowmcp server`). Implementierung: repos/flowmcp-cli/src/task/FlowMcpCli.mjs:2450ff via @modelcontextprotocol/sdk/server/mcp.js mit StdioServerTransport. -->
 ## Was ist MCP?
 
 Das **Model Context Protocol (MCP)** ist ein offener Standard zur Verbindung von KI-Modellen mit externen Tools und Datenquellen. FlowMCP kann als MCP-Server laufen und alle aktiven Schemas als Tools fuer jeden MCP-kompatiblen KI-Client bereitstellen.

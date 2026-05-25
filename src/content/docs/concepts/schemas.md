@@ -2,6 +2,10 @@
 title: Schemas
 description: What a FlowMCP schema is, how it is structured, and how the schema inventory works.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Concepts</span>
+<!-- PAGEFIND-META-END -->
+
 
 ## What is a Schema?
 

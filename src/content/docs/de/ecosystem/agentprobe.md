@@ -3,7 +3,7 @@ title: AgentProbe
 description: Multi-Protokoll-Validierung fuer MCP-Server, A2A-Agenten und x402-Endpunkte
 ---
 <!-- PAGEFIND-META-START -->
-<span style="display:none" data-pagefind-meta="section">Docs > Ecosystem</span>
+<span style="display:none" data-pagefind-meta="section">Ecosystem</span>
 <!-- PAGEFIND-META-END -->
 
 :::caution[Experimentell — Vorab-Lesung]

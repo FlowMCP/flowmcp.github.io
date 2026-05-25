@@ -2,6 +2,10 @@
 title: Haeufige Fragen
 description: Antworten zu Installation, MCP-Clients, Schemas und Beitraegen.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">About</span>
+<!-- PAGEFIND-META-END -->
+
 
 <details>
 <summary>Was ist FlowMCP genau?</summary>

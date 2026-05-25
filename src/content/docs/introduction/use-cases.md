@@ -3,7 +3,7 @@ title: Use Cases
 description: Two scenarios that show FlowMCP + AI in action — how scattered data becomes one answer.
 ---
 <!-- PAGEFIND-META-START -->
-<span style="display:none" data-pagefind-meta="section">Introduction</span>
+<span style="display:none" data-pagefind-meta="section">About</span>
 <!-- PAGEFIND-META-END -->
 
 Two scenarios that show FlowMCP + AI in action — not how to build an agent, but how FlowMCP turns scattered data sources into one usable answer. Both cases assume an AI agent (Claude, GPT, or similar) connected to a research tool, planning software, or CLI workflow, with FlowMCP-CLI running as the data-access layer.

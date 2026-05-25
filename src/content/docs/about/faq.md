@@ -2,6 +2,10 @@
 title: FAQ
 description: Frequently asked questions about FlowMCP — installation, MCP clients, schemas, contributions.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">About</span>
+<!-- PAGEFIND-META-END -->
+
 
 <details>
 <summary>What is FlowMCP exactly?</summary>

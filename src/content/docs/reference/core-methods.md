@@ -3,7 +3,7 @@ title: Core API Methods
 description: Complete FlowMCP Core method reference
 ---
 <!-- PAGEFIND-META-START -->
-<span style="display:none" data-pagefind-meta="section">Docs > Reference</span>
+<span style="display:none" data-pagefind-meta="section">Reference</span>
 <!-- PAGEFIND-META-END -->
 
 Complete reference for all public methods in `flowmcp-core`. Methods are organized by usage category. All methods are static.

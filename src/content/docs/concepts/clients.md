@@ -2,6 +2,10 @@
 title: Clients and Compatibility
 description: Where to use schemas and agents, which clients support what, and what CLI means.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Concepts</span>
+<!-- PAGEFIND-META-END -->
+
 
 ## MCP — The Connecting Protocol
 

@@ -2,6 +2,10 @@
 title: Primitives
 description: The four FlowMCP primitives — Resources, Prompts, Skills, Agents — explained in brief.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Concepts</span>
+<!-- PAGEFIND-META-END -->
+
 
 FlowMCP groups everything an AI agent needs into four primitives: Resources, Prompts, Skills, Agents. The first three live inside a [schema](/concepts/schemas/) and describe what one provider offers. Agents combine tools from many schemas into a purpose-built unit. This page gives a brief, conceptual overview — for the full field definitions, validation rules, and examples, follow the spec links per section.
 

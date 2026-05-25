@@ -2,6 +2,10 @@
 title: Primitive
 description: Die vier FlowMCP-Primitive — Resources, Prompts, Skills, Agents — kurz erklaert.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Concepts</span>
+<!-- PAGEFIND-META-END -->
+
 
 FlowMCP gruppiert alles, was ein KI-Agent braucht, in vier Primitive: Resources, Prompts, Skills, Agents. Die ersten drei leben in einem [Schema](/de/concepts/schemas/) und beschreiben, was ein Anbieter bietet. Agents kombinieren Tools aus mehreren Schemas zu einer aufgaben-spezifischen Einheit. Diese Seite gibt einen kurzen, konzeptionellen Ueberblick — fuer die vollstaendigen Felddefinitionen, Validierungsregeln und Beispiele folgen Sie den Spec-Links pro Abschnitt.
 

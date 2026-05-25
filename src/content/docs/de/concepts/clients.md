@@ -2,6 +2,10 @@
 title: Clients und Kompatibilitaet
 description: Wo man Schemas und Agents nutzen kann, welche Clients was unterstuetzen, und was CLI bedeutet.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Concepts</span>
+<!-- PAGEFIND-META-END -->
+
 
 ## MCP — Das verbindende Protokoll
 

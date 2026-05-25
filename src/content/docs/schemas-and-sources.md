@@ -2,6 +2,10 @@
 title: Schemas & Sources
 description: Working with third-party schemas — how FlowMCP handles community contributions, API Terms of Services, and data licenses.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">About</span>
+<!-- PAGEFIND-META-END -->
+
 
 FlowMCP schemas are community contributions. Anyone can contribute a schema for an API or data source. Each user is responsible for verifying that a schema works as intended for their use case — including reviewing the underlying API's Terms of Service, data license, and rate limits.
 

@@ -2,6 +2,10 @@
 title: Schemas
 description: Was ein FlowMCP-Schema ist, wie es aufgebaut ist und wie das Schema-Inventar funktioniert.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Concepts</span>
+<!-- PAGEFIND-META-END -->
+
 
 ## Was ist ein Schema?
 

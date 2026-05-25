@@ -3,7 +3,7 @@ title: Programmatic API
 description: Vollstaendige FlowMCP Core Methoden-Referenz
 ---
 <!-- PAGEFIND-META-START -->
-<span style="display:none" data-pagefind-meta="section">Docs > Reference</span>
+<span style="display:none" data-pagefind-meta="section">Reference</span>
 <!-- PAGEFIND-META-END -->
 
 Vollstaendige Referenz aller oeffentlichen Methoden in `flowmcp-core`. Methoden sind nach Verwendungskategorie organisiert. Alle Methoden sind statisch.

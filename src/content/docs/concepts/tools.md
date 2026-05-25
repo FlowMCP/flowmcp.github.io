@@ -2,6 +2,10 @@
 title: Tools
 description: What a FlowMCP tool is, how tools are selected, and how the tool execution flow works.
 ---
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Concepts</span>
+<!-- PAGEFIND-META-END -->
+
 
 ## What is a Tool?
 
