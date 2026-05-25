@@ -3,10 +3,10 @@ import { test, expect } from '@playwright/test'
 test.describe( 'Navigation (Pencil-Layout REV-15)', () => {
     test( '1. Sidebar — Top-Groups sichtbar (Docs)', async ( { page }, testInfo ) => {
         test.skip( testInfo.project.name === 'mobile-safari', 'Sidebar collapsed behind hamburger on mobile' )
-        await page.goto( '/quickstart/what-is-flowmcp/' )
+        await page.goto( '/about/' )
         const sidebar = page.locator( 'nav.sidebar, [aria-label="Main"]' ).first()
-        await expect( sidebar.getByText( /Introduction/i ).first() ).toBeVisible()
-        await expect( sidebar.getByText( /Quickstart/i ).first() ).toBeVisible()
+        await expect( sidebar.getByText( /About/ ).first() ).toBeVisible()
+        await expect( sidebar.getByText( /Get Started/i ).first() ).toBeVisible()
         await expect( sidebar.getByText( /Concepts/i ).first() ).toBeVisible()
         await expect( sidebar.getByText( /Specification/i ).first() ).toBeVisible()
         await expect( sidebar.getByText( /Reference/i ).first() ).toBeVisible()
@@ -16,8 +16,8 @@ test.describe( 'Navigation (Pencil-Layout REV-15)', () => {
         await page.goto( '/' )
         await expect( page.getByText( /Normalize any data source/i ).first() ).toBeVisible()
         await expect( page.getByText( /Connects to/i ).first() ).toBeVisible()
-        await expect( page.getByText( '288' ).first() ).toBeVisible()
-        await expect( page.getByText( '1,534' ).first() ).toBeVisible()
+        // Stats are dynamic (from refs.json); assert numeric pattern instead of fixed value
+        await expect( page.getByText( /\b\d{3,}\b/ ).first() ).toBeVisible()
     } )
 
     test( '3. Hackathon Trust-Line auf Landing', async ( { page } ) => {
@@ -39,7 +39,7 @@ test.describe( 'Navigation (Pencil-Layout REV-15)', () => {
         await expect( active.first() ).toBeVisible()
     } )
 
-    test( '6. Tag-Filter Route lädt', async ( { page } ) => {
+    test.skip( '6. Tag-Filter Route lädt (Schema Catalog removed by Memo 060 Phase 2)', async ( { page } ) => {
         const response = await page.goto( '/schemas?tag=defi' )
         expect( response?.status() ).toBeLessThan( 400 )
         await expect( page.getByText( /Schema Catalog/i ) ).toBeVisible()
@@ -66,15 +66,16 @@ test.describe( 'Navigation (Pencil-Layout REV-15)', () => {
 
     test( '10. Linkkonsistenz — keine 404 von Hauptpfaden', async ( { page } ) => {
         const routes = [
-            '/introduction/about/',
-            '/quickstart/what-is-flowmcp/',
-            '/concepts/schemas-and-tools/',
+            '/about/',
+            '/about/faq/',
+            '/concepts/schemas/',
+            '/concepts/tools/',
+            '/concepts/primitives/',
+            '/concepts/clients/',
             '/specification/overview/',
-            '/specification/schema-format/',
-            '/roadmap/overview/',
-            '/about/for-decision-makers/',
+            '/reference/cli/',
             '/blog/',
-            '/schemas/',
+            '/schemas-and-sources/',
         ]
         for( const route of routes ) {
             const response = await page.goto( route )
