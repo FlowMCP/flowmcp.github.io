@@ -1,9 +1,11 @@
 ---
-title: License & Terms of Services FAQ
-description: How FlowMCP handles licensing, API Terms of Services, and data licenses across three layers.
+title: Schemas & Sources
+description: Working with third-party schemas — how FlowMCP handles community contributions, API Terms of Services, and data licenses.
 ---
 
-FlowMCP operates in a three-layer license model. Understanding all three layers is essential before using FlowMCP in production or commercial contexts.
+FlowMCP schemas are community contributions. Anyone can contribute a schema for an API or data source. Each user is responsible for verifying that a schema works as intended for their use case — including reviewing the underlying API's Terms of Service, data license, and rate limits.
+
+To make this verification possible, FlowMCP operates in a three-layer license model. Understanding all three layers helps when using FlowMCP in production or commercial contexts.
 
 ## The Three Layers
 
@@ -25,7 +27,6 @@ FlowMCP operates in a three-layer license model. Understanding all three layers 
 - We **do not** classify Terms of Services into legal categories
 - We **do not** make recommendations about commercial use
 - We **do not** reproduce ToS content in our schemas
-- We **do not** provide legal advice
 
 ## Why We Don't Classify
 
@@ -40,10 +41,6 @@ Terms of Services are living documents — they change without notice. Classifyi
    - Attribution requirements
    - LLM-training restrictions
    - Re-distribution rules
-
-## What if I Need Legal Advice?
-
-Consult a qualified lawyer in your jurisdiction. FlowMCP does not provide legal advice and has no liability for compliance decisions.
 
 ## Is `meta.dataLicense` Legally Binding?
 

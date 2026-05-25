@@ -1,9 +1,11 @@
 ---
-title: Lizenz & AGB FAQ
-description: Wie FlowMCP mit Lizenzierung, API Terms of Services und Daten-Lizenzen ueber drei Schichten umgeht.
+title: Schemas & Quellen
+description: Arbeit mit Third-Party-Schemas — wie FlowMCP Community-Beitraege, API Terms of Services und Daten-Lizenzen handhabt.
 ---
 
-FlowMCP arbeitet in einem dreischichtigen Lizenzmodell. Das Verstaendnis aller drei Schichten ist Pflicht, bevor FlowMCP in Produktion oder im kommerziellen Kontext eingesetzt wird.
+FlowMCP-Schemas sind Community-Beitraege. Jede:r kann ein Schema fuer eine API oder Datenquelle beitragen. Jeder Nutzende ist selbst dafuer verantwortlich zu pruefen, ob ein Schema fuer den eigenen Anwendungsfall geeignet ist — inklusive Pruefung der zugrundeliegenden API-Terms-of-Services, Daten-Lizenz und Rate-Limits.
+
+Um diese Pruefung zu ermoeglichen, arbeitet FlowMCP in einem dreischichtigen Lizenzmodell. Das Verstaendnis aller drei Schichten hilft beim Einsatz in Produktion oder im kommerziellen Kontext.
 
 ## Die drei Schichten
 
@@ -25,7 +27,6 @@ FlowMCP arbeitet in einem dreischichtigen Lizenzmodell. Das Verstaendnis aller d
 - Wir klassifizieren Terms of Services **nicht** in rechtliche Kategorien
 - Wir geben **keine** Empfehlungen zur kommerziellen Nutzung
 - Wir reproduzieren **keine** ToS-Inhalte in unseren Schemas
-- Wir leisten **keine** Rechtsberatung
 
 ## Warum wir nicht klassifizieren
 
@@ -40,10 +41,6 @@ Terms of Services sind lebende Dokumente — sie aendern sich ohne Vorwarnung. E
    - Attributionspflichten
    - LLM-Training-Beschraenkungen
    - Re-Distribution-Regeln
-
-## Was, wenn ich Rechtsberatung brauche?
-
-Konsultiere einen qualifizierten Anwalt in deiner Jurisdiktion. FlowMCP leistet keine Rechtsberatung und uebernimmt keine Haftung fuer Compliance-Entscheidungen.
 
 ## Ist `meta.dataLicense` rechtsverbindlich?
 

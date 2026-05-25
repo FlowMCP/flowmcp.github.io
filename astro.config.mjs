@@ -121,6 +121,10 @@ export default defineConfig({
         '/de/introduction/why/': '/de/about/',
         '/introduction/faq/': '/about/faq/',
         '/de/introduction/faq/': '/de/about/faq/',
+
+        // PRD-015: License & ToS FAQ → Schemas & Sources (Memo 060 Phase 4)
+        '/license-faq/':    '/schemas-and-sources/',
+        '/de/license-faq/': '/de/schemas-and-sources/',
     },
     integrations: [
         starlight({
@@ -181,7 +185,7 @@ export default defineConfig({
                         { label: 'FAQ', translations: { de: 'Haeufige Fragen' }, slug: 'about/faq' },
                         { label: 'Use Cases', translations: { de: 'Anwendungsfaelle' }, slug: 'introduction/use-cases' },
                         { label: 'For LLMs', translations: { de: 'Fuer LLMs' }, slug: 'introduction/for-llms' },
-                        { label: 'License & ToS FAQ', translations: { de: 'Lizenz & AGB FAQ' }, slug: 'license-faq' },
+                        { label: 'Schemas & Sources', translations: { de: 'Schemas & Quellen' }, slug: 'schemas-and-sources' },
                     ],
                 },
                 // Memo 059 PRD-011: Quickstart + Guides merged into "Get Started" (B3/B7).
