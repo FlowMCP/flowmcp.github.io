@@ -86,7 +86,6 @@ export default defineConfig({
         '/reference/troubleshooting/':      '/about/faq/',
         '/de/reference/troubleshooting/':   '/de/about/faq/',
 
-        '/docs/ecosystem/agent-server/':    '/ecosystem/agent-server/',
         '/docs/ecosystem/agentprobe/':      '/ecosystem/agentprobe/',
         '/docs/ecosystem/x402/':            '/ecosystem/x402/',
 
@@ -242,9 +241,18 @@ export default defineConfig({
                     translations: { de: 'Oekosystem' },
                     collapsed: true,
                     items: [
-                        { label: 'Agent Server (experimental)', translations: { de: 'Agent-Server (experimentell)' }, slug: 'ecosystem/agent-server' },
-                        { label: 'AgentProbe (external)', translations: { de: 'AgentProbe (extern)' }, slug: 'ecosystem/agentprobe' },
-                        { label: 'x402 (experimental)', translations: { de: 'x402 (experimentell)' }, slug: 'ecosystem/x402' },
+                        {
+                            label: 'AgentProbe',
+                            translations: { de: 'AgentProbe' },
+                            slug: 'ecosystem/agentprobe',
+                            badge: { text: 'External', variant: 'note' },
+                        },
+                        {
+                            label: 'x402',
+                            translations: { de: 'x402' },
+                            slug: 'ecosystem/x402',
+                            badge: { text: 'Experimental', variant: 'caution' },
+                        },
                     ],
                 },
                 // Memo 060 PRD-005 (Phase 1a.7): Blog wird wieder als Top-Level-

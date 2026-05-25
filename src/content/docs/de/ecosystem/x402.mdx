@@ -8,6 +8,16 @@ import InstallNote from '../../../../components/InstallNote.astro';
 <span style="display:none" data-pagefind-meta="section">Docs > Ecosystem</span>
 {/* PAGEFIND-META-END */}
 
+:::caution[Experimentell — Vorab-Lesung]
+**Was x402 ist:** Ein maschinenlesbares Zahlungsprotokoll auf Basis des HTTP-Status-Codes 402 (Payment Required). Es erlaubt API-Endpunkten — auch MCP-Tools — Zahlungsanforderungen standardisiert zu signalisieren und Zahlungsbelege entgegenzunehmen.
+
+**Warum experimentell:** Die x402-Spezifikation, der Netzwerk-Support (Base, Solana, Stacks) und die Referenz-Implementierungen befinden sich 2026 noch in Entwicklung. Es gibt kein Service-Level-Agreement, keine produktionsreife Zuverlaessigkeitsgarantie, und das Wire-Format kann sich zwischen Minor-Versionen aendern.
+
+**Wann einzusetzen:** Hackathon-Demos, payment-gated MCP-Tool-Prototypen, Proof-of-Concepts, Forschungs-Szenarien. Geeignet fuer geschlossene Tests mit bekannten Clients.
+
+**Was es NICHT ist:** Kein produktives Zahlungs-Gateway. Kein Ersatz fuer etablierte Payment-Service-Provider (Stripe, PayPal). Kein Compliance-zertifiziertes Zahlungssystem. Schicken Sie keine echten Kundenumsaetze ueber diesen Stack ohne zusaetzliche Sicherungen.
+:::
+
 Das [x402-Protokoll](https://www.x402.org/) erweckt den HTTP-Statuscode 402 (Payment Required) als maschinenlesbares Zahlungsprotokoll fuer APIs zum Leben. Der [x402-mcp-validator](https://github.com/FlowMCP/x402-mcp-validator) validiert MCP-Server auf x402-Konformitaet -- verbindet sich mit Servern, erkennt Tools, prueft auf Zahlungsanforderungen und validiert Zahlungsoptionen gegen die Spezifikation.
 
 ## Wie x402 mit MCP funktioniert

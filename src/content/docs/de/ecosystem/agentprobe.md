@@ -6,6 +6,18 @@ description: Multi-Protokoll-Validierung fuer MCP-Server, A2A-Agenten und x402-E
 <span style="display:none" data-pagefind-meta="section">Docs > Ecosystem</span>
 <!-- PAGEFIND-META-END -->
 
+:::caution[Experimentell — Vorab-Lesung]
+**Hinweis zu x402:** AgentProbe validiert Endpunkte, die x402 nutzen koennen. Das x402-Protokoll selbst ist experimentell — bitte die vier Punkte unten lesen, bevor du dich auf Ergebnisse verlaesst.
+
+**Was x402 ist:** Ein maschinenlesbares Zahlungsprotokoll auf Basis des HTTP-Status-Codes 402 (Payment Required). Es erlaubt API-Endpunkten — auch MCP-Tools — Zahlungsanforderungen standardisiert zu signalisieren und Zahlungsbelege entgegenzunehmen.
+
+**Warum experimentell:** Die x402-Spezifikation, der Netzwerk-Support (Base, Solana, Stacks) und die Referenz-Implementierungen befinden sich 2026 noch in Entwicklung. Es gibt kein Service-Level-Agreement, keine produktionsreife Zuverlaessigkeitsgarantie, und das Wire-Format kann sich zwischen Minor-Versionen aendern.
+
+**Wann einzusetzen:** Hackathon-Demos, payment-gated MCP-Tool-Prototypen, Proof-of-Concepts, Forschungs-Szenarien. Geeignet fuer geschlossene Tests mit bekannten Clients.
+
+**Was es NICHT ist:** Kein produktives Zahlungs-Gateway. Kein Ersatz fuer etablierte Payment-Service-Provider (Stripe, PayPal). Kein Compliance-zertifiziertes Zahlungssystem. Schicken Sie keine echten Kundenumsaetze ueber diesen Stack ohne zusaetzliche Sicherungen.
+:::
+
 [AgentProbe](https://github.com/FlowMCP/mcp-agent-validator) ist ein webbasierter Multi-Protokoll-Validator fuer AI-Agent-Endpunkte. Gib eine URL ein und erhalte eine sofortige Bewertung ueber acht Protokoll-Ebenen.
 
 **Live-Demo:** [agentprobe.xyz](https://agentprobe.xyz)
