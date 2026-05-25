@@ -16,6 +16,15 @@ import InstallNote from '../../../../components/InstallNote.astro';
 
 Die CLI folgt einem Drei-Schritte-Muster: Tools entdecken, aktivieren, dann aufrufen.
 
+```mermaid
+flowchart TD
+    A[flowmcp search query] --> B[Browse matching tools]
+    B --> C[flowmcp add tool-name]
+    C --> D[Tool activated + parameters shown]
+    D --> E[flowmcp call tool-name JSON-args]
+    E --> F[Tool result returned]
+```
+
 ## Kernbefehle
 
 | Befehl | Beschreibung |
@@ -29,36 +38,19 @@ Die CLI folgt einem Drei-Schritte-Muster: Tools entdecken, aktivieren, dann aufr
 
 ## Suchen, Hinzufuegen, Aufrufen
 
-1. **Tools suchen**
+Tools per Stichwort entdecken. Ein Tool hinzufuegen aktiviert es fuer das Projekt — die Antwort zeigt die Parameter. Dann das Tool mit JSON-Argumenten aufrufen.
 
-   Tools per Stichwort finden. Ergebnisse enthalten Name, Beschreibung und den Befehl zum Hinzufuegen.
+```bash
+flowmcp search ethereum
+flowmcp add get_contract_abi_etherscan
+flowmcp call get_contract_abi_etherscan '{"address": "0xdAC17F958D2ee523a2206206994597C13D831ec7"}'
+```
 
-   ```bash
-   flowmcp search ethereum
-   # Zeigt bis zu 10 passende Tools mit Name + Beschreibung
+Das Parameter-Schema fuer jedes hinzugefuegte Tool wird lokal in `.flowmcp/tools/` zur Inspektion gespeichert.
 
-   flowmcp search "token price"
-   # Suche verfeinern bei zu vielen Ergebnissen
-   ```
-
-2. **Tool hinzufuegen**
-
-   Ein Tool fuer das Projekt aktivieren. Die Antwort zeigt die Parameter des Tools mit Typen und Anforderungen.
-
-   ```bash
-   flowmcp add get_contract_abi_etherscan
-   # Antwort zeigt: Name, Beschreibung, Parameter mit Typen
-   ```
-
-   Das Parameter-Schema wird auch lokal in `.flowmcp/tools/` gespeichert.
-
-3. **Tool aufrufen**
-
-   Das Tool mit JSON-Parametern ausfuehren. Verwende die Parameter-Informationen aus der `add`-Antwort.
-
-   ```bash
-   flowmcp call get_contract_abi_etherscan '{"address": "0xdAC17F958D2ee523a2206206994597C13D831ec7"}'
-   ```
+:::note[Programmatische Nutzung]
+Fuer programmatischen Zugriff (nicht via CLI) siehe die [Programmatic API](/de/reference/core-methods).
+:::
 
 ## Agent-Modus vs Dev-Modus
 

@@ -2,6 +2,7 @@
 title: MCP Server Mode
 description: FlowMCP als MCP-Server betreiben fuer die Integration mit Claude Desktop, Cursor und anderen KI-Tools
 ---
+<!-- RF4 Discovery (PRD-019, 2026-05-25): CLI-Befehl ist `flowmcp run` (frueher in Doku: `flowmcp server`). Implementierung: repos/flowmcp-cli/src/task/FlowMcpCli.mjs:2450ff via @modelcontextprotocol/sdk/server/mcp.js mit StdioServerTransport. -->
 <!-- PAGEFIND-META-START -->
 <span style="display:none" data-pagefind-meta="section">Docs > Usage</span>
 <!-- PAGEFIND-META-END -->
@@ -24,13 +25,10 @@ Der schnellste Weg, Schemas bereitzustellen, ist ueber die CLI:
 
 ```bash
 # Alle aktiven Tools als MCP-Server bereitstellen (stdio)
-flowmcp server
-
-# Mit spezifischem Schema-Verzeichnis
-flowmcp server --schemas ./schemas/
+flowmcp run
 
 # Eine bestimmte Gruppe bereitstellen
-flowmcp server --group crypto
+flowmcp run --group crypto
 ```
 
 Fuer programmatische Kontrolle siehe den [Server-Integration-Guide](/de/guides/server-integration).
@@ -46,7 +44,7 @@ FlowMCP zur `claude_desktop_config.json` hinzufuegen:
   "mcpServers": {
     "flowmcp": {
       "command": "npx",
-      "args": ["-y", "flowmcp", "server"],
+      "args": ["-y", "flowmcp", "run"],
       "env": {
         "ETHERSCAN_API_KEY": "your_key_here",
         "MORALIS_API_KEY": "your_key_here"
@@ -73,7 +71,7 @@ FlowMCP zu den Cursor-MCP-Einstellungen hinzufuegen:
   "mcpServers": {
     "flowmcp": {
       "command": "npx",
-      "args": ["-y", "flowmcp", "server"]
+      "args": ["-y", "flowmcp", "run"]
     }
   }
 }
@@ -86,7 +84,7 @@ Cursor-Einstellungen oeffnen und zum MCP-Bereich navigieren, um diese Konfigurat
 FlowMCP als lokalen MCP-Server hinzufuegen:
 
 ```bash
-claude mcp add flowmcp --scope local -- npx -y flowmcp server
+claude mcp add flowmcp --scope local -- npx -y flowmcp run
 ```
 
 Claude Code startet den Server automatisch bei Bedarf.

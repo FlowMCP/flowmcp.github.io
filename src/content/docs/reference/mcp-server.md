@@ -2,6 +2,7 @@
 title: MCP Server
 description: Run FlowMCP as an MCP server to integrate with Claude Desktop, Cursor, and other AI tools
 ---
+<!-- RF4 Discovery (PRD-019, 2026-05-25): CLI command is `flowmcp run` (previously documented as `flowmcp server`). Implementation: repos/flowmcp-cli/src/task/FlowMcpCli.mjs:2450ff using @modelcontextprotocol/sdk/server/mcp.js with StdioServerTransport. -->
 <!-- PAGEFIND-META-START -->
 <span style="display:none" data-pagefind-meta="section">Docs > Usage</span>
 <!-- PAGEFIND-META-END -->
@@ -24,13 +25,10 @@ The fastest way to serve schemas is through the CLI:
 
 ```bash
 # Serve all active tools as MCP server (stdio)
-flowmcp server
-
-# Serve with specific schema directory
-flowmcp server --schemas ./schemas/
+flowmcp run
 
 # Serve a specific group
-flowmcp server --group crypto
+flowmcp run --group crypto
 ```
 
 For programmatic control, see the [Server Integration guide](/guides/server-integration).
@@ -46,7 +44,7 @@ Add FlowMCP to your `claude_desktop_config.json`:
   "mcpServers": {
     "flowmcp": {
       "command": "npx",
-      "args": ["-y", "flowmcp", "server"],
+      "args": ["-y", "flowmcp", "run"],
       "env": {
         "ETHERSCAN_API_KEY": "your_key_here",
         "MORALIS_API_KEY": "your_key_here"
@@ -73,7 +71,7 @@ Add FlowMCP to your Cursor MCP settings:
   "mcpServers": {
     "flowmcp": {
       "command": "npx",
-      "args": ["-y", "flowmcp", "server"]
+      "args": ["-y", "flowmcp", "run"]
     }
   }
 }
@@ -86,7 +84,7 @@ Open Cursor Settings and navigate to the MCP section to add this configuration.
 Add FlowMCP as a local MCP server:
 
 ```bash
-claude mcp add flowmcp --scope local -- npx -y flowmcp server
+claude mcp add flowmcp --scope local -- npx -y flowmcp run
 ```
 
 Claude Code will automatically start the server when needed.

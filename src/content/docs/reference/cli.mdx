@@ -16,6 +16,15 @@ import InstallNote from '../../../components/InstallNote.astro';
 
 The CLI follows a three-step pattern: discover tools, activate them, then call them.
 
+```mermaid
+flowchart TD
+    A[flowmcp search query] --> B[Browse matching tools]
+    B --> C[flowmcp add tool-name]
+    C --> D[Tool activated + parameters shown]
+    D --> E[flowmcp call tool-name JSON-args]
+    E --> F[Tool result returned]
+```
+
 ## Core Commands
 
 | Command | Description |
@@ -29,36 +38,19 @@ The CLI follows a three-step pattern: discover tools, activate them, then call t
 
 ## Search, Add, Call
 
-1. **Search for tools**
+Discover tools by keyword. Add a tool to activate it for your project — the response shows the tool's parameters. Then call the tool with JSON arguments.
 
-   Find tools by keyword. Results include name, description, and the command to add each tool.
+```bash
+flowmcp search ethereum
+flowmcp add get_contract_abi_etherscan
+flowmcp call get_contract_abi_etherscan '{"address": "0xdAC17F958D2ee523a2206206994597C13D831ec7"}'
+```
 
-   ```bash
-   flowmcp search ethereum
-   # Shows up to 10 matching tools with name + description
+The parameter schema for each added tool is saved locally in `.flowmcp/tools/` for inspection.
 
-   flowmcp search "token price"
-   # Refine query if too many results
-   ```
-
-2. **Add a tool**
-
-   Activate a tool for your project. The response shows the tool's parameters with types and requirements.
-
-   ```bash
-   flowmcp add get_contract_abi_etherscan
-   # Response shows: name, description, parameters with types
-   ```
-
-   The parameter schema is also saved locally in `.flowmcp/tools/` for reference.
-
-3. **Call a tool**
-
-   Execute the tool with JSON parameters. Use the parameter information from the `add` response.
-
-   ```bash
-   flowmcp call get_contract_abi_etherscan '{"address": "0xdAC17F958D2ee523a2206206994597C13D831ec7"}'
-   ```
+:::note[Programmatic Usage]
+For programmatic access (not via CLI), see the [Programmatic API](/reference/core-methods).
+:::
 
 ## Agent Mode vs Dev Mode
 
