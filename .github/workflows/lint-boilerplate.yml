@@ -14,4 +14,4 @@ jobs:
   check:
     uses: FlowMCP/.github/.github/workflows/check-boilerplate.yml@main
     with:
-      whitelist-paths: "node_modules,dist,generated,archive,.template.md,.template.mdx,template.txt,stats.json,registry.json,manifest.json,schemas-snapshot.json,refs.json,spec/v2.0.0,spec/v3.0.0,.git,.astro,.cache,pagefind,src/data,src/content/docs,public,tests,scripts/curl-check-boilerplate.mjs,scripts/curl-check-generated.mjs,scripts/generate-phase9-report.mjs"
+      whitelist-paths: "node_modules,dist,generated,archive,.template.md,.template.mdx,template.txt,stats.json,registry.json,manifest.json,schemas-snapshot.json,refs.json,spec/v2.0.0,spec/v3.0.0,.git,.astro,.cache,pagefind,src/data,src/content/docs,public,tests,scripts"
