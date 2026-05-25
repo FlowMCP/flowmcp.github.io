@@ -4,7 +4,6 @@ description: "Wie deterministische Strukturen LLM-Komposition tragen, ohne dass 
 date: 2026-05-24
 author: "FlowMCP Team"
 tags: ["release", "v4", "skills", "selections", "pipes"]
-draft: true
 ---
 
 > 2026-05-24 · FlowMCP Team · #release #v4 #skills #selections #pipes

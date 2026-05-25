@@ -26,25 +26,15 @@ A research workflow — a custom pipeline, an internal dashboard, or a Notion / 
 2. **Sample each schema** — For promising hits, the agent runs a sample call (`flowmcp call <schema> <route>`). FlowMCP holds the API keys, signs the request, and returns the normalized response. The agent sees the data shape without seeing credentials.
 3. **Combine and summarize** — The agent merges results from federal, city, and weather sources, deduplicates overlapping stations, and produces a table the user can act on.
 
-### Which Data Sources Are Combined?
+### Fixed Data Sources, One Answer
 
-| Data Source | What It Provides |
-|-------------|------------------|
-| **Umweltbundesamt API** | Federal air-quality measurements (PM10, PM2.5, NO2) |
-| **Berlin Open Data** | City-specific stations, metadata, hourly updates |
-| **DWD (Deutscher Wetterdienst)** | Weather data for correlation with pollution events |
-| **OpenStreetMap / Nominatim** | Geocoding of station locations and addresses |
-| **govdata.de (Bund OpenData)** | Federal open-data index across all German states |
-| **Eurostat / EEA** | EU-wide comparison values and methodology |
-
-**6 data sources, one answer.** Without FlowMCP, the agent would have to read six different API documentations per request — thousands of tokens, inconsistent formats, no shared auth. With FlowMCP, the schemas are normalized once and reused by every agent.
+The agent draws on a fixed set of curated data sources — federal, city, and weather feeds that were normalized once and are now reused on every request. Because those sources share a consistent shape and a single auth path, the agent merges them into one consolidated answer instead of reading a separate API documentation for each one. The work of understanding each source happens once, in the schema, and every agent benefits from it afterwards.
 
 > Instead of feeding the AI hundreds of tokens of API docs per request, it searches a normalized catalog. One schema investment, any number of agents.
 
 ### Next steps
 
-- [Schema Catalog →](/concepts/schema-catalog/) — browse what's already covered
-- [CLI Setup →](/quickstart/) — first call in under 5 minutes
+- [CLI Setup →](/quickstart/quickstart/) — first call in under 5 minutes
 
 ---
 
@@ -65,23 +55,9 @@ The GTFS pilot is real and documented (see [GTFS Pilot Guide](/guides/gtfs-pilot
 3. **Alternative search** (GTFS-SQLite + REST combined) — Next IC 13:33 as fallback, arriving Munich 14:55.
 4. **AI answer** — "IC 12:33 with only 4 min transfer is not reliable. Backup: IC 13:33, arriving Munich 14:55 instead of 13:13."
 
-### Which Data Sources Are Combined?
-
-| Data Source | What It Provides |
-|-------------|------------------|
-| **gtfs-sqlite-toolkit** (local) | Static schedule, stops, transfer windows |
-| **Deutsche Bahn timetables API** | Live delays, real-time arrival forecasts |
-| **DB Stations API** | Station metadata: platforms, walking distances |
-
 **Local SQLite for static lookup + Live API through FlowMCP — one CLI call, one answer.** Without FlowMCP, the agent would have to orchestrate the static GTFS query and the live REST API separately, parse different formats, and merge them by hand.
 
 ### Next steps
 
 - [GTFS Pilot Guide →](/guides/gtfs-pilot/) — the full mobility add-on story
-- [CLI Setup →](/quickstart/) — first call in under 5 minutes
-
----
-
-All schemas used: [Schema Catalog →](/concepts/schema-catalog/)
-
-Contribute schemas: [Community Hub →](/about/#community)
+- [CLI Setup →](/quickstart/quickstart/) — first call in under 5 minutes

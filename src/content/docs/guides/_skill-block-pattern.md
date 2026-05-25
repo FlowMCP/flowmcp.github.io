@@ -41,13 +41,21 @@ description: <one-sentence description of what the skill does>
 
 ## How to embed it in a tutorial
 
-Use the `CopyMarkdown` component in `mode="slot"` and put the skill block inside an MDX template literal so the raw string is passed through unchanged:
+Memo 064 Phase 4 PRD-009 retired the per-page `CopyMarkdown` component. Whole-page
+copy is now handled by ONE small header button injected on every content page via
+the `HeaderCopyButton.astro` override (wired through `PageTitleWithBreadcrumb.astro`).
 
-```mdx
-import CopyMarkdown from '../../../components/CopyMarkdown.astro'
+For the skill snippet, use a plain fenced ` ```markdown ` code block. Starlight's
+built-in code-block copy button lets the user copy it with one click — no custom
+component needed:
 
-<CopyMarkdown mode="slot" lang="en" label="Copy this skill to ~/.claude/skills/">
-{`---
+````mdx
+## Skill for ~/.claude/skills/
+
+Drop this into `~/.claude/skills/flowmcp-my-tutorial/SKILL.md`:
+
+```markdown
+---
 name: flowmcp-my-tutorial
 description: <one-sentence description>
 ---
@@ -55,9 +63,8 @@ description: <one-sentence description>
 # My Tutorial Skill
 
 ...skill body...
-`}
-</CopyMarkdown>
 ```
+````
 
 ## Rules
 
@@ -73,4 +80,4 @@ description: <one-sentence description>
 - `guides/agent-creation` → `flowmcp-agent-creation`
 - `guides/gtfs-pilot` → `flowmcp-gtfs-pilot`
 
-CLI Setup (`quickstart/installation`) gets only the whole-page copy button — it has no tutorial-workflow character.
+CLI Setup (`quickstart/installation`) gets only the whole-page copy button (the global header button) — it has no tutorial-workflow character.

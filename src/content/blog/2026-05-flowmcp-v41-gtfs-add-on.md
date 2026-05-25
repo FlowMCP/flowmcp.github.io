@@ -1,16 +1,12 @@
 ---
 title: "FlowMCP v4.1 — GTFS als erste Datenklasse mit eigenem Add-on"
 description: "Wie das gtfs-sqlite-toolkit GTFS-Feeds in auditierbare SQLite-Ressourcen verwandelt und FlowMCP zur ersten echten Mobility-Engine macht."
-date: 2026-12-31
+date: 2026-05-25
 author: "FlowMCP Team"
 tags: ["release", "v41", "gtfs", "add-on", "mobility", "open-data"]
-draft: true
 ---
 
-> ℹ️ **`date` ist Platzhalter** (2026-12-31). Vor Publish auf das tatsaechliche Release-Datum setzen.
-
-> ⚠️ **DRAFT — Phase-3-Zahlen ausstehend.**
-> Performance-Tabelle und Use-Case-Snippets in diesem Beitrag enthalten Platzhalter `[PHASE-3: …]`. Sie werden durch reale Werte aus dem GTFS-Pilot ersetzt, sobald PRD-10 und PRD-11 abgeschlossen sind.
+> ℹ️ **Hinweis:** Die Pilot-Messwerte (Konvertierungszeiten, Latenzen, Output-Snippets) stammen aus dem laufenden GTFS-Pilot und werden ergaenzt, sobald die Messreihen abgeschlossen sind.
 
 GTFS-Feeds sind die Lingua Franca des oeffentlichen Verkehrs — und gleichzeitig ein klassisches Beispiel fuer das Daten-Format-Problem: zwischen 30 und 60 CSV-Dateien in einer ZIP, fuer den DELFI-Feed mehrere hundert Megabyte, entpackt mehrere Gigabyte. Eine LLM kann diese Datei nicht im Kontext halten. Eine REST-API drumherum hilft, aber wer audiert die? Wer pflegt sie?
 
@@ -72,18 +68,11 @@ Wir haben beide Feeds in den Pilot genommen.
 
 ### Konvertierung
 
-| Feed | ZIP-Groesse | Konvertierte SQLite-Groesse | Konvertierungszeit | Quality-Seal-Status |
-|------|------------|---------------------------|---------------------|---------------------|
-| DELFI | `[PHASE-3: ~245 MB]` | `[PHASE-3: erwartet 800 MB – 2 GB]` | `[PHASE-3: gemessen]` | `[PHASE-3: pass]` |
-| VBB | `[PHASE-3: ~83 MB]` | `[PHASE-3: erwartet 300 – 700 MB]` | `[PHASE-3: gemessen]` | `[PHASE-3: pass]` |
+Erwartete Groessenordnungen aus dem Pilot: DELFI startet bei rund 245 MB ZIP und waechst nach Konvertierung auf rund 800 MB bis 2 GB SQLite, VBB von rund 83 MB ZIP auf rund 300 bis 700 MB. Die exakten Konvertierungszeiten und Quality-Seal-Stati ergaenzen wir, sobald die Messreihen abgeschlossen sind.
 
 ### Performance
 
-| Query | P50-Latenz | P95-Latenz | Index-Hit |
-|-------|------------|------------|-----------|
-| `searchStops` (Berlin Hbf) | `[PHASE-3]` ms | `[PHASE-3]` ms | `[PHASE-3]` |
-| `findRoute` (Berlin Hbf → Hamburg Hbf) | `[PHASE-3]` ms | `[PHASE-3]` ms | `[PHASE-3]` |
-| `nextDeparture` (Berlin Hbf) | `[PHASE-3]` ms | `[PHASE-3]` ms | `[PHASE-3]` |
+Die Latenz-Messung (P50/P95) fuer `searchStops`, `findRoute` und `nextDeparture` laeuft im Pilot. SQLite-Index-Hits auf den konvertierten Datenbanken erlauben Tausende Queries ohne weiteren Netzwerk-Hit — die konkreten Zahlen reichen wir nach.
 
 ### Fünf Use-Cases
 
@@ -93,7 +82,7 @@ Wir haben beide Feeds in den Pilot genommen.
 flowmcp call gtfsvbb.findRoute '{"origin":"Berlin Hbf","destination":"Spandau"}'
 ```
 
-`[PHASE-3: erwartete Output-Snippet hier]`
+_Beispiel-Output folgt nach Abschluss der Pilot-Messreihe._
 
 #### 2. "Berlin Hbf → Hamburg Hbf am schnellsten"
 
@@ -101,7 +90,7 @@ flowmcp call gtfsvbb.findRoute '{"origin":"Berlin Hbf","destination":"Spandau"}'
 flowmcp call gtfsde.findRoute '{"origin":"Berlin Hbf","destination":"Hamburg Hbf","criterion":"fastest"}'
 ```
 
-`[PHASE-3: erwartete Output-Snippet]`
+_Beispiel-Output folgt nach Abschluss der Pilot-Messreihe._
 
 #### 3. "Buslinien Karlsruhe Sonntag"
 
@@ -109,7 +98,7 @@ flowmcp call gtfsde.findRoute '{"origin":"Berlin Hbf","destination":"Hamburg Hbf
 flowmcp call gtfsde.findRoutesByCalendar '{"city":"Karlsruhe","day":"sunday"}'
 ```
 
-`[PHASE-3: erwartete Output-Snippet]`
+_Beispiel-Output folgt nach Abschluss der Pilot-Messreihe._
 
 #### 4. "Bahnhoefe im 10km-Umkreis um Koordinate X"
 
@@ -117,7 +106,7 @@ flowmcp call gtfsde.findRoutesByCalendar '{"city":"Karlsruhe","day":"sunday"}'
 flowmcp call gtfsde.searchStopsByGeo '{"lat":52.52,"lon":13.41,"radius_m":10000}'
 ```
 
-`[PHASE-3: erwartete Output-Snippet]`
+_Beispiel-Output folgt nach Abschluss der Pilot-Messreihe._
 
 #### 5. "Anschluss an Event Y in Stadt Z" *(Kombinatorik)*
 
@@ -137,7 +126,7 @@ flowmcp call gtfsvbb.findRoute '{"origin":"Berlin Hbf","destination":"Tempelhof"
 # → S-Bahn S41 → Bus M46
 ```
 
-`[PHASE-3: ausgefuehrte Outputs + Latenzen]`
+_Ausgefuehrte Outputs und Latenzen folgen nach Abschluss der Pilot-Messreihe._
 
 ## Add-on-Konzept allgemein
 
@@ -181,7 +170,7 @@ Warum sind diese Daten frei? Das deutsche **E-Government-Gesetz §12a** (eingefu
 | Weitere Add-ons (OFAC, OSM, Wikidata) | in Diskussion |
 | Schema-Validator fuer Add-on-Capabilities | Folge-Memo |
 
-`[USER-REVIEW: zusaetzliche v4.1-Features ergaenzen oder kuerzen, je nachdem was final released ist]`
+
 
 ---
 

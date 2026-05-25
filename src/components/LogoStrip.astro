@@ -3,8 +3,6 @@
 // More-Button-Ziel angepasst: Memo 057 PRD-01 (Schema Catalog statt Tags Reference)
 // Pencil-Anker: Frame Gdy0k Landing Desktop v2 Dark
 // Pencil: Formate, nicht Provider (User-Korrektur)
-// Stats source: refs.stats from flowmcp-spec manifest.meta.stats (Memo 059 PRD-017).
-import refs from '../data/refs.json'
 
 const providers = [
     { label: 'JSON',    icon: '{ }' },
@@ -13,9 +11,6 @@ const providers = [
     { label: 'GTFS',    icon: '🚇' },
     { label: 'CSV',     icon: '⊞' },
 ]
-
-const dataSourcesLabel = refs.stats?.count_unique_datasources ?? '—'
-const moreAriaLabel = `Browse all ${ dataSourcesLabel } data sources in the Schema Catalog`
 ---
 
 <div class="logo-strip">
@@ -27,9 +22,6 @@ const moreAriaLabel = `Browse all ${ dataSourcesLabel } data sources in the Sche
                 <span class="logo-strip__name">{p.label}</span>
             </li>
         ))}
-        <li class="logo-strip__item logo-strip__item--more">
-            <a href="/schemas/" aria-label={moreAriaLabel}>+ more →</a>
-        </li>
     </ul>
 </div>
 
@@ -82,21 +74,6 @@ const moreAriaLabel = `Browse all ${ dataSourcesLabel } data sources in the Sche
 .logo-strip__icon {
     font-size: 16px;
     line-height: 1;
-}
-
-.logo-strip__item--more {
-    background: transparent;
-    border-color: transparent;
-}
-
-.logo-strip__item--more a {
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.logo-strip__item--more a:hover {
-    filter: brightness(0.85);
 }
 
 @media (max-width: 640px) {

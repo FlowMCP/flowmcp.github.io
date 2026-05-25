@@ -24,8 +24,8 @@ Die vollstaendige Felddefinition steht in der Spezifikation: [FlowMCP Spec v4.1.
 
 Schemas sind in Provider-Namespaces im oeffentlichen Schema-Repository organisiert.
 
-- 365 Production-Schemas ueber Kategorien wie Blockchain EVM, Blockchain Solana, DeFi, Crypto Data, Government DE/EU, Weather & Geo, Web3 Social, News & Media, Dev Tools und NFT & Identity
-- 1575 einzelne Tools, die ueber diese Schemas bereitgestellt werden
+- {{stats.count_schemas}} Production-Schemas ueber Kategorien wie Blockchain EVM, Blockchain Solana, DeFi, Crypto Data, Government DE/EU, Weather & Geo, Web3 Social, News & Media, Dev Tools und NFT & Identity
+- {{stats.count_tools}} einzelne Tools, die ueber diese Schemas bereitgestellt werden
 - Dynamische Quelle: [github.com/FlowMCP/flowmcp-schemas-public](https://github.com/FlowMCP/flowmcp-schemas-public), `meta.stats`-Feld pro Schema
 
 Live-Discovery via CLI: `flowmcp search <provider>` listet Schemas, `flowmcp add <namespace>` aktiviert sie lokal.

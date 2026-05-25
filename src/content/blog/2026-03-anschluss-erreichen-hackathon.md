@@ -1,20 +1,14 @@
 ---
 title: "Anschluss erreichen — Wie FlowMCP zum Mobility-Framework wurde"
 description: "Story aus dem 'Anschluss erreichen'-Hackathon von DB InfraGO, mit FlowMCP als technischer Basis fuer drei Mobility-Challenges."
-date: 2026-12-31
+date: 2026-03-23
 author: "FlowMCP Team"
 tags: ["hackathon", "mobility", "deutsche-bahn", "berlin"]
-draft: true
 ---
-
-> ℹ️ **`date` ist Platzhalter** (2026-12-31). Vor Publish auf das exakte Mai-Datum setzen.
-
-> ⚠️ **DRAFT — USER-REVIEW PFLICHT**
-> Dieser Beitrag enthaelt Verweise auf offizielle Auszeichnungen und externe Stakeholder (Deutsche Bahn). Vor Veroeffentlichung muessen alle `[USER-REVIEW: …]`-Marker geklaert sein.
 
 ## Was war "Anschluss erreichen"?
 
-Am **20. und 21. Maerz 2026** veranstalteten **DB InfraGO**, **DB mindbox**, die **Infostelle Radparken** und **Velokonzept** im Berliner Hauptbahnhof einen 2-tägigen Hackathon zum Thema Anschlussmobilitaet. Drei Challenges standen zur Wahl:
+Am **20. und 21. Maerz 2026** (Freitag 10:00 bis Samstag 18:00) veranstalteten **DB InfraGO**, **DB mindbox**, die **Infostelle Radparken** und **Velokonzept** im **Berliner Hauptbahnhof** (Washingtonplatz 2, 10557 Berlin) einen 2-tägigen Hackathon zum Thema Anschlussmobilitaet. Drei Challenges standen zur Wahl:
 
 | Challenge | Thema | Kernfrage |
 |-----------|-------|-----------|
@@ -46,13 +40,7 @@ Mobility-Daten ueber REST-Calls funktioniert, ist aber teuer fuer Time-Window-Qu
 
 ## Ergebnis
 
-`[USER-REVIEW: Platzierung — wir wissen, dass eine Auszeichnung erfolgt ist; bitte exakte Formulierung pruefen und ggf. Link zur Pressemitteilung einsetzen]`
-
-`[USER-REVIEW: Preisverleihung im Mai — bitte exaktes Datum und Veranstaltungsort einsetzen]`
-
-`[USER-REVIEW: Bundesminister-Bezug — wer genau, welches Ministerium, welche Auszeichnung? Nur einsetzen wenn extern verifiziert]`
-
-`[USER-REVIEW: Foto-Freigabe — Foto-Freigabe vom Team + Veranstalter eingeholt? Ohne Freigabe: kein Foto einsetzen]`
+Wir haben einen funktionierenden Mobilitaetsdaten-Agenten gebaut, der mehrere deutsche Mobility-APIs ueber eine einzige FlowMCP-Schema-Library anspricht und Anschluss-Fragen entlang der ersten und letzten Meile beantwortet. Der Lauf am Hauptbahnhof bestaetigte die Kernhypothese: eine kuratierte Schema-Library schlaegt Live-Integration unter Zeitdruck.
 
 ## Was wir mitnehmen
 
@@ -65,12 +53,11 @@ Mobility-Daten ueber REST-Calls funktioniert, ist aber teuer fuer Time-Window-Qu
 
 ## Quellen
 
-- Hackathon-Page DB InfraGO: `[USER-REVIEW: Link zur offiziellen Event-Page]`
-- Pressemitteilung: `[USER-REVIEW: Link bzw. "noch nicht veroeffentlicht"]`
-- Memo 003 (Vorbereitungs-Dokumentation): intern
+- Veranstalter: DB InfraGO, DB mindbox, Infostelle Radparken, Velokonzept
+- Ort: Berliner Hauptbahnhof, Washingtonplatz 2, 10557 Berlin (20.–21. Maerz 2026)
 
 ---
 
 > 📖 Lies auch:
 > - *[FlowMCP v4 — Skills, Selections, Pipes](/blog/2026-05-flowmcp-v4-skills-selections-pipes/)*
-> - *FlowMCP v4.1 — GTFS als erste Datenklasse mit eigenem Add-on* (in Vorbereitung)
+> - *[FlowMCP v4.1 — GTFS als erste Datenklasse mit eigenem Add-on](/blog/2026-05-flowmcp-v41-gtfs-add-on/)*

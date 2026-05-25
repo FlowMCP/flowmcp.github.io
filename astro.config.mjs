@@ -39,7 +39,7 @@ export default defineConfig({
 
         // Memo 060 PRD-007: alte Concepts-Sub-Pages -> neue 4-Eintrag-Struktur
         '/docs/schemas/overview/':       '/concepts/schemas/',
-        '/docs/schemas/tools/':          '/concepts/tools/',
+        '/docs/schemas/tools/':          '/concepts/primitives/',
         '/docs/schemas/resources/':      '/concepts/primitives/',
         '/docs/schemas/prompts/':        '/concepts/primitives/',
         '/docs/schemas/skills/':         '/concepts/primitives/',
@@ -47,12 +47,17 @@ export default defineConfig({
         '/reference/tags-reference/':    '/concepts/schemas/',
         '/de/reference/tags-reference/': '/de/concepts/schemas/',
 
+        // Memo 064 Phase 3 PRD-006: Tools-Konzept in Primitives gemergt.
+        // Tools ist ein Primitive -> Concept-Seite entfernt, Redirect auf Primitives.
+        '/concepts/tools/':                '/concepts/primitives/',
+        '/de/concepts/tools/':             '/de/concepts/primitives/',
+
         // Memo 060 PRD-007: Concepts-Sidebar-Loeschungen -> Redirects auf neue Ziele
         '/concepts/schema-catalog/':       '/concepts/schemas/',
         '/concepts/tag-search/':           '/concepts/schemas/',
         '/concepts/schemas-overview/':     '/concepts/schemas/',
         '/concepts/schemas-and-tools/':    '/concepts/schemas/',
-        '/concepts/schemas-tools/':        '/concepts/tools/',
+        '/concepts/schemas-tools/':        '/concepts/primitives/',
         '/concepts/schemas-resources/':    '/concepts/primitives/',
         '/concepts/schemas-prompts/':      '/concepts/primitives/',
         '/concepts/schemas-skills/':       '/concepts/primitives/',
@@ -61,7 +66,7 @@ export default defineConfig({
         '/de/concepts/tag-search/':        '/de/concepts/schemas/',
         '/de/concepts/schemas-overview/':  '/de/concepts/schemas/',
         '/de/concepts/schemas-and-tools/': '/de/concepts/schemas/',
-        '/de/concepts/schemas-tools/':     '/de/concepts/tools/',
+        '/de/concepts/schemas-tools/':     '/de/concepts/primitives/',
         '/de/concepts/schemas-resources/': '/de/concepts/primitives/',
         '/de/concepts/schemas-prompts/':   '/de/concepts/primitives/',
         '/de/concepts/schemas-skills/':    '/de/concepts/primitives/',
@@ -214,7 +219,6 @@ export default defineConfig({
                     collapsed: true,
                     items: [
                         { label: 'Schemas',    translations: { de: 'Schemas' },    slug: 'concepts/schemas' },
-                        { label: 'Tools',      translations: { de: 'Tools' },      slug: 'concepts/tools' },
                         { label: 'Primitives', translations: { de: 'Primitive' },  slug: 'concepts/primitives' },
                         { label: 'Clients',    translations: { de: 'Clients' },    slug: 'concepts/clients' },
                     ],
@@ -240,31 +244,31 @@ export default defineConfig({
                     label: 'Ecosystem',
                     translations: { de: 'Oekosystem' },
                     collapsed: true,
+                    // Memo 064 Phase 4 PRD-011: badge objects replaced by
+                    // parenthesis qualifiers in the label text (no badge styling).
                     items: [
                         {
-                            label: 'AgentProbe',
-                            translations: { de: 'AgentProbe' },
+                            label: 'AgentProbe (External)',
+                            translations: { de: 'AgentProbe (External)' },
                             slug: 'ecosystem/agentprobe',
-                            badge: { text: 'External', variant: 'note' },
                         },
                         {
-                            label: 'x402',
-                            translations: { de: 'x402' },
+                            label: 'x402 (Experimental)',
+                            translations: { de: 'x402 (Experimental)' },
                             slug: 'ecosystem/x402',
-                            badge: { text: 'Experimental', variant: 'caution' },
+                        },
+                        // Memo 064 Phase 4 PRD-011: third ecosystem element.
+                        // gtfs-sqlite-toolkit has no dedicated ecosystem page yet —
+                        // link to the existing in-site GTFS Pilot guide.
+                        {
+                            label: 'GTFS (Add-on)',
+                            translations: { de: 'GTFS (Add-on)' },
+                            slug: 'guides/gtfs-pilot',
                         },
                     ],
                 },
-                // Memo 060 PRD-005 (Phase 1a.7): Blog wird wieder als Top-Level-
-                // Sidebar-Eintrag eingehaengt, jetzt im Starlight-Frame. Index-
-                // Seite rendert via template: 'splash' ohne Sidebar (siehe
-                // BlogIndexLayout.astro), aber andere Starlight-Pages zeigen
-                // den Eintrag in der linken Spalte.
-                {
-                    label: 'Blog',
-                    translations: { de: 'Blog' },
-                    link: '/blog/',
-                },
+                // Memo 064 Phase 4 PRD-011: lone top-level Blog sidebar entry
+                // removed. Blog has its own /blog/ section (BlogIndexLayout).
                 // Memo 059 PRD-011 (B4/B5): Roadmap + Team removed from sidebar.
                 // Reachable via Footer-Widget (PRD-012). Pages remain at /roadmap, /team.
             ],
