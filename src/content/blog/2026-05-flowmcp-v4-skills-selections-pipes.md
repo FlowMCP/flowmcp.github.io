@@ -64,6 +64,7 @@ tools:
   - dwd-weather.forecast
 ```
 
+<!-- snapshot:2026-05 — Tool-Count zum Veroeffentlichungs-Zeitpunkt. Aktuelle Stats: repos/flowmcp-schemas-public/stats.json -->
 Eine Selection ist eine Schichtung über der Schema-Library. Statt der AI 3.100+ Tools zu zeigen und sie selbst kombinieren zu lassen, gibt eine Selection eine vorkurierte Antwort: "Diese fünf Tools gehören für Mobility-Anfragen zusammen."
 
 Selections sind der Kombinatorik-Hebel: Schemas leben in eigenen Namespaces (Crypto, Open Data, Weather), eine Selection schneidet quer durch.
