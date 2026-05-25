@@ -1,18 +1,19 @@
 ---
-// 404 Page — Memo 057 PRD-03 (vormals PRD-09)
-// User-Entscheidung: Logo + Headline + Pagefind-Search (autofocus) + 4 Top-Links
-// Bewusst OHNE "Open Issue"-Button (REV-03: "zu extrem")
+// 404 Page — Memo 064 Phase 4 PRD-010
+// Pagefind search removed (locked decision). Page reduced to clear links:
+// home + the main areas. Pagefind remains the GLOBAL Starlight search
+// (SearchCustom.astro override) — only the 404 usage was removed here.
+// History: Memo 057 PRD-03 introduced the (now removed) search field.
 ---
 
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>404 — Page not found | FlowMCP</title>
-    <meta name="description" content="The page you requested could not be found. Search the docs or jump to a key page." />
+    <meta name="description" content="The page you requested could not be found. Jump to a key page." />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -28,44 +29,21 @@
 
         <p class="notfound-page__lead">
             The link is broken or the page has moved.<br/>
-            Help yourself with one of these:
+            Jump to one of the main areas:
         </p>
 
-        <section class="notfound-page__search" aria-label="Search the documentation">
-            <label for="notfound-search" class="notfound-page__search-label">Search the docs</label>
-            <div id="search" class="notfound-page__search-wrapper"></div>
-        </section>
-
         <section class="notfound-page__jump" aria-labelledby="jump-heading">
-            <h2 id="jump-heading">Or jump to:</h2>
+            <h2 id="jump-heading">Go to:</h2>
             <ul class="notfound-page__links">
                 <li><a href="/">&rarr; Home</a></li>
                 <li><a href="/quickstart/what-is-flowmcp/">&rarr; Quickstart &mdash; What is FlowMCP?</a></li>
+                <li><a href="/concepts/schemas/">&rarr; Concepts &mdash; Schemas</a></li>
                 <li><a href="/specification/overview/">&rarr; Specification &mdash; Overview</a></li>
-                <li><a href="/schemas/">&rarr; Schema Catalog</a></li>
+                <li><a href="/reference/cli/">&rarr; Reference &mdash; CLI Usage</a></li>
+                <li><a href="/blog/">&rarr; Blog</a></li>
             </ul>
         </section>
     </main>
-
-    <script src="/pagefind/pagefind-ui.js" is:inline></script>
-    <script is:inline>
-        ( function() {
-            const init = () => {
-                if( !window.PagefindUI ) { return }
-                new window.PagefindUI( {
-                    element: '#search',
-                    showSubResults: true,
-                    autofocus: true,
-                    showImages: false
-                } )
-            }
-            if( document.readyState === 'loading' ) {
-                document.addEventListener( 'DOMContentLoaded', init )
-            } else {
-                init()
-            }
-        } )()
-    </script>
 
     <style>
         /* PRD-07: Skip-Link visible on focus */
@@ -141,22 +119,6 @@
             line-height: 1.6;
             margin: 0 auto 2.5rem;
             max-width: 520px;
-        }
-
-        .notfound-page__search {
-            margin: 0 auto 3rem;
-            max-width: 560px;
-            text-align: left;
-        }
-
-        .notfound-page__search-label {
-            display: block;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--notfound-muted);
-            margin-bottom: 0.5rem;
-            font-weight: 700;
         }
 
         .notfound-page__jump {

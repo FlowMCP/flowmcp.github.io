@@ -6,12 +6,12 @@ description: Step-by-step guide for building a FlowMCP-driven AI agent — schem
 <span style="display:none" data-pagefind-meta="section">Get Started</span>
 {/* PAGEFIND-META-END */}
 
-import CopyMarkdown from '../../../components/CopyMarkdown.astro'
+## Skill for ~/.claude/skills/
 
-<CopyMarkdown slug="guides/agent-creation" lang="en" />
+Drop this into `~/.claude/skills/flowmcp-agent-creation/SKILL.md`:
 
-<CopyMarkdown mode="slot" lang="en" label="Copy this skill to ~/.claude/skills/">
-{`---
+```markdown
+---
 name: flowmcp-agent-creation
 description: Help a user build a FlowMCP-driven AI agent — schema selection, skill definition, LLM loop
 ---
@@ -22,9 +22,9 @@ Use this skill when a user wants to build an AI agent that uses FlowMCP schemas 
 
 ## Steps
 
-1. Pick the data sources: \`flowmcp search <topic>\` then \`flowmcp add <schema>\` (e.g. one crypto + one mobility schema)
-2. Verify the active toolset: \`flowmcp list\`
-3. Define the agent skill in \`~/.claude/skills/<agent-name>/SKILL.md\` — describe purpose, allowed tools, output shape
+1. Pick the data sources: `flowmcp search <topic>` then `flowmcp add <schema>` (e.g. one crypto + one mobility schema)
+2. Verify the active toolset: `flowmcp list`
+3. Define the agent skill in `~/.claude/skills/<agent-name>/SKILL.md` — describe purpose, allowed tools, output shape
 4. Wire the LLM loop: call FlowMCP with the user query, pass tool results back into the next turn
 5. Test with a real prompt and verify the agent invokes the expected schemas
 6. Reference the full tutorial: https://flowmcp.github.io/guides/agent-creation/
@@ -33,8 +33,7 @@ Use this skill when a user wants to build an AI agent that uses FlowMCP schemas 
 
 - Tutorial: https://flowmcp.github.io/guides/agent-creation/
 - FlowMCP CLI: https://github.com/FlowMCP/flowmcp-cli
-`}
-</CopyMarkdown>
+```
 
 This guide walks through building an AI agent that uses FlowMCP schemas as its tool layer. By the end, you have a working agent that pulls from multiple data sources and reasons across them with a single LLM loop.
 

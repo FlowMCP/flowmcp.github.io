@@ -2,8 +2,31 @@
 import Default from '@astrojs/starlight/components/PageTitle.astro'
 import Breadcrumb from './Breadcrumb.astro'
 import SidebarHooks from './SidebarHooks.astro'
+import HeaderCopyButton from './HeaderCopyButton.astro'
+
+// Memo 064 Phase 4 PRD-009: exactly ONE small copy button on the heading line
+// of every content page, injected via this PageTitle override. Replaces all
+// manual per-page <CopyMarkdown mode="page"> embeds.
 ---
 
 <Breadcrumb />
-<Default><slot /></Default>
+<div class="page-title-row">
+    <Default><slot /></Default>
+    <HeaderCopyButton />
+</div>
 <SidebarHooks />
+
+<style>
+    .page-title-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    /* keep the button aligned with the top of a multi-line title */
+    .page-title-row > :global(*:first-child) {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+</style>

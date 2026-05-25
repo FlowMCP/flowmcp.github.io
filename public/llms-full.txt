@@ -139,45 +139,15 @@ What the levels mean: Primitives — Agents
 
 ## Clients with Elicitation (Level 2+3)
 
-These 16 clients support Elicitation — the agent can ask follow-up questions for better answers:
+These 16 clients support Elicitation — the agent can ask follow-up questions for better answers: AIQL TUUI, Claude Code, Codex, Cursor, fast-agent, Glama, goose, Joey, mcp-agent, mcp-use, MCPJam, Memgraph Lab, Postman, Tambo, VS Code GitHub Copilot, and VT Code.
 
-1. AIQL TUUI
-2. Claude Code
-3. Codex
-4. Cursor
-5. fast-agent
-6. Glama
-7. goose
-8. Joey
-9. mcp-agent
-10. mcp-use
-11. MCPJam
-12. Memgraph Lab
-13. Postman
-14. Tambo
-15. VS Code GitHub Copilot
-16. VT Code
-
-## CLI — Command-Line Interfaces
-
-Besides graphical clients, there are command-line interfaces that are particularly relevant for developers and automation.
-
-### FlowMCP CLI
-
-The fastest way for developers to find schemas and try tools:
-
-- `flowmcp list` — Show all available schemas
-- `flowmcp search <query>` — Search schemas by keyword
-- `flowmcp add <schema>` — Activate a schema
-- `flowmcp call <tool> '{...}'` — Call a tool directly
-
-Documentation: CLI Usage
-
-### OpenClaw
+## OpenClaw
 
 OpenClaw (https://docs.openclaw.ai) is an open-source AI assistant gateway with a plugin system. The special feature: **Cron Jobs** — recurring queries that run automatically. For example, a daily mobility recommendation every morning at 7:30 AM.
 
 More: Integration Guide
+
+For the command-line interface — searching, activating, and calling tools from your shell — see the FlowMCP CLI Usage reference.
 
 ## Which Client for Whom?
 
@@ -397,7 +367,58 @@ Die R6a-R6b-Trennung gilt auch fuer neue Versionen: `spec/v4.2.0/` ist English-O
 <span style="display:none" data-pagefind-meta="section">Concepts</span>
 <!-- PAGEFIND-META-END -->
 
-FlowMCP groups everything an AI agent needs into four primitives: Resources, Prompts, Skills, Agents. The first three live inside a schema and describe what one provider offers. Agents combine tools from many schemas into a purpose-built unit. This page gives a brief, conceptual overview — for the full field definitions, validation rules, and examples, follow the spec links per section.
+FlowMCP groups everything an AI agent needs into a small set of primitives: Tools, Resources, Prompts, Skills, and Agents. Tools, Resources, Prompts, and Skills live inside a schema and describe what one provider offers — only Tools are required, the rest come into play with more complex sources. Agents sit one level up: they combine tools from many schemas into a purpose-built unit. This page gives a brief, conceptual overview — for the full field definitions, validation rules, and examples, follow the spec links per section.
+
+## Tools
+
+A tool is a single, named operation that an AI agent can call. From the agent's perspective the tool is the smallest unit of action: pass typed inputs, receive a structured result. Under the hood the tool wraps one HTTP request to a data provider's API — but the agent does not need to know that. The tool description, parameter list, and result shape are all the agent sees. Each tool belongs to exactly one schema, and a schema typically contains 2-8 tools.
+
+### Tool Selection
+
+Tools are not selected as a flat list. They flow through a funnel — from provider via schema and individual tools down to the curated Tool Set that an agent actually uses. Not every tool is needed for every task; the funnel is how relevance is enforced.
+
+
+```mermaid
+graph LR
+    Cat[Schema Catalog] --> S1[Schema A: Weather]
+    Cat --> S2[Schema B: Transit]
+    Cat --> S3[Schema C: Bikes]
+    S1 --> T1[getWeather]
+    S1 --> T2[getForecast]
+    S2 --> T3[getConnections]
+    S3 --> T4[findStations]
+    T1 --> TS[Tool Set]
+    T3 --> TS
+    T4 --> TS
+```
+
+
+A Tool Set is the explicit list of tools an agent may call. It is part of the agent definition (see Agents below). The same tool can appear in many Tool Sets across many agents; the tool itself stays the same.
+
+### Tool Execution Flow
+
+A tool call goes through four stages. First, the agent (or client) invokes the tool by its fully qualified name with the input payload. Second, the FlowMCP runtime validates the payload against the parameter definitions in the schema — types, required fields, value ranges, enum membership. Third, if validation passes, the runtime resolves any `requiredServerParams` (e.g. API keys from the environment) and applies modifiers like header injection or path templating, then performs the HTTP request to the provider. Fourth, the response is shaped to match the declared output schema and returned to the caller. Errors at any stage produce a structured error response — never a raw exception.
+
+```mermaid
+flowchart TD
+    A[Agent invokes tool<br/>by fully qualified name + payload] --> B[Runtime validates payload<br/>types, required fields, ranges, enums]
+    B -->|valid| C[Resolve requiredServerParams<br/>+ apply modifiers, then HTTP request]
+    B -->|invalid| E[Structured error response]
+    C --> D[Shape response to output schema<br/>+ return to caller]
+    C -->|request fails| E
+```
+
+The full step-by-step contract, including the modifier hooks (`preRequest`, `postRequest`), is documented in the spec: FlowMCP Spec v4.1.0 — Tool Execution.
+
+The quickest way to try a tool is via the FlowMCP CLI:
+
+```bash
+flowmcp search <provider>
+flowmcp add <namespace>
+flowmcp call <namespace.toolName> '{"param":"value"}'
+```
+
+The CLI handles validation, environment lookup, and HTTP execution end to end. For programmatic use, the same flow is available via the core API — see Programmatic API.
 
 ## Resources
 
@@ -414,6 +435,17 @@ Spec: Prompts.
 ## Skills
 
 A skill is a multi-step workflow instruction embedded in a schema. Where a prompt explains context, a skill tells an LLM exactly what to do, step by step: which tool to call first, how to pass the result onward, when to branch. Each skill declares its tool dependencies, defines typed input parameters, and records which model it was tested with.
+
+```mermaid
+flowchart TD
+    A[Skill invoked<br/>with typed input parameters] --> B[Step 1: call first declared tool]
+    B --> C{Branch on result}
+    C -->|condition A| D[Step 2a: call next tool]
+    C -->|condition B| E[Step 2b: call alternate tool]
+    D --> F[Pass result onward to final step]
+    E --> F
+    F --> G[Workflow output]
+```
 
 Spec: Skills.
 
@@ -465,6 +497,12 @@ graph TD
 
 Spec: Agents.
 
+## Why These Layers Stay Separate
+
+The primitives above all run on top of a deliberate separation: the FlowMCP engine, the schemas, and the data operators are three distinct layers, and each is responsible for a different thing. The engine moves and signs every request, schemas only declare how to reach a source, and the operator owns the data and its terms. Keeping these apart is what makes the model trustworthy — a community-contributed schema can never reach beyond its declaration, the engine audit covers every call the same way, and no provider's terms get silently reinterpreted along the path.
+
+The canonical explanation of this three-layer model, including what FlowMCP deliberately does *not* do, lives on Schemas & Sources.
+
 ---
 
 # Schemas
@@ -503,10 +541,10 @@ The full field definition lives in the spec: FlowMCP Spec v4.1.0 — Schema Form
 
 ## Inventory
 
-Schemas are organised under provider namespaces in the public schema repository. Inventory snapshot (Stand 2026-05-24):
+Schemas are organised under provider namespaces in the public schema repository.
 
-- 468+ production schemas across 13 categories (Blockchain EVM, Blockchain Solana, DeFi, Crypto Data, Government DE/EU, Weather & Geo, Web3 Social, News & Media, Dev Tools, NFT & Identity, Analytics)
-- 728+ individual tools exposed via these schemas
+- 365 production schemas spanning categories such as Blockchain EVM, Blockchain Solana, DeFi, Crypto Data, Government DE/EU, Weather & Geo, Web3 Social, News & Media, Dev Tools, and NFT & Identity
+- 1575 individual tools exposed via these schemas
 - Dynamic source: github.com/FlowMCP/flowmcp-schemas-public (https://github.com/FlowMCP/flowmcp-schemas-public), `meta.stats` field per schema
 
 Live discovery via CLI: `flowmcp search <provider>` lists schemas, `flowmcp add <namespace>` activates them locally.
@@ -516,59 +554,6 @@ Live discovery via CLI: `flowmcp search <provider>` lists schemas, `flowmcp add 
 A new schema starts as a draft in `tests/new-schemas/PROVIDER/`. The author validates the structure with `flowmcp validate <path>`, runs the live API tests with `flowmcp test single <path>`, and — if all routes pass — moves the file into `schemas/v4.1.0/PROVIDER/` for release. From that point the schema is part of the global inventory and reachable via the CLI or programmatically via the core API. Updates follow the same loop: edit, validate, test, release.
 
 Author guidance for each step is collected in the Schema Creation Guide and the FlowMCP Spec v4.1.0 — Schema Lifecycle section.
-
----
-
-# Tools
-/concepts/tools
-
-<!-- PAGEFIND-META-START -->
-<span style="display:none" data-pagefind-meta="section">Concepts</span>
-<!-- PAGEFIND-META-END -->
-
-## What is a Tool?
-
-A tool is a single, named operation that an AI agent can call. From the agent's perspective the tool is the smallest unit of action: pass typed inputs, receive a structured result. Under the hood the tool wraps one HTTP request to a data provider's API — but the agent does not need to know that. The tool description, parameter list, and result shape are all the agent sees. Each tool belongs to exactly one schema, and a schema typically contains 2-8 tools.
-
-## Tool Selection
-
-Tools are not selected as a flat list. They flow through a funnel — from provider via schema and individual tools down to the curated Tool Set that an agent actually uses. Not every tool is needed for every task; the funnel is how relevance is enforced.
-
-
-```mermaid
-graph LR
-    Cat[Schema Catalog] --> S1[Schema A: Weather]
-    Cat --> S2[Schema B: Transit]
-    Cat --> S3[Schema C: Bikes]
-    S1 --> T1[getWeather]
-    S1 --> T2[getForecast]
-    S2 --> T3[getConnections]
-    S3 --> T4[findStations]
-    T1 --> TS[Tool Set]
-    T3 --> TS
-    T4 --> TS
-```
-
-
-A Tool Set is the explicit list of tools an agent may call. It is part of the agent definition (see Primitives — Agents). The same tool can appear in many Tool Sets across many agents; the tool itself stays the same.
-
-## Tool Execution Flow
-
-A tool call goes through four stages. First, the agent (or client) invokes the tool by its fully qualified name with the input payload. Second, the FlowMCP runtime validates the payload against the parameter definitions in the schema — types, required fields, value ranges, enum membership. Third, if validation passes, the runtime resolves any `requiredServerParams` (e.g. API keys from the environment) and applies modifiers like header injection or path templating, then performs the HTTP request to the provider. Fourth, the response is shaped to match the declared output schema and returned to the caller. Errors at any stage produce a structured error response — never a raw exception.
-
-The full step-by-step contract, including the modifier hooks (`preRequest`, `postRequest`), is documented in the spec: FlowMCP Spec v4.1.0 — Tool Execution.
-
-## Trying a Tool
-
-The quickest way to try a tool is via the FlowMCP CLI:
-
-```bash
-flowmcp search <provider>
-flowmcp add <namespace>
-flowmcp call <namespace.toolName> '{"param":"value"}'
-```
-
-The CLI handles validation, environment lookup, and HTTP execution end to end. For programmatic use, the same flow is available via the core API — see Programmatic API.
 
 ---
 
@@ -795,13 +780,21 @@ description: <one-sentence description of what the skill does>
 
 ## How to embed it in a tutorial
 
-Use the `CopyMarkdown` component in `mode="slot"` and put the skill block inside an MDX template literal so the raw string is passed through unchanged:
+Memo 064 Phase 4 PRD-009 retired the per-page `CopyMarkdown` component. Whole-page
+copy is now handled by ONE small header button injected on every content page via
+the `HeaderCopyButton.astro` override (wired through `PageTitleWithBreadcrumb.astro`).
 
-```mdx
-import CopyMarkdown from '../../../components/CopyMarkdown.astro'
+For the skill snippet, use a plain fenced ` ```markdown ` code block. Starlight's
+built-in code-block copy button lets the user copy it with one click — no custom
+component needed:
 
-<CopyMarkdown mode="slot" lang="en" label="Copy this skill to ~/.claude/skills/">
-{`---
+````mdx
+## Skill for ~/.claude/skills/
+
+Drop this into `~/.claude/skills/flowmcp-my-tutorial/SKILL.md`:
+
+```markdown
+---
 name: flowmcp-my-tutorial
 description: <one-sentence description>
 ---
@@ -809,9 +802,8 @@ description: <one-sentence description>
 # My Tutorial Skill
 
 ...skill body...
-`}
-</CopyMarkdown>
 ```
+````
 
 ## Rules
 
@@ -827,7 +819,7 @@ description: <one-sentence description>
 - `guides/agent-creation` → `flowmcp-agent-creation`
 - `guides/gtfs-pilot` → `flowmcp-gtfs-pilot`
 
-CLI Setup (`quickstart/installation`) gets only the whole-page copy button — it has no tutorial-workflow character.
+CLI Setup (`quickstart/installation`) gets only the whole-page copy button (the global header button) — it has no tutorial-workflow character.
 
 ---
 
@@ -1657,24 +1649,14 @@ A research workflow — a custom pipeline, an internal dashboard, or a Notion / 
 2. **Sample each schema** — For promising hits, the agent runs a sample call (`flowmcp call <schema> <route>`). FlowMCP holds the API keys, signs the request, and returns the normalized response. The agent sees the data shape without seeing credentials.
 3. **Combine and summarize** — The agent merges results from federal, city, and weather sources, deduplicates overlapping stations, and produces a table the user can act on.
 
-### Which Data Sources Are Combined?
+### Fixed Data Sources, One Answer
 
-| Data Source | What It Provides |
-|-------------|------------------|
-| **Umweltbundesamt API** | Federal air-quality measurements (PM10, PM2.5, NO2) |
-| **Berlin Open Data** | City-specific stations, metadata, hourly updates |
-| **DWD (Deutscher Wetterdienst)** | Weather data for correlation with pollution events |
-| **OpenStreetMap / Nominatim** | Geocoding of station locations and addresses |
-| **govdata.de (Bund OpenData)** | Federal open-data index across all German states |
-| **Eurostat / EEA** | EU-wide comparison values and methodology |
-
-**6 data sources, one answer.** Without FlowMCP, the agent would have to read six different API documentations per request — thousands of tokens, inconsistent formats, no shared auth. With FlowMCP, the schemas are normalized once and reused by every agent.
+The agent draws on a fixed set of curated data sources — federal, city, and weather feeds that were normalized once and are now reused on every request. Because those sources share a consistent shape and a single auth path, the agent merges them into one consolidated answer instead of reading a separate API documentation for each one. The work of understanding each source happens once, in the schema, and every agent benefits from it afterwards.
 
 > Instead of feeding the AI hundreds of tokens of API docs per request, it searches a normalized catalog. One schema investment, any number of agents.
 
 ### Next steps
 
-- Schema Catalog → — browse what's already covered
 - CLI Setup → — first call in under 5 minutes
 
 ---
@@ -1696,26 +1678,12 @@ The GTFS pilot is real and documented (see GTFS Pilot Guide). FlowMCP v4.1 ships
 3. **Alternative search** (GTFS-SQLite + REST combined) — Next IC 13:33 as fallback, arriving Munich 14:55.
 4. **AI answer** — "IC 12:33 with only 4 min transfer is not reliable. Backup: IC 13:33, arriving Munich 14:55 instead of 13:13."
 
-### Which Data Sources Are Combined?
-
-| Data Source | What It Provides |
-|-------------|------------------|
-| **gtfs-sqlite-toolkit** (local) | Static schedule, stops, transfer windows |
-| **Deutsche Bahn timetables API** | Live delays, real-time arrival forecasts |
-| **DB Stations API** | Station metadata: platforms, walking distances |
-
 **Local SQLite for static lookup + Live API through FlowMCP — one CLI call, one answer.** Without FlowMCP, the agent would have to orchestrate the static GTFS query and the live REST API separately, parse different formats, and merge them by hand.
 
 ### Next steps
 
 - GTFS Pilot Guide → — the full mobility add-on story
 - CLI Setup → — first call in under 5 minutes
-
----
-
-All schemas used: Schema Catalog →
-
-Contribute schemas: Community Hub →
 
 ---
 
@@ -2784,90 +2752,23 @@ Details →
 <!-- PAGEFIND-META-END -->
 
 
-FlowMCP schemas are community contributions. Anyone can contribute a schema for an API or data source. Each user is responsible for verifying that a schema works as intended for their use case — including reviewing the underlying API's Terms of Service, data license, and rate limits.
+FlowMCP is built from three layers that are easy to confuse but stay strictly separate. Keeping them apart is the key to understanding what FlowMCP is responsible for and what it is not.
 
-To make this verification possible, FlowMCP operates in a three-layer license model. Understanding all three layers helps when using FlowMCP in production or commercial contexts.
+## Engine, Schemas, and Data Operators
 
-## The Three Layers
+The **engine** is the part FlowMCP builds and maintains. It is the Core library and the CLI that load a schema, sign the request, call the source, and normalize the response. The engine is MIT-licensed, open source, and the same audit covers every call that flows through it.
 
-| Layer | What | Who Decides | What FlowMCP Does |
-|-------|------|-------------|---------------------|
-| **1. FlowMCP Schema Code** | Schema definitions (`.mjs`), Core library, CLI | FlowMCP (we) | **MIT-licensed** |
-| **2. API Provider ToS** | What you may do with the called API | API Provider | **Link only — no classification** |
-| **3. Data License** | What you may do with the returned data | Data publisher | **Link only — no classification** |
+A **schema** is a thin declaration that tells the engine how to reach one data source and how to shape its response. Schemas are community contributions: anyone can write one for an API or dataset. They are not part of the engine, and a schema can be added, replaced, or removed without touching the engine at all.
 
-## What We Do
+A **data operator** is whoever runs the API or publishes the dataset behind a schema. They decide their own Terms of Service, data license, and rate limits. FlowMCP has no control over that layer — it only passes the call through and returns the answer.
 
-- Document the ToS URL where available (`meta.termsOfService` per schema)
-- Document the date we last verified the link (`meta.termsOfServiceCheckedAt`)
-- Document the language of the ToS document (`meta.termsOfServiceLanguage`)
-- Mirror data license name when provider explicitly publishes one (`meta.dataLicenseName`)
+These three layers never merge. The engine moves data, schemas describe sources, and operators own the data. Confusing them is the most common source of misunderstanding about what FlowMCP does.
 
-## What We Do NOT Do
+## What FlowMCP Does Not Do
 
-- We **do not** classify Terms of Services into legal categories
-- We **do not** make recommendations about commercial use
-- We **do not** reproduce ToS content in our schemas
+FlowMCP **does not publish schemas, and it does not show schemas on this website.** There is no catalog page, no schema browser, and no hosted list of sources here. Schemas live in their own repositories and are loaded by the CLI on demand; the website explains the engine and the model, not the individual schemas.
 
-## Why We Don't Classify
-
-Terms of Services are living documents — they change without notice. Classifying them requires legal expertise we don't have, and our jurisdiction is limited. Compliance is your responsibility.
-
-## How Do I Check an API's Terms of Services?
-
-1. Look at the schema file — `meta.termsOfService` has the URL (or `null` if unknown)
-2. Visit the URL — note: it may have been updated since `termsOfServiceCheckedAt`
-3. Review for:
-   - Free vs commercial tier
-   - Attribution requirements
-   - LLM-training restrictions
-   - Re-distribution rules
-
-## Is `meta.dataLicense` Legally Binding?
-
-No. We only mirror what the provider publishes on their site. The provider's actual terms control. We make no warranty.
-
-## What If a Schema Has No `termsOfService` URL?
-
-It means:
-- We have not yet researched that provider, OR
-- The provider does not publish a ToS (e.g. NASA APOD — Public Domain US Government data)
-
-In either case, verify yourself before commercial use.
-
-## How Often Do You Re-Check ToS URLs?
-
-We aim to re-check every 6 months. A background audit script flags stale entries. Reactive updates happen when major ToS changes are publicly known.
-
-## CLI Disclaimer Output
-
-You can enable opt-in license disclaimers in the CLI:
-
-```bash
-# In flowmcp.config.json (global or project-local):
-{
-    "licenseDisclaimer": true
-}
-
-# Then:
-flowmcp call coingecko_market_chart
-# [License Info] Provider: coingecko
-# [License Info] ToS: https://www.coingecko.com/en/terms (last checked: 2026-05-18)
-# [License Info] We do not interpret ToS. Please review before commercial use.
-```
-
-Default: `licenseDisclaimer: false` (off).
-
-## User Responsibility
-
-You are solely responsible for:
-
-- Reviewing each API provider's Terms of Services before use
-- Complying with rate limits, attribution requirements, and data licenses
-- Determining suitability for commercial, research, or production use
-- Adhering to LLM-training restrictions and re-distribution clauses
-
-FlowMCP makes **no warranty** about ToS compliance, data licensing, or fitness for any purpose. Use at your own risk.
+Because the data operators own the source and its terms, FlowMCP also makes no judgment about them. We record a few neutral facts where a provider publishes them — the Terms of Service URL (`meta.termsOfService`), the date we last checked it (`meta.termsOfServiceCheckedAt`), and the data license name when one is stated (`meta.dataLicenseName`) — and we link out to the original. We do not classify those terms, interpret them, or advise on commercial use. Reviewing a provider's Terms of Service, rate limits, and data license before you rely on a source remains your responsibility, and FlowMCP makes no warranty about fitness for any purpose.
 
 ## See Also
 
