@@ -86,7 +86,6 @@ export default defineConfig({
         '/reference/troubleshooting/':      '/about/faq/',
         '/de/reference/troubleshooting/':   '/de/about/faq/',
 
-        '/docs/ecosystem/schema-library/':  '/ecosystem/schema-library/',
         '/docs/ecosystem/agent-server/':    '/ecosystem/agent-server/',
         '/docs/ecosystem/agentprobe/':      '/ecosystem/agentprobe/',
         '/docs/ecosystem/x402/':            '/ecosystem/x402/',
@@ -243,7 +242,6 @@ export default defineConfig({
                     translations: { de: 'Oekosystem' },
                     collapsed: true,
                     items: [
-                        { label: 'Schema Library (stable)', translations: { de: 'Schema-Bibliothek (stable)' }, slug: 'ecosystem/schema-library' },
                         { label: 'Agent Server (experimental)', translations: { de: 'Agent-Server (experimentell)' }, slug: 'ecosystem/agent-server' },
                         { label: 'AgentProbe (external)', translations: { de: 'AgentProbe (extern)' }, slug: 'ecosystem/agentprobe' },
                         { label: 'x402 (experimental)', translations: { de: 'x402 (experimentell)' }, slug: 'ecosystem/x402' },

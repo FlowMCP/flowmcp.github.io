@@ -122,7 +122,3 @@ Jedes Tool wird mit Name, Beschreibung und Zod-validiertem Parameter-Schema regi
 :::note[Server-Integration]
 Fuer programmatisches Server-Setup mit stdio und HTTP/SSE-Transporten siehe den [Server-Integration-Guide](/de/guides/server-integration).
 :::
-
-:::note[Schema-Bibliothek]
-Durchsuche 187+ vorgefertigte Schemas in der [Schema-Bibliothek](/de/ecosystem/schema-library).
-:::

@@ -122,7 +122,3 @@ Each tool is registered with its name, description, and a Zod-validated paramete
 :::note[Server Integration]
 For programmatic server setup with stdio and HTTP/SSE transports, see the [Server Integration guide](/guides/server-integration).
 :::
-
-:::note[Schema Library]
-Browse 187+ pre-built schemas ready to serve in the [Schema Library](/ecosystem/schema-library).
-:::
