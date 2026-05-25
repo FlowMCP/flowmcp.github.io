@@ -6,9 +6,9 @@ spec_file: "16-id-schema.md"
 order: 16
 section: "Specification"
 normative: true
-source_commit: "38be5f4"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/38be5f4/spec/v4.1.0/16-id-schema.md"
-generated_at: "2026-05-24T19:10:00.397Z"
+source_commit: "07d4071"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/07d4071/spec/v4.1.0/16-id-schema.md"
+generated_at: "2026-05-25T03:02:46.785Z"
 generated_from: "spec/v4.1.0/16-id-schema.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.1.0/16-id-schema.md."
@@ -107,7 +107,7 @@ Namespace rules:
 
 #### Resource Type
 
-The resource type discriminates between the seven kinds of addressable primitives in v4.0.0:
+The resource type discriminates between the seven kinds of addressable primitives in v4.1.0:
 
 | Type | Maps To | Defined In |
 |------|---------|-----------|
@@ -159,7 +159,7 @@ Contains Primitive-IDs:
 ### Directory Mapping
 
 ```
-schemas/v4.0.0/providers/etherscan-io/contracts.mjs
+schemas/v4.1.0/providers/etherscan-io/contracts.mjs
                           └── namespace    └── schema-name.mjs
 → Schema-File-ID: etherscan-io/contracts
 ```

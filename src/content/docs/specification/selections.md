@@ -1,14 +1,14 @@
 ---
 title: "Selections"
-description: "**Version:** FlowMCP 4.0.0"
+description: "**Version:** FlowMCP 4.1.0"
 spec_version: "4.1.0"
 spec_file: "17-selections.md"
 order: 17
 section: "Specification"
 normative: true
-source_commit: "38be5f4"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/38be5f4/spec/v4.1.0/17-selections.md"
-generated_at: "2026-05-24T19:10:00.397Z"
+source_commit: "07d4071"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/07d4071/spec/v4.1.0/17-selections.md"
+generated_at: "2026-05-25T03:02:46.785Z"
 generated_from: "spec/v4.1.0/17-selections.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.1.0/17-selections.md."
@@ -19,7 +19,7 @@ edit_warning: "This file is auto-generated. Source: spec/v4.1.0/17-selections.md
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in [Conformance Language](/specification/overview/#conformance-language).
 
-**Version:** FlowMCP 4.0.0  
+**Version:** FlowMCP 4.1.0  
 **Status:** Active  
 **Primitive:** Selection (5th primitive)
 
@@ -75,7 +75,7 @@ Example: `evm-research/selection/contract-analysis`
 ## File Location
 
 ```
-schemas/v4.0.0/selections/
+schemas/v4.1.0/selections/
   evm-research/
     contract-analysis.mjs
 ```

@@ -1,14 +1,14 @@
 ---
 title: "Prefill and Placeholders"
-description: "**Version:** FlowMCP 4.0.0"
+description: "**Version:** FlowMCP 4.1.0"
 spec_version: "4.1.0"
 spec_file: "18-prefill.md"
 order: 18
 section: "Specification"
 normative: true
-source_commit: "38be5f4"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/38be5f4/spec/v4.1.0/18-prefill.md"
-generated_at: "2026-05-24T19:10:00.397Z"
+source_commit: "07d4071"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/07d4071/spec/v4.1.0/18-prefill.md"
+generated_at: "2026-05-25T03:02:46.785Z"
 generated_from: "spec/v4.1.0/18-prefill.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.1.0/18-prefill.md."
@@ -16,7 +16,7 @@ edit_warning: "This file is auto-generated. Source: spec/v4.1.0/18-prefill.md."
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in [Conformance Language](/specification/overview/#conformance-language).
 
-**Version:** FlowMCP 4.0.0  
+**Version:** FlowMCP 4.1.0  
 **Status:** Active
 
 ---

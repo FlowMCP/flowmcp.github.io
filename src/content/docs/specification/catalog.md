@@ -6,9 +6,9 @@ spec_file: "15-catalog.md"
 order: 15
 section: "Specification"
 normative: true
-source_commit: "38be5f4"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/38be5f4/spec/v4.1.0/15-catalog.md"
-generated_at: "2026-05-24T19:10:00.397Z"
+source_commit: "07d4071"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/07d4071/spec/v4.1.0/15-catalog.md"
+generated_at: "2026-05-25T03:02:46.785Z"
 generated_from: "spec/v4.1.0/15-catalog.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.1.0/15-catalog.md."
@@ -69,7 +69,7 @@ schemas/v3.0.0/
     │   │   ├── simple-price.mjs
     │   │   └── prompts/             <- Provider prompts (model-neutral)
     │   └── ...
-    ├── selections/                  <- Curated tool subsets (v4.0.0)
+    ├── selections/                  <- Curated tool subsets (v4.1.0)
     │   ├── evm-research/
     │   │   └── selection.mjs
     │   └── defi-monitor/
@@ -96,7 +96,7 @@ schemas/v3.0.0/
 | `_lists/` | Root | Shared value lists consumed by all providers and agents |
 | `_shared/` | Root | Shared helper modules consumed by provider schemas |
 | `providers/` | Root | Provider schema directories, one per namespace |
-| `selections/` | Root | Curated tool subsets for agent context loading (v4.0.0). See `17-selections.md`. |
+| `selections/` | Root | Curated tool subsets for agent context loading (v4.1.0). See `17-selections.md`. |
 | `providers/{namespace}/` | Provider | Schema files for a single data source |
 | `providers/{namespace}/prompts/` | Provider | Model-neutral prompts for the provider's tools |
 | `agents/` | Root | Agent definition directories |

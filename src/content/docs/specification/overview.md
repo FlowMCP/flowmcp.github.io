@@ -6,9 +6,9 @@ spec_file: "00-overview.md"
 order: 0
 section: "Specification"
 normative: false
-source_commit: "38be5f4"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/38be5f4/spec/v4.1.0/00-overview.md"
-generated_at: "2026-05-24T19:10:00.397Z"
+source_commit: "07d4071"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/07d4071/spec/v4.1.0/00-overview.md"
+generated_at: "2026-05-25T03:02:46.785Z"
 generated_from: "spec/v4.1.0/00-overview.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.1.0/00-overview.md."
@@ -22,7 +22,7 @@ FlowMCP is a **Tool Catalog with pre-built API templates** and a **Knowledge Bas
 1. **CLI** — Direct access to Tools, Resources, Prompts, and Skills
 2. **MCP/A2A Server** — Agents and MCP clients can use FlowMCP as a server (compatible with OpenClaw)
 
-This document provides the conceptual foundation, positioning, terminology, and document index for the v4.0.0 specification.
+This document provides the conceptual foundation, positioning, terminology, and document index for the v4.1.0 specification.
 
 ---
 
@@ -30,7 +30,7 @@ This document provides the conceptual foundation, positioning, terminology, and 
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all capitals, as shown here.
 
-Some specification files in `spec/v4.0.0/` are intentionally written in prose without normative keywords because they describe history, lifecycle, or conceptual background (this overview document, the migration guide, the schema lifecycle document). All other specification files use normative language and assume this conformance interpretation.
+Some specification files in `spec/v4.1.0/` are intentionally written in prose without normative keywords because they describe history, lifecycle, or conceptual background (this overview document, the migration guide, the schema lifecycle document). All other specification files use normative language and assume this conformance interpretation.
 
 References:
 - [RFC2119](https://www.rfc-editor.org/rfc/rfc2119) — Key words for use in RFCs to Indicate Requirement Levels
