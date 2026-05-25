@@ -34,7 +34,7 @@ const PAGES = [
     { url: '/about/',                      whitelist: [] },
     { url: '/quickstart/quickstart/',      whitelist: [] },
     { url: '/concepts/schemas/',           whitelist: [] },
-    { url: '/concepts/tools/',             whitelist: [] }
+    { url: '/concepts/primitives/',        whitelist: [] }
 ]
 
 

@@ -30,45 +30,15 @@ Was die Levels bedeuten: [Primitive — Agents](/de/concepts/primitives/#agents)
 
 ## Clients mit Elicitation (Level 2+3)
 
-Diese 16 Clients unterstuetzen Elicitation — der Agent kann Rueckfragen stellen fuer bessere Antworten:
+Diese 16 Clients unterstuetzen Elicitation — der Agent kann Rueckfragen stellen fuer bessere Antworten: AIQL TUUI, Claude Code, Codex, Cursor, fast-agent, Glama, goose, Joey, mcp-agent, mcp-use, MCPJam, Memgraph Lab, Postman, Tambo, VS Code GitHub Copilot und VT Code.
 
-1. AIQL TUUI
-2. Claude Code
-3. Codex
-4. Cursor
-5. fast-agent
-6. Glama
-7. goose
-8. Joey
-9. mcp-agent
-10. mcp-use
-11. MCPJam
-12. Memgraph Lab
-13. Postman
-14. Tambo
-15. VS Code GitHub Copilot
-16. VT Code
-
-## CLI — Commandline-Interfaces
-
-Neben grafischen Clients gibt es Commandline-Interfaces, die besonders fuer Entwickler und Automatisierung relevant sind.
-
-### FlowMCP CLI
-
-Der schnellste Weg fuer Entwickler, um Schemas zu finden und Tools auszuprobieren:
-
-- `flowmcp list` — Alle verfuegbaren Schemas anzeigen
-- `flowmcp search <query>` — Schemas nach Stichwort suchen
-- `flowmcp add <schema>` — Ein Schema aktivieren
-- `flowmcp call <tool> '{...}'` — Ein Tool direkt aufrufen
-
-Dokumentation: [CLI Nutzung](/de/reference/cli/)
-
-### OpenClaw
+## OpenClaw
 
 [OpenClaw](https://docs.openclaw.ai) ist ein Open-Source AI Assistant Gateway mit Plugin-System. Die Besonderheit: **Cron Jobs** — wiederkehrende Abfragen, die automatisch laufen. Zum Beispiel jeden Morgen um 7:30 Uhr eine Mobilitaetsempfehlung.
 
 Mehr dazu: [Integration Guide](/de/guides/integration/)
+
+Fuer die Commandline-Schnittstelle — Tools im Terminal suchen, aktivieren und aufrufen — siehe die [FlowMCP CLI-Nutzung](/de/reference/cli/) Referenz.
 
 ## Welcher Client fuer wen?
 
