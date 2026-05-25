@@ -9,10 +9,6 @@ test.use( { ...devices[ 'iPhone 13' ] } )
 
 
 test.describe( 'Mobile-Menu a11y', () => {
-    // Tests 2-3 use `starlight-menu-button` selector. Current Starlight version
-    // renders a different menu structure; tests pending update — see issue #86.
-    test.skip( ( { }, testInfo ) => testInfo.title.startsWith( '2.' ) || testInfo.title.startsWith( '3.' ), 'starlight-menu-button selector mismatch with current Starlight; see #86' )
-
     test( '1. axe scan passes on home page (mobile viewport)', async ( { page } ) => {
         await page.goto( '/' )
         await page.waitForLoadState( 'domcontentloaded' )
@@ -20,7 +16,9 @@ test.describe( 'Mobile-Menu a11y', () => {
         assertNoViolations( { results, expect, label: 'mobile-menu' } )
     } )
 
-    test( '2. toggle button has aria-expanded and aria-controls', async ( { page } ) => {
+    // Tests 2-3 use `starlight-menu-button` selector. Current Starlight version
+    // renders a different menu structure; tests pending update — see issue #86.
+    test.skip( '2. toggle button has aria-expanded and aria-controls', async ( { page } ) => {
         await page.goto( '/' )
         await page.waitForLoadState( 'domcontentloaded' )
         const button = page.locator( 'starlight-menu-button button' ).first()
@@ -28,7 +26,7 @@ test.describe( 'Mobile-Menu a11y', () => {
         await expect( button ).toHaveAttribute( 'aria-controls', /sidebar/i )
     } )
 
-    test( '3. aria-expanded toggles to true on click', async ( { page } ) => {
+    test.skip( '3. aria-expanded toggles to true on click', async ( { page } ) => {
         await page.goto( '/' )
         await page.waitForLoadState( 'domcontentloaded' )
         const button = page.locator( 'starlight-menu-button button' ).first()
