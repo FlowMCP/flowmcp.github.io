@@ -40,6 +40,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Playwright Chromium (for mermaid inline-svg)
+        run: npx playwright install --with-deps chromium
+
       - name: Build site (triggers prebuild → fetch-refs, sync-schemas, check:spec-links)
         run: npm run build
 
