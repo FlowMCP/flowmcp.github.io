@@ -4,6 +4,7 @@ description: "Wie deterministische Strukturen LLM-Komposition tragen, ohne dass 
 date: 2026-05-24
 author: "FlowMCP Team"
 tags: ["release", "v4", "skills", "selections", "pipes"]
+lang: de
 ---
 
 > 2026-05-24 · FlowMCP Team · #release #v4 #skills #selections #pipes
@@ -126,7 +127,7 @@ v4 ist die strukturelle Grundlage. Drei nähere Folgeschritte:
 
 ### Quellen
 
-- FlowMCP Specification v4.0.0: [`14-skills.md`](/specification/v4.0.0/14-skills.md), [`17-selections.md`](/specification/v4.0.0/17-selections.md), [`18-prefill.md`](/specification/v4.0.0/18-prefill.md), [`13-resources.md`](/specification/v4.0.0/13-resources.md), [`04-output-schema.md`](/specification/v4.0.0/04-output-schema.md)
+- FlowMCP Specification: [Skills](/de/specification/skills/), [Selections](/de/specification/selections/), [Prefill](/de/specification/prefill/), [Resources](/de/specification/resources/), [Output Schema](/de/specification/output-schema/)
 - CHANGELOG v4.0.0 (Skills, Selections, Output-Schema, Pipes)
 - Interner Labortest zum Self-Contained Skill Pattern (5/5 vs 0/5 Erfolgsrate)
 

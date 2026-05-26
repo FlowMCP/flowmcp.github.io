@@ -4,6 +4,7 @@ description: "Wie das gtfs-sqlite-toolkit GTFS-Feeds in auditierbare SQLite-Ress
 date: 2026-05-25
 author: "FlowMCP Team"
 tags: ["release", "v41", "gtfs", "add-on", "mobility", "open-data"]
+lang: de
 ---
 
 > ℹ️ **Hinweis:** Die Pilot-Messwerte (Konvertierungszeiten, Latenzen, Output-Snippets) stammen aus dem laufenden GTFS-Pilot und werden ergaenzt, sobald die Messreihen abgeschlossen sind.
@@ -175,5 +176,5 @@ Warum sind diese Daten frei? Das deutsche **E-Government-Gesetz §12a** (eingefu
 ---
 
 > 📖 Lies auch:
-> - *[FlowMCP v4 — Skills, Selections, Pipes](/blog/2026-05-flowmcp-v4-skills-selections-pipes/)* — Pipes-Konzept verkettet diese GTFS-Tools elegant.
+> - *[FlowMCP v4 — Skills, Selections, Pipes](/de/blog/2026-05-flowmcp-v4-skills-selections-pipes/)* — Pipes-Konzept verkettet diese GTFS-Tools elegant.
 > - *Anschluss erreichen — Wie FlowMCP zum Mobility-Framework wurde* — Hackathon-Validierung der Mobility-Use-Cases.

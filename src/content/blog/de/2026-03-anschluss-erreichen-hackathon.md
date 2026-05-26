@@ -4,6 +4,7 @@ description: "Story aus dem 'Anschluss erreichen'-Hackathon von DB InfraGO, mit 
 date: 2026-03-23
 author: "FlowMCP Team"
 tags: ["hackathon", "mobility", "deutsche-bahn", "berlin"]
+lang: de
 ---
 
 ## Was war "Anschluss erreichen"?
@@ -59,5 +60,5 @@ Wir haben einen funktionierenden Mobilitaetsdaten-Agenten gebaut, der mehrere de
 ---
 
 > 📖 Lies auch:
-> - *[FlowMCP v4 — Skills, Selections, Pipes](/blog/2026-05-flowmcp-v4-skills-selections-pipes/)*
-> - *[FlowMCP v4.1 — GTFS als erste Datenklasse mit eigenem Add-on](/blog/2026-05-flowmcp-v41-gtfs-add-on/)*
+> - *[FlowMCP v4 — Skills, Selections, Pipes](/de/blog/2026-05-flowmcp-v4-skills-selections-pipes/)*
+> - *[FlowMCP v4.1 — GTFS als erste Datenklasse mit eigenem Add-on](/de/blog/2026-05-flowmcp-v41-gtfs-add-on/)*

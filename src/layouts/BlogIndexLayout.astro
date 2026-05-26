@@ -15,9 +15,21 @@
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro'
 import { getCollection } from 'astro:content'
 
+// Memo 064 follow-up: bilingual blog. Each post carries a `lang` field
+// ('en' | 'de'). The index is rendered once per locale — /blog/ (en) and
+// /de/blog/ (de) — and filters the collection to its own language.
+const { lang = 'en' } = Astro.props
+const base = lang === 'de' ? '/de/blog' : '/blog'
+const slugOf = ( id ) => id.replace( /^de\//, '' )
+
+const t = lang === 'de'
+    ? { title: 'Blog', subtitle: 'Updates, Tutorials und Release-Notes zu FlowMCP.', rss: 'RSS-Feed →', all: 'Alle', featured: 'EMPFOHLEN', readMore: 'Weiterlesen →', desc: 'Releases, Hackathon-Geschichten, Integrations-Guides — vom FlowMCP-Team.' }
+    : { title: 'Blog', subtitle: 'Updates, tutorials, and release notes for FlowMCP.', rss: 'RSS Feed →', all: 'All', featured: 'FEATURED', readMore: 'Read more →', desc: 'Releases, hackathon stories, integration guides — from the FlowMCP team.' }
+
 // Show drafts in dev mode for local review; hide in production builds.
 const showDrafts = import.meta.env.DEV
 const posts = ( await getCollection( 'blog', ( { data } ) => showDrafts || !data.draft ) )
+    .filter( ( p ) => ( p.data.lang || 'en' ) === lang )
     .sort( ( a, b ) => b.data.date.valueOf() - a.data.date.valueOf() )
 
 const featured = posts[ 0 ]
@@ -37,13 +49,13 @@ const filterTabs = [ 'All', ...sortedCategories ]
 
 // Helper to humanise a tag slug for the button label
 const labelFor = ( tag ) => {
-    if( tag === 'All' ) { return 'All' }
+    if( tag === 'All' ) { return t.all }
     return tag.charAt( 0 ).toUpperCase() + tag.slice( 1 )
 }
 
 const frontmatter = {
-    title: 'Blog',
-    description: 'Releases, hackathon stories, integration guides — from the FlowMCP team.',
+    title: t.title,
+    description: t.desc,
     template: 'splash',
     tableOfContents: false,
     pagefind: true
@@ -53,9 +65,9 @@ const frontmatter = {
 <StarlightPage frontmatter={frontmatter}>
     <section class="blog-index" id="main-content">
         <header class="blog-index__header">
-            <h1 class="blog-index__title">Blog</h1>
-            <p class="blog-index__subtitle">Updates, tutorials, and release notes for FlowMCP.</p>
-            <a class="blog-index__rss" href="/blog/rss.xml">RSS Feed →</a>
+            <h1 class="blog-index__title">{t.title}</h1>
+            <p class="blog-index__subtitle">{t.subtitle}</p>
+            <a class="blog-index__rss" href={`${ base }/rss.xml`}>{t.rss}</a>
         </header>
 
         <nav class="blog-index__filters" aria-label="Blog filter">
@@ -74,13 +86,13 @@ const frontmatter = {
         { featured && (
             <a
                 class="blog-index__featured"
-                href={`/blog/${ featured.id }/`}
+                href={`${ base }/${ slugOf( featured.id ) }/`}
                 data-category={( featured.data.tags && featured.data.tags[ 0 ] ) || ''}
             >
-                <span class="blog-index__featured-badge">FEATURED</span>
+                <span class="blog-index__featured-badge">{t.featured}</span>
                 <h2 class="blog-index__featured-title">{featured.data.title}</h2>
                 <p class="blog-index__featured-desc">{featured.data.description}</p>
-                <span class="blog-index__featured-cta">Read more →</span>
+                <span class="blog-index__featured-cta">{t.readMore}</span>
             </a>
         )}
 
@@ -89,7 +101,7 @@ const frontmatter = {
                 { rest.map( ( post ) => (
                     <a
                         class="blog-index__card"
-                        href={`/blog/${ post.id }/`}
+                        href={`${ base }/${ slugOf( post.id ) }/`}
                         data-category={( post.data.tags && post.data.tags[ 0 ] ) || ''}
                     >
                         <span class="blog-index__card-tag">{post.data.tags[ 0 ] || 'post'}</span>

@@ -4,6 +4,7 @@ description: "Releases, hackathon stories, and notes from the FlowMCP team."
 date: 2026-05-21
 author: "FlowMCP Team"
 tags: ["release", "announcement"]
+lang: en
 ---
 
 > 2026-05-21 · FlowMCP Team · #release #announcement
