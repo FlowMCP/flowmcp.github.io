@@ -179,9 +179,12 @@ body:has(.pencil-hero) .content-panel {
     border: none !important;
 }
 
-/* Logo-Min-Spacing 12px (Regel 11) */
-header.header .site-title,
-header.header a[href="/"] {
+/* Logo-Min-Spacing 12px (Regel 11) — Memo 069 PRD-003: target the real
+ * .site-title-link class (from SiteTitleCustom.astro) so the spacing applies in
+ * EVERY locale. The previous selector matched only EN: a[href="/"] never matches
+ * the DE logo (href="/de/") and .site-title is not the class the override emits,
+ * so DE rendered 12px further left than EN — identical header geometry now. */
+header.header .site-title-link {
     margin-left: 12px;
 }
 
@@ -552,6 +555,13 @@ dialog .pagefind-ui {
 body.has-pencil-hero h1#_top {
     display: none !important;
 }
+/* Memo 069 PRD-001 (A1/A6): blog index + post supply their own styled title,
+ * so Starlight's splash <h1 id="_top"> is a visible duplicate. Suppress it,
+ * scoped via :has() to blog pages only. frontmatter.title stays for <title>/SEO. */
+body:has(.blog-index) h1#_top,
+body:has(.blog-post) h1#_top {
+    display: none !important;
+}
 
 .hero img {
     object-fit: contain !important;
@@ -719,13 +729,19 @@ hr,
     padding: 0 1.5rem;
 }
 
-.blog-index__header { margin-bottom: 1.5rem; }
-.blog-index__title { font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 800; color: var(--text-primary); margin: 0 0 0.5rem; }
-.blog-index__subtitle { color: var(--text-inactive); font-size: 16px; margin: 0 0 1rem; }
-.blog-index__rss { color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 600; }
+/* Memo 069 PRD-001 (A3/A4): condensed header — title + RSS on one row, subtitle below. */
+.blog-index__header { margin-bottom: 1rem; }
+.blog-index__header-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.blog-index__title { font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 800; color: var(--text-primary); margin: 0; }
+.blog-index__subtitle { color: var(--text-inactive); font-size: 16px; margin: 0.5rem 0 0; }
+.blog-index__rss { color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
 
-.blog-index__filters { display: flex; gap: 0.5rem; margin: 2rem 0; flex-wrap: wrap; }
-.blog-index__filter { padding: 0.4rem 1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 999px; color: var(--text-inactive); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+.blog-index__filters { display: flex; align-items: center; gap: 0.5rem; margin: 1.25rem 0 2rem; flex-wrap: wrap; }
+/* Memo 069 PRD-001 (A5): unify chip height. Root cause of the tall 'All':
+ * Starlight markdown auto-spacing adds margin-top to sibling buttons; with the
+ * flex row's default align-items:stretch that inflated the line and stretched
+ * the margin-less first chip. margin:0 + align-items:center pins equal pills. */
+.blog-index__filter { display: inline-flex; align-items: center; margin: 0; line-height: 1; white-space: nowrap; padding: 0.45rem 1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 999px; color: var(--text-inactive); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
 .blog-index__filter:hover { border-color: var(--accent); color: var(--accent); }
 .blog-index__filter.is-active { background: var(--sidebar-active-bg); color: var(--accent); border-color: var(--accent); }
 

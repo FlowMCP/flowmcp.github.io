@@ -4,10 +4,17 @@
 // Bewusst KEIN direkter Import von MobileMenuToggle — Cross-Scope-Kopplung
 // laeuft ueber window.dispatchEvent( new CustomEvent( 'flowmcp:close-all' ) ).
 
+// Memo 069 PRD-004: the previous three selectors no longer match Starlight's
+// rendered markup — the dialog is <dialog class="astro-…"> inside a
+// <site-search> web component, with .pagefind-ui as a child (not on the dialog
+// itself). Without a match, findSearchDialog() returned null and ArrowUp/Down/
+// Enter silently did nothing. Added the two robust selectors below.
 const SEARCH_DIALOG_SELECTORS = [
     'dialog[data-starlight-search]',
     '.starlight-search-dialog',
-    'dialog.pagefind-ui'
+    'dialog.pagefind-ui',
+    'site-search dialog',
+    'dialog:has(.pagefind-ui)'
 ]
 
 const findSearchDialog = () => {
@@ -21,8 +28,12 @@ const findSearchInput = () => {
     return document.querySelector( '.pagefind-ui__search-input' )
 }
 
-const findResultLinks = () => {
-    return Array.from( document.querySelectorAll( '.pagefind-ui__result-link' ) )
+// Memo 069 PRD-004: navigate over result ITEMS, not links. Pagefind renders
+// several .pagefind-ui__result-link per result (title + sub-results), so the
+// old link-based setActive toggled is-active on the same item multiple times
+// and the highlight never stuck. One item = one navigable step.
+const findResultItems = () => {
+    return Array.from( document.querySelectorAll( '.pagefind-ui__result' ) )
 }
 
 const isTyping = ( event ) => {
@@ -65,19 +76,20 @@ const focusSearchInput = () => {
 
 let activeIndex = -1
 
-const setActive = ( links, index ) => {
-    if( links.length === 0 ) { return }
-    const next = ( ( index % links.length ) + links.length ) % links.length
+const setActive = ( items, index ) => {
+    if( items.length === 0 ) { return }
+    const next = ( ( index % items.length ) + items.length ) % items.length
     let activeId = ''
-    links.forEach( ( link, i ) => {
-        const item = link.closest( '.pagefind-ui__result' )
-        if( !item ) { return }
+    items.forEach( ( item, i ) => {
         if( i === next ) {
             item.classList.add( 'is-active' )
             item.setAttribute( 'aria-selected', 'true' )
             // PRD-07: aria-activedescendant Pattern — Input keeps focus,
             // active descendant is referenced by ID. Do not call link.focus().
             if( item.id ) { activeId = item.id }
+            if( typeof item.scrollIntoView === 'function' ) {
+                item.scrollIntoView( { block: 'nearest' } )
+            }
         } else {
             item.classList.remove( 'is-active' )
             item.removeAttribute( 'aria-selected' )
@@ -93,19 +105,21 @@ const setActive = ( links, index ) => {
 }
 
 const navigateResults = ( direction ) => {
-    const links = findResultLinks()
-    if( links.length === 0 ) { return false }
+    const items = findResultItems()
+    if( items.length === 0 ) { return false }
     const start = activeIndex < 0 ? ( direction > 0 ? -1 : 0 ) : activeIndex
-    setActive( links, start + direction )
+    setActive( items, start + direction )
     return true
 }
 
 const openActiveResult = () => {
-    const links = findResultLinks()
-    if( links.length === 0 || activeIndex < 0 ) { return false }
-    const target = links[ activeIndex ]
-    if( !target ) { return false }
-    target.click()
+    const items = findResultItems()
+    if( items.length === 0 || activeIndex < 0 ) { return false }
+    const item = items[ activeIndex ]
+    if( !item ) { return false }
+    const link = item.querySelector( '.pagefind-ui__result-link' )
+    if( !link ) { return false }
+    link.click()
     return true
 }
 

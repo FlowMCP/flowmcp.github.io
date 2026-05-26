@@ -67,7 +67,56 @@ import Default from '@astrojs/starlight/components/Search.astro'
             } ) )
         }
 
-        // -------- PRD-04: Empty-State permanent sichtbar --------
+        // -------- Memo 069 PRD-004 (A1): gefuellter Empty-State --------
+        // Statt nur "Type to search…" zeigt der leere Zustand eine kuratierte,
+        // deterministische Vorschlagsliste — das Modal wirkt nie leer. Locale-aware.
+        const SUGGESTIONS = {
+            en: {
+                heading: 'Suggested pages',
+                items: [
+                    { href: '/quickstart/what-is-flowmcp/', label: 'What is FlowMCP' },
+                    { href: '/quickstart/quickstart/', label: 'Quickstart' },
+                    { href: '/concepts/primitives/', label: 'Primitives' },
+                    { href: '/schemas-and-sources/', label: 'Schemas & Sources' },
+                    { href: '/reference/cli/', label: 'CLI Reference' }
+                ]
+            },
+            de: {
+                heading: 'Vorschläge',
+                items: [
+                    { href: '/de/quickstart/what-is-flowmcp/', label: 'Was ist FlowMCP' },
+                    { href: '/de/quickstart/quickstart/', label: 'Schnellstart' },
+                    { href: '/de/concepts/primitives/', label: 'Primitive' },
+                    { href: '/de/schemas-and-sources/', label: 'Schemas & Quellen' },
+                    { href: '/de/reference/cli/', label: 'CLI-Referenz' }
+                ]
+            }
+        }
+
+        const buildEmptyState = ( emptyMsg ) => {
+            if( emptyMsg.dataset.suggestionsBuilt === 'true' ) { return }
+            const isDE = location.pathname.startsWith( '/de/' ) || location.pathname === '/de'
+            const data = isDE ? SUGGESTIONS.de : SUGGESTIONS.en
+            const heading = document.createElement( 'div' )
+            heading.className = 'search-empty-state__heading'
+            heading.textContent = data.heading
+            const list = document.createElement( 'ul' )
+            list.className = 'search-empty-state__list'
+            data.items.forEach( ( item ) => {
+                const li = document.createElement( 'li' )
+                const link = document.createElement( 'a' )
+                link.href = item.href
+                link.textContent = item.label
+                link.className = 'search-empty-state__link'
+                li.appendChild( link )
+                list.appendChild( li )
+            } )
+            emptyMsg.textContent = ''
+            emptyMsg.appendChild( heading )
+            emptyMsg.appendChild( list )
+            emptyMsg.dataset.suggestionsBuilt = 'true'
+        }
+
         const ensureEmptyState = () => {
             const drawer = document.querySelector( '.pagefind-ui' )
             if( !drawer ) { return }
@@ -81,10 +130,10 @@ import Default from '@astrojs/starlight/components/Search.astro'
                     emptyMsg = document.createElement( 'div' )
                     emptyMsg.className = 'search-empty-state'
                     emptyMsg.setAttribute( 'role', 'status' )
-                    emptyMsg.textContent = 'Type to search the docs…'
                     const area = drawer.querySelector( '.pagefind-ui__drawer' ) || drawer
                     area.appendChild( emptyMsg )
                 }
+                buildEmptyState( emptyMsg )
                 emptyMsg.style.display = ''
                 if( results ) { results.style.minHeight = '120px' }
             } else if( emptyMsg ) {
@@ -177,13 +226,48 @@ import Default from '@astrojs/starlight/components/Search.astro'
         font-weight: 600;
     }
 
-    /* PRD-04: Empty-State permanent sichtbar -------------------------- */
+    /* Memo 069 PRD-004 (A1): gefuellter Empty-State mit Vorschlagsliste -- */
     .search-empty-state {
-        text-align: center;
+        padding: 1rem 0.75rem 1.25rem;
+    }
+    .search-empty-state__heading {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
         color: var(--text-inactive, #8a8f99);
-        padding: 1.5rem 1rem;
+        padding: 0 0.5rem 0.5rem;
+    }
+    .search-empty-state__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    .search-empty-state__link {
+        display: block;
+        padding: 0.5rem 0.6rem;
+        border-radius: 6px;
+        color: var(--text-primary, #e6edf3);
+        text-decoration: none;
         font-size: 14px;
-        font-style: italic;
+        transition: background-color 0.12s ease;
+    }
+    .search-empty-state__link:hover,
+    .search-empty-state__link:focus-visible {
+        background-color: var(--sidebar-active-bg, rgba(121, 192, 255, 0.08));
+        color: var(--accent, #79c0ff);
+        outline: none;
+    }
+
+    /* Memo 069 PRD-004 (A3): visible highlight for the keyboard-navigated
+     * result. search-keyboard.mjs toggles .is-active on arrow up/down but no
+     * style existed — the highlight had no visual effect. */
+    .pagefind-ui__result.is-active {
+        background-color: var(--sidebar-active-bg, rgba(121, 192, 255, 0.12));
+        box-shadow: inset 3px 0 0 0 var(--accent, #79c0ff);
     }
 
     /* PRD-04: Results-Container hat sichtbare Mindesthoehe ------------ */

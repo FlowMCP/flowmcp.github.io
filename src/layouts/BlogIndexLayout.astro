@@ -65,9 +65,11 @@ const frontmatter = {
 <StarlightPage frontmatter={frontmatter}>
     <section class="blog-index" id="main-content">
         <header class="blog-index__header">
-            <h1 class="blog-index__title">{t.title}</h1>
+            <div class="blog-index__header-row">
+                <h1 class="blog-index__title">{t.title}</h1>
+                <a class="blog-index__rss" href={`${ base }/rss.xml`}>{t.rss}</a>
+            </div>
             <p class="blog-index__subtitle">{t.subtitle}</p>
-            <a class="blog-index__rss" href={`${ base }/rss.xml`}>{t.rss}</a>
         </header>
 
         <nav class="blog-index__filters" aria-label="Blog filter">
@@ -124,19 +126,47 @@ const frontmatter = {
         padding: 0 1.5rem;
     }
 
-    .blog-index__header { margin-bottom: 1.5rem; text-align: left; }
+    /* Memo 069 PRD-001 (A1): the duplicate Starlight splash <h1 id="_top"> is
+     * suppressed centrally in src/styles/custom.css (next to the hero rules). */
+
+    /* Memo 069 PRD-001 (A3/A4): condensed header — title + RSS on one row,
+     * subtitle below. RSS sits right on the title baseline. */
+    .blog-index__header { margin-bottom: 1rem; text-align: left; }
+    .blog-index__header-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
     .blog-index__title {
-        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        font-size: clamp(2rem, 4vw, 2.75rem);
         font-weight: 800;
         color: var(--sl-color-white);
-        margin: 0 0 0.5rem;
+        margin: 0;
     }
-    .blog-index__subtitle { color: var(--sl-color-gray-3); font-size: 16px; margin: 0 0 1rem; }
-    .blog-index__rss { color: var(--sl-color-text-accent); text-decoration: none; font-size: 13px; font-weight: 600; }
+    .blog-index__subtitle { color: var(--sl-color-gray-3); font-size: 16px; margin: 0.5rem 0 0; }
+    .blog-index__rss {
+        color: var(--sl-color-text-accent);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
 
-    .blog-index__filters { display: flex; gap: 0.5rem; margin: 2rem 0; flex-wrap: wrap; }
+    .blog-index__filters { display: flex; align-items: center; gap: 0.5rem; margin: 1.25rem 0 2rem; flex-wrap: wrap; }
+    /* Memo 069 PRD-001 (A5): unify filter chips. Root cause of the tall 'All':
+     * Starlight markdown auto-spacing adds margin-top to sibling buttons; with
+     * the flex row's default align-items:stretch that inflated the line and
+     * stretched the margin-less first chip. margin:0 + align-items:center fixes it. */
     .blog-index__filter {
-        padding: 0.4rem 1rem;
+        display: inline-flex;
+        align-items: center;
+        margin: 0;
+        line-height: 1;
+        white-space: nowrap;
+        padding: 0.45rem 1rem;
         background: var(--sl-color-gray-6);
         border: 1px solid var(--sl-color-gray-5);
         border-radius: 999px;

@@ -128,12 +128,26 @@ const labels = LABELS[ lang ]
     const getPageMarkdown = async ( slug ) => {
         if( !slug ) { throw new Error( 'HeaderCopyButton: missing slug' ) }
         const trimmed = slug.replace( /^\/+|\/+$/g, '' )
-        const url = `/markdown-sources/${ trimmed }.md`
-        const response = await fetch( url )
-        if( !response.ok ) {
-            throw new Error( `HeaderCopyButton: fetch ${ url } failed with HTTP ${ response.status }` )
+        // Memo 069 PRD-002: the slug comes from the URL pathname, so a directory
+        // page like /about/ yields slug "about". The generator
+        // (generate-markdown-map.mjs) writes index pages as {dir}/index.md, so
+        // "about" → about/index.md, not about.md. Try the direct file first, then
+        // fall back to the {slug}/index.md variant for directory-index pages.
+        const directUrl = `/markdown-sources/${ trimmed }.md`
+        const indexUrl = `/markdown-sources/${ trimmed }/index.md`
+
+        const tryFetch = async ( url ) => {
+            const response = await fetch( url )
+            return { url, ok: response.ok, status: response.status, text: response.ok ? await response.text() : null }
         }
-        return await response.text()
+
+        const direct = await tryFetch( directUrl )
+        if( direct.ok ) { return direct.text }
+
+        const index = await tryFetch( indexUrl )
+        if( index.ok ) { return index.text }
+
+        throw new Error( `HeaderCopyButton: markdown source not found (${ direct.url } → HTTP ${ direct.status }, ${ index.url } → HTTP ${ index.status })` )
     }
 
     const setState = ( { button, state, text } ) => {
