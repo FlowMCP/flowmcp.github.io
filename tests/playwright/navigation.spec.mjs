@@ -45,10 +45,13 @@ test.describe( 'Navigation (Pencil-Layout REV-15)', () => {
         await expect( page.getByText( /Schema Catalog/i ) ).toBeVisible()
     } )
 
-    test( '7. Blog Index lädt + Welcome-Post sichtbar', async ( { page } ) => {
+    test( '7. Blog Index lädt + Posts sichtbar', async ( { page } ) => {
+        // Memo 069: the 'Welcome to the FlowMCP Blog' meta-post was removed.
+        // Assert the index renders with its title and at least one real post.
         const response = await page.goto( '/blog/' )
         expect( response?.status() ).toBeLessThan( 400 )
-        await expect( page.getByText( /Welcome to the FlowMCP Blog/i ) ).toBeVisible()
+        await expect( page.locator( '.blog-index__title' ) ).toBeVisible()
+        await expect( page.locator( '.blog-index__featured, .blog-index__card' ).first() ).toBeVisible()
     } )
 
     test( '8. RSS-Feed erreichbar', async ( { page } ) => {
