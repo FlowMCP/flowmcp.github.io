@@ -13,11 +13,37 @@ const specVersionShort = specSidebar.specVersion.replace( /\.0$/, '' );
 const specBadge = { text: `v${ specVersionShort }`, variant: 'note' };
 
 
+// Memo 069: open external links in a new tab. Self-contained rehype plugin
+// (no extra dependency) that adds target="_blank" + rel to every <a> whose
+// href is an absolute http(s) URL outside flowmcp.github.io / flowmcp.org.
+// Internal links (relative or own-domain) are left untouched.
+const rehypeExternalLinksNewTab = () => {
+    const isExternal = ( href ) => {
+        if( typeof href !== 'string' ) { return false }
+        if( !/^https?:\/\//i.test( href ) ) { return false }
+        return !/^https?:\/\/(www\.)?(flowmcp\.github\.io|flowmcp\.org)(\/|$)/i.test( href )
+    }
+
+    const walk = ( node ) => {
+        if( node.type === 'element' && node.tagName === 'a' && isExternal( node.properties?.href ) ) {
+            node.properties.target = '_blank'
+            node.properties.rel = [ 'noopener', 'noreferrer' ]
+        }
+        if( Array.isArray( node.children ) ) {
+            node.children.forEach( ( child ) => walk( child ) )
+        }
+    }
+
+    return ( tree ) => { walk( tree ) }
+}
+
+
 export default defineConfig({
     site: 'https://flowmcp.github.io',
     markdown: {
         rehypePlugins: [
             [ rehypeMermaid, { strategy: 'inline-svg' } ],
+            rehypeExternalLinksNewTab,
         ],
     },
     redirects: {
