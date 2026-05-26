@@ -55,7 +55,7 @@ Spec: [Resources](/specification/resources/).
 
 Ein Prompt ist ein erklaerender Text, der an einen Namespace gebunden ist. Prompts erklaeren einem KI-Agenten, wie die Tools eines Anbieters zusammen funktionieren — Pagination-Muster, Fehler-Semantik, Hinweise zu Rate-Limits, wie Endpoints kombiniert werden. Prompts **erklaeren**, sie **instruieren** nicht. Sie sind modellneutral, sodass jeder AI-Client profitiert.
 
-Spec: [Prompts](/specification/prompts/).
+Spec: [Prompts](/specification/prompt-architecture/).
 
 ## Skills
 
