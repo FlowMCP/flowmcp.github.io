@@ -562,6 +562,18 @@ body:has(.blog-index) h1#_top,
 body:has(.blog-post) h1#_top {
     display: none !important;
 }
+/* Hiding just the h1 left its Starlight content-panel as an empty 48px band
+ * with a divider line below it ("the box stayed"). Collapse the empty title
+ * panel and drop the content-panel divider so the blog content sits cleanly
+ * under the header — no empty band, no double line. */
+body:has(.blog-index) .content-panel:has(h1#_top),
+body:has(.blog-post) .content-panel:has(h1#_top) {
+    display: none !important;
+}
+body:has(.blog-index) .content-panel,
+body:has(.blog-post) .content-panel {
+    border-top: none !important;
+}
 
 .hero img {
     object-fit: contain !important;
