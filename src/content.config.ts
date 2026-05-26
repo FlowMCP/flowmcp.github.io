@@ -22,7 +22,8 @@ const blog = defineCollection( {
             author: z.string().default( 'FlowMCP Team' ),
             tags: z.array( z.string() ).default( [] ),
             cover: z.string().optional(),
-            draft: z.boolean().default( false )
+            draft: z.boolean().default( false ),
+            lang: z.enum( [ 'en', 'de' ] ).default( 'en' )
         } )
     } )
 } )

@@ -1,41 +1,42 @@
 ---
-title: "FlowMCP v4.1 — GTFS als erste Datenklasse mit eigenem Add-on"
-description: "Wie das gtfs-sqlite-toolkit GTFS-Feeds in auditierbare SQLite-Ressourcen verwandelt und FlowMCP zur ersten echten Mobility-Engine macht."
+title: "FlowMCP v4.1 — GTFS as the First Data Class with Its Own Add-on"
+description: "How the gtfs-sqlite-toolkit turns GTFS feeds into auditable SQLite resources and makes FlowMCP the first real mobility engine."
 date: 2026-05-25
 author: "FlowMCP Team"
 tags: ["release", "v41", "gtfs", "add-on", "mobility", "open-data"]
+lang: en
 ---
 
-> ℹ️ **Hinweis:** Die Pilot-Messwerte (Konvertierungszeiten, Latenzen, Output-Snippets) stammen aus dem laufenden GTFS-Pilot und werden ergaenzt, sobald die Messreihen abgeschlossen sind.
+> ℹ️ **Note:** The pilot measurements (conversion times, latencies, output snippets) come from the ongoing GTFS pilot and will be added once the measurement series are complete.
 
-GTFS-Feeds sind die Lingua Franca des oeffentlichen Verkehrs — und gleichzeitig ein klassisches Beispiel fuer das Daten-Format-Problem: zwischen 30 und 60 CSV-Dateien in einer ZIP, fuer den DELFI-Feed mehrere hundert Megabyte, entpackt mehrere Gigabyte. Eine LLM kann diese Datei nicht im Kontext halten. Eine REST-API drumherum hilft, aber wer audiert die? Wer pflegt sie?
+GTFS feeds are the lingua franca of public transit — and at the same time a classic example of the data-format problem: between 30 and 60 CSV files in a ZIP, several hundred megabytes for the DELFI feed, several gigabytes once unpacked. An LLM cannot hold this file in context. A REST API around it helps, but who audits it? Who maintains it?
 
-Mit **v4.1** loest FlowMCP das anders. GTFS wird zur ersten Datenklasse mit einem eigenen **Add-on** — `gtfs-sqlite-toolkit`. Das Toolkit konvertiert Feeds zu **versiegelten SQLite-Datenbanken** und meldet einer FlowMCP-CLI per Capability-Matrix, welche Abfragen sinnvoll moeglich sind. Schemas verweisen dann nur noch auf die DB — keine Wartung der CSV-Parser, keine API-Hosting-Kosten.
+With **v4.1**, FlowMCP solves this differently. GTFS becomes the first data class with its own **add-on** — `gtfs-sqlite-toolkit`. The toolkit converts feeds into **sealed SQLite databases** and tells a FlowMCP CLI, via a capability matrix, which queries are meaningfully possible. Schemas then only reference the DB — no maintenance of CSV parsers, no API hosting costs.
 
-## Was ist GTFS?
+## What is GTFS?
 
-GTFS — General Transit Feed Specification — ist ein offener Standard fuer Fahrplandaten, urspruenglich von Google fuer Transit-Suchen entwickelt, heute der weltweite De-facto-Standard fuer OePNV-Daten. Ein GTFS-Feed enthaelt ca. 30 CSV-Dateien: Stops, Routes, Trips, Stop-Times, Calendar, Transfers, ...
+GTFS — General Transit Feed Specification — is an open standard for schedule data, originally developed by Google for transit searches and today the worldwide de facto standard for public transit data. A GTFS feed contains roughly 30 CSV files: stops, routes, trips, stop-times, calendar, transfers, ...
 
-Wir betrachten zwei deutsche Feeds:
+We look at two German feeds:
 
-| Feed | Quelle | Groesse | Lizenz | Update |
-|------|--------|---------|--------|--------|
-| DELFI (Deutschland gesamt) | `download.gtfs.de/germany/free/latest.zip` | ~245 MB | CC-BY 4.0 (DELFI e.V.) | taeglich |
-| VBB (Berlin/Brandenburg) | `vbb.de/vbbgtfs` | ~83 MB | CC-BY 4.0 (VBB GmbH) | Mi+Fr |
+| Feed | Source | Size | License | Update |
+|------|--------|------|---------|--------|
+| DELFI (Germany-wide) | `download.gtfs.de/germany/free/latest.zip` | ~245 MB | CC-BY 4.0 (DELFI e.V.) | daily |
+| VBB (Berlin/Brandenburg) | `vbb.de/vbbgtfs` | ~83 MB | CC-BY 4.0 (VBB GmbH) | Wed+Fri |
 
-Beide Endpunkte erwidern HTTP 200 ohne Auth-Header. Die Lizenz verlangt Attribution in jeder Antwort, die diese Daten verwendet.
+Both endpoints respond with HTTP 200 without an auth header. The license requires attribution in every response that uses this data.
 
-## Was ist `gtfs-sqlite-toolkit`?
+## What is `gtfs-sqlite-toolkit`?
 
-Das Toolkit ist das **erste FlowMCP-Add-on**. Es konvertiert einen GTFS-Feed (CSV in ZIP) in eine SQLite-Datenbank mit drei Eigenschaften:
+The toolkit is the **first FlowMCP add-on**. It converts a GTFS feed (CSV in ZIP) into a SQLite database with three properties:
 
-| Eigenschaft | Bedeutung |
-|-------------|-----------|
-| **Quality-Seal** | Eine `meta`-Tabelle in der DB enthaelt Hash, Datum, Spec-Revision, Provider — die DB ist eindeutig referenzierbar. |
-| **Capability-Matrix** | 12 Booleans, die abbilden, welche Datei der Feed mitliefert (`stops`, `routes`, `transfers`, `shapes`, ...). |
-| **Capability-Driven Auto-Injection** | Die FlowMCP-CLI liest die Capability-Matrix und injiziert nur die Tools, die der Feed tatsaechlich beantworten kann. |
+| Property | Meaning |
+|----------|---------|
+| **Quality seal** | A `meta` table in the DB contains the hash, date, spec revision, and provider — the DB is uniquely referenceable. |
+| **Capability matrix** | 12 booleans that map which file the feed ships with (`stops`, `routes`, `transfers`, `shapes`, ...). |
+| **Capability-driven auto-injection** | The FlowMCP CLI reads the capability matrix and injects only the tools that the feed can actually answer. |
 
-Ein Schema sieht damit so aus:
+A schema then looks like this:
 
 ```javascript
 export const schema = {
@@ -54,103 +55,103 @@ export const schema = {
             }
         ],
         tools: [
-            // Default-Tools werden automatisch injiziert.
+            // Default tools are injected automatically.
         ]
     }
 }
 ```
 
-Das Schema ist klein. Die Engine bleibt bei FlowMCP. Der Datenbank-Inhalt bei der user-eigenen DB. API-Keys gibt es nicht, weil es keine API gibt — die Daten sind frei.
+The schema is small. The engine stays with FlowMCP. The database content stays with the user's own DB. There are no API keys, because there is no API — the data is free.
 
-## Pilot-Ergebnisse: DELFI + VBB
+## Pilot Results: DELFI + VBB
 
-Wir haben beide Feeds in den Pilot genommen.
+We put both feeds into the pilot.
 
-### Konvertierung
+### Conversion
 
-Erwartete Groessenordnungen aus dem Pilot: DELFI startet bei rund 245 MB ZIP und waechst nach Konvertierung auf rund 800 MB bis 2 GB SQLite, VBB von rund 83 MB ZIP auf rund 300 bis 700 MB. Die exakten Konvertierungszeiten und Quality-Seal-Stati ergaenzen wir, sobald die Messreihen abgeschlossen sind.
+Expected orders of magnitude from the pilot: DELFI starts at around 245 MB ZIP and grows after conversion to roughly 800 MB to 2 GB SQLite, VBB from around 83 MB ZIP to roughly 300 to 700 MB. We will add the exact conversion times and quality-seal statuses once the measurement series are complete.
 
 ### Performance
 
-Die Latenz-Messung (P50/P95) fuer `searchStops`, `findRoute` und `nextDeparture` laeuft im Pilot. SQLite-Index-Hits auf den konvertierten Datenbanken erlauben Tausende Queries ohne weiteren Netzwerk-Hit — die konkreten Zahlen reichen wir nach.
+The latency measurement (P50/P95) for `searchStops`, `findRoute`, and `nextDeparture` is running in the pilot. SQLite index hits on the converted databases allow thousands of queries without any further network hit — we will provide the concrete numbers later.
 
-### Fünf Use-Cases
+### Five Use Cases
 
-#### 1. "Naechste S-Bahn von Berlin Hbf nach Spandau"
+#### 1. "Next S-Bahn from Berlin Hbf to Spandau"
 
 ```bash
 flowmcp call gtfsvbb.findRoute '{"origin":"Berlin Hbf","destination":"Spandau"}'
 ```
 
-_Beispiel-Output folgt nach Abschluss der Pilot-Messreihe._
+_Example output to follow once the pilot measurement series is complete._
 
-#### 2. "Berlin Hbf → Hamburg Hbf am schnellsten"
+#### 2. "Berlin Hbf → Hamburg Hbf, fastest"
 
 ```bash
 flowmcp call gtfsde.findRoute '{"origin":"Berlin Hbf","destination":"Hamburg Hbf","criterion":"fastest"}'
 ```
 
-_Beispiel-Output folgt nach Abschluss der Pilot-Messreihe._
+_Example output to follow once the pilot measurement series is complete._
 
-#### 3. "Buslinien Karlsruhe Sonntag"
+#### 3. "Bus lines Karlsruhe Sunday"
 
 ```bash
 flowmcp call gtfsde.findRoutesByCalendar '{"city":"Karlsruhe","day":"sunday"}'
 ```
 
-_Beispiel-Output folgt nach Abschluss der Pilot-Messreihe._
+_Example output to follow once the pilot measurement series is complete._
 
-#### 4. "Bahnhoefe im 10km-Umkreis um Koordinate X"
+#### 4. "Stations within a 10km radius of coordinate X"
 
 ```bash
 flowmcp call gtfsde.searchStopsByGeo '{"lat":52.52,"lon":13.41,"radius_m":10000}'
 ```
 
-_Beispiel-Output folgt nach Abschluss der Pilot-Messreihe._
+_Example output to follow once the pilot measurement series is complete._
 
-#### 5. "Anschluss an Event Y in Stadt Z" *(Kombinatorik)*
+#### 5. "Connection to event Y in city Z" *(combinatorics)*
 
-Dieser Use-Case verkettet **zwei Schemas** und ist der Killer-Beleg fuer die Vision von FlowMCP: Schemas sind klein, die Engine ist eine, die Kombinatorik passiert oben.
+This use case chains **two schemas** together and is the killer proof for the FlowMCP vision: schemas are small, the engine is a single one, and the combinatorics happen on top.
 
 ```bash
-# Schritt 1: Event suchen
+# Step 1: search for the event
 flowmcp call eventbrite.search '{"name":"Berlin Mobility Conference","date":"2026-06-15"}'
 # → venue=Tempelhof, lat=52.473, lon=13.402
 
-# Schritt 2: Nahe Stops finden
+# Step 2: find nearby stops
 flowmcp call overpass-osm.nearbyStops '{"lat":52.473,"lon":13.402,"radius_m":800}'
 # → [Tempelhof, Platz der Luftbruecke, ...]
 
-# Schritt 3: Route dorthin
+# Step 3: route there
 flowmcp call gtfsvbb.findRoute '{"origin":"Berlin Hbf","destination":"Tempelhof","date":"2026-06-15T18:00"}'
 # → S-Bahn S41 → Bus M46
 ```
 
-_Ausgefuehrte Outputs und Latenzen folgen nach Abschluss der Pilot-Messreihe._
+_Executed outputs and latencies to follow once the pilot measurement series is complete._
 
-## Add-on-Konzept allgemein
+## The Add-on Concept in General
 
-GTFS ist das erste Add-on, aber nicht das einzige. Das Konzept ist generisch:
+GTFS is the first add-on, but not the only one. The concept is generic:
 
-| Schritt | Was passiert |
-|---------|--------------|
-| 1. Add-on schreibt SQLite-DB mit `meta`-Tabelle | Hash, Spec-Revision, Provider, Capabilities |
-| 2. Schema verweist auf `source: 'sqlite-<typ>'` + `addon: '<repo>'` + `addonSource: 'github:org/repo'` | Schema bleibt dünn |
-| 3. FlowMCP-CLI liest Capabilities | injiziert nur passende Tools |
-| 4. AI ruft Tools | DB-Operationen sind deterministisch, fast (Index-Hits) |
+| Step | What happens |
+|------|--------------|
+| 1. Add-on writes a SQLite DB with a `meta` table | hash, spec revision, provider, capabilities |
+| 2. Schema references `source: 'sqlite-<type>'` + `addon: '<repo>'` + `addonSource: 'github:org/repo'` | schema stays thin |
+| 3. FlowMCP CLI reads capabilities | injects only matching tools |
+| 4. AI calls tools | DB operations are deterministic, fast (index hits) |
 
-Capability-Matrix-Beispiele aus GTFS:
+Capability matrix examples from GTFS:
 
-- `hasStops` (Datei `stops.txt` vorhanden) → `searchStops` wird injiziert
-- `hasShapes` (Datei `shapes.txt` vorhanden) → `getRouteShape` wird injiziert
-- `hasTransfers` → `findTransfer` wird injiziert
-- `hasFareRules` → `getFare` wird injiziert
+- `hasStops` (file `stops.txt` present) → `searchStops` is injected
+- `hasShapes` (file `shapes.txt` present) → `getRouteShape` is injected
+- `hasTransfers` → `findTransfer` is injected
+- `hasFareRules` → `getFare` is injected
 
-Schemas, die einen Feed bekommen, dem `transfers.txt` fehlt, sehen `findTransfer` schlicht nicht im Tool-Set. Keine 404, keine Fehlermeldung, keine halluzinierte Antwort.
+Schemas that receive a feed missing `transfers.txt` simply do not see `findTransfer` in the tool set. No 404, no error message, no hallucinated answer.
 
-## Open Data und Recht
+## Open Data and the Law
 
-Beide verwendeten Feeds stehen unter **CC-BY 4.0**. Das verlangt Attribution in jeder weitergegebenen Antwort. FlowMCP setzt das in der Output-Struktur:
+Both feeds used are licensed under **CC-BY 4.0**. This requires attribution in every response passed on. FlowMCP applies this in the output structure:
 
 ```json
 {
@@ -160,20 +161,20 @@ Beide verwendeten Feeds stehen unter **CC-BY 4.0**. Das verlangt Attribution in 
 }
 ```
 
-Warum sind diese Daten frei? Das deutsche **E-Government-Gesetz §12a** (eingefuehrt 2017, novelliert 2021) verpflichtet Bundes- und Landesbehoerden, Datenbestaende grundsaetzlich als Open Data bereitzustellen. DELFI als Zweckverband der Bundeslaender fuer Mobilitaetsdaten, VBB als oeffentlicher Verkehrsverbund, beide unterliegen diesen Vorgaben. CC-BY 4.0 ist die gewaehlte Lizenz-Form.
+Why is this data free? The German **E-Government Act §12a** (introduced in 2017, amended in 2021) obliges federal and state authorities to make their data holdings available as open data by default. DELFI, as the federal states' special-purpose association for mobility data, and VBB, as a public transit association, are both subject to these requirements. CC-BY 4.0 is the chosen license form.
 
-## Wie geht's weiter
+## What's Next
 
-| Naechster Schritt | Status |
-|--------------------|--------|
-| Realtime (GTFS-RT) | separater Endpoint, im Pilot nicht abgedeckt — Folge-Iteration |
-| Weitere Add-ons (OFAC, OSM, Wikidata) | in Diskussion |
-| Schema-Validator fuer Add-on-Capabilities | Folge-Memo |
+| Next step | Status |
+|-----------|--------|
+| Realtime (GTFS-RT) | separate endpoint, not covered in the pilot — follow-up iteration |
+| Further add-ons (OFAC, OSM, Wikidata) | under discussion |
+| Schema validator for add-on capabilities | follow-up memo |
 
 
 
 ---
 
-> 📖 Lies auch:
-> - *[FlowMCP v4 — Skills, Selections, Pipes](/blog/2026-05-flowmcp-v4-skills-selections-pipes/)* — Pipes-Konzept verkettet diese GTFS-Tools elegant.
-> - *Anschluss erreichen — Wie FlowMCP zum Mobility-Framework wurde* — Hackathon-Validierung der Mobility-Use-Cases.
+> 📖 Read also:
+> - *[FlowMCP v4 — Skills, Selections, Pipes](/blog/2026-05-flowmcp-v4-skills-selections-pipes/)* — the pipes concept chains these GTFS tools elegantly.
+> - *Catching the Connection — How FlowMCP Became a Mobility Framework* — hackathon validation of the mobility use cases.

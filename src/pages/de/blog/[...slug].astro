@@ -1,0 +1,19 @@
+---
+// Memo 064 follow-up: German blog post route. Generates /de/blog/<slug>
+// from German posts (lang: 'de'); the `.de` filename suffix is stripped
+// from the slug so EN and DE versions share the same clean slug in their
+// respective locale roots.
+import BlogPostLayout from '../../../layouts/BlogPostLayout.astro'
+import { getCollection } from 'astro:content'
+
+export async function getStaticPaths() {
+    const includeDrafts = import.meta.env.DEV
+    const posts = await getCollection( 'blog', ( { data } ) => includeDrafts || !data.draft )
+    return posts
+        .filter( ( post ) => ( post.data.lang || 'en' ) === 'de' )
+        .map( ( post ) => ( { params: { slug: post.id.replace( /^de\//, '' ) }, props: { post } } ) )
+}
+
+const { post } = Astro.props
+---
+<BlogPostLayout post={post} />

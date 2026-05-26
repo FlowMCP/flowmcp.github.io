@@ -55,7 +55,7 @@ Spec: [Resources](/specification/resources/).
 
 A prompt is an explanatory text scoped to a namespace. Prompts teach an AI agent how a provider's tools work together — pagination patterns, error semantics, rate-limit guidance, how to combine endpoints. Prompts **explain**; they do not **instruct**. They are model-neutral, so any AI client benefits.
 
-Spec: [Prompts](/specification/prompts/).
+Spec: [Prompts](/specification/prompt-architecture/).
 
 ## Skills
 

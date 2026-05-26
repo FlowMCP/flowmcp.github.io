@@ -1,63 +1,64 @@
 ---
-title: "Anschluss erreichen — Wie FlowMCP zum Mobility-Framework wurde"
-description: "Story aus dem 'Anschluss erreichen'-Hackathon von DB InfraGO, mit FlowMCP als technischer Basis fuer drei Mobility-Challenges."
+title: "Making the Connection — How FlowMCP Became a Mobility Framework"
+description: "Story from DB InfraGO's 'Anschluss erreichen' hackathon, with FlowMCP as the technical foundation for three mobility challenges."
 date: 2026-03-23
 author: "FlowMCP Team"
 tags: ["hackathon", "mobility", "deutsche-bahn", "berlin"]
+lang: en
 ---
 
-## Was war "Anschluss erreichen"?
+## What Was "Anschluss erreichen"?
 
-Am **20. und 21. Maerz 2026** (Freitag 10:00 bis Samstag 18:00) veranstalteten **DB InfraGO**, **DB mindbox**, die **Infostelle Radparken** und **Velokonzept** im **Berliner Hauptbahnhof** (Washingtonplatz 2, 10557 Berlin) einen 2-tägigen Hackathon zum Thema Anschlussmobilitaet. Drei Challenges standen zur Wahl:
+On **20 and 21 March 2026** (Friday 10:00 to Saturday 18:00), **DB InfraGO**, **DB mindbox**, the **Infostelle Radparken** and **Velokonzept** hosted a 2-day hackathon on connecting mobility at **Berlin Hauptbahnhof** (Washingtonplatz 2, 10557 Berlin). Three challenges were on offer:
 
-| Challenge | Thema | Kernfrage |
-|-----------|-------|-----------|
-| **Mobilitaetsdaten** | Datennutzung | Wie koennen Mobilitaetsdaten Wege entlang der ersten/letzten Meile verbessern? |
-| **Anschlussmobilitaet** | Intermodalitaet | Wie koennen Fahrraeder, Scooter, Sharing und Fussverkehr die Bahnhofserreichbarkeit erhoehen? |
-| **Radparken** | Sicheres Parken | Wie kann der Zugang zu gesichertem Fahrradparken an Bahnhoefen vereinfacht werden? |
+| Challenge | Topic | Core Question |
+|-----------|-------|---------------|
+| **Mobility Data** | Data usage | How can mobility data improve journeys along the first/last mile? |
+| **Connecting Mobility** | Intermodality | How can bikes, scooters, sharing and pedestrian traffic improve station accessibility? |
+| **Bike Parking** | Secure parking | How can access to secure bike parking at stations be simplified? |
 
-Testfelder waren Berlin Hbf, S+U Jannowitzbruecke, Potsdam (4 Bahnhoefe) und Bad Belzig.
+The test areas were Berlin Hbf, S+U Jannowitzbruecke, Potsdam (4 stations) and Bad Belzig.
 
-## Wie wir FlowMCP eingesetzt haben
+## How We Used FlowMCP
 
-Unser Beitrag adressierte die **Mobilitaetsdaten-Challenge**. Die Aufgabe: aus einem heterogenen Set deutscher Mobility-APIs einen Agenten bauen, der Anschluss-Fragen beantwortet — "Wie komme ich von Berlin Hbf nach Bad Belzig mit dem Anschluss-Rad?", "Welche Sharing-Optionen gibt es am Ziel-Bahnhof?".
+Our contribution addressed the **Mobility Data challenge**. The task: build an agent from a heterogeneous set of German mobility APIs that answers connection questions — "How do I get from Berlin Hbf to Bad Belzig with a connecting bike?", "What sharing options are there at the destination station?".
 
-In mehreren Vorbereitungs-Sprints haben wir die deutschen Mobility-Provider als REST-API-Schemas in FlowMCP eingepflegt — DELFI, VBB, Sharing-APIs, Radparken-Datensaetze. Damals noch ohne GTFS-Add-on: jede Schedule-Abfrage ging als REST-Call durch.
+Over several preparation sprints we integrated the German mobility providers as REST API schemas into FlowMCP — DELFI, VBB, sharing APIs, bike-parking datasets. Back then still without the GTFS add-on: every schedule query went through as a REST call.
 
-### Was hat sich bewaehrt
+### What Worked Well
 
-| Aspekt | Wirkung |
-|--------|---------|
-| **Schema-Library als Vorrat** | Statt 8 verschiedene API-Docs am Tag zu lesen, hatten wir eine `flowmcp search mobility`-Liste mit fertigen Integrationen. |
-| **AI-Key-Trennung** | Demo lief auf einem Rechner, an dem mehrere Augen mitschauten. API-Keys blieben in FlowMCP, nie in der LLM-Konversation. |
-| **Mock-Mode** | Bei flackerndem WiFi am Hauptbahnhof half der Mock-Mode, die Praesentation unabhaengig vom Netz zu testen. |
+| Aspect | Effect |
+|--------|--------|
+| **Schema library as a reserve** | Instead of reading 8 different API docs on the day, we had a `flowmcp search mobility` list with ready-made integrations. |
+| **AI key separation** | The demo ran on a machine with several pairs of eyes watching. API keys stayed in FlowMCP, never in the LLM conversation. |
+| **Mock mode** | With flaky WiFi at the main station, mock mode helped us test the presentation independently of the network. |
 
-### Was wir gelernt haben
+### What We Learned
 
-Mobility-Daten sind **zeitlich** strukturiert. GTFS-Feeds, Service-Calendars, Realtime-Endpoints — ohne deterministische Time-Window-Abfragen verliert sich die LLM in Fragen wie "welcher der drei Trains ist morgen?". Hier zeigte sich die spaetere Antwort von v4: **Skills mit Prefill** und **Pipes mit Output-Schema**.
+Mobility data is structured by **time**. GTFS feeds, service calendars, realtime endpoints — without deterministic time-window queries, the LLM gets lost in questions like "which of the three trains is tomorrow?". This is where v4's later answer showed up: **skills with prefill** and **pipes with output schema**.
 
-Mobility-Daten ueber REST-Calls funktioniert, ist aber teuer fuer Time-Window-Queries (jede Frage = ein API-Call). Aus dieser Friction entstand v4.1: GTFS-Feeds werden einmal lokal zu SQLite konvertiert, danach laufen tausende Queries ohne weiteren Netzwerk-Hit. Mehr im Folge-Beitrag.
+Mobility data over REST calls works, but it is expensive for time-window queries (every question = one API call). This friction gave rise to v4.1: GTFS feeds are converted to SQLite locally once, after which thousands of queries run without any further network hit. More in the follow-up post.
 
-## Ergebnis
+## Result
 
-Wir haben einen funktionierenden Mobilitaetsdaten-Agenten gebaut, der mehrere deutsche Mobility-APIs ueber eine einzige FlowMCP-Schema-Library anspricht und Anschluss-Fragen entlang der ersten und letzten Meile beantwortet. Der Lauf am Hauptbahnhof bestaetigte die Kernhypothese: eine kuratierte Schema-Library schlaegt Live-Integration unter Zeitdruck.
+We built a working mobility-data agent that talks to several German mobility APIs through a single FlowMCP schema library and answers connection questions along the first and last mile. The run at the main station confirmed the core hypothesis: a curated schema library beats live integration under time pressure.
 
-## Was wir mitnehmen
+## What We Take Away
 
-| Erkenntnis | Folge |
-|------------|-------|
-| Schemas als Vorrat schlagen Live-Integration | bestaetigt FlowMCP-Kernhypothese |
-| Mock-Mode ist nicht "nice to have" | wurde zur Pflicht in Hackathon-Kontexten |
-| Mobility braucht eigene Primitive | fuehrte zu v4.1 GTFS Add-on |
-| Determinismus + LLM-Komposition braucht Strukturen | wurde Skills + Pipes (v4) |
+| Insight | Consequence |
+|---------|-------------|
+| Schemas as a reserve beat live integration | confirms FlowMCP's core hypothesis |
+| Mock mode is not "nice to have" | became mandatory in hackathon contexts |
+| Mobility needs its own primitives | led to v4.1 GTFS add-on |
+| Determinism + LLM composition needs structure | became skills + pipes (v4) |
 
-## Quellen
+## Sources
 
-- Veranstalter: DB InfraGO, DB mindbox, Infostelle Radparken, Velokonzept
-- Ort: Berliner Hauptbahnhof, Washingtonplatz 2, 10557 Berlin (20.–21. Maerz 2026)
+- Organizers: DB InfraGO, DB mindbox, Infostelle Radparken, Velokonzept
+- Location: Berlin Hauptbahnhof, Washingtonplatz 2, 10557 Berlin (20–21 March 2026)
 
 ---
 
-> 📖 Lies auch:
+> 📖 Read also:
 > - *[FlowMCP v4 — Skills, Selections, Pipes](/blog/2026-05-flowmcp-v4-skills-selections-pipes/)*
-> - *[FlowMCP v4.1 — GTFS als erste Datenklasse mit eigenem Add-on](/blog/2026-05-flowmcp-v41-gtfs-add-on/)*
+> - *[FlowMCP v4.1 — GTFS as a First-Class Data Type with Its Own Add-on](/blog/2026-05-flowmcp-v41-gtfs-add-on/)*

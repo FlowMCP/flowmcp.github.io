@@ -22,14 +22,24 @@ const { post } = Astro.props
 
 const { Content, headings } = await render( post )
 
-const formattedDate = post.data.date.toLocaleDateString( 'en-US', { year: 'numeric', month: 'long', day: 'numeric' } )
+// Memo 064 follow-up: bilingual blog. Derive locale from the post's `lang`
+// field so back-links, related posts, share URLs and date formatting all
+// stay within the right locale (/blog/ vs /de/blog/).
+const lang = post.data.lang || 'en'
+const base = lang === 'de' ? '/de/blog' : '/blog'
+const slugOf = ( id ) => id.replace( /^de\//, '' )
+const t = lang === 'de'
+    ? { back: '← Alle Beitraege', related: 'Aehnliche Beitraege', share: 'Teilen:', copy: 'Link kopieren', toc: 'AUF DIESER SEITE' }
+    : { back: '← All posts', related: 'Related Posts', share: 'Share:', copy: 'Copy link', toc: 'ON THIS PAGE' }
+
+const formattedDate = post.data.date.toLocaleDateString( lang === 'de' ? 'de-DE' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' } )
 
 const showDrafts = import.meta.env.DEV
 const allPosts = ( await getCollection( 'blog', ( { data } ) => showDrafts || !data.draft ) )
-    .filter( ( p ) => p.id !== post.id )
+    .filter( ( p ) => p.id !== post.id && ( p.data.lang || 'en' ) === lang )
     .slice( 0, 3 )
 
-const canonicalUrl = `/blog/${ post.id }/`
+const canonicalUrl = `${ base }/${ slugOf( post.id ) }/`
 
 // Filtering down to depth <= 3 outside the JSX expression. The Astro
 // template compiler misreads "h.depth <= 3" inside curly braces as the
@@ -53,7 +63,7 @@ const frontmatter = {
     <div class="blog-post__progress" id="reading-progress" aria-hidden="true"></div>
 
     <div class="blog-post" id="main-content">
-        <a class="blog-post__back" href="/blog/">← All posts</a>
+        <a class="blog-post__back" href={`${ base }/`}>{t.back}</a>
 
         <article class="blog-post__article">
             <header class="blog-post__header">
@@ -81,16 +91,16 @@ const frontmatter = {
                     <Content />
 
                     <div class="blog-post__share">
-                        <span class="blog-post__share-label">Share:</span>
+                        <span class="blog-post__share-label">{t.share}</span>
                         <a class="blog-post__share-link" href={`https://twitter.com/intent/tweet?text=${ encodeURIComponent( post.data.title ) }&url=https://flowmcp.org${ canonicalUrl }`} target="_blank" rel="noopener">Twitter</a>
                         <a class="blog-post__share-link" href={`https://www.linkedin.com/sharing/share-offsite/?url=https://flowmcp.org${ canonicalUrl }`} target="_blank" rel="noopener">LinkedIn</a>
-                        <button class="blog-post__share-link" data-copy-url={canonicalUrl}>Copy link</button>
+                        <button class="blog-post__share-link" data-copy-url={canonicalUrl}>{t.copy}</button>
                     </div>
                 </div>
 
                 { headings.length > 0 && (
                     <aside class="blog-post__toc" aria-label="On this page">
-                        <div class="blog-post__toc-title">ON THIS PAGE</div>
+                        <div class="blog-post__toc-title">{t.toc}</div>
                         <ul class="blog-post__toc-list">
                             { tocHeadings.map( ( h ) => (
                                 <li class={`blog-post__toc-item blog-post__toc-item--depth-${ h.depth }`}>
@@ -105,10 +115,10 @@ const frontmatter = {
 
         { allPosts.length > 0 && (
             <section class="blog-post__related" aria-label="Related posts">
-                <h2 class="blog-post__related-title">Related Posts</h2>
+                <h2 class="blog-post__related-title">{t.related}</h2>
                 <div class="blog-post__related-grid">
                     { allPosts.map( ( p ) => (
-                        <a class="blog-post__related-card" href={`/blog/${ p.id }/`}>
+                        <a class="blog-post__related-card" href={`${ base }/${ slugOf( p.id ) }/`}>
                             <span class="blog-post__related-tag">{p.data.tags[ 0 ] || 'post'}</span>
                             <h3 class="blog-post__related-card-title">{p.data.title}</h3>
                             <p class="blog-post__related-card-desc">{p.data.description}</p>

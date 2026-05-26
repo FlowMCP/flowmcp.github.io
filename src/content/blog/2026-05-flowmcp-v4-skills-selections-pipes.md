@@ -1,33 +1,34 @@
 ---
 title: "FlowMCP v4 — Skills, Selections, Pipes"
-description: "Wie deterministische Strukturen LLM-Komposition tragen, ohne dass die AI Parameter halluziniert."
+description: "How deterministic structures carry LLM composition without the AI hallucinating parameters."
 date: 2026-05-24
 author: "FlowMCP Team"
 tags: ["release", "v4", "skills", "selections", "pipes"]
+lang: en
 ---
 
 > 2026-05-24 · FlowMCP Team · #release #v4 #skills #selections #pipes
 
-FlowMCP v4 schließt die Lücke zwischen "deterministisch" und "LLM". Skills bringen ihre eigene Parameter-Referenz mit. Selections kuratieren Tools über Namespaces hinweg. Pipes verketten Outputs zu Inputs des nächsten Tools. Dieser Beitrag erklärt, warum diese drei Primitive zusammengehören — und welcher Labortest sie ausgelöst hat.
+FlowMCP v4 closes the gap between "deterministic" and "LLM". Skills bring their own parameter reference along. Selections curate tools across namespaces. Pipes chain outputs into the inputs of the next tool. This post explains why these three primitives belong together — and which lab test triggered them.
 
-## Warum v4?
+## Why v4?
 
-Vor v4 musste eine AI Schemas einzeln aufrufen und die Komposition selbst übernehmen. Das funktionierte für simple Anfragen — *"Welcher Preis hat ETH gerade?"* — und brach bei mehrstufigen Aufgaben — *"Welcher ETH-Validator hat im letzten Monat den höchsten Reward erzielt?"* Die AI musste raten, in welcher Reihenfolge sie welche Tools aufruft, welche Parameter sie wie verkettet, welche Enum-Werte gültig sind. Halluzinationen waren die Folge.
+Before v4, an AI had to call schemas one by one and handle composition itself. That worked for simple requests — *"What's the price of ETH right now?"* — and broke down on multi-step tasks — *"Which ETH validator earned the highest reward last month?"* The AI had to guess in which order to call which tools, which parameters to chain how, which enum values were valid. Hallucinations were the result.
 
-FlowMCP v4 dreht das um: die AI bekommt **Werkzeuge zum Komponieren** — strukturierte Variablen, deterministisch eingefügt, die Power von LLM-Komposition bleibt erhalten.
+FlowMCP v4 turns this around: the AI gets **tools for composing** — structured variables, deterministically inserted, while the power of LLM composition is preserved.
 
 ## Skills + Self-Contained Skill Pattern
 
-Das Herzstück von v4 ist eine kleine, aber folgenreiche Erkenntnis. In einem internen Labortest wurden zwei Skill-Varianten gegen LLMs getestet:
+The heart of v4 is a small but consequential insight. In an internal lab test, two skill variants were tested against LLMs:
 
-- **Angereicherte Skills** (vollständige Parameter-Tabelle, Enum-Werte, konkretes Beispiel): **5 von 5 erfolgreich**.
-- **Reduzierte Skills** (nur Name + Beschreibung): **0 von 5 erfolgreich**.
+- **Enriched skills** (full parameter table, enum values, concrete example): **5 out of 5 successful**.
+- **Reduced skills** (name + description only): **0 out of 5 successful**.
 
-Die Fehler in der reduzierten Variante waren konsistent: falsche Enum-Werte, halluzinierte Felder, falsche Parameter-Namen, vereinzelt komplette Verweigerung. Mit voller Parameter-Information verschwanden diese Fehler.
+The errors in the reduced variant were consistent: wrong enum values, hallucinated fields, wrong parameter names, occasionally outright refusal. With full parameter information, these errors disappeared.
 
-Daraus entstand das **Self-Contained Skill Pattern**: Skills bringen ihre eigene Parameter-Referenz mit. Schema-Daten stehen **vor** den Workflow-Instruktionen. Die AI rät nicht, sondern wählt aus dokumentierten Optionen.
+From this emerged the **Self-Contained Skill Pattern**: skills bring their own parameter reference along. Schema data comes **before** the workflow instructions. The AI doesn't guess, it chooses from documented options.
 
-Ein Skill in v4 sieht so aus:
+A skill in v4 looks like this:
 
 ```yaml
 # Skill: "berlin-transit-research"
@@ -43,13 +44,13 @@ tools:
   - sqlite-gtfs.nextDeparture
 ```
 
-Die LLM sieht `origin`, `destination`, `date` als variabel — der Rest ist deterministisch. `feed_url` und `agency_id` werden nicht erraten, sondern vorgefertigt.
+The LLM sees `origin`, `destination`, `date` as variable — the rest is deterministic. `feed_url` and `agency_id` are not guessed but prefilled.
 
-Das Resultat: **strukturierte Variablen, deterministisch eingefügt — und die Power von LLM-Komposition bleibt erhalten.**
+The result: **structured variables, deterministically inserted — and the power of LLM composition is preserved.**
 
-## Selections — Cherry-Picking über Namespaces
+## Selections — Cherry-Picking Across Namespaces
 
-Selections sind kuratierte Listen von Tools aus verschiedenen Schemas. Sie machen "Lieblings-Toolsets" pro Use-Case sichtbar und sind mit Skills via Prefill kombinierbar.
+Selections are curated lists of tools from different schemas. They make "favorite toolsets" per use case visible and can be combined with skills via prefill.
 
 ```yaml
 # Selection: "mobility-stack"
@@ -64,13 +65,13 @@ tools:
 ```
 
 <!-- snapshot:2026-05 — Tool-Count zum Veroeffentlichungs-Zeitpunkt. Aktuelle Stats: repos/flowmcp-schemas-public/stats.json -->
-Eine Selection ist eine Schichtung über der Schema-Library. Statt der AI 3.100+ Tools zu zeigen und sie selbst kombinieren zu lassen, gibt eine Selection eine vorkurierte Antwort: "Diese fünf Tools gehören für Mobility-Anfragen zusammen."
+A selection is a layer on top of the schema library. Instead of showing the AI 3,100+ tools and letting it combine them itself, a selection gives a pre-curated answer: "These five tools belong together for mobility requests."
 
-Selections sind der Kombinatorik-Hebel: Schemas leben in eigenen Namespaces (Crypto, Open Data, Weather), eine Selection schneidet quer durch.
+Selections are the combinatorics lever: schemas live in their own namespaces (Crypto, Open Data, Weather), and a selection cuts straight across.
 
-## Output-Schema + Pipes
+## Output Schema + Pipes
 
-v4-Schemas deklarieren ein strukturiertes Output-Schema. Aus diesem Schema lassen sich Pipes bauen: der Output von Tool A wird zum modifizierten Input für Tool B.
+v4 schemas declare a structured output schema. From this schema, pipes can be built: the output of tool A becomes the modified input for tool B.
 
 ```mermaid
 flowchart TD
@@ -80,20 +81,20 @@ flowchart TD
     D --> E[Final answer: ICE 793 faehrt um 09:34 ab Gleis 12]
 ```
 
-Die Pipe ist deterministisch, wo Felder direkt mappen (Output-Feld `train_no` → Input-Feld `train`). Sie ist LLM-gesteuert, wo Interpretation nötig ist (welche der drei Trains in der Liste ist der "schnellste"?). Output-Schemas machen die deterministischen Teile vorhersagbar — die LLM-Teile bleiben dort, wo sie gebraucht werden.
+The pipe is deterministic where fields map directly (output field `train_no` → input field `train`). It is LLM-driven where interpretation is needed (which of the three trains in the list is the "fastest"?). Output schemas make the deterministic parts predictable — the LLM parts stay where they are needed.
 
 ```javascript
-// Pipe-Run (verkürzt)
+// Pipe run (abbreviated)
 const route = await flowmcp.call('sqlite-gtfs.findRoute', { origin, destination });
 const train = await llm.pick('identify_train', { from: route.trains, criterion: 'fastest' });
 const departure = await flowmcp.call('sqlite-gtfs.nextDeparture', { train, station: origin });
 ```
 
-## Zusammenspiel
+## How They Work Together
 
-Skills, Selections und Pipes sind nicht drei isolierte Features — sie bauen aufeinander auf.
+Skills, Selections, and Pipes are not three isolated features — they build on each other.
 
-Ein Skill mit prefilled Selection, der per Pipe drei Tools verkettet:
+A skill with a prefilled selection that chains three tools via a pipe:
 
 ```yaml
 skill: "berlin-event-route"
@@ -112,22 +113,22 @@ pipe:
     input: { destination: "{{stops[0].id}}", date: "{{event_date}}" }
 ```
 
-Die AI bekommt diesen Skill als ein Werkzeug. Sie muss nicht raten, in welcher Reihenfolge zu rufen, welche Parameter aus welchem Output zu ziehen, welche Selection zu aktivieren. Sie liefert `event_name` und `event_date` — der Rest läuft deterministisch.
+The AI gets this skill as a single tool. It doesn't have to guess in which order to call, which parameters to draw from which output, which selection to activate. It supplies `event_name` and `event_date` — the rest runs deterministically.
 
-## Nächste Schritte
+## Next Steps
 
-v4 ist die strukturelle Grundlage. Drei nähere Folgeschritte:
+v4 is the structural foundation. Three near-term follow-ups:
 
-- **v4.1 — GTFS als erstes Datenklasse-Add-on.** Wie ein externes Toolkit (`gtfs-sqlite-toolkit`) FlowMCP erweitert und ÖPNV-Daten als auditiertes Schema bereitstellt. *(Folge-Blogpost in Vorbereitung.)*
-- **Add-on-Konzept allgemein.** Wie eigene Add-ons gebaut werden, mit Capability-Driven Auto-Injection und Quality-Seal.
-- **Output-Determinismus vs. LLM-Variabilität als offene Frage.** Skills + Pipes verschieben die Halluzinations-Frage von "wo wird halluziniert?" zu "wieviel LLM ist eigentlich nötig?" Diese Frage bekommt ihren eigenen Beitrag.
+- **v4.1 — GTFS as the first data-class add-on.** How an external toolkit (`gtfs-sqlite-toolkit`) extends FlowMCP and provides public-transit data as an audited schema. *(Follow-up blog post in preparation.)*
+- **The add-on concept in general.** How to build your own add-ons, with capability-driven auto-injection and a quality seal.
+- **Output determinism vs. LLM variability as an open question.** Skills + Pipes shift the hallucination question from "where does hallucination happen?" to "how much LLM is actually needed?" This question gets its own post.
 
 ---
 
-### Quellen
+### Sources
 
-- FlowMCP Specification v4.0.0: [`14-skills.md`](/specification/v4.0.0/14-skills.md), [`17-selections.md`](/specification/v4.0.0/17-selections.md), [`18-prefill.md`](/specification/v4.0.0/18-prefill.md), [`13-resources.md`](/specification/v4.0.0/13-resources.md), [`04-output-schema.md`](/specification/v4.0.0/04-output-schema.md)
-- CHANGELOG v4.0.0 (Skills, Selections, Output-Schema, Pipes)
-- Interner Labortest zum Self-Contained Skill Pattern (5/5 vs 0/5 Erfolgsrate)
+- FlowMCP Specification: [Skills](/specification/skills/), [Selections](/specification/selections/), [Prefill](/specification/prefill/), [Resources](/specification/resources/), [Output Schema](/specification/output-schema/)
+- CHANGELOG v4.0.0 (Skills, Selections, Output Schema, Pipes)
+- Internal lab test on the Self-Contained Skill Pattern (5/5 vs 0/5 success rate)
 
-> 📖 Lies auch: *FlowMCP v4.1 — GTFS als erste Datenklasse mit eigenem Add-on* (in Vorbereitung)
+> 📖 Read also: *FlowMCP v4.1 — GTFS as the first data class with its own add-on* (in preparation)

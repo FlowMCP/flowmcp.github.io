@@ -5,15 +5,24 @@ import SidebarHooks from './SidebarHooks.astro'
 import HeaderCopyButton from './HeaderCopyButton.astro'
 
 // Memo 064 Phase 4 PRD-009: exactly ONE small copy button on the heading line
-// of every content page, injected via this PageTitle override. Replaces all
-// manual per-page <CopyMarkdown mode="page"> embeds.
+// of every documentation page, injected via this PageTitle override. Replaces
+// all manual per-page <CopyMarkdown mode="page"> embeds.
+//
+// Suppressed on splash/landing pages (homepage, blog index, blog posts): those
+// hide the page title and have no per-slug markdown source, so the button would
+// otherwise float alone in the hero area (see screenshot in #89 follow-up).
+const isSplash = Astro.locals.starlightRoute?.entry?.data?.template === 'splash'
 ---
 
 <Breadcrumb />
-<div class="page-title-row">
+{ isSplash ? (
     <Default><slot /></Default>
-    <HeaderCopyButton />
-</div>
+) : (
+    <div class="page-title-row">
+        <Default><slot /></Default>
+        <HeaderCopyButton />
+    </div>
+) }
 <SidebarHooks />
 
 <style>
