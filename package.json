@@ -2,6 +2,20 @@
     "name": "flowmcp-website",
     "type": "module",
     "version": "0.0.1",
+    "description": "Documentation website for FlowMCP — built with Astro/Starlight, syncs from flowmcp-spec",
+    "license": "MIT",
+    "author": "FlowMCP",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/FlowMCP/flowmcp.github.io.git"
+    },
+    "bugs": {
+        "url": "https://github.com/FlowMCP/flowmcp.github.io/issues"
+    },
+    "homepage": "https://flowmcp.github.io",
+    "engines": {
+        "node": ">=22"
+    },
     "scripts": {
         "dev": "astro dev",
         "start": "astro dev",
