@@ -18,6 +18,18 @@ const GROUP_LABELS = {
 }
 
 
+// Memo 087 PRD-P2-C (F4=A): grading sidebar sub-groups. Order is fixed so the
+// nav renders deterministically regardless of manifest iteration order.
+const GRADING_GROUP_LABELS = {
+    introduction: { en: 'Introduction', de: 'Einfuehrung' },
+    'core-model': { en: 'Core Model', de: 'Kern-Modell' },
+    'process-contracts': { en: 'Process & Contracts', de: 'Prozess & Kontrakte' },
+    reference: { en: 'Reference', de: 'Referenz' }
+}
+
+const GRADING_GROUP_ORDER = [ 'introduction', 'core-model', 'process-contracts', 'reference' ]
+
+
 class SidebarLoader {
     static buildSidebar() {
         const manifest = SidebarLoader.#loadManifest()
@@ -59,11 +71,34 @@ class SidebarLoader {
             throw new Error( '[sidebar] manifest.grading.version missing or empty' )
         }
 
-        const items = [ ...manifest.grading.files ]
-            .sort( ( a, b ) => a.order - b.order )
-            .map( ( file ) => {
-                return { label: file.title, slug: `grading/${ file.slug }` }
-            } )
+        // Memo 087 PRD-P2-C (F4=A): group the flat grading list into the four
+        // sub-groups carried on each file's sidebar_group field. Strict — fail
+        // loudly if the field is missing (no silent default).
+        const sorted = [ ...manifest.grading.files ].sort( ( a, b ) => a.order - b.order )
+        const missing = sorted
+            .map( ( file, index ) => typeof file.sidebar_group === 'string' ? null : `grading.files[${ index }].sidebar_group` )
+            .filter( ( entry ) => entry !== null )
+        if( missing.length > 0 ) {
+            throw new Error( `[sidebar] grading manifest missing required fields: ${ missing.join( ', ' ) }` )
+        }
+
+        const buckets = {}
+        sorted.forEach( ( file ) => {
+            const key = file.sidebar_group
+            if( !buckets[ key ] ) {
+                buckets[ key ] = {
+                    label: GRADING_GROUP_LABELS[ key ]?.en ?? key,
+                    translations: { de: GRADING_GROUP_LABELS[ key ]?.de ?? key },
+                    collapsed: file.collapsed,
+                    items: []
+                }
+            }
+            buckets[ key ].items.push( { label: file.title, slug: `grading/${ file.slug }` } )
+        } )
+
+        const items = GRADING_GROUP_ORDER
+            .filter( ( key ) => buckets[ key ] )
+            .map( ( key ) => buckets[ key ] )
 
         return { items, gradingVersion: manifest.grading.version }
     }
