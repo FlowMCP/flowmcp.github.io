@@ -739,7 +739,7 @@ AgentProbe builds on the FlowMCP validator ecosystem:
 
 ---
 
-# "11 — About Convention as a Schema Resource"
+# "About Convention as a Schema Resource"
 /grading/about-convention
 
 <aside class="edit-warning" role="note">
@@ -901,7 +901,7 @@ A schema-validator at v4.2 MUST NOT reject a schema for failing the About conven
 
 ---
 
-# "01 — Default Journey & Maximalism"
+# "Default Journey & Maximalism"
 /grading/default-journey
 
 <aside class="edit-warning" role="note">
@@ -991,7 +991,7 @@ Gap reporting is mandatory; gap penalisation is conditional on the absence of an
 
 ---
 
-# "06 — Determinism and Tier"
+# "Determinism and Tier"
 /grading/determinism-and-tier
 
 <aside class="edit-warning" role="note">
@@ -1172,7 +1172,7 @@ Cross-Refs:
 
 ---
 
-# "10 — Domain Knowledge and Group Definition"
+# "Domain Knowledge and Group Definition"
 /grading/domain-knowledge
 
 <aside class="edit-warning" role="note">
@@ -1299,7 +1299,7 @@ A grading entry that uses Domain-Knowledge content records the resolved About Re
 
 ---
 
-# "02 — Eligibility"
+# "Eligibility"
 /grading/eligibility
 
 <aside class="edit-warning" role="note">
@@ -1440,7 +1440,7 @@ The detailed verification method belongs to the grader implementation and is out
 
 ---
 
-# "20 — Entry-Point Prompt + Personas Obligation (§18)"
+# "Entry-Point Prompt + Personas Obligation (§18)"
 /grading/entry-point-prompt
 
 <aside class="edit-warning" role="note">
@@ -1532,7 +1532,7 @@ The README in the grading repository contains the ready-to-use prompt with examp
 
 ---
 
-# "18 — Flywheel Loop"
+# "Flywheel Loop"
 /grading/flywheel-loop
 
 <aside class="edit-warning" role="note">
@@ -1641,7 +1641,7 @@ The following patterns break the flywheel and are excluded by the spec:
 
 ---
 
-# "19 — Folder Layout (§17)"
+# "Folder Layout (§17)"
 /grading/folder-layout
 
 <aside class="edit-warning" role="note">
@@ -1790,7 +1790,7 @@ The following v1 folders and files are **removed** and folded into `index.json`:
 
 ---
 
-# "08 — Grading Model"
+# "Grading Model"
 /grading/grading-model
 
 <aside class="edit-warning" role="note">
@@ -2297,7 +2297,7 @@ if( rejected.aggregateGrade !== 'REJECTED' ) { throw new Error( 'rejected exampl
 
 ---
 
-# "25 — Harness and `/goal`"
+# "Harness and `/goal`"
 /grading/harness-and-goal
 
 <aside class="edit-warning" role="note">
@@ -2386,7 +2386,7 @@ The prompt builder appends a **Goal-Block** (a fitting completion condition plus
 
 ---
 
-# "23 — The `index.json` Rollup"
+# "The `index.json` Rollup"
 /grading/index-json
 
 <aside class="edit-warning" role="note">
@@ -2546,7 +2546,7 @@ A selection `index.json` is analogous, with a `lockSnapshot` block and a `member
 
 ---
 
-# "14 — Kanban Data Contract (superseded)"
+# "Kanban Data Contract (superseded)"
 /grading/kanban-data-contract
 
 <aside class="edit-warning" role="note">
@@ -2594,7 +2594,7 @@ A categorical veto produces the terminal node status `rejected`. This status is 
 
 ---
 
-# "Grading-Spec `gradingSpec/2.0.0`"
+# "Overview"
 /grading/overview
 
 <aside class="edit-warning" role="note">
@@ -2754,7 +2754,7 @@ The following are the headline additions of the v2 break over the 1.0.0/1.1.0 li
 
 ---
 
-# "12 — Personas Contract"
+# "Personas Contract"
 /grading/personas-contract
 
 <aside class="edit-warning" role="note">
@@ -2947,7 +2947,7 @@ Technical Schema-Persona tier (§7) added in `gradingSpec/2.0.0`.
 
 ---
 
-# "05 — Selection-Side Grading Areas"
+# "Selection-Side Grading Areas"
 /grading/phases-selection
 
 <aside class="edit-warning" role="note">
@@ -3081,7 +3081,7 @@ This tier is the **only** path to grade **A**. The provider-side Areas (`autonom
 
 ---
 
-# "04 — Provider-Side Grading Areas"
+# "Provider-Side Grading Areas"
 /grading/phases-single
 
 <aside class="edit-warning" role="note">
@@ -3205,7 +3205,7 @@ The provider-side Areas produce `gradingTier = autonomous`. Per `06-determinism-
 
 ---
 
-# "21 — Universal Pre-Condition Obligation (§20)"
+# "Universal Pre-Condition Obligation (§20)"
 /grading/pre-conditions
 
 <aside class="edit-warning" role="note">
@@ -3301,7 +3301,7 @@ Follow-up action: complete the Single-Gradings, then rebuild the index and refre
 
 ---
 
-# "17 — Scope Whitelist + Public-only Principle (§12)"
+# "Scope Whitelist + Public-only Principle (§12)"
 /grading/scope-whitelist
 
 <aside class="edit-warning" role="note">
@@ -3375,7 +3375,7 @@ The two complement each other. A schema can satisfy §3/§4 perfectly and still 
 
 ---
 
-# "07 — Scoring System vs. Grading System"
+# "Scoring System vs. Grading System"
 /grading/scoring-vs-grading
 
 <aside class="edit-warning" role="note">
@@ -3475,7 +3475,7 @@ This Grading-Spec does NOT re-define the `prompts.json` / `scores.json` contract
 
 ---
 
-# "09 — Security and Development"
+# "Security and Development"
 /grading/security-and-development
 
 <aside class="edit-warning" role="note">
@@ -3652,7 +3652,7 @@ Concrete weights, thresholds, and score-boost magnitudes belong in the `gradingS
 
 ---
 
-# "24 — The `selection-aggregate` Area (11th area)"
+# "The `selection-aggregate` Area (11th area)"
 /grading/selection-aggregate
 
 <aside class="edit-warning" role="note">
@@ -3750,7 +3750,7 @@ Like every area, `selection-aggregate` is backed by a skill triad — the three-
 
 ---
 
-# "16 — Selection Definition + `index.json.lockSnapshot` (§11)"
+# "Selection Definition + `index.json.lockSnapshot` (§11)"
 /grading/selection-lockfile
 
 <aside class="edit-warning" role="note">
@@ -3900,7 +3900,7 @@ The annex schemas `selection.lock.schema.json` and `namespace.schema.json` are *
 
 ---
 
-# "13 — Skills: Namespace Skill vs. Selection Skill"
+# "Skills: Namespace Skill vs. Selection Skill"
 /grading/skills
 
 <aside class="edit-warning" role="note">
@@ -4097,7 +4097,7 @@ The Schemas-Spec rule `SKL018` (max 4 skills per selection / agent registration 
 
 ---
 
-# "03 — Terms of Service"
+# "Terms of Service"
 /grading/tos
 
 <aside class="edit-warning" role="note">
@@ -4214,7 +4214,7 @@ The disclaimer is **non-optional**. A grading entry that contains a `legalAssess
 
 ---
 
-# "15 — Versioning + Canonical Hash (§10)"
+# "Versioning + Canonical Hash (§10)"
 /grading/versioning-axes
 
 <aside class="edit-warning" role="note">
@@ -4296,7 +4296,7 @@ Reference implementation: `src/HashGenerator.mjs` (`computeSchemaHash` / `comput
 
 ---
 
-# "22 — Workbench Island"
+# "Workbench Island"
 /grading/workbench-island
 
 <aside class="edit-warning" role="note">
