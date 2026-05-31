@@ -45,7 +45,7 @@ jobs:
         id: check
         working-directory: flowmcp.github.io
         run: |
-          if [ -n "$(git status --porcelain src/content/docs/specification/ public/spec-generated/docs-payload/ src/data/manifest.json)" ]; then
+          if [ -n "$(git status --porcelain src/content/docs/specification/ src/content/docs/grading/ public/spec-generated/docs-payload/ src/data/manifest.json)" ]; then
             echo "changed=true" >> $GITHUB_OUTPUT
           else
             echo "changed=false" >> $GITHUB_OUTPUT
@@ -57,6 +57,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/content/docs/specification/ public/spec-generated/docs-payload/ src/data/manifest.json
+          git add src/content/docs/specification/ src/content/docs/grading/ public/spec-generated/docs-payload/ src/data/manifest.json
           git commit -m "chore: sync spec from flowmcp-spec [auto]"
           git push origin HEAD:${{ github.ref_name }}

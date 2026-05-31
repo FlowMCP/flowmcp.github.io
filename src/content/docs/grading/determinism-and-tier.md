@@ -1,14 +1,14 @@
 ---
-title: "06 — Determinism and Tier"
+title: "Determinism and Tier"
 description: "The Grading-Spec separates **reproducibility** (Determinism) from **attainability** (Tier). The two axes are **orthogonal**: a dimension can be deterministic but group-bound, or non-deterministic but..."
 grading_version: "2.0.0"
 spec_file: "06-determinism-and-tier.md"
 order: 6
 section: "Grading"
 normative: true
-source_commit: "6152b7e"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/6152b7e/grading/2.0.0/06-determinism-and-tier.md"
-generated_at: "2026-05-31T16:18:50.290Z"
+source_commit: "5971378"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/5971378/grading/2.0.0/06-determinism-and-tier.md"
+generated_at: "2026-05-31T17:32:40.771Z"
 generated_from: "grading/2.0.0/06-determinism-and-tier.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: grading/2.0.0/06-determinism-and-tier.md."

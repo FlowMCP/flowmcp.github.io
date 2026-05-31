@@ -1,14 +1,14 @@
 ---
-title: "18 — Flywheel Loop"
+title: "Flywheel Loop"
 description: "The grading process is a **round-trip** between the source repository and the workbench:"
 grading_version: "2.0.0"
 spec_file: "18-flywheel-loop.md"
 order: 18
 section: "Grading"
 normative: true
-source_commit: "6152b7e"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/6152b7e/grading/2.0.0/18-flywheel-loop.md"
-generated_at: "2026-05-31T16:18:50.290Z"
+source_commit: "5971378"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/5971378/grading/2.0.0/18-flywheel-loop.md"
+generated_at: "2026-05-31T17:32:40.771Z"
 generated_from: "grading/2.0.0/18-flywheel-loop.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: grading/2.0.0/18-flywheel-loop.md."

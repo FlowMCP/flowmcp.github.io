@@ -1,14 +1,14 @@
 ---
-title: "14 — Kanban Data Contract (superseded)"
+title: "Kanban Data Contract (superseded)"
 description: "The earlier `1.1.0` Kanban data contract exposed a per-phase status response (`P1`–`P7`, `S1`–`S4`) with a `single`/`selection` lane separation. The `2.0.0` break replaces this with a single derived..."
 grading_version: "2.0.0"
 spec_file: "14-kanban-data-contract.md"
 order: 14
 section: "Grading"
-normative: true
-source_commit: "6152b7e"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/6152b7e/grading/2.0.0/14-kanban-data-contract.md"
-generated_at: "2026-05-31T16:18:50.290Z"
+normative: false
+source_commit: "5971378"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/5971378/grading/2.0.0/14-kanban-data-contract.md"
+generated_at: "2026-05-31T17:32:40.771Z"
 generated_from: "grading/2.0.0/14-kanban-data-contract.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: grading/2.0.0/14-kanban-data-contract.md."
