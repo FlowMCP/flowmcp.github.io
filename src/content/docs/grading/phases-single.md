@@ -1,14 +1,14 @@
 ---
-title: "04 — Provider-Side Grading Areas"
+title: "Provider-Side Grading Areas"
 description: "This chapter is the **normative source for the provider-side grading Areas** — the Areas that grade one **schema** inside one **namespace** without group context. It replaces the linear phase model..."
 grading_version: "2.0.0"
 spec_file: "04-phases-single.md"
 order: 4
 section: "Grading"
 normative: true
-source_commit: "6152b7e"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/6152b7e/grading/2.0.0/04-phases-single.md"
-generated_at: "2026-05-31T16:18:50.290Z"
+source_commit: "5971378"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/5971378/grading/2.0.0/04-phases-single.md"
+generated_at: "2026-05-31T17:32:40.771Z"
 generated_from: "grading/2.0.0/04-phases-single.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: grading/2.0.0/04-phases-single.md."

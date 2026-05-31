@@ -1,14 +1,14 @@
 ---
-title: "11 — About Convention as a Schema Resource"
+title: "About Convention as a Schema Resource"
 description: "This chapter defines the **About Resource**: a markdown Resource that describes what a namespace (or a selection) does, what it does not do, and which conventions it follows."
 grading_version: "2.0.0"
 spec_file: "11-about-convention.md"
 order: 11
 section: "Grading"
 normative: true
-source_commit: "6152b7e"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/6152b7e/grading/2.0.0/11-about-convention.md"
-generated_at: "2026-05-31T16:18:50.290Z"
+source_commit: "5971378"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/5971378/grading/2.0.0/11-about-convention.md"
+generated_at: "2026-05-31T17:32:40.771Z"
 generated_from: "grading/2.0.0/11-about-convention.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: grading/2.0.0/11-about-convention.md."
