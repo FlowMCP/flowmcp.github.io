@@ -6,9 +6,9 @@ spec_file: "13-resources.md"
 order: 13
 section: "Specification"
 normative: true
-source_commit: "5971378"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/5971378/spec/v4.2.0/13-resources.md"
-generated_at: "2026-05-31T17:32:40.771Z"
+source_commit: "534fa4c"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/534fa4c/spec/v4.2.0/13-resources.md"
+generated_at: "2026-05-31T22:36:18.559Z"
 generated_from: "spec/v4.2.0/13-resources.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.2.0/13-resources.md."
@@ -681,7 +681,7 @@ HTTP Resources allow schemas to reference remote files (typically SQLite databas
 | Frequently updated datasets | Daily-updated government open data |
 | Externally maintained datasets | Third-party data providers |
 
-### HTTP Resource Fields
+### HTTP Resource Example
 
 ```javascript
 resources: {
@@ -769,7 +769,7 @@ resources: {
 
 ### Validation Rule
 
-**RES010:** `source: 'http'` requires a `url` field. The URL MUST use HTTPS (`https://`). HTTP URLs are rejected to prevent insecure data transfer.
+**RES024:** `source: 'http'` requires a `url` field. The URL MUST use HTTPS (`https://`). HTTP URLs are rejected to prevent insecure data transfer.
 
 ---
 
