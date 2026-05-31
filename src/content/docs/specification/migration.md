@@ -1,20 +1,20 @@
 ---
 title: "Migration Guide"
 description: "This guide covers migrating schemas between FlowMCP versions. Section 1 covers v2.0.0 to v3.0.0 migration. Section 2 preserves the v1.2.0 to v2.0.0 guide for reference."
-spec_version: "4.1.0"
+spec_version: "4.2.0"
 spec_file: "08-migration.md"
 order: 8
 section: "Specification"
 normative: false
-source_commit: "07d4071"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/07d4071/spec/v4.1.0/08-migration.md"
-generated_at: "2026-05-25T03:02:46.785Z"
-generated_from: "spec/v4.1.0/08-migration.md"
+source_commit: "6152b7e"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/6152b7e/spec/v4.2.0/08-migration.md"
+generated_at: "2026-05-31T16:18:50.290Z"
+generated_from: "spec/v4.2.0/08-migration.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.1.0/08-migration.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.2.0/08-migration.md."
 ---
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/08-migration.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/08-migration.md.
 </aside>
 
 This guide covers migrating schemas between FlowMCP versions. Section 1 covers v2.0.0 to v3.0.0 migration. Section 2 preserves the v1.2.0 to v2.0.0 guide for reference.

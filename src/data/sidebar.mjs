@@ -43,6 +43,32 @@ class SidebarLoader {
     }
 
 
+    // Memo 086 PRD-07: the grading spec is a separate nav group (point 5) with
+    // its own slug-root and a second badge. Built from manifest.grading (the
+    // additive block). Returns null when no grading block is present — strict,
+    // no silent default. The grading version is surfaced once as the group badge.
+    static buildGradingSidebar() {
+        const manifest = SidebarLoader.#loadManifest()
+        if( !manifest.grading || !Array.isArray( manifest.grading.files ) ) {
+            return null
+        }
+        if( manifest.grading.files.length === 0 ) {
+            throw new Error( '[sidebar] manifest.grading present but files is empty' )
+        }
+        if( typeof manifest.grading.version !== 'string' || manifest.grading.version.length === 0 ) {
+            throw new Error( '[sidebar] manifest.grading.version missing or empty' )
+        }
+
+        const items = [ ...manifest.grading.files ]
+            .sort( ( a, b ) => a.order - b.order )
+            .map( ( file ) => {
+                return { label: file.title, slug: `grading/${ file.slug }` }
+            } )
+
+        return { items, gradingVersion: manifest.grading.version }
+    }
+
+
     static #loadManifest() {
         if( !existsSync( MANIFEST_PATH ) ) {
             throw new Error( `[sidebar] manifest missing at ${ MANIFEST_PATH } — run "npm run sync-spec" first` )

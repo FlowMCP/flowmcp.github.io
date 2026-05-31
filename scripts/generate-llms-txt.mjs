@@ -60,13 +60,20 @@ For the formal specification, see: ${ specUrl }
 For a brief index, see: https://flowmcp.github.io/llms.txt
 `
 
+    // Memo 086 PRD-08: name the Grading standard in the index. Uses refs.grading
+    // when present (post-fetch), else the stable docs URL — no hardcoded version.
+    const gradingLine = refs.grading?.url
+        ? `- Grading standard (gradingSpec v${ refs.grading.currentVersion }): ${ refs.grading.url }`
+        : '- Grading standard (gradingSpec): https://flowmcp.github.io/grading/overview/'
+
     const HEADER_INDEX = `# FlowMCP — llms.txt Index
 
 > Layered LLM context for FlowMCP. Pick the layer you need.
 
 - Practical documentation: /docs-llms.txt
-- Full website content: /llms-full.txt
+- Full website content (includes the Grading standard inline): /llms-full.txt
 - Schema specification (v${ specVersion }): ${ specUrl }
+${ gradingLine }
 
 Spec source: https://github.com/FlowMCP/flowmcp-spec
 Docs: https://flowmcp.github.io/docs

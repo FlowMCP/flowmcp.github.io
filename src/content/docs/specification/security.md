@@ -1,20 +1,20 @@
 ---
 title: "Security Model"
 description: "FlowMCP enforces a layered security model that prevents schema files from accessing the network, filesystem, or process environment. All potentially dangerous operations are restricted to the trusted..."
-spec_version: "4.1.0"
+spec_version: "4.2.0"
 spec_file: "05-security.md"
 order: 5
 section: "Specification"
 normative: true
-source_commit: "07d4071"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/07d4071/spec/v4.1.0/05-security.md"
-generated_at: "2026-05-25T03:02:46.785Z"
-generated_from: "spec/v4.1.0/05-security.md"
+source_commit: "6152b7e"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/6152b7e/spec/v4.2.0/05-security.md"
+generated_at: "2026-05-31T16:18:50.290Z"
+generated_from: "spec/v4.2.0/05-security.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.1.0/05-security.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.2.0/05-security.md."
 ---
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/05-security.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/05-security.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in [Conformance Language](/specification/overview/#conformance-language).

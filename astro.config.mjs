@@ -12,6 +12,19 @@ const specSidebar = SidebarLoader.buildSidebar();
 const specVersionShort = specSidebar.specVersion.replace( /\.0$/, '' );
 const specBadge = { text: `v${ specVersionShort }`, variant: 'note' };
 
+// Memo 086 PRD-07: separate Grading nav group (point 5) + second badge,
+// built from manifest.grading. Empty when no grading block is synced yet.
+const gradingSidebar = SidebarLoader.buildGradingSidebar();
+const gradingGroup = gradingSidebar
+    ? [ {
+        label: 'Grading',
+        translations: { de: 'Grading' },
+        collapsed: true,
+        badge: { text: `v${ gradingSidebar.gradingVersion.replace( /\.0$/, '' ) }`, variant: 'note' },
+        items: gradingSidebar.items,
+    } ]
+    : [];
+
 
 // Memo 069: open external links in a new tab. Self-contained rehype plugin
 // (no extra dependency) that adds target="_blank" + rel to every <a> whose
@@ -256,6 +269,8 @@ export default defineConfig({
                     badge: specBadge,
                     items: specSidebar.items,
                 },
+                // Memo 086 PRD-07: Grading nav group (point 5) + v2.0 badge.
+                ...gradingGroup,
                 {
                     label: 'Reference',
                     translations: { de: 'Referenz' },

@@ -1,20 +1,20 @@
 ---
 title: "Output Schema"
 description: "Output schemas make tool responses predictable. AI clients can know in advance what shape the data will have, enabling structured reasoning without parsing guesswork. This document defines the output..."
-spec_version: "4.1.0"
+spec_version: "4.2.0"
 spec_file: "04-output-schema.md"
 order: 4
 section: "Specification"
 normative: true
-source_commit: "07d4071"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/07d4071/spec/v4.1.0/04-output-schema.md"
-generated_at: "2026-05-25T03:02:46.785Z"
-generated_from: "spec/v4.1.0/04-output-schema.md"
+source_commit: "6152b7e"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/6152b7e/spec/v4.2.0/04-output-schema.md"
+generated_at: "2026-05-31T16:18:50.290Z"
+generated_from: "spec/v4.2.0/04-output-schema.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.1.0/04-output-schema.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.2.0/04-output-schema.md."
 ---
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/04-output-schema.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/04-output-schema.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in [Conformance Language](/specification/overview/#conformance-language).

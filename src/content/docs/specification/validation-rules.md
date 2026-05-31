@@ -1,27 +1,27 @@
 ---
 title: "Validation Rules"
 description: "This document defines all validation rules enforced by `flowmcp validate`. Each rule has a code, severity, and description."
-spec_version: "4.1.0"
+spec_version: "4.2.0"
 spec_file: "09-validation-rules.md"
 order: 9
 section: "Specification"
 normative: true
-source_commit: "07d4071"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/07d4071/spec/v4.1.0/09-validation-rules.md"
-generated_at: "2026-05-25T03:02:46.785Z"
-generated_from: "spec/v4.1.0/09-validation-rules.md"
+source_commit: "6152b7e"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/6152b7e/spec/v4.2.0/09-validation-rules.md"
+generated_at: "2026-05-31T16:18:50.290Z"
+generated_from: "spec/v4.2.0/09-validation-rules.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.1.0/09-validation-rules.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.2.0/09-validation-rules.md."
 ---
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.1.0/09-validation-rules.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/09-validation-rules.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in [Conformance Language](/specification/overview/#conformance-language).
 
 This document defines all validation rules enforced by `flowmcp validate`. Each rule has a code, severity, and description.
 
-This file is the **central code registry** for FlowMCP v4.1.0. All validation, selection, agent, skill, resource, and placeholder codes (VAL/SEL/AGT/SKL/RES/DEP/SEC/LST/PRM/CAT/ID/PH/TST) are defined here. Other specification documents and downstream tooling reference this registry but do not redefine codes.
+This file is the **central code registry** for FlowMCP v4.2.0. All validation, selection, agent, skill, resource, and placeholder codes (VAL/SEL/AGT/SKL/RES/DEP/SEC/LST/PRM/CAT/ID/PH/TST) are defined here. Other specification documents and downstream tooling reference this registry but do not redefine codes.
 
 ---
 
@@ -282,7 +282,7 @@ See `06-agents.md` for the complete agent specification.
 
 ---
 
-## MCP Integration Meta Rules (v4.1.0)
+## MCP Integration Meta Rules (v4.2.0)
 
 | Code | Severity | Rule |
 |------|----------|------|
@@ -300,7 +300,7 @@ See `19-mcp-integration.md` for the complete meta block specification.
 
 ---
 
-## Selection Validation Rules (v4.1.0)
+## Selection Validation Rules (v4.2.0)
 
 | Code | Severity | Rule |
 |------|----------|------|
@@ -312,7 +312,7 @@ See `17-selections.md` for the complete Selection specification.
 
 ---
 
-## Extended Agent Validation Rules (v4.1.0)
+## Extended Agent Validation Rules (v4.2.0)
 
 | Code | Severity | Rule |
 |------|----------|------|
@@ -321,7 +321,7 @@ See `17-selections.md` for the complete Selection specification.
 
 ---
 
-## HTTP Resource Validation Rules (v4.1.0)
+## HTTP Resource Validation Rules (v4.2.0)
 
 | Code | Severity | Rule |
 |------|----------|------|

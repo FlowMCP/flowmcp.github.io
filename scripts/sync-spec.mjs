@@ -20,11 +20,22 @@ const __dirname = path.dirname( fileURLToPath( import.meta.url ) )
 const REPO_ROOT = path.resolve( __dirname, '..' )
 
 const SPEC_REPO_PAYLOAD = path.resolve( REPO_ROOT, '..', 'flowmcp-spec', 'generated', 'docs-payload' )
+const GRADING_PAYLOAD_SRC = path.resolve( SPEC_REPO_PAYLOAD, 'grading' )
 const PUBLIC_PAYLOAD_DIR = path.resolve( REPO_ROOT, 'public', 'spec-generated', 'docs-payload' )
+const PUBLIC_GRADING_DIR = path.resolve( PUBLIC_PAYLOAD_DIR, 'grading' )
 const CONTENT_SPEC_DIR = path.resolve( REPO_ROOT, 'src', 'content', 'docs', 'specification' )
+// Memo 086 PRD-07: grading is a separate Starlight nav group (point 5), own slug-root.
+const CONTENT_GRADING_DIR = path.resolve( REPO_ROOT, 'src', 'content', 'docs', 'grading' )
 
 const REQUIRED_FRONTMATTER = [
     'title', 'description', 'spec_version', 'spec_file', 'order',
+    'section', 'normative', 'generated_at', 'generated_from',
+    'generator', 'edit_warning'
+]
+
+// Grading payload carries grading_version instead of spec_version (Memo 086 PRD-06).
+const REQUIRED_FRONTMATTER_GRADING = [
+    'title', 'description', 'grading_version', 'spec_file', 'order',
     'section', 'normative', 'generated_at', 'generated_from',
     'generator', 'edit_warning'
 ]
@@ -53,7 +64,9 @@ class SpecSync {
             hashChecked: 0,
             hashSkipped: 0,
             frontmatterChecked: 0,
-            legacyFiltered: 0
+            legacyFiltered: 0,
+            syncedGradingPublic: 0,
+            syncedGradingContent: 0
         }
 
         await SpecSync.#prepareTargetDirs()
@@ -72,7 +85,7 @@ class SpecSync {
             const content = await readFile( srcPath, 'utf-8' )
 
             SpecSync.#validateHash( { fileEntry, content, stats } )
-            SpecSync.#validateFrontmatter( { fileEntry, content, stats } )
+            SpecSync.#validateFrontmatter( { fileEntry, content, stats, required: REQUIRED_FRONTMATTER } )
 
             await writeFile(
                 path.join( PUBLIC_PAYLOAD_DIR, fileEntry.filename ),
@@ -88,6 +101,8 @@ class SpecSync {
         } )
 
         await Promise.all( tasks )
+
+        await SpecSync.#syncGrading( { manifest, stats } )
 
         await writeFile(
             path.join( PUBLIC_PAYLOAD_DIR, 'manifest.json' ),
@@ -162,7 +177,7 @@ class SpecSync {
     }
 
 
-    static #validateFrontmatter( { fileEntry, content, stats } ) {
+    static #validateFrontmatter( { fileEntry, content, stats, required } ) {
         const match = content.match( /^---\n([\s\S]*?)\n---/ )
         if( !match ) {
             throw new Error( `${fileEntry.filename}: no frontmatter block found` )
@@ -175,13 +190,47 @@ class SpecSync {
             const key = line.slice( 0, sep ).trim()
             fm[ key ] = true
         } )
-        const missing = REQUIRED_FRONTMATTER.filter( ( key ) => !( key in fm ) )
+        const missing = required.filter( ( key ) => !( key in fm ) )
         if( missing.length > 0 ) {
             throw new Error(
                 `${fileEntry.filename}: missing required frontmatter fields: ${missing.join( ', ' )}`
             )
         }
         stats.frontmatterChecked += 1
+    }
+
+
+    // Memo 086 PRD-07: sync the grading payload (manifest.grading.files) into its
+    // own Starlight content group. Mirrors the spec sync but reads from the
+    // grading/ subdir and validates the grading frontmatter shape.
+    static async #syncGrading( { manifest, stats } ) {
+        if( !manifest.grading || !Array.isArray( manifest.grading.files ) ) {
+            return
+        }
+        if( !existsSync( GRADING_PAYLOAD_SRC ) ) {
+            throw new Error( `manifest.grading present but grading payload missing: ${GRADING_PAYLOAD_SRC}` )
+        }
+        await mkdir( PUBLIC_GRADING_DIR, { recursive: true } )
+        await mkdir( CONTENT_GRADING_DIR, { recursive: true } )
+
+        const tasks = manifest.grading.files.map( async ( fileEntry ) => {
+            const srcPath = path.join( GRADING_PAYLOAD_SRC, fileEntry.filename )
+            if( !existsSync( srcPath ) ) {
+                throw new Error( `manifest.grading references missing payload file: grading/${fileEntry.filename}` )
+            }
+            const content = await readFile( srcPath, 'utf-8' )
+            SpecSync.#validateFrontmatter( { fileEntry, content, stats, required: REQUIRED_FRONTMATTER_GRADING } )
+
+            await writeFile( path.join( PUBLIC_GRADING_DIR, fileEntry.filename ), content, 'utf-8' )
+            stats.syncedGradingPublic += 1
+
+            const contentWithWarning = SpecSync.#injectEditWarning( { content, fileEntry } )
+            await writeFile( path.join( CONTENT_GRADING_DIR, `${ fileEntry.slug }.md` ), contentWithWarning, 'utf-8' )
+            stats.syncedGradingContent += 1
+        } )
+
+        await Promise.all( tasks )
+        console.log( `  Grading group:     ${stats.syncedGradingContent} -> ${CONTENT_GRADING_DIR} (grading_version=${manifest.grading.version})` )
     }
 
 

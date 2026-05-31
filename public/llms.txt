@@ -3,8 +3,9 @@
 > Layered LLM context for FlowMCP. Pick the layer you need.
 
 - Practical documentation: /docs-llms.txt
-- Full website content: /llms-full.txt
+- Full website content (includes the Grading standard inline): /llms-full.txt
 - Schema specification (v4.1.0): https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/generated/llms.txt
+- Grading standard (gradingSpec): https://flowmcp.github.io/grading/overview/
 
 Spec source: https://github.com/FlowMCP/flowmcp-spec
 Docs: https://flowmcp.github.io/docs
