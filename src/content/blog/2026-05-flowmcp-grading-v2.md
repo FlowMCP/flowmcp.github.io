@@ -1,6 +1,6 @@
 ---
-title: "FlowMCP Grading v2 — A Versioned Standard for a Network of Gradings"
-description: "FlowMCP now delegates schema grading to its own independently versioned standard, the Grading-Spec v2.0 — published as its own docs area so anyone can grade by the same rules."
+title: "FlowMCP Spec v4.2 — Grading as a Versioned Standard"
+description: "FlowMCP Spec v4.2 delegates schema grading to its own independently versioned standard — the Grading-Spec v2.0, published as its own docs area so anyone can grade by the same rules."
 date: 2026-05-31
 author: "FlowMCP Team"
 tags: ["release", "grading", "spec", "standard", "v2"]

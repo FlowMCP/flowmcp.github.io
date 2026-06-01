@@ -265,17 +265,35 @@ import Default from '@astrojs/starlight/components/Search.astro'
         color: var(--accent, #79c0ff);
         outline: none;
     }
+    /* Memo 088 Folge-Fix: Tastatur-Auswahl (↑/↓) der Vorschlags-Links sichtbar.
+     * Empty-State-Links haben keine opaken Kinder -> einfacher outline genuegt. */
+    .search-empty-state__link.is-active {
+        background-color: var(--sidebar-active-bg, rgba(121, 192, 255, 0.12));
+        color: var(--accent, #79c0ff);
+        outline: 2px solid var(--accent, #79c0ff);
+        outline-offset: -2px;
+    }
 
     /* Memo 069 PRD-004 (A3): visible highlight for the keyboard-navigated
      * result. search-keyboard.mjs toggles .is-active on arrow up/down but no
      * style existed — the highlight had no visual effect. */
     .pagefind-ui__result.is-active {
+        position: relative;
         background-color: var(--sidebar-active-bg, rgba(121, 192, 255, 0.12));
-        /* Memo 088 Kap. 6c: outline statt box-shadow:inset — opake Result-Kinder
-         * verdeckten den inset-Shadow, der Highlight war unsichtbar. outline liegt
-         * ausserhalb des Box-Modells; outline-offset:-2px zieht ihn nach innen. */
-        outline: 2px solid var(--accent, #79c0ff);
-        outline-offset: -2px;
+    }
+    /* Memo 088 Kap. 6c (Folge-Fix): outline UND box-shadow:inset lagen HINTER den
+     * opaken, position:relative gerenderten Result-Kindern (Starlight) und waren
+     * verdeckt. Ein absolut positioniertes Overlay-Pseudo-Element mit z-index
+     * zeichnet den Auswahl-Rahmen ÜBER die Kinder — pointer-events:none laesst
+     * Klicks durch. */
+    .pagefind-ui__result.is-active::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border: 2px solid var(--accent, #79c0ff);
+        border-radius: 6px;
+        pointer-events: none;
+        z-index: 3;
     }
 
     /* PRD-04: Results-Container hat sichtbare Mindesthoehe ------------ */

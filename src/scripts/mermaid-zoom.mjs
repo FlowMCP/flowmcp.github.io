@@ -26,7 +26,11 @@ const openOverlay = ( svgEl ) => {
     const overlay = ensureOverlay()
     const stage = overlay.querySelector( '.mermaid-overlay__stage' )
     const clone = svgEl.cloneNode( true )
-    clone.removeAttribute( 'id' )
+    // ID NICHT entfernen: rehype-mermaid bettet die Theme-Styles als
+    // id-skopierte Regeln ein (`#mermaid-N .node rect { fill: … }`). Ohne die ID
+    // greift keine Regel mehr und das SVG faellt auf SVG-Default fill:#000 zurueck
+    // (schwarze Boxen). Das Duplikat-ID-Risiko ist unkritisch (Original liegt
+    // unsichtbar hinter dem Overlay).
     clone.removeAttribute( 'style' )
     clone.style.width = '100%'
     clone.style.height = '100%'

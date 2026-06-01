@@ -33,7 +33,11 @@ const findSearchInput = () => {
 // old link-based setActive toggled is-active on the same item multiple times
 // and the highlight never stuck. One item = one navigable step.
 const findResultItems = () => {
-    return Array.from( document.querySelectorAll( '.pagefind-ui__result' ) )
+    const results = Array.from( document.querySelectorAll( '.pagefind-ui__result' ) )
+    if( results.length > 0 ) { return results }
+    // Memo 088 Folge-Fix: bei leerer Query (Cmd+K, noch nichts getippt) zeigt der
+    // Empty-State Vorschlags-Links. Diese muessen ebenfalls mit ↑/↓ waehlbar sein.
+    return Array.from( document.querySelectorAll( '.search-empty-state__link' ) )
 }
 
 const isTyping = ( event ) => {
@@ -117,7 +121,8 @@ const openActiveResult = () => {
     if( items.length === 0 || activeIndex < 0 ) { return false }
     const item = items[ activeIndex ]
     if( !item ) { return false }
-    const link = item.querySelector( '.pagefind-ui__result-link' )
+    // Empty-State-Vorschlag ist selbst ein <a>; Pagefind-Result haelt den Link als Kind.
+    const link = item.matches( 'a' ) ? item : item.querySelector( '.pagefind-ui__result-link' )
     if( !link ) { return false }
     link.click()
     return true

@@ -55,7 +55,7 @@ export default defineConfig({
     site: 'https://flowmcp.github.io',
     markdown: {
         rehypePlugins: [
-            [ rehypeMermaid, { strategy: 'inline-svg' } ],
+            [ rehypeMermaid, { strategy: 'inline-svg', mermaidConfig: { theme: 'neutral' } } ],
             rehypeExternalLinksNewTab,
         ],
     },
