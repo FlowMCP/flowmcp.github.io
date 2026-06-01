@@ -14,7 +14,7 @@ test.describe( 'Navigation (Pencil-Layout REV-15)', () => {
 
     test( '2. Landing zeigt Pencil-Hero + LogoStrip + StatsBar', async ( { page } ) => {
         await page.goto( '/' )
-        await expect( page.getByText( /Normalize any data source/i ).first() ).toBeVisible()
+        await expect( page.getByText( /Unified access to any data source/i ).first() ).toBeVisible()
         await expect( page.getByText( /Connects to/i ).first() ).toBeVisible()
         // Stats are dynamic (from refs.json); assert numeric pattern instead of fixed value
         await expect( page.getByText( /\b\d{3,}\b/ ).first() ).toBeVisible()
