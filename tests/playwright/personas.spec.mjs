@@ -29,7 +29,9 @@ test.describe( 'Persona-E2E-Pfade (Memo 045 REV-15 Kap. 2)', () => {
     test( 'Decision-Maker — Landing -> Introduction -> Roadmap, Trust-Signale sichtbar', async ( { page } ) => {
         await page.goto( '/' )
         await expect( page.getByText( /Hackathon/i ).first() ).toBeVisible()
-        await expect( page.getByText( '288' ).first() ).toBeVisible()
+        // Stats sind dynamisch (aus stats.json) — keine hardcodierte Zahl asserten
+        // (Boilerplate-Regel). Stattdessen: irgendeine 3+-stellige Kennzahl sichtbar.
+        await expect( page.getByText( /\b\d{3,}\b/ ).first() ).toBeVisible()
 
         await page.goto( '/introduction/about/' )
         await page.goto( '/roadmap/overview/' )
