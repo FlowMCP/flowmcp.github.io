@@ -109,8 +109,28 @@ const columns = [
     margin: 0 auto 1.5rem;
     padding: 0 1.5rem;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr auto 1fr;
     gap: 2rem;
+    align-items: start;
+}
+/* Memo 088 Kap. 18: 3-Zonen-Ausrichtung — links / zentriert / rechts. */
+.pencil-footer__widget .pencil-footer__col:nth-child(1) {
+    text-align: left;
+}
+.pencil-footer__widget .pencil-footer__col:nth-child(2) {
+    text-align: center;
+}
+.pencil-footer__widget .pencil-footer__col:nth-child(3) {
+    text-align: right;
+}
+.pencil-footer__widget .pencil-footer__col:nth-child(1) .pencil-footer__col-list {
+    align-items: flex-start;
+}
+.pencil-footer__widget .pencil-footer__col:nth-child(2) .pencil-footer__col-list {
+    align-items: center;
+}
+.pencil-footer__widget .pencil-footer__col:nth-child(3) .pencil-footer__col-list {
+    align-items: flex-end;
 }
 .pencil-footer__col-title {
     font-size: 13px;
@@ -175,6 +195,17 @@ const columns = [
     .pencil-footer__widget {
         grid-template-columns: 1fr;
         gap: 1.5rem;
+    }
+    /* Memo 088 Kap. 18: gestapelt + alle Zonen zentriert (Desktop-Regeln ueberschreiben). */
+    .pencil-footer__widget .pencil-footer__col:nth-child(1),
+    .pencil-footer__widget .pencil-footer__col:nth-child(2),
+    .pencil-footer__widget .pencil-footer__col:nth-child(3) {
+        text-align: center;
+    }
+    .pencil-footer__widget .pencil-footer__col:nth-child(1) .pencil-footer__col-list,
+    .pencil-footer__widget .pencil-footer__col:nth-child(2) .pencil-footer__col-list,
+    .pencil-footer__widget .pencil-footer__col:nth-child(3) .pencil-footer__col-list {
+        align-items: center;
     }
 }
 @media (max-width: 640px) {

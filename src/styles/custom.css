@@ -854,3 +854,46 @@ hr,
     .blog-post__layout { grid-template-columns: 1fr; }
     .blog-post__toc { position: static; max-height: none; }
 }
+
+/* ============ MERMAID ZOOM (Memo 088 Kap. 5) ============
+ * Heller Card-Hintergrund fuer bare rehype-mermaid inline-svg (dunkle Linien
+ * auf dunklem Canvas sonst schlecht lesbar) + Vollbild-Lightbox.
+ */
+.sl-markdown-content svg[id^="mermaid"] {
+    display: block;
+    max-width: 100%;
+    margin: 1.5rem auto;
+    padding: 1.25rem;
+    background: #f6f8fa;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    cursor: zoom-in;
+}
+
+.mermaid-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: rgba( 13, 17, 23, 0.85 );
+    z-index: 1000;
+    cursor: zoom-out;
+}
+
+.mermaid-overlay.is-open {
+    display: flex;
+}
+
+.mermaid-overlay__stage {
+    width: 90vw;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f6f8fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    overflow: auto;
+}

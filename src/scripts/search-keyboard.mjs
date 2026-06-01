@@ -130,12 +130,8 @@ const handleKeydown = ( event ) => {
         return
     }
 
-    // Cmd+K / Ctrl+K — Search oeffnen, global
-    if( ( event.metaKey || event.ctrlKey ) && event.key.toLowerCase() === 'k' ) {
-        event.preventDefault()
-        openSearch()
-        return
-    }
+    // Cmd+K / Ctrl+K — bewusst NICHT hier behandelt. Starlight registriert
+    // den globalen Shortcut selbst (Memo 088 Kap. 6a) — Doppel-Handler entfernt.
 
     // Wenn User tippt: nur dialog-interne Navigation erlaubt
     if( isTyping( event ) ) {

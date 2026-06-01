@@ -118,20 +118,24 @@ import Default from '@astrojs/starlight/components/Search.astro'
         }
 
         const ensureEmptyState = () => {
+            // Memo 088 Kap. 6b: #starlight__search ist der frueh/sichtbar mountende
+            // Such-Root. Das spaet/unsichtbar mountende .pagefind-ui__drawer war der
+            // Grund, warum die Vorschlagsliste nie erschien. Fallback auf .pagefind-ui
+            // bewusst (kein stiller Default) falls Starlight die ID umbenennt.
             const drawer = document.querySelector( '.pagefind-ui' )
             if( !drawer ) { return }
+            const root = document.querySelector( '#starlight__search' ) || drawer
             const input = drawer.querySelector( '.pagefind-ui__search-input' )
             const results = drawer.querySelector( '.pagefind-ui__results' )
             const hasQuery = input && input.value && input.value.trim().length > 0
-            let emptyMsg = drawer.querySelector( '.search-empty-state' )
+            let emptyMsg = root.querySelector( '.search-empty-state' )
 
             if( !hasQuery ) {
                 if( !emptyMsg ) {
                     emptyMsg = document.createElement( 'div' )
                     emptyMsg.className = 'search-empty-state'
                     emptyMsg.setAttribute( 'role', 'status' )
-                    const area = drawer.querySelector( '.pagefind-ui__drawer' ) || drawer
-                    area.appendChild( emptyMsg )
+                    root.appendChild( emptyMsg )
                 }
                 buildEmptyState( emptyMsg )
                 emptyMsg.style.display = ''
@@ -267,7 +271,11 @@ import Default from '@astrojs/starlight/components/Search.astro'
      * style existed — the highlight had no visual effect. */
     .pagefind-ui__result.is-active {
         background-color: var(--sidebar-active-bg, rgba(121, 192, 255, 0.12));
-        box-shadow: inset 3px 0 0 0 var(--accent, #79c0ff);
+        /* Memo 088 Kap. 6c: outline statt box-shadow:inset — opake Result-Kinder
+         * verdeckten den inset-Shadow, der Highlight war unsichtbar. outline liegt
+         * ausserhalb des Box-Modells; outline-offset:-2px zieht ihn nach innen. */
+        outline: 2px solid var(--accent, #79c0ff);
+        outline-offset: -2px;
     }
 
     /* PRD-04: Results-Container hat sichtbare Mindesthoehe ------------ */
