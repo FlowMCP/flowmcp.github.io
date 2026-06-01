@@ -1,5 +1,5 @@
 ---
-title: "FlowMCP Spec v4.2 — Grading as a Versioned Standard"
+title: "FlowMCP v4.2 — Grading as a Versioned Standard"
 description: "FlowMCP Spec v4.2 delegates schema grading to its own independently versioned standard — the Grading-Spec v2.0, published as its own docs area so anyone can grade by the same rules."
 date: 2026-05-31
 author: "FlowMCP Team"
@@ -15,6 +15,12 @@ A schema is only as useful as it is clear. FlowMCP has always graded schemas —
 The point of a written, versioned grading standard is not the grade itself. It is **reproducibility across people**. When the rules — the eleven areas, the five-status model, the thresholds, the veto list — are public and versioned, a second person can grade a schema and arrive at a comparable result. Other maintainers and external contributors can grade by the *same* standard.
 
 That is the groundwork for a **contributor network**: not a single team handing down grades, but an open standard that many people apply, producing a shared, comparable body of gradings. Grading stops being an internal tool and becomes something others can join.
+
+## A standard the AI can improve against
+
+There is a second effect, and it is the one we are most excited about. When the criteria are written down — exactly which areas count, what a good schema looks like, where the typical weaknesses are — the AI itself knows what to aim for. It can read a schema, see where it falls short of the standard, and propose concrete improvements. The grade is no longer a verdict at the end; it becomes a checklist the AI works toward.
+
+That turns the project into a **self-improving loop**: schemas are graded against explicit, shared rules, the AI uses those same rules to sharpen them, and a human can step in and improve them by the very same criteria. Everyone — people and AI — is reading from the same page.
 
 ## FlowMCP delegates — it does not absorb
 
