@@ -64,5 +64,5 @@ Ratsdaten sind die roheste Form von Open Government: wer was beantragt hat, wer 
 ---
 
 > 📖 Lies auch:
-> - *[Lokale Daten in FlowMCP — Wann SQLite, Preload oder Shared Lists?](/de/blog/2026-06-local-data-sqlite-preload-shared-lists/)* — die Daten-Verankerungs-Mechanismen hinter Schemas wie diesem.
+> - *[SQLite — Ein Speicher für lokale, große und private Daten](/de/blog/2026-06-local-data-sqlite-preload-shared-lists/)* — die Daten-Verankerungs-Mechanismen hinter Schemas wie diesem.
 > - *[FlowMCP v4.1 — GTFS als erste Datenklasse mit eigenem Add-on](/de/blog/2026-05-flowmcp-v41-gtfs-add-on/)* — eine weitere Open-Data-Klasse, das Schwer-Daten-Gegenstück zur leichten OParl-API.

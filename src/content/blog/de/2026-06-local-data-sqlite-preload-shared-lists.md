@@ -1,5 +1,5 @@
 ---
-title: "Lokale Daten in FlowMCP — Wann SQLite, Preload oder Shared Lists?"
+title: "SQLite — Ein Speicher für lokale, große und private Daten"
 description: "Nicht jeder Datensatz gehört hinter eine Live-API. FlowMCP hat drei Wege, Daten lokal zu verankern — Preload, Shared Lists und SQLite-Resources — und eine klare Regel, wann welcher."
 date: 2026-06-01
 author: "FlowMCP Team"

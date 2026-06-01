@@ -1,5 +1,5 @@
 ---
-title: "Local Data in FlowMCP — When to Use SQLite, Preload, or Shared Lists"
+title: "SQLite — One Store for Local, Large, and Private Data"
 description: "Not every dataset belongs behind a live API. FlowMCP has three ways to anchor data locally — preload, shared lists, and SQLite resources — and a clear rule for which to reach for."
 date: 2026-06-01
 author: "FlowMCP Team"

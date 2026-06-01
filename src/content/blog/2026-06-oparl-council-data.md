@@ -64,5 +64,5 @@ Council data is the rawest form of open government: who proposed what, who voted
 ---
 
 > 📖 Read also:
-> - *[Local Data in FlowMCP — When to Use SQLite, Preload, or Shared Lists](/blog/2026-06-local-data-sqlite-preload-shared-lists/)* — the data-anchoring mechanisms behind schemas like this one.
+> - *[SQLite — One Store for Local, Large, and Private Data](/blog/2026-06-local-data-sqlite-preload-shared-lists/)* — the data-anchoring mechanisms behind schemas like this one.
 > - *[FlowMCP v4.1 — GTFS as the First Data Class with Its Own Add-on](/blog/2026-05-flowmcp-v41-gtfs-add-on/)* — another open-data class, the heavy-data counterpart to OParl's light API.
