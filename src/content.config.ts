@@ -23,6 +23,8 @@ const blog = defineCollection( {
             tags: z.array( z.string() ).default( [] ),
             cover: z.string().optional(),
             draft: z.boolean().default( false ),
+            // Memo 088 Kap. 8 (F7): explicit single-source featured flag.
+            featured: z.boolean().optional(),
             lang: z.enum( [ 'en', 'de' ] ).default( 'en' )
         } )
     } )

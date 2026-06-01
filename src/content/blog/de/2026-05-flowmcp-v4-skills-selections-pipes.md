@@ -1,5 +1,5 @@
 ---
-title: "FlowMCP v4 — Skills, Selections, Pipes"
+title: "FlowMCP Version 4.2"
 description: "Wie deterministische Strukturen LLM-Komposition tragen, ohne dass die AI Parameter halluziniert."
 date: 2026-05-24
 author: "FlowMCP Team"
@@ -115,6 +115,16 @@ pipe:
 
 Die AI bekommt diesen Skill als ein Werkzeug. Sie muss nicht raten, in welcher Reihenfolge zu rufen, welche Parameter aus welchem Output zu ziehen, welche Selection zu aktivieren. Sie liefert `event_name` und `event_date` — der Rest läuft deterministisch.
 
+## Datensicherheit
+
+Weil v4 Parameter deterministisch einsetzt, statt sie die LLM improvisieren
+zu lassen, kann jeder Tool-Aufruf geprüft werden, bevor er das System
+verlässt. Eingaben werden gegen das Schema validiert, und die strukturierte
+Pipe macht explizit, welches Feld in welchen Folge-Request fließt — eine
+Security-Prüfung kann den Datenfluss nachvollziehen, statt ihn zu erraten.
+Determinismus dient nicht nur der Zuverlässigkeit, sondern macht die
+Aufruf-Oberfläche auch überprüfbar.
+
 ## Nächste Schritte
 
 v4 ist die strukturelle Grundlage. Drei nähere Folgeschritte:
@@ -122,6 +132,11 @@ v4 ist die strukturelle Grundlage. Drei nähere Folgeschritte:
 - **v4.1 — GTFS als erstes Datenklasse-Add-on.** Wie ein externes Toolkit (`gtfs-sqlite-toolkit`) FlowMCP erweitert und ÖPNV-Daten als auditiertes Schema bereitstellt. *(Folge-Blogpost in Vorbereitung.)*
 - **Add-on-Konzept allgemein.** Wie eigene Add-ons gebaut werden, mit Capability-Driven Auto-Injection und Quality-Seal.
 - **Output-Determinismus vs. LLM-Variabilität als offene Frage.** Skills + Pipes verschieben die Halluzinations-Frage von "wo wird halluziniert?" zu "wieviel LLM ist eigentlich nötig?" Diese Frage bekommt ihren eigenen Beitrag.
+
+Das Grading ist ein eigenständiges Modul mit eigenem Doku-Bereich
+([/grading/](/de/grading/overview/)). Nach außen gibt es nur eine Zahl,
+die zählt — die FlowMCP-Version; der Grading-Standard wird beim Namen
+genannt, nicht über eine zweite Versionsnummer.
 
 ---
 

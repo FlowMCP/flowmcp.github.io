@@ -1,5 +1,5 @@
 ---
-title: "FlowMCP v4 — Skills, Selections, Pipes"
+title: "FlowMCP Version 4.2"
 description: "How deterministic structures carry LLM composition without the AI hallucinating parameters."
 date: 2026-05-24
 author: "FlowMCP Team"
@@ -115,6 +115,15 @@ pipe:
 
 The AI gets this skill as a single tool. It doesn't have to guess in which order to call, which parameters to draw from which output, which selection to activate. It supplies `event_name` and `event_date` — the rest runs deterministically.
 
+## Data Security
+
+Because v4 inserts parameters deterministically instead of letting the LLM
+improvise them, every tool call can be checked before it leaves the system.
+Inputs are validated against the schema, and the structured pipe makes it
+explicit which field flows into which downstream request — so a security
+review can reason about data flow instead of guessing. Determinism is not
+only about reliability; it is also what makes the call surface auditable.
+
 ## Next Steps
 
 v4 is the structural foundation. Three near-term follow-ups:
@@ -122,6 +131,11 @@ v4 is the structural foundation. Three near-term follow-ups:
 - **v4.1 — GTFS as the first data-class add-on.** How an external toolkit (`gtfs-sqlite-toolkit`) extends FlowMCP and provides public-transit data as an audited schema. *(Follow-up blog post in preparation.)*
 - **The add-on concept in general.** How to build your own add-ons, with capability-driven auto-injection and a quality seal.
 - **Output determinism vs. LLM variability as an open question.** Skills + Pipes shift the hallucination question from "where does hallucination happen?" to "how much LLM is actually needed?" This question gets its own post.
+
+Grading lives as a separate module with its own documentation area
+([/grading/](/grading/overview/)). Externally there is only one number to
+track — the FlowMCP version; the grading standard is referenced by name,
+not by a second version number.
 
 ---
 

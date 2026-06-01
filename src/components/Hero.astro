@@ -3,9 +3,26 @@
 // i18n: EN (default) + DE
 // Stats source: refs.stats from flowmcp-spec manifest.meta.stats (Memo 059 PRD-017).
 import refs from '../data/refs.json';
+import { getCollection } from 'astro:content';
+import { selectFeatured } from '../lib/featured.mjs';
 
 const path = Astro.url.pathname;
 const isDE = path.startsWith('/de/') || path === '/de';
+
+// Memo 088 Kap. 7 + 8 (F7): Hero pill derives its label + link from the
+// featured blog post (same single source as the blog index), not a hardcoded
+// version literal. Locale-filtered + date-desc sorted, then handed to the
+// shared selectFeatured helper.
+const slugOf = ( id ) => id.replace( /^de\//, '' );
+const localePosts = ( await getCollection( 'blog', ( { data } ) => !data.draft ) )
+    .filter( ( post ) => ( post.data.lang || 'en' ) === ( isDE ? 'de' : 'en' ) )
+    .sort( ( a, b ) => b.data.date.valueOf() - a.data.date.valueOf() );
+const { featured } = selectFeatured( { posts: localePosts } );
+// NO SILENT DEFAULTS: fallbacks are deliberate and visible.
+const featuredTitle = featured?.data?.title ?? 'FlowMCP';
+const featuredHref = featured
+    ? `${ isDE ? '/de/blog' : '/blog' }/${ slugOf( featured.id ) }/`
+    : ( isDE ? '/de/blog/' : '/blog/' );
 
 const statsBlock = refs.stats || {};
 const dataSourcesEn = statsBlock.count_unique_datasources ?? '—';
@@ -18,8 +35,8 @@ const toolsValueDe = statsBlock.count_tools !== null && statsBlock.count_tools !
     : '—';
 
 const t = isDE ? {
-    pill: 'FlowMCP v4.0 · Ankündigung lesen',
-    headlineLine1: 'Beliebige Datenquellen',
+    pill: `${ featuredTitle } · Ankündigung lesen`,
+    headlineLine1: 'Einheitlicher Zugang zu allen Datenquellen',
     headlineLine2: 'für KI-Agenten.',
     mission: 'FlowMCP normalisiert hunderte Datenquellen zu einer durchsuchbaren Library aus AI-bereiten Tools — damit deine Agenten suchen, kombinieren und antworten können, ohne dass du sie zu Integrations-Maintainern machst.',
     tagline: `${ dataSourcesDe } Datenquellen · ${ toolsValueDe } KI-aufrufbare Tools · KI-nativ, fuer tiefe Recherche.`,
@@ -28,10 +45,10 @@ const t = isDE ? {
     trust: 'Open Source · MIT · GitHub-nativ · Kein Vendor-Lock-in',
     hackathon: 'Eingesetzt beim Berlin Mobility Hackathon 2026 · DB InfraGO',
     docsHref: '/de/quickstart/what-is-flowmcp/',
-    blogHref: '/de/blog/',
+    blogHref: featuredHref,
 } : {
-    pill: 'FlowMCP v4.0 · Read the announcement',
-    headlineLine1: 'Normalize any data source',
+    pill: `${ featuredTitle } · Read the announcement`,
+    headlineLine1: 'Unified access to any data source',
     headlineLine2: 'for AI agents.',
     mission: 'FlowMCP normalises hundreds of data sources into a searchable library of AI-ready tools — so your agents can search, combine, and answer without turning you into an integrations maintainer.',
     tagline: `${ dataSourcesEn } data sources · ${ toolsValueEn } AI-callable tools · AI-native, built for deep research.`,
@@ -40,7 +57,7 @@ const t = isDE ? {
     trust: 'Open source · MIT · GitHub-native · No vendor lock-in',
     hackathon: 'Used at Berlin Mobility Hackathon 2026 · DB InfraGO',
     docsHref: '/quickstart/what-is-flowmcp/',
-    blogHref: '/blog/',
+    blogHref: featuredHref,
 };
 ---
 

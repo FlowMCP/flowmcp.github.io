@@ -14,6 +14,7 @@
 
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro'
 import { getCollection } from 'astro:content'
+import { selectFeatured } from '../lib/featured.mjs'
 
 // Memo 064 follow-up: bilingual blog. Each post carries a `lang` field
 // ('en' | 'de'). The index is rendered once per locale — /blog/ (en) and
@@ -32,8 +33,11 @@ const posts = ( await getCollection( 'blog', ( { data } ) => showDrafts || !data
     .filter( ( p ) => ( p.data.lang || 'en' ) === lang )
     .sort( ( a, b ) => b.data.date.valueOf() - a.data.date.valueOf() )
 
-const featured = posts[ 0 ]
-const rest = posts.slice( 1 )
+// Memo 088 Kap. 8 (F7): featured post comes from the shared single-source
+// helper (same source the Hero pill consumes), not inline posts[0].
+const { featured } = selectFeatured( { posts } )
+const rest = posts
+    .filter( ( post ) => post.id !== featured.id )
 
 // Memo 059 PRD-006 (A7, F4 Variante c): derive filter categories from the
 // actual posts collection. Use the first tag (tags[0]) as the primary

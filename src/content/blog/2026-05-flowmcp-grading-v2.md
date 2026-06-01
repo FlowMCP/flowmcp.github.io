@@ -4,6 +4,7 @@ description: "FlowMCP now delegates schema grading to its own independently vers
 date: 2026-05-31
 author: "FlowMCP Team"
 tags: ["release", "grading", "spec", "standard", "v2"]
+featured: true
 lang: en
 ---
 

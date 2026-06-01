@@ -4,6 +4,7 @@ description: "FlowMCP delegiert die Schema-Bewertung jetzt an einen eigenen, una
 date: 2026-05-31
 author: "FlowMCP Team"
 tags: ["release", "grading", "spec", "standard", "v2"]
+featured: true
 lang: de
 ---
 
