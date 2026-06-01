@@ -1,5 +1,5 @@
 ---
-title: "FlowMCP Spec v4.2 — Grading als versionierter Standard"
+title: "FlowMCP v4.2 — Grading als versionierter Standard"
 description: "FlowMCP Spec v4.2 delegiert die Schema-Bewertung an einen eigenen, unabhaengig versionierten Standard — die Grading-Spec v2.0, veroeffentlicht als eigener Doku-Bereich, damit Dritte nach denselben Regeln graden koennen."
 date: 2026-05-31
 author: "FlowMCP Team"
@@ -15,6 +15,12 @@ Ein Schema ist nur so nuetzlich, wie es klar ist. FlowMCP hat Schemas schon imme
 Der Sinn eines schriftlichen, versionierten Grading-Standards ist nicht die Note selbst. Es ist die **Reproduzierbarkeit ueber Personen hinweg**. Wenn die Regeln — die elf Bereiche, das Fuenf-Status-Modell, die Schwellenwerte, die Veto-Liste — oeffentlich und versioniert sind, kann eine zweite Person dasselbe Schema graden und zu einem vergleichbaren Ergebnis kommen. Andere Mitarbeiter und externe Contributors koennen nach *demselben* Standard graden.
 
 Das ist die Vorarbeit fuer ein **Contributor-Netzwerk**: nicht ein einzelnes Team, das Noten von oben vergibt, sondern ein offener Standard, den viele anwenden — und der so eine gemeinsame, vergleichbare Sammlung von Gradings erzeugt. Grading hoert auf, ein internes Werkzeug zu sein, und wird etwas, an dem sich Dritte beteiligen koennen.
+
+## Ein Standard, gegen den die AI verbessern kann
+
+Es gibt einen zweiten Effekt, und das ist der, auf den wir uns am meisten freuen. Wenn die Kriterien aufgeschrieben sind — genau welche Bereiche zaehlen, wie ein gutes Schema aussieht, wo die typischen Schwaechen liegen — dann weiss die AI selbst, worauf sie hinarbeiten muss. Sie kann ein Schema lesen, sehen, wo es hinter dem Standard zurueckbleibt, und konkrete Verbesserungen vorschlagen. Die Note ist nicht mehr ein Urteil am Ende; sie wird zu einer Checkliste, auf die die AI hinarbeitet.
+
+Das macht das Projekt zu einer **sich selbst verbessernden Schleife**: Schemas werden gegen explizite, geteilte Regeln benotet, die AI nutzt dieselben Regeln, um sie zu schaerfen, und ein Mensch kann nach genau denselben Kriterien eingreifen und sie verbessern. Alle — Menschen und AI — lesen aus derselben Vorlage.
 
 ## FlowMCP delegiert — es vereinnahmt nicht
 

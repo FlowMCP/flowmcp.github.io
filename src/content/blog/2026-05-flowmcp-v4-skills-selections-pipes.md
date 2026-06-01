@@ -1,5 +1,5 @@
 ---
-title: "FlowMCP Version 4.2"
+title: "FlowMCP v4.0 — Skills, Selections, Pipes"
 description: "How deterministic structures carry LLM composition without the AI hallucinating parameters."
 date: 2026-05-24
 author: "FlowMCP Team"
