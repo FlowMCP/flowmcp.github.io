@@ -23,7 +23,8 @@ FlowMCP begann als Versuch, mehrere Datenquellen an einen einzigen MCP-Server an
 | **Key-Isolation** | Keys leben in FlowMCP, nie im AI-Kontext — die AI sieht Calls und Antworten, nie Credentials |
 | **Rueckwaertssuche** | Schemas tragen sich in Shared Lists ein wie "Ethereum Mainnet" oder "Berlin", sodass eine AI fragen kann, welche Schemas ein Thema abdecken |
 | **v4** | Skills, Prefill, Selections, Output-Schema, Pipes |
-| **v4.1** | Add-on-Konzept — externe Toolkits wie `gtfs-sqlite-toolkit` erweitern FlowMCP |
+| **v4.1+** | Datenformat-Add-ons — externe Toolkits (`gtfs-sqlite-toolkit`, `geojson-sqlite-toolkit`, `csv-tsv-sqlite-toolkit`) wandeln Dateien in versiegelte SQLite-Ressourcen |
+| **v4.3** | Zwei-Spuren-Lebenszyklus — Trennung von Entwicklung und Grading-Monitoring (Grading an Grading-Spec 3.0.0 delegiert) |
 | **Datenklassen** | Crypto (EVM, Solana, DeFi, Identity, NFT), Open Data (DE/EU), Wetter/Geo, Web3 Social, News, Dev-Tools |
 
 ### Was es nicht (mehr) ist
@@ -68,7 +69,7 @@ Zwei Szenarien, die FlowMCP + AI im Einsatz zeigen — nicht wie man einen Agent
 | Lizenz | **MIT** — nutzen, forken, verbreiten |
 | Quelle | [github.com/FlowMCP](https://github.com/FlowMCP) |
 | Test-Coverage | Pro Repo, via Codecov |
-| Spec-Version | v4 aktiv, v4.1 Add-on-Layer, v3 im Archiv |
+| Spec-Version | v4.3 aktiv, Datenformat-Add-on-Layer, v3 im Archiv |
 | Schema-Lifecycle | Definiert pro Provider |
 | Maintainer-Status | Sichtbar — Kontakt ueber [Team](/de/team/) |
 
@@ -77,7 +78,7 @@ Zwei Szenarien, die FlowMCP + AI im Einsatz zeigen — nicht wie man einen Agent
 - **Open Source von Tag eins.** Schemas, Core, CLI — alle MIT, alle auf GitHub.
 - **Eine Engine auditieren, tausende Endpunkte abdecken.** Engine zentral, Schemas duenn.
 - **API-Keys bleiben bei dir.** FlowMCP haelt Keys zur Laufzeit; AI sieht Calls + Antworten, nie Credentials.
-- **Spec-Evolution dokumentiert.** v3 → v4 → v4.1 im [CHANGELOG](https://github.com/FlowMCP/flowmcp-spec/blob/main/CHANGELOG.md).
+- **Spec-Evolution dokumentiert.** v3 → v4 → v4.3 im [CHANGELOG](https://github.com/FlowMCP/flowmcp-spec/blob/main/CHANGELOG.md).
 
 ## Community
 
