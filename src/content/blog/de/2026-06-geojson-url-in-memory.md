@@ -9,7 +9,7 @@ lang: de
 
 > 2026-06-02 · FlowMCP Team · #data-formats #geojson #add-on #url
 
-> **Architektur-Hinweis:** Der Slug sagt aus URL-Stabilitätsgründen weiterhin `sealed-sqlite`, doch das Add-on baut keine versiegelte SQLite-Datei mehr. Es wurde in Memo 096 auf ein **URL + In-Memory**-Modell korrigiert: Die vollständige Datei wird in einem Request geladen, beim Laden validiert und aus dem Speicher abgefragt — keine `.db`-Datei, kein Qualitätssiegel, kein Konverter-Schritt.
+> **Architektur-Hinweis:** Eine frühere Version dieses Add-ons baute eine versiegelte SQLite-Datei. Es wurde in Memo 096 auf ein **URL + In-Memory**-Modell korrigiert: Die vollständige Datei wird in einem Request geladen, beim Laden validiert und aus dem Speicher abgefragt — keine `.db`-Datei, kein Qualitätssiegel, kein Konverter-Schritt.
 
 GeoJSON ist das Format, auf das sich das geografische Web geeinigt hat: Punkte, Linien und Polygone in einer schlichten JSON-Hülle. Es ist überall — Verwaltungsgrenzen, Points of Interest, Sensor-Standorte, Routen-Geometrien. Eine rohe GeoJSON-Datei lässt sich aber nur umständlich abfragen. „Welche Features liegen in dieser Bounding-Box?" oder „was ist in der Nähe dieser Koordinate?" bedeutet, die ganze Datei neu zu parsen und bei jedem Aufruf über jedes Feature zu iterieren. Das **`geojson-sqlite-toolkit`**-Add-on löst das: Es lädt eine GeoJSON-FeatureCollection **einmal** von einer URL, hält sie im Speicher, und die FlowMCP-CLI speist die räumlichen Abfrage-Tools obendrauf automatisch ein.
 

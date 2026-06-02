@@ -9,7 +9,7 @@ lang: de
 
 > 2026-06-02 · FlowMCP Team · #data-formats #csv #add-on #url
 
-> **Architektur-Hinweis:** Der Slug sagt aus URL-Stabilitätsgründen weiterhin `sealed-sqlite`, doch das Add-on baut keine versiegelte SQLite-Datei mehr. Es wurde in Memo 096 auf ein **URL + In-Memory**-Modell korrigiert: Die vollständige Datei wird in einem Request geladen, beim Laden validiert und aus dem Speicher abgefragt — keine `.db`-Datei, kein Qualitätssiegel, kein Konverter-Schritt.
+> **Architektur-Hinweis:** Eine frühere Version dieses Add-ons baute eine versiegelte SQLite-Datei. Es wurde in Memo 096 auf ein **URL + In-Memory**-Modell korrigiert: Die vollständige Datei wird in einem Request geladen, beim Laden validiert und aus dem Speicher abgefragt — keine `.db`-Datei, kein Qualitätssiegel, kein Konverter-Schritt.
 
 CSV ist das häufigste Format, in dem offene Daten ausgeliefert werden — und das mehrdeutigste. Eine Tabelle mit Orten, Koordinaten, Einwohnerzahlen, Hauptstadt-Flags wirkt trivial, bis man sie tatsächlich parsen muss. Ist das Trennzeichen ein Komma oder ein Semikolon? Ist `52,5` eine Dezimalzahl oder sind es zwei Spalten? Welche Spalte ist die geografische Breite? Die Datei selbst verrät es nicht. Das neue **`csv-tsv-sqlite-toolkit`** lädt Geo-CSV/TSV von einer URL in den Speicher — und sein gesamtes Design ist darauf ausgelegt, diese Fragen erzwingen zu lassen, statt zu raten.
 
@@ -107,5 +107,5 @@ CSV ist der Ort, an dem offene Daten leben, und stilles Parsen ist der Ort, an d
 
 > 📖 Lies auch:
 > - *[FlowMCP v4.1 — GTFS als erste Datenklasse mit eigenem Add-on](/de/blog/2026-05-flowmcp-v41-gtfs-add-on/)* — das Add-on-Muster, dem dieses Toolkit folgt, an einem schweren CSV-in-ZIP-Datensatz.
-> - *[GeoJSON als per URL geladene In-Memory-Ressource](/de/blog/2026-06-geojson-sealed-sqlite/)* — das selbstbeschreibende Geschwister, das keine Parse-Config braucht.
+> - *[GeoJSON als per URL geladene In-Memory-Ressource](/de/blog/2026-06-geojson-url-in-memory/)* — das selbstbeschreibende Geschwister, das keine Parse-Config braucht.
 </content>

@@ -60,6 +60,13 @@ export default defineConfig({
         ],
     },
     redirects: {
+        // Memo 096: geojson/csv add-on posts renamed from "-sealed-sqlite"
+        // to "-url-in-memory" (the add-on is now URL + in-memory, not a converter).
+        '/blog/2026-06-geojson-sealed-sqlite/':     '/blog/2026-06-geojson-url-in-memory/',
+        '/de/blog/2026-06-geojson-sealed-sqlite/':  '/de/blog/2026-06-geojson-url-in-memory/',
+        '/blog/2026-06-csv-tsv-sealed-sqlite/':     '/blog/2026-06-csv-tsv-url-in-memory/',
+        '/de/blog/2026-06-csv-tsv-sealed-sqlite/':  '/de/blog/2026-06-csv-tsv-url-in-memory/',
+
         '/docs': '/quickstart/what-is-flowmcp/',
         '/specification': '/specification/overview/',
 

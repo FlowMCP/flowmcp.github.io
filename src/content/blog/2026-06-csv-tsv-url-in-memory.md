@@ -9,7 +9,7 @@ lang: en
 
 > 2026-06-02 · FlowMCP Team · #data-formats #csv #add-on #url
 
-> **Architecture note:** the slug still says `sealed-sqlite` for URL stability, but the add-on no longer builds a sealed SQLite file. It was corrected to a **URL + in-memory** model in Memo 096: the complete file is fetched in one request, validated on load, and queried from memory — no `.db` file, no quality seal, no converter step.
+> **Architecture note:** an earlier version of this add-on built a sealed SQLite file. It was corrected to a **URL + in-memory** model in Memo 096: the complete file is fetched in one request, validated on load, and queried from memory — no `.db` file, no quality seal, no converter step.
 
 CSV is the most common shape open data ships in — and the most ambiguous. A spreadsheet of places, coordinates, populations, capital flags looks trivial until you actually have to parse it. Is the separator a comma or a semicolon? Is `52,5` one decimal number or two columns? Which column is the latitude? The file itself won't tell you. The new **`csv-tsv-sqlite-toolkit`** loads geo CSV/TSV from a URL into memory — and its whole design is built around forcing you to answer those questions instead of guessing.
 
@@ -107,5 +107,5 @@ CSV is where open data lives, and silent parsing is where open-data pipelines qu
 
 > 📖 Read also:
 > - *[FlowMCP v4.1 — GTFS as the First Data Class with Its Own Add-on](/blog/2026-05-flowmcp-v41-gtfs-add-on/)* — the add-on pattern this toolkit follows, on a heavy CSV-in-ZIP dataset.
-> - *[GeoJSON as a URL-Loaded In-Memory Resource](/blog/2026-06-geojson-sealed-sqlite/)* — the self-describing sibling that needs no parse config.
+> - *[GeoJSON as a URL-Loaded In-Memory Resource](/blog/2026-06-geojson-url-in-memory/)* — the self-describing sibling that needs no parse config.
 </content>
