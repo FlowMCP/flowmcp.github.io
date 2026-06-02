@@ -42,7 +42,7 @@ v4.3 also adds one new validation rule, **VAL019** — a folder↔namespace inva
 - **Development gate unchanged** — `flowmcp validate` → 0 errors is still required before production.
 - **VAL019** — new folder↔namespace invariant, sibling of `CAT002` / `AGT001` / `SKL003`.
 
-Alongside the spec work, v4.3 also ships two new data-format add-ons — `geojson-sqlite-toolkit` and `csv-tsv-sqlite-toolkit` — for turning common data files into sealed local SQLite resources.
+Alongside the spec work, v4.3 also ships two new data-format add-ons — `geojson-sqlite-toolkit` and `csv-tsv-sqlite-toolkit` — for fetching complete GeoJSON/CSV files by URL and querying them from memory.
 
 ## Where to read it
 

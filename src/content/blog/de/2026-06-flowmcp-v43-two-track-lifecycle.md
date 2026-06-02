@@ -42,7 +42,7 @@ v4.3 fügt außerdem eine neue Validierungsregel hinzu, **VAL019** — eine Ordn
 - **Entwicklungs-Tor unverändert** — `flowmcp validate` → 0 Fehler bleibt vor der Produktion Pflicht.
 - **VAL019** — neue Ordner↔Namespace-Invariante, Geschwister von `CAT002` / `AGT001` / `SKL003`.
 
-Begleitend zur Spec-Arbeit liefert v4.3 außerdem zwei neue Datenformat-Add-ons — `geojson-sqlite-toolkit` und `csv-tsv-sqlite-toolkit` — um gängige Datendateien in versiegelte lokale SQLite-Ressourcen zu verwandeln.
+Begleitend zur Spec-Arbeit liefert v4.3 außerdem zwei neue Datenformat-Add-ons — `geojson-sqlite-toolkit` und `csv-tsv-sqlite-toolkit` — um vollständige GeoJSON/CSV-Dateien per URL zu laden und aus dem Speicher abzufragen.
 
 ## Wo man es liest
 
