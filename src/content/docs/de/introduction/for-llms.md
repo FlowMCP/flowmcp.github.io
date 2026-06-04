@@ -27,7 +27,7 @@ https://github.com/flowmcp
 
 ## Version
 
-You are working with FlowMCP 4.2.0.
+You are working with FlowMCP 4.3.0.
 
 ```
 
@@ -41,6 +41,6 @@ Eine **llms.txt** Datei ist eine kompakte Zusammenfassung einer Dokumentation in
 |-------|--------|
 | **FlowMCP llms.txt** | Projektuebersicht, Vision, alle Docs-Seiten mit Kurzbeschreibung |
 | **FlowMCP Docs llms.txt** | Technische Details zu Schemas, Agents, MCP-Servern |
-| **FlowMCP Spec llms.txt** | Formale Spezifikation des Schema-Formats (v4.2.0) |
+| **FlowMCP Spec llms.txt** | Formale Spezifikation des Schema-Formats (v4.3.0) |
 
 Fuer tiefere technische Details empfehlen wir die [FlowMCP-Dokumentation](/de/quickstart/what-is-flowmcp/).

@@ -23,6 +23,6 @@ Because the data operators own the source and its terms, FlowMCP also makes no j
 
 ## See Also
 
-- [Specification: License & ToS (spec/v4.2.0/23-license-and-tos.md)](https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.2.0/23-license-and-tos.md)
+- [Specification: License & ToS (spec/v4.3.0/23-license-and-tos.md)](https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.3.0/23-license-and-tos.md)
 - [DISCLAIMER.md in flowmcp-core](https://github.com/FlowMCP/flowmcp-core/blob/main/DISCLAIMER.md)
 - [DISCLAIMER.md in flowmcp-cli](https://github.com/FlowMCP/flowmcp-cli/blob/main/DISCLAIMER.md)
