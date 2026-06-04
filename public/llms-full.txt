@@ -12,15 +12,10 @@ Spec: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/generated/llms
 # FAQ
 /about/faq
 
-<!-- PAGEFIND-META-START -->
-<span style="display:none" data-pagefind-meta="section">About</span>
-<!-- PAGEFIND-META-END -->
-
-
 <details>
 <summary>What is FlowMCP exactly?</summary>
 
-FlowMCP is a schema library + engine that normalises data sources into AI-callable tools. The library currently contains 365 production-ready schemas (v4) covering 288 data sources. The engine routes calls, validates inputs/outputs, and handles authentication. AI agents call FlowMCP; FlowMCP calls the underlying APIs.
+FlowMCP is a schema library + engine that normalises data sources into AI-callable tools. The library currently contains 373 production-ready schemas (v4) covering 291 data sources. The engine routes calls, validates inputs/outputs, and handles authentication. AI agents call FlowMCP; FlowMCP calls the underlying APIs.
 
 </details>
 
@@ -34,7 +29,7 @@ No. FlowMCP is **CLI-first**. The MCP server mode is optional. If you have a cli
 <details>
 <summary>What does CLI-first mean in practice?</summary>
 
-You run `flowmcp call <schema>.<tool> '{...}'` from your terminal, an LLM call, or a Node/Python script. Tools are loaded on demand — no need to keep 1575 tools in context.
+You run `flowmcp call <schema>.<tool> '{...}'` from your terminal, an LLM call, or a Node/Python script. Tools are loaded on demand — no need to keep 1608 tools in context.
 
 </details>
 
@@ -414,7 +409,6 @@ The quickest way to try a tool is via the FlowMCP CLI:
 
 ```bash
 flowmcp search <provider>
-flowmcp add <namespace>
 flowmcp call <namespace.toolName> '{"param":"value"}'
 ```
 
@@ -543,15 +537,15 @@ The full field definition lives in the spec: FlowMCP Spec v4.1.0 — Schema Form
 
 Schemas are organised under provider namespaces in the public schema repository.
 
-- 365 production schemas spanning categories such as Blockchain EVM, Blockchain Solana, DeFi, Crypto Data, Government DE/EU, Weather & Geo, Web3 Social, News & Media, Dev Tools, and NFT & Identity
-- 1575 individual tools exposed via these schemas
+- 373 production schemas spanning categories such as Blockchain EVM, Blockchain Solana, DeFi, Crypto Data, Government DE/EU, Weather & Geo, Web3 Social, News & Media, Dev Tools, and NFT & Identity
+- 1608 individual tools exposed via these schemas
 - Dynamic source: github.com/FlowMCP/flowmcp-schemas-public (https://github.com/FlowMCP/flowmcp-schemas-public), `meta.stats` field per schema
 
-Live discovery via CLI: `flowmcp search <provider>` lists schemas, `flowmcp add <namespace>` activates them locally.
+Live discovery via CLI: `flowmcp search <provider>` lists schemas and `flowmcp call <tool> '{...}'` runs them — every tool from the configured `schemaFolders[]` is immediately callable, no activation step.
 
 ## Lifecycle
 
-A new schema starts as a draft in `tests/new-schemas/PROVIDER/`. The author validates the structure with `flowmcp validate <path>`, runs the live API tests with `flowmcp test single <path>`, and — if all routes pass — moves the file into `schemas/v4.1.0/PROVIDER/` for release. From that point the schema is part of the global inventory and reachable via the CLI or programmatically via the core API. Updates follow the same loop: edit, validate, test, release.
+A new schema starts as a draft in `tests/new-schemas/PROVIDER/`. The author validates the structure with `flowmcp validate <path>`, runs the live data pretest with `flowmcp grading deterministic <id>`, and — if all routes pass — moves the file into `schemas/v4.1.0/PROVIDER/` for release. From that point the schema is part of the global inventory and reachable via the CLI or programmatically via the core API. Updates follow the same loop: edit, validate, test, release.
 
 Author guidance for each step is collected in the Schema Creation Guide and the FlowMCP Spec v4.1.0 — Schema Lifecycle section.
 
@@ -5347,7 +5341,7 @@ The schema layer is where you work. Everything else is handled by the runtime.
 
 ## Schema Anatomy
 
-Every FlowMCP v4.1.0 schema uses the **two-export pattern**:
+Every FlowMCP v4.2.0 schema uses the **two-export pattern**:
 
 ### main (required)
 
@@ -5484,7 +5478,7 @@ Schemas that attempt to import modules, access the filesystem, or use undeclared
 :::
 
 :::note
-For the full specification including all validation rules, parameter formats, and security details, see the Specification v4.1.0.
+For the full specification including all validation rules, parameter formats, and security details, see the Specification v4.2.0.
 :::
 
 ---
@@ -6316,11 +6310,6 @@ Details →
 # Schemas & Sources
 /schemas-and-sources
 
-<!-- PAGEFIND-META-START -->
-<span style="display:none" data-pagefind-meta="section">About</span>
-<!-- PAGEFIND-META-END -->
-
-
 FlowMCP is built from three layers that are easy to confuse but stay strictly separate. Keeping them apart is the key to understanding what FlowMCP is responsible for and what it is not.
 
 ## Engine, Schemas, and Data Operators
@@ -6341,7 +6330,7 @@ Because the data operators own the source and its terms, FlowMCP also makes no j
 
 ## See Also
 
-- Specification: License & ToS (spec/v4.1.0/23-license-and-tos.md) (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.1.0/23-license-and-tos.md)
+- Specification: License & ToS (spec/v4.2.0/23-license-and-tos.md) (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.2.0/23-license-and-tos.md)
 - DISCLAIMER.md in flowmcp-core (https://github.com/FlowMCP/flowmcp-core/blob/main/DISCLAIMER.md)
 - DISCLAIMER.md in flowmcp-cli (https://github.com/FlowMCP/flowmcp-cli/blob/main/DISCLAIMER.md)
 
