@@ -166,7 +166,14 @@ const run = async () => {
         `---\n\n# ${title || slug}\n/${slug}\n\n${body}`
     )
 
-    const docsPages = allPages.filter(p => p.slug.startsWith('docs/'))
+    // Practical documentation = everything EXCEPT the formal specification and the
+    // grading standard, which have their own layers (the spec raw llms.txt and the
+    // grading overview, both linked from the header). The pages live directly under
+    // src/content/docs (slugs like 'quickstart', 'guides/...'), NOT under a 'docs/'
+    // prefix — the old startsWith('docs/') filter matched nothing and produced a
+    // header-only docs-llms.txt.
+    const FORMAL_SECTIONS = ['specification', 'grading']
+    const docsPages = allPages.filter(p => !FORMAL_SECTIONS.some(sec => p.slug === sec || p.slug.startsWith(sec + '/')))
     const docsSections = docsPages.map(({ slug, title, body }) =>
         `---\n\n# ${title || slug}\n/${slug}\n\n${body}`
     )
