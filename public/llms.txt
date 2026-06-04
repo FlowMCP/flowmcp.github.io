@@ -6,6 +6,7 @@
 - Full website content (includes the Grading standard inline): /llms-full.txt
 - Schema specification (v4.3.0): https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/generated/llms.txt
 - Grading standard (gradingSpec v3.0.0): https://flowmcp.github.io/grading/overview/
+- Schema best practices (advisory): https://flowmcp.github.io/best-practices.txt
 
 Spec source: https://github.com/FlowMCP/flowmcp-spec
 Docs: https://flowmcp.github.io/docs

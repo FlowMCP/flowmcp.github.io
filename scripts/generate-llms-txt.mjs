@@ -66,6 +66,12 @@ For a brief index, see: https://flowmcp.github.io/llms.txt
         ? `- Grading standard (gradingSpec v${ refs.grading.currentVersion }): ${ refs.grading.url }`
         : '- Grading standard (gradingSpec): https://flowmcp.github.io/grading/overview/'
 
+    // Memo 108: name the advisory Best-Practice track + its published concatenation.
+    // best-practices.txt is the file attached to schema-building subagent prompts.
+    const bestPracticeLine = refs.bestPractice?.currentVersion
+        ? `- Schema best practices (bestPracticeSpec v${ refs.bestPractice.currentVersion }, advisory): https://flowmcp.github.io/best-practices.txt`
+        : '- Schema best practices (advisory): https://flowmcp.github.io/best-practices.txt'
+
     const HEADER_INDEX = `# FlowMCP — llms.txt Index
 
 > Layered LLM context for FlowMCP. Pick the layer you need.
@@ -74,6 +80,7 @@ For a brief index, see: https://flowmcp.github.io/llms.txt
 - Full website content (includes the Grading standard inline): /llms-full.txt
 - Schema specification (v${ specVersion }): ${ specUrl }
 ${ gradingLine }
+${ bestPracticeLine }
 
 Spec source: https://github.com/FlowMCP/flowmcp-spec
 Docs: https://flowmcp.github.io/docs
@@ -172,7 +179,7 @@ const run = async () => {
     // src/content/docs (slugs like 'quickstart', 'guides/...'), NOT under a 'docs/'
     // prefix — the old startsWith('docs/') filter matched nothing and produced a
     // header-only docs-llms.txt.
-    const FORMAL_SECTIONS = ['specification', 'grading']
+    const FORMAL_SECTIONS = ['specification', 'grading', 'best-practice']
     const docsPages = allPages.filter(p => !FORMAL_SECTIONS.some(sec => p.slug === sec || p.slug.startsWith(sec + '/')))
     const docsSections = docsPages.map(({ slug, title, body }) =>
         `---\n\n# ${title || slug}\n/${slug}\n\n${body}`

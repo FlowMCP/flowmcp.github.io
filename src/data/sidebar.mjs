@@ -30,6 +30,16 @@ const GRADING_GROUP_LABELS = {
 const GRADING_GROUP_ORDER = [ 'introduction', 'core-model', 'process-contracts', 'reference' ]
 
 
+// Memo 108: best-practice sidebar sub-groups. Fixed order for deterministic nav.
+const BEST_PRACTICE_GROUP_LABELS = {
+    introduction: { en: 'Introduction', de: 'Einfuehrung' },
+    overview: { en: 'Overview', de: 'Uebersicht' },
+    'schema-creation': { en: 'Schema Creation', de: 'Schema-Erstellung' }
+}
+
+const BEST_PRACTICE_GROUP_ORDER = [ 'introduction', 'overview', 'schema-creation' ]
+
+
 class SidebarLoader {
     static buildSidebar() {
         const manifest = SidebarLoader.#loadManifest()
@@ -101,6 +111,52 @@ class SidebarLoader {
             .map( ( key ) => buckets[ key ] )
 
         return { items, gradingVersion: manifest.grading.version }
+    }
+
+
+    // Memo 108: the best-practice track is a separate nav group with its own
+    // slug-root and a third badge. Built from manifest.bestPractice (the additive
+    // block). Returns null when no best-practice block is present — strict, no
+    // silent default. Mirrors buildGradingSidebar.
+    static buildBestPracticeSidebar() {
+        const manifest = SidebarLoader.#loadManifest()
+        if( !manifest.bestPractice || !Array.isArray( manifest.bestPractice.files ) ) {
+            return null
+        }
+        if( manifest.bestPractice.files.length === 0 ) {
+            throw new Error( '[sidebar] manifest.bestPractice present but files is empty' )
+        }
+        if( typeof manifest.bestPractice.version !== 'string' || manifest.bestPractice.version.length === 0 ) {
+            throw new Error( '[sidebar] manifest.bestPractice.version missing or empty' )
+        }
+
+        const sorted = [ ...manifest.bestPractice.files ].sort( ( a, b ) => a.order - b.order )
+        const missing = sorted
+            .map( ( file, index ) => typeof file.sidebar_group === 'string' ? null : `bestPractice.files[${ index }].sidebar_group` )
+            .filter( ( entry ) => entry !== null )
+        if( missing.length > 0 ) {
+            throw new Error( `[sidebar] best-practice manifest missing required fields: ${ missing.join( ', ' ) }` )
+        }
+
+        const buckets = {}
+        sorted.forEach( ( file ) => {
+            const key = file.sidebar_group
+            if( !buckets[ key ] ) {
+                buckets[ key ] = {
+                    label: BEST_PRACTICE_GROUP_LABELS[ key ]?.en ?? key,
+                    translations: { de: BEST_PRACTICE_GROUP_LABELS[ key ]?.de ?? key },
+                    collapsed: file.collapsed,
+                    items: []
+                }
+            }
+            buckets[ key ].items.push( { label: file.title, slug: `best-practice/${ file.slug }` } )
+        } )
+
+        const items = BEST_PRACTICE_GROUP_ORDER
+            .filter( ( key ) => buckets[ key ] )
+            .map( ( key ) => buckets[ key ] )
+
+        return { items, bestPracticeVersion: manifest.bestPractice.version }
     }
 
 

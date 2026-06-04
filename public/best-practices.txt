@@ -1,0 +1,285 @@
+# FlowMCP — Schema Best Practices (bestPracticeSpec/0.1.0)
+
+> Advisory, not normative ("you should, not you must"). Read this BEFORE building a
+> schema. Every recommendation is backed by a real code reference (file:line) or a
+> memo. The normative rules live in the Schemas Specification and the Grading-Spec.
+
+Source: https://flowmcp.github.io/best-practice/introduction/
+
+---
+
+# Introduction
+/best-practice/introduction/
+
+> Conformance language is intentionally absent here. Unlike the Schemas Specification and the Grading-Spec, the Best-Practice track is **advisory**: it collects recommendations and learnings. It uses "should", not "MUST".
+
+---
+
+## What this track is
+
+The Best-Practice track is the **third** FlowMCP spec track, alongside the **Specification** (`spec/v4.3.0/`) and **Grading** (`grading/3.0.0/`). Both of those are normative — they define what a schema *is* and how it is *evaluated*. This track is different in character:
+
+> **You don't have to, but you should.**
+
+It holds **recommendations and learnings**, not validation rules. Nothing here disqualifies a schema. The normative rules stay in the Specification and the Grading-Spec; this track raises quality *systematically*, beyond mere absence of errors.
+
+## The problem it solves — alignment
+
+Subagents that pick up a new prospect or build a new schema used to start **without a shared knowledge base**. Whatever one agent learned (a cryptic API key convention, a geo axis-order gotcha, a license trap) stayed with that agent. The next subagent rediscovered it — or didn't, and produced rework.
+
+The Best-Practice track is published as a single generated text file, **`best-practices.txt`**, that is attached to every schema-building subagent prompt as a **mandatory link**. So every subagent shares the same gotchas. It scales: thirty parallel subagents all append the same, **updatable** file → better schemas from the start, less rework.
+
+## Why it exists — a concrete learning
+
+When working through prospects, an agent once handed subagents **self-invented prompts** instead of reading the source first ("just search for something about IHK") to finish faster. Subagents are smart enough to produce output even from poor input — but the bad start cost roughly ten schemas of rework.
+
+The lesson — **read the source first** — is exactly why this track exists. The learning moves from *luck* (a capable agent happening to do the right thing) to *structure* (every subagent receives the best practices as a mandatory source).
+
+A second truth: **"no errors" is not a quality standard.** Error-freeness is the floor; real quality shows over weeks. Best practices lift quality systematically, not just the error count.
+
+## Character
+
+- **Recommendation, not rule** — "should", never "MUST".
+- **Living and extensible** — new patterns grow *into* an existing area, not into a new stub page.
+- **Source-first** — every recommendation is backed by a real code reference (`file:line`) or a memo.
+
+## Related
+
+- **Related:** [`01-overview.md`](/best-practice/overview/)
+
+---
+
+# Overview
+/best-practice/overview/
+
+This page explains how to read the Best-Practice track, how it is versioned, and bundles the one-liners that are too small for their own page.
+
+---
+
+## How to read this track
+
+The track is organised into **categories**. The first — and currently only — category is **Schema Creation**: how to build a FlowMCP schema that reads well for an LLM and grades well. It is split into five **areas**, each a single page:
+
+| Area | Page | Core recommendation |
+|------|------|---------------------|
+| BP-1 | [Readable Interface](/best-practice/readable-interface/) | Make the schema readable for the LLM, not for the API |
+| BP-2 | [Reference Data](/best-practice/reference-data/) | Maintain recurring lists and value formats once, inherit everywhere |
+| BP-3 | [Load & Scale](/best-practice/load-and-scale/) | Pick the load/store strategy by data size and query ability |
+| BP-4 | [Geo Conventions](/best-practice/geo-conventions/) | Use the established geo defaults instead of rolling your own |
+| BP-5 | [Correctness & License](/best-practice/correctness-license/) | Assume nothing silently, fake nothing, document provenance and rights |
+
+The principle behind the cut is **few strong pages over many thin ones**: fifteen documented patterns are bundled into five thematic areas, so new patterns grow into an existing area rather than into a new stub.
+
+## Versioning
+
+The Best-Practice track is independently versioned as `bestPracticeSpec/0.1.0`, recorded in `data/refs.manual.json` (`bestPractice.currentVersion` + `specDir`) — analogous to `spec` and `grading`. The doc-site surfaces the version as a sidebar badge.
+
+`0.1.0` ships **schema-creation only**. Further categories (e.g. schema maintenance, grading hints) are deliberately a later backlog — first the scaffold, then the growth.
+
+## Naming
+
+The source folder is `best-practice/` (singular, consistent with `spec/` and `grading/`); the published file is **`best-practices.txt`** (plural). The generation maps between them.
+
+## Bundled one-liners
+
+Small, sharp learnings that do not warrant a full page:
+
+- **Events are not in OpenStreetMap.** Querying OSM for cultural events returns nothing useful — use a culture-data source instead (e.g. kulturdaten.berlin). (Memo 100 Kap. 8.6)
+- **"No errors" is the floor, not the ceiling.** A schema that passes `flowmcp grading deterministic` is the *minimum* bar — real quality shows over weeks of use.
+- **Read the source first.** Never build from an invented prompt; the prospect issue's `URL` + `Typ` are the authoritative starting point.
+
+## Related
+
+- **Depends on:** [`00-introduction.md`](/best-practice/introduction/)
+- **Related:** [`schema-creation/10-readable-interface.md`](/best-practice/readable-interface/)
+
+---
+
+# Readable Interface: Enums, Parameter Names & Handler Phases
+/best-practice/readable-interface/
+
+Make the schema readable for the **LLM**, not for the API. An API may speak in terse codes; the model should not have to. Three related levers turn a cryptic upstream into a self-explaining tool.
+
+---
+
+## Human-readable enums
+
+Expose enum *values* that read in plain language (`enum(1-hour,1-day)` instead of `h1,d1`) and map them to the API codes in the `preRequest` handler.
+
+- Beleg: `create-flowmcp-schema/SKILL.md:205-220`
+- Example: `schemas/v4.0.0/providers/blocknative/gasprice.mjs:28`
+
+The model picks a value it understands; the handler translates it on the way out.
+
+## Improve parameter names & keys
+
+When an API uses cryptic keys — `o/h/l/c/v` for open/high/low/close/volume, a bare `Z`, and so on — invent **speaking parameter names**, let the values be passed under those names, and write a `preRequest` handler that maps the readable names/keys onto the real API. This removes the friction between the LLM and the data source, and it is worth the effort.
+
+- Beleg-Mechanismus: `schemas/v4.0.0/providers/blocknative/gasprice.mjs:72-77` rewrites the readable `chainName`/alias in `preRequest` onto the real key `chainid` (`struct.url.replace('chainName=…','chainid=…')`).
+- Header variant: `schemas/v4.0.0/providers/birdeye/birdeye.mjs:161-167`.
+
+> **Honest classification:** the *mechanism* (a `preRequest` key rewrite) is proven in the code above. The concrete OHLCV application is a *new* recommendation built on that proven mechanism — not yet a shipped example.
+
+## Handler-phase contract (the why + the gotcha)
+
+`preRequest` is exactly the place for these rewrites — which is *why* the contract matters. The phases read the payload differently:
+
+| Phase | Reads | Reference |
+|-------|-------|-----------|
+| `executeRequest` | **nested** `payload.userParams.X` | `flowmcp-core/src/v2/task/Fetch.mjs:65-68` |
+| `preRequest` | **flat** `payload.X` | `Fetch.mjs:45-48` |
+| `postRequest` | **flat** `payload.X` | `Fetch.mjs:93-97` |
+
+Mixing them up means the handler **silently does not fire** — no error, just a rewrite that never happens. When a `preRequest` rewrite appears to do nothing, check that it reads `payload.X` (flat), not `payload.userParams.X`.
+
+## Related
+
+- **Depends on:** [`01-overview.md`](/best-practice/overview/)
+- **Related:** [`14-correctness-license.md`](/best-practice/correctness-license/)
+
+---
+
+# Reference Data Without Duplicates: Shared Lists & Canonical Values
+/best-practice/reference-data/
+
+Maintain recurring lists and value formats **once**, and inherit them everywhere. Duplicated reference data drifts; a single canonical source does not.
+
+---
+
+## Shared lists
+
+Declare `sharedLists` and reference entries with the token `{{listName:field}}`; the loader interpolates them when the schema is loaded.
+
+- Beleg: `flowmcp-core/.../Pipeline.mjs:277`, `SharedListResolver.interpolateEnum()` `:39-71`
+- Example: `schemas/v4.0.0/providers/taapi/indicators-part1.mjs:17-19,:30` (Memo 073)
+
+> **Gotcha:** the `_shared/` and `_lists/` directories are a pure **storage convention** — they are **not** loader-skipped. The mechanism that resolves shared lists is `SharedListResolver.mjs:74-99`; the schema field is `sharedLists`. (This corrects an earlier assumption that `_shared`/`_lists` were skipped by the loader.)
+
+## ISO-8601 as canonical time
+
+Keep time values internally in ISO-8601 (UTC). When the source carries its own time representation, preserve it **additively** as an `_ISO8601` shadow field — never overwrite the original. (Memo 106)
+
+## Keyless-first ordering
+
+Order data sources by **descending reachability**: open APIs before key-bound ones. Never force a key at the very start of a journey — a keyless path should always exist first.
+
+- Beleg: the provider ordering in `schemas/v4.0.0/providers/geo/geo.mjs` (Nominatim/OpenPLZ before Geoapify/GeoNames). (Memo 092/100)
+
+## Related
+
+- **Depends on:** [`01-overview.md`](/best-practice/overview/)
+- **Related:** [`10-readable-interface.md`](/best-practice/readable-interface/)
+
+---
+
+# Load & Scale: In-Memory, SQLite, Add-ons, Query Bundling
+/best-practice/load-and-scale/
+
+Pick the load/store strategy by **data size** and by the **query ability** of the source. A small static file and a large queryable corpus do not deserve the same machinery.
+
+---
+
+## Preload via `loadFromUrl` (in-memory)
+
+A source with no — or only limited — query ability: fetch it **once** at init, parse + validate + type-coerce, then serve from memory by URL. This is **not** a schema field and **not** SQLite.
+
+- Beleg: `geo-csv-tsv-toolkit/src/adapters/FlowMcpAdapter.mjs:14-21`, `converters/csv/CsvUrlStore.mjs:29` (Memo 096)
+
+> **Gotcha:** "Preload" is a *pattern*, not a schema key. There is no `preload:` field — the behaviour is `loadFromUrl()` plus an in-memory cache.
+
+## In-memory → SQLite escalation
+
+Static large data with no query ability: escalate to SQLite via `requiredLibraries: ['better-sqlite3']` plus a handler guard. Smaller / one-off data stays in memory.
+
+- Beleg: `schemas/v4.0.0/providers/geo/geo.mjs:24,:183-185,:495-500`; `_shared/sqliteRadius.mjs:13-16` (gtfs/overture).
+
+## Add-on as a URL resource
+
+A thin schema `{ source, mode: url, url, addon }`. Init parses the file **once** into memory; runtime serves all methods from the add-on. (Memo 096)
+
+## Over-fetch > under-fetch
+
+Bundle N tag predicates into **one** union query (one rate-limit slot) instead of N separate queries.
+
+- The clause count ≠ the limit; the **result size** is the limit.
+- **Selections** are pre-built query templates with the gotchas baked in. (Memo 100 Kap. 9)
+
+## Related
+
+- **Depends on:** [`01-overview.md`](/best-practice/overview/)
+- **Related:** [`13-geo-conventions.md`](/best-practice/geo-conventions/)
+
+---
+
+# Geo Conventions
+/best-practice/geo-conventions/
+
+Use the established geo defaults instead of rolling your own. The geo entry point already settled these conventions; new geo schemas should inherit them.
+
+---
+
+## Lon-first bounding boxes (RFC 7946)
+
+A bounding box is `[minLon, minLat, maxLon, maxLat]` — longitude first. State the `axisOrder` (`lonlat` | `latlon`) **explicitly, never silently**.
+
+- Beleg: `schemas/v4.0.0/providers/geo/geo.mjs:276-299,:160,:166`
+- `geoExtent` is pure calculation — no network call.
+
+## Geo default methods
+
+The geo handgriff tools are the canonical surface — prefer them over bespoke geo logic:
+
+`geoResolve` (dispatcher), `geoForward`, `geoReverse`, `geoPostal`, `geoLookup`, `geoNearby`, `geoExtent`.
+
+Exactly **one selector per call** — otherwise `GEO-RESOLVE-001`.
+
+## AGS = join key, PLZ = anchor
+
+Join internally over the German **AGS** (`Amtlicher Gemeindeschlüssel`, Destatis, licensed dl-de/by-2-0). Use the **PLZ** (postal code, OpenPLZ) as the *human* anchor — never the other way around. (Memo 100 Kap. 6)
+
+## One-liner
+
+- **Events are not in OpenStreetMap.** For cultural events, go to a culture-data source, not OSM. (Memo 100 Kap. 8.6)
+
+## Related
+
+- **Depends on:** [`01-overview.md`](/best-practice/overview/)
+- **Related:** [`12-load-and-scale.md`](/best-practice/load-and-scale/)
+
+---
+
+# Correctness, License & Provenance
+/best-practice/correctness-license/
+
+Assume nothing silently, fake nothing, and document where the data comes from and under which rights. Correctness and provenance are what separate a schema that *passes* from a schema that can be *trusted*.
+
+---
+
+## No silent defaults / 4xx ≠ PASS
+
+Every parameter is explicit. "Working" means `status === true` ∧ `hasData` ∧ `!duplicate`. A 4xx or an empty body is a **FAIL**, never a pass.
+
+- Beleg: `flowmcp-grading/src/DataPretest.mjs:334` (comment `:36-41`).
+
+## Mandatory parse config
+
+Data add-ons require an **explicit** configuration: separator, date format, column mapping, type rules. Never silently coerce — `0/1` becomes an integer, not a boolean by guesswork.
+
+- Beleg: `CsvUrlStore.mjs:198` (`CSV-URL-005`).
+
+## Synthetic CC0 test data
+
+Never put real provider data into a public repo (license). Use synthetic CC0 mini-data for CI; keep production data separate. (Memo 047/051)
+
+## Maximalism
+
+Cover all documented endpoints; justify any omission. An unjustified reduction lowers interoperability — the grading default journey penalises it.
+
+## Lay down the Terms of Service
+
+Put the ToS URL **into the schema** — field `main.termsOfService` (plus `termsOfServiceCheckedAt`, `termsOfServiceLanguage`). It is set by the **`tos-research`** skill, which runs a robots.txt legal gate (🟢 / 🟡 / 🔴) and is audited by `scripts/audit-tos-freshness.mjs`. The sentinel `'no-tos-found'` is allowed. This saves the second search for the URL — nobody has to look it up again.
+
+## Related
+
+- **Depends on:** [`01-overview.md`](/best-practice/overview/)
+- **Related:** [`10-readable-interface.md`](/best-practice/readable-interface/)

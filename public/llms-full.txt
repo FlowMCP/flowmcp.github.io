@@ -91,6 +91,312 @@ Yes, MIT licensed. Some underlying APIs require keys (you supply); the data they
 
 ---
 
+# "Correctness, License & Provenance"
+/best-practice/correctness-license
+
+<aside class="edit-warning" role="note">
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: best-practice/0.1.0/schema-creation/14-correctness-license.md.
+</aside>
+
+Assume nothing silently, fake nothing, and document where the data comes from and under which rights. Correctness and provenance are what separate a schema that *passes* from a schema that can be *trusted*.
+
+---
+
+## No silent defaults / 4xx ≠ PASS
+
+Every parameter is explicit. "Working" means `status === true` ∧ `hasData` ∧ `!duplicate`. A 4xx or an empty body is a **FAIL**, never a pass.
+
+- Beleg: `flowmcp-grading/src/DataPretest.mjs:334` (comment `:36-41`).
+
+## Mandatory parse config
+
+Data add-ons require an **explicit** configuration: separator, date format, column mapping, type rules. Never silently coerce — `0/1` becomes an integer, not a boolean by guesswork.
+
+- Beleg: `CsvUrlStore.mjs:198` (`CSV-URL-005`).
+
+## Synthetic CC0 test data
+
+Never put real provider data into a public repo (license). Use synthetic CC0 mini-data for CI; keep production data separate. (Memo 047/051)
+
+## Maximalism
+
+Cover all documented endpoints; justify any omission. An unjustified reduction lowers interoperability — the grading default journey penalises it.
+
+## Lay down the Terms of Service
+
+Put the ToS URL **into the schema** — field `main.termsOfService` (plus `termsOfServiceCheckedAt`, `termsOfServiceLanguage`). It is set by the **`tos-research`** skill, which runs a robots.txt legal gate (🟢 / 🟡 / 🔴) and is audited by `scripts/audit-tos-freshness.mjs`. The sentinel `'no-tos-found'` is allowed. This saves the second search for the URL — nobody has to look it up again.
+
+## Related
+
+- **Depends on:** `01-overview.md`
+- **Related:** `10-readable-interface.md`
+
+---
+
+# "Geo Conventions"
+/best-practice/geo-conventions
+
+<aside class="edit-warning" role="note">
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: best-practice/0.1.0/schema-creation/13-geo-conventions.md.
+</aside>
+
+Use the established geo defaults instead of rolling your own. The geo entry point already settled these conventions; new geo schemas should inherit them.
+
+---
+
+## Lon-first bounding boxes (RFC 7946)
+
+A bounding box is `[minLon, minLat, maxLon, maxLat]` — longitude first. State the `axisOrder` (`lonlat` | `latlon`) **explicitly, never silently**.
+
+- Beleg: `schemas/v4.0.0/providers/geo/geo.mjs:276-299,:160,:166`
+- `geoExtent` is pure calculation — no network call.
+
+## Geo default methods
+
+The geo handgriff tools are the canonical surface — prefer them over bespoke geo logic:
+
+`geoResolve` (dispatcher), `geoForward`, `geoReverse`, `geoPostal`, `geoLookup`, `geoNearby`, `geoExtent`.
+
+Exactly **one selector per call** — otherwise `GEO-RESOLVE-001`.
+
+## AGS = join key, PLZ = anchor
+
+Join internally over the German **AGS** (`Amtlicher Gemeindeschlüssel`, Destatis, licensed dl-de/by-2-0). Use the **PLZ** (postal code, OpenPLZ) as the *human* anchor — never the other way around. (Memo 100 Kap. 6)
+
+## One-liner
+
+- **Events are not in OpenStreetMap.** For cultural events, go to a culture-data source, not OSM. (Memo 100 Kap. 8.6)
+
+## Related
+
+- **Depends on:** `01-overview.md`
+- **Related:** `12-load-and-scale.md`
+
+---
+
+# "Introduction"
+/best-practice/introduction
+
+<aside class="edit-warning" role="note">
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: best-practice/0.1.0/00-introduction.md.
+</aside>
+
+> Conformance language is intentionally absent here. Unlike the Schemas Specification and the Grading-Spec, the Best-Practice track is **advisory**: it collects recommendations and learnings. It uses "should", not "MUST".
+
+---
+
+## What this track is
+
+The Best-Practice track is the **third** FlowMCP spec track, alongside the **Specification** (`spec/v4.3.0/`) and **Grading** (`grading/3.0.0/`). Both of those are normative — they define what a schema *is* and how it is *evaluated*. This track is different in character:
+
+> **You don't have to, but you should.**
+
+It holds **recommendations and learnings**, not validation rules. Nothing here disqualifies a schema. The normative rules stay in the Specification and the Grading-Spec; this track raises quality *systematically*, beyond mere absence of errors.
+
+## The problem it solves — alignment
+
+Subagents that pick up a new prospect or build a new schema used to start **without a shared knowledge base**. Whatever one agent learned (a cryptic API key convention, a geo axis-order gotcha, a license trap) stayed with that agent. The next subagent rediscovered it — or didn't, and produced rework.
+
+The Best-Practice track is published as a single generated text file, **`best-practices.txt`**, that is attached to every schema-building subagent prompt as a **mandatory link**. So every subagent shares the same gotchas. It scales: thirty parallel subagents all append the same, **updatable** file → better schemas from the start, less rework.
+
+## Why it exists — a concrete learning
+
+When working through prospects, an agent once handed subagents **self-invented prompts** instead of reading the source first ("just search for something about IHK") to finish faster. Subagents are smart enough to produce output even from poor input — but the bad start cost roughly ten schemas of rework.
+
+The lesson — **read the source first** — is exactly why this track exists. The learning moves from *luck* (a capable agent happening to do the right thing) to *structure* (every subagent receives the best practices as a mandatory source).
+
+A second truth: **"no errors" is not a quality standard.** Error-freeness is the floor; real quality shows over weeks. Best practices lift quality systematically, not just the error count.
+
+## Character
+
+- **Recommendation, not rule** — "should", never "MUST".
+- **Living and extensible** — new patterns grow *into* an existing area, not into a new stub page.
+- **Source-first** — every recommendation is backed by a real code reference (`file:line`) or a memo.
+
+## Related
+
+- **Related:** `01-overview.md`
+
+---
+
+# "Load & Scale: In-Memory, SQLite, Add-ons, Query Bundling"
+/best-practice/load-and-scale
+
+<aside class="edit-warning" role="note">
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: best-practice/0.1.0/schema-creation/12-load-and-scale.md.
+</aside>
+
+Pick the load/store strategy by **data size** and by the **query ability** of the source. A small static file and a large queryable corpus do not deserve the same machinery.
+
+---
+
+## Preload via `loadFromUrl` (in-memory)
+
+A source with no — or only limited — query ability: fetch it **once** at init, parse + validate + type-coerce, then serve from memory by URL. This is **not** a schema field and **not** SQLite.
+
+- Beleg: `geo-csv-tsv-toolkit/src/adapters/FlowMcpAdapter.mjs:14-21`, `converters/csv/CsvUrlStore.mjs:29` (Memo 096)
+
+> **Gotcha:** "Preload" is a *pattern*, not a schema key. There is no `preload:` field — the behaviour is `loadFromUrl()` plus an in-memory cache.
+
+## In-memory → SQLite escalation
+
+Static large data with no query ability: escalate to SQLite via `requiredLibraries: ['better-sqlite3']` plus a handler guard. Smaller / one-off data stays in memory.
+
+- Beleg: `schemas/v4.0.0/providers/geo/geo.mjs:24,:183-185,:495-500`; `_shared/sqliteRadius.mjs:13-16` (gtfs/overture).
+
+## Add-on as a URL resource
+
+A thin schema `{ source, mode: url, url, addon }`. Init parses the file **once** into memory; runtime serves all methods from the add-on. (Memo 096)
+
+## Over-fetch > under-fetch
+
+Bundle N tag predicates into **one** union query (one rate-limit slot) instead of N separate queries.
+
+- The clause count ≠ the limit; the **result size** is the limit.
+- **Selections** are pre-built query templates with the gotchas baked in. (Memo 100 Kap. 9)
+
+## Related
+
+- **Depends on:** `01-overview.md`
+- **Related:** `13-geo-conventions.md`
+
+---
+
+# "Overview"
+/best-practice/overview
+
+<aside class="edit-warning" role="note">
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: best-practice/0.1.0/01-overview.md.
+</aside>
+
+This page explains how to read the Best-Practice track, how it is versioned, and bundles the one-liners that are too small for their own page.
+
+---
+
+## How to read this track
+
+The track is organised into **categories**. The first — and currently only — category is **Schema Creation**: how to build a FlowMCP schema that reads well for an LLM and grades well. It is split into five **areas**, each a single page:
+
+| Area | Page | Core recommendation |
+|------|------|---------------------|
+| BP-1 | Readable Interface | Make the schema readable for the LLM, not for the API |
+| BP-2 | Reference Data | Maintain recurring lists and value formats once, inherit everywhere |
+| BP-3 | Load & Scale | Pick the load/store strategy by data size and query ability |
+| BP-4 | Geo Conventions | Use the established geo defaults instead of rolling your own |
+| BP-5 | Correctness & License | Assume nothing silently, fake nothing, document provenance and rights |
+
+The principle behind the cut is **few strong pages over many thin ones**: fifteen documented patterns are bundled into five thematic areas, so new patterns grow into an existing area rather than into a new stub.
+
+## Versioning
+
+The Best-Practice track is independently versioned as `bestPracticeSpec/0.1.0`, recorded in `data/refs.manual.json` (`bestPractice.currentVersion` + `specDir`) — analogous to `spec` and `grading`. The doc-site surfaces the version as a sidebar badge.
+
+`0.1.0` ships **schema-creation only**. Further categories (e.g. schema maintenance, grading hints) are deliberately a later backlog — first the scaffold, then the growth.
+
+## Naming
+
+The source folder is `best-practice/` (singular, consistent with `spec/` and `grading/`); the published file is **`best-practices.txt`** (plural). The generation maps between them.
+
+## Bundled one-liners
+
+Small, sharp learnings that do not warrant a full page:
+
+- **Events are not in OpenStreetMap.** Querying OSM for cultural events returns nothing useful — use a culture-data source instead (e.g. kulturdaten.berlin). (Memo 100 Kap. 8.6)
+- **"No errors" is the floor, not the ceiling.** A schema that passes `flowmcp grading deterministic` is the *minimum* bar — real quality shows over weeks of use.
+- **Read the source first.** Never build from an invented prompt; the prospect issue's `URL` + `Typ` are the authoritative starting point.
+
+## Related
+
+- **Depends on:** `00-introduction.md`
+- **Related:** `schema-creation/10-readable-interface.md`
+
+---
+
+# "Readable Interface: Enums, Parameter Names & Handler Phases"
+/best-practice/readable-interface
+
+<aside class="edit-warning" role="note">
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: best-practice/0.1.0/schema-creation/10-readable-interface.md.
+</aside>
+
+Make the schema readable for the **LLM**, not for the API. An API may speak in terse codes; the model should not have to. Three related levers turn a cryptic upstream into a self-explaining tool.
+
+---
+
+## Human-readable enums
+
+Expose enum *values* that read in plain language (`enum(1-hour,1-day)` instead of `h1,d1`) and map them to the API codes in the `preRequest` handler.
+
+- Beleg: `create-flowmcp-schema/SKILL.md:205-220`
+- Example: `schemas/v4.0.0/providers/blocknative/gasprice.mjs:28`
+
+The model picks a value it understands; the handler translates it on the way out.
+
+## Improve parameter names & keys
+
+When an API uses cryptic keys — `o/h/l/c/v` for open/high/low/close/volume, a bare `Z`, and so on — invent **speaking parameter names**, let the values be passed under those names, and write a `preRequest` handler that maps the readable names/keys onto the real API. This removes the friction between the LLM and the data source, and it is worth the effort.
+
+- Beleg-Mechanismus: `schemas/v4.0.0/providers/blocknative/gasprice.mjs:72-77` rewrites the readable `chainName`/alias in `preRequest` onto the real key `chainid` (`struct.url.replace('chainName=…','chainid=…')`).
+- Header variant: `schemas/v4.0.0/providers/birdeye/birdeye.mjs:161-167`.
+
+> **Honest classification:** the *mechanism* (a `preRequest` key rewrite) is proven in the code above. The concrete OHLCV application is a *new* recommendation built on that proven mechanism — not yet a shipped example.
+
+## Handler-phase contract (the why + the gotcha)
+
+`preRequest` is exactly the place for these rewrites — which is *why* the contract matters. The phases read the payload differently:
+
+| Phase | Reads | Reference |
+|-------|-------|-----------|
+| `executeRequest` | **nested** `payload.userParams.X` | `flowmcp-core/src/v2/task/Fetch.mjs:65-68` |
+| `preRequest` | **flat** `payload.X` | `Fetch.mjs:45-48` |
+| `postRequest` | **flat** `payload.X` | `Fetch.mjs:93-97` |
+
+Mixing them up means the handler **silently does not fire** — no error, just a rewrite that never happens. When a `preRequest` rewrite appears to do nothing, check that it reads `payload.X` (flat), not `payload.userParams.X`.
+
+## Related
+
+- **Depends on:** `01-overview.md`
+- **Related:** `14-correctness-license.md`
+
+---
+
+# "Reference Data Without Duplicates: Shared Lists & Canonical Values"
+/best-practice/reference-data
+
+<aside class="edit-warning" role="note">
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: best-practice/0.1.0/schema-creation/11-reference-data.md.
+</aside>
+
+Maintain recurring lists and value formats **once**, and inherit them everywhere. Duplicated reference data drifts; a single canonical source does not.
+
+---
+
+## Shared lists
+
+Declare `sharedLists` and reference entries with the token `{{listName:field}}`; the loader interpolates them when the schema is loaded.
+
+- Beleg: `flowmcp-core/.../Pipeline.mjs:277`, `SharedListResolver.interpolateEnum()` `:39-71`
+- Example: `schemas/v4.0.0/providers/taapi/indicators-part1.mjs:17-19,:30` (Memo 073)
+
+> **Gotcha:** the `_shared/` and `_lists/` directories are a pure **storage convention** — they are **not** loader-skipped. The mechanism that resolves shared lists is `SharedListResolver.mjs:74-99`; the schema field is `sharedLists`. (This corrects an earlier assumption that `_shared`/`_lists` were skipped by the loader.)
+
+## ISO-8601 as canonical time
+
+Keep time values internally in ISO-8601 (UTC). When the source carries its own time representation, preserve it **additively** as an `_ISO8601` shadow field — never overwrite the original. (Memo 106)
+
+## Keyless-first ordering
+
+Order data sources by **descending reachability**: open APIs before key-bound ones. Never force a key at the very start of a journey — a keyless path should always exist first.
+
+- Beleg: the provider ordering in `schemas/v4.0.0/providers/geo/geo.mjs` (Nominatim/OpenPLZ before Geoapify/GeoNames). (Memo 092/100)
+
+## Related
+
+- **Depends on:** `01-overview.md`
+- **Related:** `10-readable-interface.md`
+
+---
+
 # Clients and Compatibility
 /concepts/clients
 
@@ -1044,7 +1350,7 @@ The working-test count per tool maps to a **Test-Leiter** rung. This is the dete
 | Working tests / tool | Rung (`testDepth`) | Meaning |
 |----------------------|--------------------|---------|
 | 0 | `unavailable` | No working test — `blocked` (repairable). In practice does not occur (every tool declares ≥ 1 test). |
-| 1 | `reachable` | Minimum, **INSUFFICIENT** — the deterministic test does NOT pass. The tool is reachable but its output schema cannot be validated against repeated evidence. |
+| 1 | `reachable` | Minimum, **INSUFFICIENT** for a parameterised tool — the deterministic test does NOT pass; its output schema cannot be validated against repeated evidence. **Exception:** a **parameterless** tool (no required parameter) reaches its pass bar already at rung 1 — see binding rule 5. |
 | 2 | `schema-validatable` | **Pass bar — the deterministic test PASSES.** Two working responses make the output schema validatable; the schema is **deterministic-green**. |
 | ≥ 3 | `data-analyzable` | Ideal gradient (a later wave). Not a second gate. |
 
@@ -1052,10 +1358,33 @@ The working-test count per tool maps to a **Test-Leiter** rung. This is the dete
 
 1. **The pass bar is `2` working tests per tool, applied per tool (not as a schema-file total).** A schema reaches `deterministic-green` only when **every** downloadable tool independently has ≥ 2 working tests. (MUST)
 2. **The bar is binary at 2.** Reaching 3+ does not change the pass/fail decision; it only raises the `testDepth` rung from `schema-validatable` to `data-analyzable`. (MUST)
-3. **A tool with exactly 1 working test is NOT `deterministic-green`, but is NOT `rejected`.** It is a repairable `blocked`/not-green state, resolved by adding a second working test — never a terminal rejection. (MUST)
+3. **A *parameterised* tool with exactly 1 working test is NOT `deterministic-green`, but is NOT `rejected`.** It is a repairable `blocked`/not-green state, resolved by adding a second working test — never a terminal rejection. (MUST) A *parameterless* tool with 1 working test **is** `deterministic-green` (rule 5).
 4. **`testDepth` is its own deterministic dimension**, recorded on the tool node in the index rollup, and is **independent** of the LLM `outputSchemaMatch` dimension. The two are never conflated: `testDepth` measures *how many* working responses exist; `outputSchemaMatch` judges *whether* the declared output schema matches a response. (MUST)
+5. **Parameterless tools reach the pass bar at `1`.** A tool that declares **no required parameter** has a single deterministic input shape; a second working test could only repeat the identical request and would add no schema-validation evidence. For such a tool the pass bar is **`1`** working test (MUST), not `2`. For every tool that declares at least one required parameter the pass bar remains `2` (MUST), and `3` is the SHOULD target for the `data-analyzable` rung. Whether a tool is parameterless is itself a deterministic property of the schema. (MUST)
 
-> **Rationale.** A single working response cannot distinguish a correct output schema from a coincidentally-shaped one. Two independent working responses are the minimum deterministic evidence that the declared output schema holds. Raising coverage is **work** (add tests), not grounds for lowering the bar.
+> **Rationale.** A single working response cannot distinguish a correct output schema from a coincidentally-shaped one **when the parameter space has breadth** — so a parameterised tool needs two independent working responses as the minimum deterministic evidence that the declared output schema holds. A parameterless tool has no breadth to cover: one working response already exercises its only input shape. Raising coverage on a parameterised tool is **work** (add tests), not grounds for lowering the bar.
+
+---
+
+## Deterministic Response-Size Dimension
+
+Beyond the working-test count, the data-pretest records the **size** of each working response. Size is a deterministic property of a recorded test response and contributes to grading via **threshold-booleans**, while the raw measurements are carried as metadata.
+
+| Field | Kind | Definition |
+|-------|------|------------|
+| `responseBytes` | measurement metadatum | `Buffer.byteLength` of the serialised response payload (bytes, not characters). |
+| `recordCount` | measurement metadatum | Number of top-level records in the response when array-shaped (else omitted). |
+| `durationMs` | measurement metadatum | Wall-clock duration of the test request. |
+| `large` | deterministic, grade-effective | `responseBytes > 1 MB` (`1 * 1024 * 1024`). |
+| `extreme` | deterministic, grade-effective | `responseBytes > 10 MB` (`10 * 1024 * 1024`) — content-bloat signal. |
+
+**Binding rules:**
+
+1. `large` / `extreme` are **threshold-booleans** derived deterministically from `responseBytes`. `extreme` is **grade-effective**: an extreme response adds a deterministic fail on the `single-test` Area that downgrades the tool (content-bloat penalty). `large` is a **recorded warning flag** — surfaced, never silently dropped, but not an automatic fail (a within-threshold response adds no size grading, so it never dilutes the working-test bar). (MUST)
+2. The raw measurements (`responseBytes`, `recordCount`, `durationMs`) are recorded as metadata and are **not** themselves a pass/fail gate. (MUST)
+3. Thresholds are fixed at **1 MB** (`large`) and **10 MB** (`extreme`). A change is a `gradingSpec` bump. (MUST)
+
+> **Rationale.** An extreme payload signals a tool that returns un-paginated bulk data — a deterministic, reproducible quality signal independent of any LLM judgement. The byte thresholds are stable across runs because they are computed from the recorded response, not re-fetched.
 
 ---
 
@@ -1083,6 +1412,7 @@ The following table is the **non-exhaustive but canonical** mapping of grading d
 |-----------|-------------|------|----------------|
 | Schema structure (v4.2) | deterministic | autonomous | `tools-aggregate-schema` |
 | HTTP status (200 = pass) | deterministic | autonomous | `single-test` |
+| Response size `large` (> 1 MB) / `extreme` (> 10 MB) | deterministic (threshold-boolean) | autonomous | `single-test` |
 | Tool description neutrality | deterministic (heuristic) | autonomous | `single-test` / `tools-aggregate-schema` |
 | `whenToUse` clarity | non-deterministic | autonomous | `single-test` / `tools-aggregate-schema` |
 | `parameters` understandability | non-deterministic | autonomous | `single-test` |
@@ -1730,6 +2060,23 @@ The full data flow (where each is born, where it is committed, what the board sy
 `<ts>` is in the format `YYYY-MM-DDTHH-MM-SSZ` (hyphens instead of colons for filesystem compatibility). `<hash8>` is the first 8 hex chars of the sha256 over the canonically serialised content (see `15-versioning-axes.md`). The hash appears in the filename and in `index.json` only — never inside the source.
 
 `resolveLatest(dir, logicalName)` is the single resolver for both primitives and gradings: it filters on the prefix, sorts, and takes the last entry as the newest version. Date-before-hash is what makes this naive sort correct — with `<name>--<hash>--<ts>` the random hash would dominate the sort and an older file could be picked as the "newest".
+
+### Addressing Grammar (NEW in 3.0.0)
+
+A grading target is addressed by a slash-delimited **id grammar** that maps one-to-one onto the folder layout above. Tooling (the CLI grading commands) parses these ids; the grammar is normative so that addressing is portable across implementations.
+
+| Id form | Resolves to | Layout path |
+|---------|-------------|-------------|
+| `<ns>` | whole namespace | `providers/<ns>/` |
+| `<ns>/<schema>` | one schema | `providers/<ns>/<schema>/` |
+| `<ns>/tool/<name>` | one tool | `providers/<ns>/<schema>/tools/<name>/` |
+| `<ns>/tool/<name>/tests/<N>` | one single recorded test of a tool | `providers/<ns>/<schema>/tools/<name>/tests/test-<N>.json` |
+
+`<N>` is the test index matching the `test-<N>.json` filename. An id MUST resolve to exactly one layout node; an unresolvable id is a hard error (never silently widened to a parent node). The per-test form `<ns>/tool/<name>/tests/<N>` is the finest addressing granularity and exists so that a single recorded test can be re-graded in isolation without touching its siblings, the schema, or the namespace rollup.
+
+### Conformance: sweep-only is non-conformant (NEW in 3.0.0)
+
+A schema folder that carries a `summary.json` (pretest data) but **no** `_gradings/` for its graded primitives is **non-conformant** — it has been *swept* (the data-pretest ran) but not *graded* (no deterministic Area entry was written). The universal `_gradings/` rule below is therefore machine-falsifiable: a conformance check MUST flag a `providers/<ns>/<schema>/` that has `summary.json` and `tools/<tool>/tests/` but lacks the corresponding `tools/<tool>/_gradings/` and `<schema>/_gradings/`. A conforming deterministic grading produces the full structure (`_gradings/` + the namespace `index.json` + the exported `grade.json`), never summary-only. The enforcing gate is specified on the consumer side (the grading `doctor` / layout conformance check).
 
 ### `shared-lists/`
 
@@ -3415,7 +3762,7 @@ The Area model retains four procedures that previously lived inside the phase mo
 
 The description cascade is a **mandatory ordered procedure** for validating tool descriptions. It MUST be executed in the following order; skipping or reordering steps is a finding.
 
-1. **Run tests against the endpoint.** MUST: at least **3 working tests per tool** (status true and non-empty data), covering the breadth of the parameter space. Fewer than 3 working tests blocks the tool from full grading and is recorded with a status reason (see `06-determinism-and-tier.md`).
+1. **Run tests against the endpoint.** MUST meet the working-test **pass bar** defined in `06-determinism-and-tier.md`: **2 working tests per tool** (status true and non-empty data) for a parameterised tool, **1** for a parameterless tool; **3 is the SHOULD target** (the `data-analyzable` rung) covering the breadth of the parameter space. A tool below its pass bar is a repairable `blocked`/not-green state recorded with a status reason — never a terminal rejection. ch06 is the single authoritative bar definition; this step references it and does not set a divergent threshold.
 2. **Check the responses** and validate the tool description against the actual responses.
 3. **Normalise / update the tool description** to match the validated responses.
 4. **All tools, resources, and prompts MUST have descriptions** — and each description MUST be individually checked.

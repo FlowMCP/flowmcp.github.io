@@ -25,6 +25,19 @@ const gradingGroup = gradingSidebar
     } ]
     : [];
 
+// Memo 108: third nav group — Best Practice (advisory track) + own badge,
+// built from manifest.bestPractice. Empty when no best-practice block is synced.
+const bestPracticeSidebar = SidebarLoader.buildBestPracticeSidebar();
+const bestPracticeGroup = bestPracticeSidebar
+    ? [ {
+        label: 'Best Practice',
+        translations: { de: 'Best Practice' },
+        collapsed: true,
+        badge: { text: `v${ bestPracticeSidebar.bestPracticeVersion.replace( /\.0$/, '' ) }`, variant: 'note' },
+        items: bestPracticeSidebar.items,
+    } ]
+    : [];
+
 
 // Memo 069: open external links in a new tab. Self-contained rehype plugin
 // (no extra dependency) that adds target="_blank" + rel to every <a> whose
@@ -278,6 +291,8 @@ export default defineConfig({
                 },
                 // Memo 086 PRD-07: Grading nav group (point 5) + v2.0 badge.
                 ...gradingGroup,
+                // Memo 108: Best Practice nav group (advisory track) + badge.
+                ...bestPracticeGroup,
                 {
                     label: 'Reference',
                     translations: { de: 'Referenz' },

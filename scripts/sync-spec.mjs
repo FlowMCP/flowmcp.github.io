@@ -21,11 +21,15 @@ const REPO_ROOT = path.resolve( __dirname, '..' )
 
 const SPEC_REPO_PAYLOAD = path.resolve( REPO_ROOT, '..', 'flowmcp-spec', 'generated', 'docs-payload' )
 const GRADING_PAYLOAD_SRC = path.resolve( SPEC_REPO_PAYLOAD, 'grading' )
+// Memo 108: best-practice is the third Starlight nav group, own slug-root.
+const BEST_PRACTICE_PAYLOAD_SRC = path.resolve( SPEC_REPO_PAYLOAD, 'best-practice' )
 const PUBLIC_PAYLOAD_DIR = path.resolve( REPO_ROOT, 'public', 'spec-generated', 'docs-payload' )
 const PUBLIC_GRADING_DIR = path.resolve( PUBLIC_PAYLOAD_DIR, 'grading' )
+const PUBLIC_BEST_PRACTICE_DIR = path.resolve( PUBLIC_PAYLOAD_DIR, 'best-practice' )
 const CONTENT_SPEC_DIR = path.resolve( REPO_ROOT, 'src', 'content', 'docs', 'specification' )
 // Memo 086 PRD-07: grading is a separate Starlight nav group (point 5), own slug-root.
 const CONTENT_GRADING_DIR = path.resolve( REPO_ROOT, 'src', 'content', 'docs', 'grading' )
+const CONTENT_BEST_PRACTICE_DIR = path.resolve( REPO_ROOT, 'src', 'content', 'docs', 'best-practice' )
 
 const REQUIRED_FRONTMATTER = [
     'title', 'description', 'spec_version', 'spec_file', 'order',
@@ -36,6 +40,13 @@ const REQUIRED_FRONTMATTER = [
 // Grading payload carries grading_version instead of spec_version (Memo 086 PRD-06).
 const REQUIRED_FRONTMATTER_GRADING = [
     'title', 'description', 'grading_version', 'spec_file', 'order',
+    'section', 'normative', 'generated_at', 'generated_from',
+    'generator', 'edit_warning'
+]
+
+// Memo 108: best-practice payload carries best_practice_version instead of spec_version.
+const REQUIRED_FRONTMATTER_BEST_PRACTICE = [
+    'title', 'description', 'best_practice_version', 'spec_file', 'order',
     'section', 'normative', 'generated_at', 'generated_from',
     'generator', 'edit_warning'
 ]
@@ -66,7 +77,9 @@ class SpecSync {
             frontmatterChecked: 0,
             legacyFiltered: 0,
             syncedGradingPublic: 0,
-            syncedGradingContent: 0
+            syncedGradingContent: 0,
+            syncedBestPracticePublic: 0,
+            syncedBestPracticeContent: 0
         }
 
         await SpecSync.#prepareTargetDirs()
@@ -103,6 +116,7 @@ class SpecSync {
         await Promise.all( tasks )
 
         await SpecSync.#syncGrading( { manifest, stats } )
+        await SpecSync.#syncBestPractice( { manifest, stats } )
 
         await writeFile(
             path.join( PUBLIC_PAYLOAD_DIR, 'manifest.json' ),
@@ -231,6 +245,40 @@ class SpecSync {
 
         await Promise.all( tasks )
         console.log( `  Grading group:     ${stats.syncedGradingContent} -> ${CONTENT_GRADING_DIR} (grading_version=${manifest.grading.version})` )
+    }
+
+
+    // Memo 108: sync the best-practice payload (manifest.bestPractice.files) into
+    // its own Starlight content group. Mirrors #syncGrading but reads the
+    // best-practice/ subdir and validates the best-practice frontmatter shape.
+    static async #syncBestPractice( { manifest, stats } ) {
+        if( !manifest.bestPractice || !Array.isArray( manifest.bestPractice.files ) ) {
+            return
+        }
+        if( !existsSync( BEST_PRACTICE_PAYLOAD_SRC ) ) {
+            throw new Error( `manifest.bestPractice present but best-practice payload missing: ${BEST_PRACTICE_PAYLOAD_SRC}` )
+        }
+        await mkdir( PUBLIC_BEST_PRACTICE_DIR, { recursive: true } )
+        await mkdir( CONTENT_BEST_PRACTICE_DIR, { recursive: true } )
+
+        const tasks = manifest.bestPractice.files.map( async ( fileEntry ) => {
+            const srcPath = path.join( BEST_PRACTICE_PAYLOAD_SRC, fileEntry.filename )
+            if( !existsSync( srcPath ) ) {
+                throw new Error( `manifest.bestPractice references missing payload file: best-practice/${fileEntry.filename}` )
+            }
+            const content = await readFile( srcPath, 'utf-8' )
+            SpecSync.#validateFrontmatter( { fileEntry, content, stats, required: REQUIRED_FRONTMATTER_BEST_PRACTICE } )
+
+            await writeFile( path.join( PUBLIC_BEST_PRACTICE_DIR, fileEntry.filename ), content, 'utf-8' )
+            stats.syncedBestPracticePublic += 1
+
+            const contentWithWarning = SpecSync.#injectEditWarning( { content, fileEntry } )
+            await writeFile( path.join( CONTENT_BEST_PRACTICE_DIR, `${ fileEntry.slug }.md` ), contentWithWarning, 'utf-8' )
+            stats.syncedBestPracticeContent += 1
+        } )
+
+        await Promise.all( tasks )
+        console.log( `  Best-practice group: ${stats.syncedBestPracticeContent} -> ${CONTENT_BEST_PRACTICE_DIR} (best_practice_version=${manifest.bestPractice.version})` )
     }
 
 
