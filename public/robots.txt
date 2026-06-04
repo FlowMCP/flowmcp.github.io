@@ -5,7 +5,8 @@ Allow: /
 Sitemap: https://flowmcp.github.io/sitemap-index.xml
 
 # llms.txt — layered LLM context
-# Index:        https://flowmcp.github.io/llms.txt
-# Docs:         https://flowmcp.github.io/docs-llms.txt
-# Full content: https://flowmcp.github.io/llms-full.txt
+# Index:         https://flowmcp.github.io/llms.txt
+# Docs:          https://flowmcp.github.io/docs-llms.txt
+# Full content:  https://flowmcp.github.io/llms-full.txt
+# Best practices: https://flowmcp.github.io/best-practices.txt
 # Spec:         https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/generated/llms.txt

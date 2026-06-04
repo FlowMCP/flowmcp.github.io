@@ -43,9 +43,10 @@ const buildRobotsTxt = ( { refs } ) => {
     llmsLines.push( '# llms.txt — layered LLM context' )
 
     const labelByPath = {
-        '/llms.txt':       'Index:       ',
-        '/docs-llms.txt':  'Docs:        ',
-        '/llms-full.txt':  'Full content:'
+        '/llms.txt':            'Index:        ',
+        '/docs-llms.txt':       'Docs:         ',
+        '/llms-full.txt':       'Full content: ',
+        '/best-practices.txt':  'Best practices:'
     }
 
     published.forEach( ( pathLike ) => {
