@@ -6,9 +6,9 @@ spec_file: "18-prefill.md"
 order: 18
 section: "Specification"
 normative: true
-source_commit: "298e489"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/298e489/spec/v4.3.0/18-prefill.md"
-generated_at: "2026-06-04T21:07:12.104Z"
+source_commit: "2e9a898"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/2e9a898/spec/v4.3.0/18-prefill.md"
+generated_at: "2026-06-04T21:10:58.055Z"
 generated_from: "spec/v4.3.0/18-prefill.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.3.0/18-prefill.md."
