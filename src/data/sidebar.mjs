@@ -31,13 +31,13 @@ const GRADING_GROUP_ORDER = [ 'introduction', 'core-model', 'process-contracts',
 
 
 // Memo 108: best-practice sidebar sub-groups. Fixed order for deterministic nav.
+// The overview page nests under Introduction (no separate Overview group).
 const BEST_PRACTICE_GROUP_LABELS = {
     introduction: { en: 'Introduction', de: 'Einfuehrung' },
-    overview: { en: 'Overview', de: 'Uebersicht' },
     'schema-creation': { en: 'Schema Creation', de: 'Schema-Erstellung' }
 }
 
-const BEST_PRACTICE_GROUP_ORDER = [ 'introduction', 'overview', 'schema-creation' ]
+const BEST_PRACTICE_GROUP_ORDER = [ 'introduction', 'schema-creation' ]
 
 
 class SidebarLoader {

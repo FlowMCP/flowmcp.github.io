@@ -43,7 +43,7 @@ const buildHeader = ( { version } ) => {
 > schema. Every recommendation is backed by a real code reference (file:line) or a
 > memo. The normative rules live in the Schemas Specification and the Grading-Spec.
 
-Source: https://flowmcp.github.io/best-practice/introduction/
+Source: https://flowmcp.github.io/best-practice/overview/
 `
 }
 

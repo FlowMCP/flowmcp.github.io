@@ -6,9 +6,9 @@ spec_file: "01-default-journey.md"
 order: 1
 section: "Grading"
 normative: true
-source_commit: "3979b97"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/3979b97/grading/3.0.0/01-default-journey.md"
-generated_at: "2026-06-04T20:12:27.959Z"
+source_commit: "298e489"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/298e489/grading/3.0.0/01-default-journey.md"
+generated_at: "2026-06-04T21:07:12.104Z"
 generated_from: "grading/3.0.0/01-default-journey.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: grading/3.0.0/01-default-journey.md."

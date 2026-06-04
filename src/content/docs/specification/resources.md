@@ -6,9 +6,9 @@ spec_file: "13-resources.md"
 order: 13
 section: "Specification"
 normative: true
-source_commit: "3979b97"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/3979b97/spec/v4.3.0/13-resources.md"
-generated_at: "2026-06-04T20:12:27.959Z"
+source_commit: "298e489"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/298e489/spec/v4.3.0/13-resources.md"
+generated_at: "2026-06-04T21:07:12.104Z"
 generated_from: "spec/v4.3.0/13-resources.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.3.0/13-resources.md."

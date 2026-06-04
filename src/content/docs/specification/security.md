@@ -6,9 +6,9 @@ spec_file: "05-security.md"
 order: 5
 section: "Specification"
 normative: true
-source_commit: "3979b97"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/3979b97/spec/v4.3.0/05-security.md"
-generated_at: "2026-06-04T20:12:27.959Z"
+source_commit: "298e489"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/298e489/spec/v4.3.0/05-security.md"
+generated_at: "2026-06-04T21:07:12.104Z"
 generated_from: "spec/v4.3.0/05-security.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.3.0/05-security.md."
