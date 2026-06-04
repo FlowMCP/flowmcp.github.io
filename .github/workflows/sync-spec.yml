@@ -37,26 +37,34 @@ jobs:
         working-directory: flowmcp.github.io
         run: npm ci
 
-      - name: Sync spec
-        working-directory: flowmcp.github.io
-        run: npm run sync-spec
-
-      - name: Check for changes
-        id: check
-        working-directory: flowmcp.github.io
-        run: |
-          if [ -n "$(git status --porcelain src/content/docs/specification/ src/content/docs/grading/ src/content/docs/best-practice/ public/spec-generated/docs-payload/ src/data/manifest.json)" ]; then
-            echo "changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "changed=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Commit and push
-        if: steps.check.outputs.changed == 'true'
+      # Race-safe sync: a concurrent push (another auto-run or a manual push) can move
+      # the branch between checkout and push. A plain `git pull --rebase` would CONFLICT
+      # on the per-run `generated_at` timestamps in the synced files. Instead, on a
+      # rejected push we hard-reset to the latest remote and re-run the (deterministic)
+      # sync on that new base, then retry — conflict-free because the content is fully
+      # derived from flowmcp-spec.
+      - name: Sync, commit and push (race-safe)
         working-directory: flowmcp.github.io
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/content/docs/specification/ src/content/docs/grading/ src/content/docs/best-practice/ public/spec-generated/docs-payload/ src/data/manifest.json
-          git commit -m "chore: sync spec from flowmcp-spec [auto]"
-          git push origin HEAD:${{ github.ref_name }}
+          PATHS="src/content/docs/specification/ src/content/docs/grading/ src/content/docs/best-practice/ public/spec-generated/docs-payload/ src/data/manifest.json"
+          BRANCH="${{ github.ref_name }}"
+          for attempt in 1 2 3 4 5; do
+            npm run sync-spec
+            if [ -z "$(git status --porcelain $PATHS)" ]; then
+              echo "No spec changes to sync — nothing to commit (attempt $attempt)."
+              exit 0
+            fi
+            git add $PATHS
+            git commit -m "chore: sync spec from flowmcp-spec [auto]"
+            if git push origin HEAD:"$BRANCH"; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push rejected on attempt $attempt — concurrent push moved $BRANCH. Resetting to remote and re-syncing."
+            git fetch origin "$BRANCH"
+            git reset --hard "origin/$BRANCH"
+          done
+          echo "::error::sync-spec push failed after 5 attempts (persistent concurrent pushes)."
+          exit 1
