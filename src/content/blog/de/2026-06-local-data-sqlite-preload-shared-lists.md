@@ -23,7 +23,7 @@ Die ersten beiden drehen sich um *leichte* Daten. SQLite dreht sich um *schwere*
 
 ## SQLite: ein sperriges Format in abfragbare Tabellen verwandeln
 
-Das stärkste Argument für SQLite ist die Konvertierung. Viele Datensätze kommen in Formaten, die direkt mühsam abzufragen sind — ein ZIP aus dutzenden CSVs, ein wuchernder XML-Dump, ein eigenes Binärformat. So ein Format **einmal** nach SQLite zu konvertieren, macht daraus gewöhnliche Tabellen, die du per SQL abfragen kannst, mit Indizes, ohne die Quelle bei jedem Zugriff neu zu parsen. GTFS-Fahrplandaten sind genau diese Geschichte: das [`gtfs-sqlite-toolkit`](/de/blog/2026-05-flowmcp-v41-gtfs-add-on/) konvertiert einen Feed in eine versiegelte SQLite-Datenbank, die ein Schema einfach referenziert.
+Das stärkste Argument für SQLite ist die Konvertierung. Viele Datensätze kommen in Formaten, die direkt mühsam abzufragen sind — ein ZIP aus dutzenden CSVs, ein wuchernder XML-Dump, ein eigenes Binärformat. So ein Format **einmal** nach SQLite zu konvertieren, macht daraus gewöhnliche Tabellen, die du per SQL abfragen kannst, mit Indizes, ohne die Quelle bei jedem Zugriff neu zu parsen. GTFS-Fahrplandaten sind genau diese Geschichte: das [`geo-gtfs-toolkit`](/de/blog/2026-05-flowmcp-v41-gtfs-add-on/) konvertiert einen Feed in eine versiegelte SQLite-Datenbank, die ein Schema einfach referenziert.
 
 ### Zwei Modi
 

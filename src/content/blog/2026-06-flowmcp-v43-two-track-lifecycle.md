@@ -55,7 +55,7 @@ The spec split landed alongside a round of ecosystem changes that make the two-t
   - `geo-geojson-toolkit` and `geo-csv-tsv-toolkit` — fetch a complete GeoJSON or CSV/TSV file by URL, validate it on load, and query it from memory (no SQLite file, no quality seal).
   - `geo-overpass-toolkit` — run live Overpass (OpenStreetMap) queries behind a cached HTTP source.
 
-  Each add-on names its package `geo-*-toolkit`; the GitHub repositories keep their original names (for example `github:FlowMCP/geojson-sqlite-toolkit`).
+  Each add-on names its package `geo-*-toolkit`; the GitHub repositories keep their original names (for example `github:FlowMCP/geo-geojson-toolkit`).
 
 ## Where to read it
 

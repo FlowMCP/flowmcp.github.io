@@ -44,7 +44,7 @@ This guide reproduces the FlowMCP v4.1 GTFS pilot. By the end, you have two quer
 
 - DELFI feed (Germany-wide, ~245 MB ZIP, CC-BY 4.0)
 - VBB feed (Berlin / Brandenburg, ~83 MB ZIP, CC-BY 4.0)
-- `gtfs-sqlite-toolkit` for conversion
+- `geo-gtfs-toolkit` for conversion
 - A FlowMCP schema (`sqlite-gtfs`) that auto-injects routing tools
 
 Total time: 20–30 minutes (mostly waiting for downloads + conversion).
@@ -54,7 +54,7 @@ Total time: 20–30 minutes (mostly waiting for downloads + conversion).
 - Node.js 22+ with `--max-old-space-size=8192` for the DELFI conversion (default 4 GB heap is too small)
 - ~3 GB free disk space
 - FlowMCP CLI installed
-- `gtfs-sqlite-toolkit` cloned or installed from `github:FlowMCP/gtfs-sqlite-toolkit`
+- `geo-gtfs-toolkit` cloned or installed from `github:FlowMCP/geo-gtfs-toolkit`
 
 ## Step 0 — Install the FlowMCP CLI
 
@@ -87,7 +87,7 @@ The DELFI feed is regenerated daily — pin the hash + date if you need exact re
 ## Step 2 — Convert to SQLite
 
 ```javascript
-import { GtfsSqliteConverter } from 'gtfs-sqlite-toolkit'
+import { GtfsSqliteConverter } from 'geo-gtfs-toolkit'
 
 // VBB — passes validation, gets quality seal
 const vbb = await GtfsSqliteConverter.start( {
@@ -169,4 +169,4 @@ FlowMCP carries this in the output object — your downstream code must surface 
 
 - [Blog — FlowMCP v4.1 GTFS Add-on](/blog/) — full pilot results, 5 use cases, performance
 - [Specification → Resources](/specification/) — `source: 'sqlite-gtfs'` semantics
-- [`gtfs-sqlite-toolkit` README](https://github.com/FlowMCP/gtfs-sqlite-toolkit) — converter API
+- [`geo-gtfs-toolkit` README](https://github.com/FlowMCP/geo-gtfs-toolkit) — converter API

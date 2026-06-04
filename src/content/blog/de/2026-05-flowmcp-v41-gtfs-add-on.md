@@ -1,6 +1,6 @@
 ---
 title: "FlowMCP v4.1 — GTFS als erste Datenklasse mit eigenem Add-on"
-description: "Wie das gtfs-sqlite-toolkit GTFS-Feeds in auditierbare SQLite-Ressourcen verwandelt und FlowMCP zur ersten echten Mobility-Engine macht."
+description: "Wie das geo-gtfs-toolkit GTFS-Feeds in auditierbare SQLite-Ressourcen verwandelt und FlowMCP zur ersten echten Mobility-Engine macht."
 date: 2026-05-25
 author: "FlowMCP Team"
 tags: ["release", "v41", "gtfs", "add-on", "mobility", "open-data"]
@@ -11,7 +11,7 @@ lang: de
 
 GTFS-Feeds sind die Lingua Franca des oeffentlichen Verkehrs — und gleichzeitig ein klassisches Beispiel fuer das Daten-Format-Problem: zwischen 30 und 60 CSV-Dateien in einer ZIP, fuer den DELFI-Feed mehrere hundert Megabyte, entpackt mehrere Gigabyte. Eine LLM kann diese Datei nicht im Kontext halten. Eine REST-API drumherum hilft, aber wer audiert die? Wer pflegt sie?
 
-Mit **v4.1** loest FlowMCP das anders. GTFS wird zur ersten Datenklasse mit einem eigenen **Add-on** — `gtfs-sqlite-toolkit`. Das Toolkit konvertiert Feeds zu **versiegelten SQLite-Datenbanken** und meldet einer FlowMCP-CLI per Capability-Matrix, welche Abfragen sinnvoll moeglich sind. Schemas verweisen dann nur noch auf die DB — keine Wartung der CSV-Parser, keine API-Hosting-Kosten.
+Mit **v4.1** loest FlowMCP das anders. GTFS wird zur ersten Datenklasse mit einem eigenen **Add-on** — `geo-gtfs-toolkit`. Das Toolkit konvertiert Feeds zu **versiegelten SQLite-Datenbanken** und meldet einer FlowMCP-CLI per Capability-Matrix, welche Abfragen sinnvoll moeglich sind. Schemas verweisen dann nur noch auf die DB — keine Wartung der CSV-Parser, keine API-Hosting-Kosten.
 
 ## Was ist GTFS?
 
@@ -26,7 +26,7 @@ Wir betrachten zwei deutsche Feeds:
 
 Beide Endpunkte erwidern HTTP 200 ohne Auth-Header. Die Lizenz verlangt Attribution in jeder Antwort, die diese Daten verwendet.
 
-## Was ist `gtfs-sqlite-toolkit`?
+## Was ist `geo-gtfs-toolkit`?
 
 Das Toolkit ist das **erste FlowMCP-Add-on**. Es konvertiert einen GTFS-Feed (CSV in ZIP) in eine SQLite-Datenbank mit drei Eigenschaften:
 
@@ -49,9 +49,9 @@ export const schema = {
                 source:       'sqlite-gtfs',
                 mode:         'file-based',
                 path:         '${FLOWMCP_RESOURCES}/gtfs-de.db',
-                addon:        'gtfs-sqlite-toolkit',
+                addon:        'geo-gtfs-toolkit',
                 addonVersion: '>=0.1.0',
-                addonSource:  'github:FlowMCP/gtfs-sqlite-toolkit'
+                addonSource:  'github:FlowMCP/geo-gtfs-toolkit'
             }
         ],
         tools: [

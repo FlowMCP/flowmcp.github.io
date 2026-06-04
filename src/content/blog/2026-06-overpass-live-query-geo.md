@@ -9,7 +9,7 @@ lang: en
 
 > 2026-06-03 · FlowMCP Team · #geo #overpass #add-on #live-query
 
-> **A third add-on category.** The earlier geo add-ons are either *in-memory-static* ([geojson](https://github.com/FlowMCP/geojson-sqlite-toolkit) / [csv-tsv](https://github.com/FlowMCP/csv-tsv-sqlite-toolkit)) or *sealed-SQLite* ([gtfs](https://github.com/FlowMCP/gtfs-sqlite-toolkit)). The new **`geo-overpass-toolkit`** is the first **Live-Query** add-on: one HTTP request per call against the public Overpass API, with a response cache.
+> **A third add-on category.** The earlier geo add-ons are either *in-memory-static* ([geojson](https://github.com/FlowMCP/geo-geojson-toolkit) / [csv-tsv](https://github.com/FlowMCP/geo-csv-tsv-toolkit)) or *sealed-SQLite* ([gtfs](https://github.com/FlowMCP/geo-gtfs-toolkit)). The new **`geo-overpass-toolkit`** is the first **Live-Query** add-on: one HTTP request per call against the public Overpass API, with a response cache.
 
 The question this add-on answers is the most ordinary one in geo: *"where am I, and what is around me?"* OpenStreetMap already knows — it has the restaurants, the pharmacies, the bus stops, the playgrounds. The hard part was never the data; it was asking for it without getting hurt.
 

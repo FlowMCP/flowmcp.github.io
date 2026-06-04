@@ -1,6 +1,6 @@
 ---
 title: "FlowMCP v4.1 — GTFS as the First Data Class with Its Own Add-on"
-description: "How the gtfs-sqlite-toolkit turns GTFS feeds into auditable SQLite resources and makes FlowMCP the first real mobility engine."
+description: "How the geo-gtfs-toolkit turns GTFS feeds into auditable SQLite resources and makes FlowMCP the first real mobility engine."
 date: 2026-05-25
 author: "FlowMCP Team"
 tags: ["release", "v41", "gtfs", "add-on", "mobility", "open-data"]
@@ -11,7 +11,7 @@ lang: en
 
 GTFS feeds are the lingua franca of public transit — and at the same time a classic example of the data-format problem: between 30 and 60 CSV files in a ZIP, several hundred megabytes for the DELFI feed, several gigabytes once unpacked. An LLM cannot hold this file in context. A REST API around it helps, but who audits it? Who maintains it?
 
-With **v4.1**, FlowMCP solves this differently. GTFS becomes the first data class with its own **add-on** — `gtfs-sqlite-toolkit`. The toolkit converts feeds into **sealed SQLite databases** and tells a FlowMCP CLI, via a capability matrix, which queries are meaningfully possible. Schemas then only reference the DB — no maintenance of CSV parsers, no API hosting costs.
+With **v4.1**, FlowMCP solves this differently. GTFS becomes the first data class with its own **add-on** — `geo-gtfs-toolkit`. The toolkit converts feeds into **sealed SQLite databases** and tells a FlowMCP CLI, via a capability matrix, which queries are meaningfully possible. Schemas then only reference the DB — no maintenance of CSV parsers, no API hosting costs.
 
 ## What is GTFS?
 
@@ -26,7 +26,7 @@ We look at two German feeds:
 
 Both endpoints respond with HTTP 200 without an auth header. The license requires attribution in every response that uses this data.
 
-## What is `gtfs-sqlite-toolkit`?
+## What is `geo-gtfs-toolkit`?
 
 The toolkit is the **first FlowMCP add-on**. It converts a GTFS feed (CSV in ZIP) into a SQLite database with three properties:
 
@@ -49,9 +49,9 @@ export const schema = {
                 source:       'sqlite-gtfs',
                 mode:         'file-based',
                 path:         '${FLOWMCP_RESOURCES}/gtfs-de.db',
-                addon:        'gtfs-sqlite-toolkit',
+                addon:        'geo-gtfs-toolkit',
                 addonVersion: '>=0.1.0',
-                addonSource:  'github:FlowMCP/gtfs-sqlite-toolkit'
+                addonSource:  'github:FlowMCP/geo-gtfs-toolkit'
             }
         ],
         tools: [

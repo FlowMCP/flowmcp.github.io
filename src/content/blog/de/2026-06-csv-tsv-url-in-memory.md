@@ -1,6 +1,6 @@
 ---
 title: "CSV und TSV von einer URL — mit verpflichtender Parse-Config"
-description: "Warum sich eine CSV-Datei nicht selbst beschreiben kann und wie das csv-tsv-sqlite-toolkit Geo-CSV/TSV von einer URL in den Speicher lädt, indem es jede Parse-Entscheidung explizit erzwingt — keine stillen Defaults."
+description: "Warum sich eine CSV-Datei nicht selbst beschreiben kann und wie das geo-csv-tsv-toolkit Geo-CSV/TSV von einer URL in den Speicher lädt, indem es jede Parse-Entscheidung explizit erzwingt — keine stillen Defaults."
 date: 2026-06-02
 author: "FlowMCP Team"
 tags: ["data-formats", "csv", "tsv", "add-on", "url", "open-data"]
@@ -11,11 +11,11 @@ lang: de
 
 > **Architektur-Hinweis:** Eine frühere Version dieses Add-ons baute eine versiegelte SQLite-Datei. Es wurde in Memo 096 auf ein **URL + In-Memory**-Modell korrigiert: Die vollständige Datei wird in einem Request geladen, beim Laden validiert und aus dem Speicher abgefragt — keine `.db`-Datei, kein Qualitätssiegel, kein Konverter-Schritt.
 
-CSV ist das häufigste Format, in dem offene Daten ausgeliefert werden — und das mehrdeutigste. Eine Tabelle mit Orten, Koordinaten, Einwohnerzahlen, Hauptstadt-Flags wirkt trivial, bis man sie tatsächlich parsen muss. Ist das Trennzeichen ein Komma oder ein Semikolon? Ist `52,5` eine Dezimalzahl oder sind es zwei Spalten? Welche Spalte ist die geografische Breite? Die Datei selbst verrät es nicht. Das neue **`csv-tsv-sqlite-toolkit`** lädt Geo-CSV/TSV von einer URL in den Speicher — und sein gesamtes Design ist darauf ausgelegt, diese Fragen erzwingen zu lassen, statt zu raten.
+CSV ist das häufigste Format, in dem offene Daten ausgeliefert werden — und das mehrdeutigste. Eine Tabelle mit Orten, Koordinaten, Einwohnerzahlen, Hauptstadt-Flags wirkt trivial, bis man sie tatsächlich parsen muss. Ist das Trennzeichen ein Komma oder ein Semikolon? Ist `52,5` eine Dezimalzahl oder sind es zwei Spalten? Welche Spalte ist die geografische Breite? Die Datei selbst verrät es nicht. Das neue **`geo-csv-tsv-toolkit`** lädt Geo-CSV/TSV von einer URL in den Speicher — und sein gesamtes Design ist darauf ausgelegt, diese Fragen erzwingen zu lassen, statt zu raten.
 
 ## Das Problem: CSV beschreibt sich nicht selbst
 
-Das ist der entscheidende Unterschied zum Geschwister-Add-on [`geojson-sqlite-toolkit`](https://github.com/FlowMCP/geojson-sqlite-toolkit). Eine GeoJSON-Datei trägt ihre eigene Struktur in sich — Geometrietypen, Koordinatenreihenfolge, Eigenschaften — ein Loader kann sie lesen, ohne dass man ihm etwas sagt. Eine CSV kann das nicht. Dieselbe Datei europäischer Städte kann ein Komma als Trennzeichen mit Punkt-Dezimalen nutzen (`Berlin,52.52,13.41`) oder ein Semikolon mit Komma-Dezimalen (`Berlin;52,52;13,41`). Beides ist gültiges CSV. Rät man falsch, bekommt man stillschweigend Datenmüll: eine Spalte statt drei, Zeichenketten dort, wo Zahlen stehen sollten, Breitengrade, die um eine Größenordnung daneben liegen.
+Das ist der entscheidende Unterschied zum Geschwister-Add-on [`geo-geojson-toolkit`](https://github.com/FlowMCP/geo-geojson-toolkit). Eine GeoJSON-Datei trägt ihre eigene Struktur in sich — Geometrietypen, Koordinatenreihenfolge, Eigenschaften — ein Loader kann sie lesen, ohne dass man ihm etwas sagt. Eine CSV kann das nicht. Dieselbe Datei europäischer Städte kann ein Komma als Trennzeichen mit Punkt-Dezimalen nutzen (`Berlin,52.52,13.41`) oder ein Semikolon mit Komma-Dezimalen (`Berlin;52,52;13,41`). Beides ist gültiges CSV. Rät man falsch, bekommt man stillschweigend Datenmüll: eine Spalte statt drei, Zeichenketten dort, wo Zahlen stehen sollten, Breitengrade, die um eine Größenordnung daneben liegen.
 
 Drei Dinge lassen sich schlicht nicht aus den Bytes ableiten:
 
@@ -47,7 +47,7 @@ Dasselbe Prinzip regiert die Typen. Eine Spalte aus `0` und `1` ist die klassisc
 
 ## Wie es sich in FlowMCP einfügt
 
-Das Toolkit folgt demselben Add-on-Muster wie sein Geschwister `geojson-sqlite-toolkit`: eigenes Repo → schlankes URL-Schema → In-Memory-Laden → automatisch eingespeiste Tools. Beim Initialisieren (die Resource lädt beim ersten Gebrauch — kein `add`-Schritt) lädt das Add-on die **vollständige** CSV/TSV in einem **einzigen HTTPS-Request**, parst sie mit der verpflichtenden `parseConfig`, prüft, dass die deklarierten Spalten existieren, und hält die Zeilen **im Speicher**, nach URL geschlüsselt — es gibt keine SQLite-Datei und kein Qualitätssiegel. Ein Schema deklariert dann nur noch die URL:
+Das Toolkit folgt demselben Add-on-Muster wie sein Geschwister `geo-geojson-toolkit`: eigenes Repo → schlankes URL-Schema → In-Memory-Laden → automatisch eingespeiste Tools. Beim Initialisieren (die Resource lädt beim ersten Gebrauch — kein `add`-Schritt) lädt das Add-on die **vollständige** CSV/TSV in einem **einzigen HTTPS-Request**, parst sie mit der verpflichtenden `parseConfig`, prüft, dass die deklarierten Spalten existieren, und hält die Zeilen **im Speicher**, nach URL geschlüsselt — es gibt keine SQLite-Datei und kein Qualitätssiegel. Ein Schema deklariert dann nur noch die URL:
 
 ```javascript
 export const schema = {
@@ -62,7 +62,7 @@ export const schema = {
                 url:          'https://example.org/places.csv',
                 addon:        'geo-csv-tsv-toolkit',
                 addonVersion: '>=0.1.0',
-                addonSource:  'github:FlowMCP/csv-tsv-sqlite-toolkit',
+                addonSource:  'github:FlowMCP/geo-csv-tsv-toolkit',
                 parseConfig: {
                     separator: 'semicolon',
                     decimal:   'comma',
@@ -94,14 +94,14 @@ Die Tool-Namen werden mit dem Schema-Namespace vorangestellt — `places.nearPoi
 Wie sein Geschwister wird das Toolkit **über GitHub ausgeliefert, nicht über die npm-Registry**:
 
 ```bash
-npm install github:FlowMCP/csv-tsv-sqlite-toolkit
+npm install github:FlowMCP/geo-csv-tsv-toolkit
 ```
 
 Provider-CSV/TSV-Datensätze tragen eigene Lizenzen und werden **niemals** im Repo mitgeliefert — nur eine synthetische CC0-Fixture für die Tests. Das Schema zeigt auf die eigene HTTPS-URL des Anbieters; die Daten bleiben beim Anbieter, und die Engine bleibt bei FlowMCP. Das Modell setzt voraus, dass die ganze Datei in **einem** Request zurückkommt — paginierte Quellen (etwa WFS) sind out of scope.
 
 ## Warum das zählt
 
-CSV ist der Ort, an dem offene Daten leben, und stilles Parsen ist der Ort, an dem Open-Data-Pipelines leise schiefgehen. Das `csv-tsv-sqlite-toolkit` macht die heiklen Teile von CSV unüberspringbar: Du benennst das Trennzeichen, die Dezimal-Notation, die Koordinatenspalten und den Typ jeder mehrdeutigen Spalte — oder das Laden stoppt und sagt dir, warum. Zurück bekommst du einen validierten In-Memory-Datensatz hinter drei Spatial-Tools, die kostenlos in FlowMCP verdrahtet sind. Kein Raten, keine Defaults, keine Überraschungen — und, seit Memo 096, auch kein On-Disk-Artefakt.
+CSV ist der Ort, an dem offene Daten leben, und stilles Parsen ist der Ort, an dem Open-Data-Pipelines leise schiefgehen. Das `geo-csv-tsv-toolkit` macht die heiklen Teile von CSV unüberspringbar: Du benennst das Trennzeichen, die Dezimal-Notation, die Koordinatenspalten und den Typ jeder mehrdeutigen Spalte — oder das Laden stoppt und sagt dir, warum. Zurück bekommst du einen validierten In-Memory-Datensatz hinter drei Spatial-Tools, die kostenlos in FlowMCP verdrahtet sind. Kein Raten, keine Defaults, keine Überraschungen — und, seit Memo 096, auch kein On-Disk-Artefakt.
 
 ---
 

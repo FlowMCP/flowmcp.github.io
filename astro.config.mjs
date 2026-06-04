@@ -306,7 +306,7 @@ export default defineConfig({
                             slug: 'ecosystem/x402',
                         },
                         // Memo 064 Phase 4 PRD-011: third ecosystem element.
-                        // gtfs-sqlite-toolkit has no dedicated ecosystem page yet —
+                        // geo-gtfs-toolkit has no dedicated ecosystem page yet —
                         // link to the existing in-site GTFS Pilot guide.
                         {
                             label: 'GTFS (Add-on)',

@@ -128,7 +128,7 @@ only about reliability; it is also what makes the call surface auditable.
 
 v4 is the structural foundation. Three near-term follow-ups:
 
-- **v4.1 — GTFS as the first data-class add-on.** How an external toolkit (`gtfs-sqlite-toolkit`) extends FlowMCP and provides public-transit data as an audited schema. *(Follow-up blog post in preparation.)*
+- **v4.1 — GTFS as the first data-class add-on.** How an external toolkit (`geo-gtfs-toolkit`) extends FlowMCP and provides public-transit data as an audited schema. *(Follow-up blog post in preparation.)*
 - **The add-on concept in general.** How to build your own add-ons, with capability-driven auto-injection and a quality seal.
 - **Output determinism vs. LLM variability as an open question.** Skills + Pipes shift the hallucination question from "where does hallucination happen?" to "how much LLM is actually needed?" This question gets its own post.
 

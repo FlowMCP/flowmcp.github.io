@@ -129,7 +129,7 @@ Aufruf-Oberfläche auch überprüfbar.
 
 v4 ist die strukturelle Grundlage. Drei nähere Folgeschritte:
 
-- **v4.1 — GTFS als erstes Datenklasse-Add-on.** Wie ein externes Toolkit (`gtfs-sqlite-toolkit`) FlowMCP erweitert und ÖPNV-Daten als auditiertes Schema bereitstellt. *(Folge-Blogpost in Vorbereitung.)*
+- **v4.1 — GTFS als erstes Datenklasse-Add-on.** Wie ein externes Toolkit (`geo-gtfs-toolkit`) FlowMCP erweitert und ÖPNV-Daten als auditiertes Schema bereitstellt. *(Folge-Blogpost in Vorbereitung.)*
 - **Add-on-Konzept allgemein.** Wie eigene Add-ons gebaut werden, mit Capability-Driven Auto-Injection und Quality-Seal.
 - **Output-Determinismus vs. LLM-Variabilität als offene Frage.** Skills + Pipes verschieben die Halluzinations-Frage von "wo wird halluziniert?" zu "wieviel LLM ist eigentlich nötig?" Diese Frage bekommt ihren eigenen Beitrag.
 

@@ -42,7 +42,7 @@ Der Agent greift auf einen festen Satz kuratierter Datenquellen zurueck — Bund
 
 ### Setup
 
-Der GTFS-Pilot ist real und dokumentiert (siehe [GTFS-Pilot-Guide](/de/guides/gtfs-pilot/)). FlowMCP v4.1 liefert das Add-on-Konzept: externe Toolkits wie `gtfs-sqlite-toolkit` erweitern die CLI um lokale SQLite-Datenbanken fuer statische Fahrplaene. Die Kombination — statischer GTFS-Lookup plus Live-REST-API fuer Verspaetungen — macht diesen Case zu einem einzigen CLI-Call statt einer Jongliererei zwischen zwei Agenten.
+Der GTFS-Pilot ist real und dokumentiert (siehe [GTFS-Pilot-Guide](/de/guides/gtfs-pilot/)). FlowMCP v4.1 liefert das Add-on-Konzept: externe Toolkits wie `geo-gtfs-toolkit` erweitern die CLI um lokale SQLite-Datenbanken fuer statische Fahrplaene. Die Kombination — statischer GTFS-Lookup plus Live-REST-API fuer Verspaetungen — macht diesen Case zu einem einzigen CLI-Call statt einer Jongliererei zwischen zwei Agenten.
 
 ### Der Prompt
 
@@ -50,7 +50,7 @@ Der GTFS-Pilot ist real und dokumentiert (siehe [GTFS-Pilot-Guide](/de/guides/gt
 
 ### Was FlowMCP macht
 
-1. **GTFS-SQLite-Lookup** (ueber `gtfs-sqlite-toolkit` Add-on, lokale DB) — Statischer Fahrplan ICE 8:05 → Anschluss IC 12:33, geplante Umsteigezeit 9 min, Bahnsteig-Layout in Nuernberg.
+1. **GTFS-SQLite-Lookup** (ueber `geo-gtfs-toolkit` Add-on, lokale DB) — Statischer Fahrplan ICE 8:05 → Anschluss IC 12:33, geplante Umsteigezeit 9 min, Bahnsteig-Layout in Nuernberg.
 2. **Live-Verspaetungs-Query** (Deutsche-Bahn-REST-API via FlowMCP-Schema) — Aktueller Ankunfts-Forecast Nuernberg 12:29 (vorher 12:17), Umsteigezeit jetzt 4 min — kritisch.
 3. **Alternativen-Suche** (GTFS-SQLite + REST kombiniert) — Naechster IC 13:33 als Backup, Ankunft Muenchen 14:55.
 4. **AI-Antwort** — "IC 12:33 mit nur 4 Minuten Umsteigezeit nicht zuverlaessig. Backup: IC 13:33, Ankunft Muenchen 14:55 statt 13:13."

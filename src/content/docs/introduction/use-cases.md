@@ -42,7 +42,7 @@ The agent draws on a fixed set of curated data sources — federal, city, and we
 
 ### Setup
 
-The GTFS pilot is real and documented (see [GTFS Pilot Guide](/guides/gtfs-pilot/)). FlowMCP v4.1 ships an add-on concept: external toolkits like `gtfs-sqlite-toolkit` extend the CLI with local SQLite databases for static schedules. The combination — static GTFS lookup plus live REST API for delays — is what makes this case work as a single CLI call instead of a juggling act between two agents.
+The GTFS pilot is real and documented (see [GTFS Pilot Guide](/guides/gtfs-pilot/)). FlowMCP v4.1 ships an add-on concept: external toolkits like `geo-gtfs-toolkit` extend the CLI with local SQLite databases for static schedules. The combination — static GTFS lookup plus live REST API for delays — is what makes this case work as a single CLI call instead of a juggling act between two agents.
 
 ### The Prompt
 
@@ -50,7 +50,7 @@ The GTFS pilot is real and documented (see [GTFS Pilot Guide](/guides/gtfs-pilot
 
 ### What FlowMCP Does
 
-1. **GTFS-SQLite lookup** (via `gtfs-sqlite-toolkit` add-on, local DB) — Static schedule for ICE 8:05 → connecting IC 12:33, scheduled transfer time 9 min, platform layout in Nuremberg.
+1. **GTFS-SQLite lookup** (via `geo-gtfs-toolkit` add-on, local DB) — Static schedule for ICE 8:05 → connecting IC 12:33, scheduled transfer time 9 min, platform layout in Nuremberg.
 2. **Live delay query** (Deutsche Bahn REST API via FlowMCP schema) — Current arrival forecast in Nuremberg 12:29 (was 12:17), so transfer time is now 4 min — critical.
 3. **Alternative search** (GTFS-SQLite + REST combined) — Next IC 13:33 as fallback, arriving Munich 14:55.
 4. **AI answer** — "IC 12:33 with only 4 min transfer is not reliable. Backup: IC 13:33, arriving Munich 14:55 instead of 13:13."

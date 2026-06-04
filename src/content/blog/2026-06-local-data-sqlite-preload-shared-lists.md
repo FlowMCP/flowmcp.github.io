@@ -23,7 +23,7 @@ The first two are about *light* data. SQLite is about *heavy* and *local* data.
 
 ## SQLite: turning an awkward format into queryable tables
 
-The strongest argument for SQLite is conversion. Many datasets ship in formats that are painful to query directly — a ZIP of dozens of CSVs, a sprawling XML dump, a custom binary. Converting such a format **once** into SQLite turns it into ordinary tables you can query with SQL, with indexes, without re-parsing the source on every access. GTFS transit feeds are exactly this story: the [`gtfs-sqlite-toolkit`](/blog/2026-05-flowmcp-v41-gtfs-add-on/) converts a feed into a sealed SQLite database that a schema simply references.
+The strongest argument for SQLite is conversion. Many datasets ship in formats that are painful to query directly — a ZIP of dozens of CSVs, a sprawling XML dump, a custom binary. Converting such a format **once** into SQLite turns it into ordinary tables you can query with SQL, with indexes, without re-parsing the source on every access. GTFS transit feeds are exactly this story: the [`geo-gtfs-toolkit`](/blog/2026-05-flowmcp-v41-gtfs-add-on/) converts a feed into a sealed SQLite database that a schema simply references.
 
 ### Two modes
 

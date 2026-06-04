@@ -1,6 +1,6 @@
 ---
 title: "GeoJSON als per URL geladene In-Memory-Ressource"
-description: "Wie das geojson-sqlite-toolkit eine vollständige GeoJSON-FeatureCollection per URL lädt, beim Laden validiert und FlowMCP räumliche Abfrage-Tools automatisch einspeist, die aus dem Speicher bedient werden — ohne eine einzige Zeile Parsing-Konfiguration."
+description: "Wie das geo-geojson-toolkit eine vollständige GeoJSON-FeatureCollection per URL lädt, beim Laden validiert und FlowMCP räumliche Abfrage-Tools automatisch einspeist, die aus dem Speicher bedient werden — ohne eine einzige Zeile Parsing-Konfiguration."
 date: 2026-06-02
 author: "FlowMCP Team"
 tags: ["data-formats", "geojson", "add-on", "url", "spatial", "open-data"]
@@ -11,7 +11,7 @@ lang: de
 
 > **Architektur-Hinweis:** Eine frühere Version dieses Add-ons baute eine versiegelte SQLite-Datei. Es wurde in Memo 096 auf ein **URL + In-Memory**-Modell korrigiert: Die vollständige Datei wird in einem Request geladen, beim Laden validiert und aus dem Speicher abgefragt — keine `.db`-Datei, kein Qualitätssiegel, kein Konverter-Schritt.
 
-GeoJSON ist das Format, auf das sich das geografische Web geeinigt hat: Punkte, Linien und Polygone in einer schlichten JSON-Hülle. Es ist überall — Verwaltungsgrenzen, Points of Interest, Sensor-Standorte, Routen-Geometrien. Eine rohe GeoJSON-Datei lässt sich aber nur umständlich abfragen. „Welche Features liegen in dieser Bounding-Box?" oder „was ist in der Nähe dieser Koordinate?" bedeutet, die ganze Datei neu zu parsen und bei jedem Aufruf über jedes Feature zu iterieren. Das **`geojson-sqlite-toolkit`**-Add-on löst das: Es lädt eine GeoJSON-FeatureCollection **einmal** von einer URL, hält sie im Speicher, und die FlowMCP-CLI speist die räumlichen Abfrage-Tools obendrauf automatisch ein.
+GeoJSON ist das Format, auf das sich das geografische Web geeinigt hat: Punkte, Linien und Polygone in einer schlichten JSON-Hülle. Es ist überall — Verwaltungsgrenzen, Points of Interest, Sensor-Standorte, Routen-Geometrien. Eine rohe GeoJSON-Datei lässt sich aber nur umständlich abfragen. „Welche Features liegen in dieser Bounding-Box?" oder „was ist in der Nähe dieser Koordinate?" bedeutet, die ganze Datei neu zu parsen und bei jedem Aufruf über jedes Feature zu iterieren. Das **`geo-geojson-toolkit`**-Add-on löst das: Es lädt eine GeoJSON-FeatureCollection **einmal** von einer URL, hält sie im Speicher, und die FlowMCP-CLI speist die räumlichen Abfrage-Tools obendrauf automatisch ein.
 
 ## Was ist GeoJSON?
 
@@ -19,12 +19,12 @@ GeoJSON — standardisiert als **RFC 7946** — beschreibt geografische Features
 
 Das entscheidende Merkmal für ein Add-on: GeoJSON ist **selbstbeschreibend**. Die Struktur ist durch die Spezifikation festgelegt, und die Attribute reisen innerhalb von `properties` mit. Es gibt keine Spaltenköpfe zu deuten, keine Trennzeichen zu erraten. Anders als ein CSV-Add-on — das explizite Parse-Hinweise braucht — kommt der GeoJSON-Loader deshalb **ohne Konfiguration** aus. Du zeigst ihm eine URL; die Form ist bereits bekannt.
 
-## Was ist `geojson-sqlite-toolkit`?
+## Was ist `geo-geojson-toolkit`?
 
-Es ist ein **Geschwister von [`gtfs-sqlite-toolkit`](/de/blog/2026-05-flowmcp-v41-gtfs-add-on/)** in FlowMCPs Add-on-Familie für Datenformate. Wie sein Geschwister ist es **kein** generischer Loader, der in `flowmcp-core` eingebaut wäre. Es ist ein eigenständiges Repository mit der vollständigen Pipeline: eigener URL-Store, eigene In-Memory-Abfragemethoden und Auto-Injektion über einen `FlowMcpAdapter`. Verteilt wird es über **GitHub, nicht über npm**:
+Es ist ein **Geschwister von [`geo-gtfs-toolkit`](/de/blog/2026-05-flowmcp-v41-gtfs-add-on/)** in FlowMCPs Add-on-Familie für Datenformate. Wie sein Geschwister ist es **kein** generischer Loader, der in `flowmcp-core` eingebaut wäre. Es ist ein eigenständiges Repository mit der vollständigen Pipeline: eigener URL-Store, eigene In-Memory-Abfragemethoden und Auto-Injektion über einen `FlowMcpAdapter`. Verteilt wird es über **GitHub, nicht über npm**:
 
 ```bash
-npm install github:FlowMCP/geojson-sqlite-toolkit
+npm install github:FlowMCP/geo-geojson-toolkit
 ```
 
 Beim Initialisieren (die Resource lädt beim ersten Gebrauch — kein `add`-Schritt) erledigt das Add-on vier Dinge:
@@ -82,7 +82,7 @@ export const schema = {
                 url:          'https://example.org/features.geojson',
                 addon:        'geo-geojson-toolkit',
                 addonVersion: '>=0.1.0',
-                addonSource:  'github:FlowMCP/geojson-sqlite-toolkit'
+                addonSource:  'github:FlowMCP/geo-geojson-toolkit'
             }
         ],
         tools: []

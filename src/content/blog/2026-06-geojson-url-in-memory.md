@@ -1,6 +1,6 @@
 ---
 title: "GeoJSON as a URL-Loaded In-Memory Resource"
-description: "How the geojson-sqlite-toolkit fetches a complete GeoJSON FeatureCollection by URL, validates it on load, and lets FlowMCP auto-inject spatial query tools served from memory — without a single line of parsing config."
+description: "How the geo-geojson-toolkit fetches a complete GeoJSON FeatureCollection by URL, validates it on load, and lets FlowMCP auto-inject spatial query tools served from memory — without a single line of parsing config."
 date: 2026-06-02
 author: "FlowMCP Team"
 tags: ["data-formats", "geojson", "add-on", "url", "spatial", "open-data"]
@@ -11,7 +11,7 @@ lang: en
 
 > **Architecture note:** an earlier version of this add-on built a sealed SQLite file. It was corrected to a **URL + in-memory** model in Memo 096: the complete file is fetched in one request, validated on load, and queried from memory — no `.db` file, no quality seal, no converter step.
 
-GeoJSON is the format the geospatial web settled on: points, lines, and polygons wrapped in a plain JSON envelope. It is everywhere — administrative boundaries, points of interest, sensor locations, route geometries. But a raw GeoJSON file is awkward to query. "Which features fall inside this bounding box?" or "what is near this coordinate?" means re-parsing the whole file and looping over every feature on every call. The **`geojson-sqlite-toolkit`** add-on fixes that: it fetches a GeoJSON FeatureCollection **once** from a URL, holds it in memory, and the FlowMCP CLI auto-injects the spatial query tools on top.
+GeoJSON is the format the geospatial web settled on: points, lines, and polygons wrapped in a plain JSON envelope. It is everywhere — administrative boundaries, points of interest, sensor locations, route geometries. But a raw GeoJSON file is awkward to query. "Which features fall inside this bounding box?" or "what is near this coordinate?" means re-parsing the whole file and looping over every feature on every call. The **`geo-geojson-toolkit`** add-on fixes that: it fetches a GeoJSON FeatureCollection **once** from a URL, holds it in memory, and the FlowMCP CLI auto-injects the spatial query tools on top.
 
 ## What is GeoJSON?
 
@@ -19,12 +19,12 @@ GeoJSON — standardized as **RFC 7946** — describes geographic features as JS
 
 The decisive trait for an add-on is that GeoJSON is **self-describing**. The structure is fixed by the spec, and the attributes travel inside `properties`. There are no column headers to interpret, no separators to guess. So unlike a CSV add-on — which needs explicit parse hints — the GeoJSON loader needs **no configuration**. You point it at a URL; the shape is already known.
 
-## What is `geojson-sqlite-toolkit`?
+## What is `geo-geojson-toolkit`?
 
-It is a **sibling of [`gtfs-sqlite-toolkit`](/blog/2026-05-flowmcp-v41-gtfs-add-on/)** in FlowMCP's data-format add-on family. Like its sibling, it is **not** a generic loader baked into `flowmcp-core`. It is a standalone repository with the full pipeline: its own URL store, its own in-memory query methods, and auto-injection through a `FlowMcpAdapter`. It is distributed via **GitHub, not npm**:
+It is a **sibling of [`geo-gtfs-toolkit`](/blog/2026-05-flowmcp-v41-gtfs-add-on/)** in FlowMCP's data-format add-on family. Like its sibling, it is **not** a generic loader baked into `flowmcp-core`. It is a standalone repository with the full pipeline: its own URL store, its own in-memory query methods, and auto-injection through a `FlowMcpAdapter`. It is distributed via **GitHub, not npm**:
 
 ```bash
-npm install github:FlowMCP/geojson-sqlite-toolkit
+npm install github:FlowMCP/geo-geojson-toolkit
 ```
 
 On init (the resource loads on first use — there is no `add` step), the add-on does four things:
@@ -82,7 +82,7 @@ export const schema = {
                 url:          'https://example.org/features.geojson',
                 addon:        'geo-geojson-toolkit',
                 addonVersion: '>=0.1.0',
-                addonSource:  'github:FlowMCP/geojson-sqlite-toolkit'
+                addonSource:  'github:FlowMCP/geo-geojson-toolkit'
             }
         ],
         tools: []

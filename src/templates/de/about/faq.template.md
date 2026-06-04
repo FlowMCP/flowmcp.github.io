@@ -41,14 +41,14 @@ Siehe [Specification](/specification/) und `repos/flowmcp-schemas-private` fuer 
 <details>
 <summary>Kann ich FlowMCP offline nutzen?</summary>
 
-Ja — fuer Schemas mit lokalen Ressourcen (z.B. das `gtfs-sqlite-toolkit`-Add-on mit konvertierter SQLite-DB). Fuer Schemas, die Remote-APIs callen, brauchst du weiter Netz.
+Ja — fuer Schemas mit lokalen Ressourcen (z.B. das `geo-gtfs-toolkit`-Add-on mit konvertierter SQLite-DB). Fuer Schemas, die Remote-APIs callen, brauchst du weiter Netz.
 
 </details>
 
 <details>
 <summary>Was ist der Spec-Versions-Status?</summary>
 
-FlowMCP unterstuetzt aktuell die **v4**-Spezifikation (aktiv) und **v4.1**-Add-on-Erweiterungen (z.B. `gtfs-sqlite-toolkit`). Aeltere Versionen (v3, v2, v1.x) bleiben aus Kompatibilitaetsgruenden ladbar, erhalten aber keine neuen Schemas.
+FlowMCP unterstuetzt aktuell die **v4**-Spezifikation (aktiv) und **v4.1**-Add-on-Erweiterungen (z.B. `geo-gtfs-toolkit`). Aeltere Versionen (v3, v2, v1.x) bleiben aus Kompatibilitaetsgruenden ladbar, erhalten aber keine neuen Schemas.
 
 </details>
 

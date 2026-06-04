@@ -55,7 +55,7 @@ Die Spec-Aufteilung kam zusammen mit einer Runde von Ökosystem-Änderungen, die
   - `geo-geojson-toolkit` und `geo-csv-tsv-toolkit` — laden eine vollständige GeoJSON- oder CSV/TSV-Datei per URL, validieren sie beim Laden und fragen sie aus dem Speicher ab (keine SQLite-Datei, kein Qualitätssiegel).
   - `geo-overpass-toolkit` — führt Live-Overpass-Abfragen (OpenStreetMap) hinter einer gecachten HTTP-Quelle aus.
 
-  Jedes Add-on benennt sein Paket `geo-*-toolkit`; die GitHub-Repositories behalten ihre ursprünglichen Namen (zum Beispiel `github:FlowMCP/geojson-sqlite-toolkit`).
+  Jedes Add-on benennt sein Paket `geo-*-toolkit`; die GitHub-Repositories behalten ihre ursprünglichen Namen (zum Beispiel `github:FlowMCP/geo-geojson-toolkit`).
 
 ## Wo man es liest
 
