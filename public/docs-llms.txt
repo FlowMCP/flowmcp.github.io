@@ -7,4 +7,2760 @@ This file contains practical documentation: getting started, schemas, agents, CL
 For the formal specification, see: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/generated/llms.txt
 For a brief index, see: https://flowmcp.github.io/llms.txt
 
+---
 
+# FAQ
+/about/faq
+
+<details>
+<summary>What is FlowMCP exactly?</summary>
+
+FlowMCP is a schema library + engine that normalises data sources into AI-callable tools. The library currently contains 373 production-ready schemas (v4) covering 291 data sources. The engine routes calls, validates inputs/outputs, and handles authentication. AI agents call FlowMCP; FlowMCP calls the underlying APIs.
+
+</details>
+
+<details>
+<summary>Do I need an MCP-compatible client?</summary>
+
+No. FlowMCP is **CLI-first**. The MCP server mode is optional. If you have a client that supports dynamic tool loading, MCP works — otherwise the CLI is the preferred entry point.
+
+</details>
+
+<details>
+<summary>What does CLI-first mean in practice?</summary>
+
+You run `flowmcp call <schema>.<tool> '{...}'` from your terminal, an LLM call, or a Node/Python script. Tools are loaded on demand — no need to keep 1608 tools in context.
+
+</details>
+
+<details>
+<summary>Where do API keys live?</summary>
+
+API keys live in `~/.flowmcp/.env`, optionally with project overrides. The AI never sees a key — it only sees calls and responses. This is intentional: if an AI made direct REST calls, it would expose keys.
+
+</details>
+
+<details>
+<summary>How do I add a new schema?</summary>
+
+See the Specification and `repos/flowmcp-schemas-private` for the schema-creation guide. Validation rules have explicit IDs (e.g. RES001). PRs go to the schemas repo with tests.
+
+</details>
+
+<details>
+<summary>Can I run FlowMCP offline?</summary>
+
+Yes — for schemas that hit local resources (e.g. the `geo-gtfs-toolkit` add-on with a converted SQLite DB). For schemas calling remote APIs, you still need network access.
+
+</details>
+
+<details>
+<summary>What is the spec version status?</summary>
+
+FlowMCP currently supports the **v4** specification (active) and **v4.1** add-on extensions (e.g. `geo-gtfs-toolkit`). Older versions (v3, v2, v1.x) remain loadable for backward compatibility but receive no new schemas.
+
+</details>
+
+<details>
+<summary>Why is FlowMCP "MCP" if it is CLI-first?</summary>
+
+The name dates from the project's start as an MCP server experiment. The substance shifted toward a CLI-first schema layer; the name persists for continuity with the MCP ecosystem.
+
+</details>
+
+<details>
+<summary>Where can I report issues?</summary>
+
+GitHub Issues per repo. Find the most relevant repository under github.com/FlowMCP (https://github.com/FlowMCP) and open an issue there. For schema-related questions, use `flowmcp-schemas`. For CLI bugs, use `flowmcp-cli`.
+
+</details>
+
+<details>
+<summary>What is the v4 Self-Contained Skill Pattern?</summary>
+
+Skills bring their own parameter reference along — schema data goes **before** workflow instructions. In a lab test, skills with full parameter/enum/example info hit 5/5 success against LLMs; skills with name + description only hit 0/5. The pattern is documented in the v4 specification.
+
+</details>
+
+<details>
+<summary>Are FlowMCP schemas free to use?</summary>
+
+Yes, MIT licensed. Some underlying APIs require keys (you supply); the data they return follows their own license — e.g. GTFS feeds under CC-BY 4.0 require attribution in your output. FlowMCP exposes that attribution in the response.
+
+</details>
+
+---
+
+# Clients and Compatibility
+/concepts/clients
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Concepts</span>
+<!-- PAGEFIND-META-END -->
+
+## MCP — The Connecting Protocol
+
+The **Model Context Protocol (MCP)** is the standard through which AI clients access tools. It defines how tools are described, called, and how results are returned. Over 100 clients support MCP already — from Claude to ChatGPT to Cursor.
+
+FlowMCP schemas are based on MCP and work with any compatible client. You are not locked into any specific provider.
+
+
+```mermaid
+graph LR
+    MCP[MCP Protocol]
+    MCP --> C1[Claude Desktop]
+    MCP --> C2[ChatGPT]
+    MCP --> C3[Cursor]
+    MCP --> C4[VS Code Copilot]
+    MCP --> C5[OpenClaw]
+    MCP --> C6[108+ more clients]
+    style MCP fill:#f9f,stroke:#333
+```
+
+
+## Compatibility Table
+
+Not every client can do everything. Capabilities depend on which MCP features the client supports:
+
+| Level | What is supported | Number of Clients | Examples |
+|-------|------------------|------------------|----------|
+| **Level 1: Tools** | Individual tool calls, Resources, Prompts | 46+ clients | Claude, ChatGPT, Cursor, VS Code Copilot, Cline, Continue |
+| **Level 2+3: Elicitation** | Everything from Level 1 + Agent can ask follow-up questions | 16 clients | Claude Code, Claude Desktop, OpenClaw, Codex, Cursor, Postman |
+| **Custom CLI** | Command-line interfaces for direct access | FlowMCP CLI, OpenClaw Plugin | For developers and automation |
+
+What the levels mean: Primitives — Agents
+
+**As of:** 2026-05-24. Current MCP client list: modelcontextprotocol.io/clients (https://modelcontextprotocol.io/clients)
+
+## Clients with Elicitation (Level 2+3)
+
+These 16 clients support Elicitation — the agent can ask follow-up questions for better answers: AIQL TUUI, Claude Code, Codex, Cursor, fast-agent, Glama, goose, Joey, mcp-agent, mcp-use, MCPJam, Memgraph Lab, Postman, Tambo, VS Code GitHub Copilot, and VT Code.
+
+## OpenClaw
+
+OpenClaw (https://docs.openclaw.ai) is an open-source AI assistant gateway with a plugin system. The special feature: **Cron Jobs** — recurring queries that run automatically. For example, a daily mobility recommendation every morning at 7:30 AM.
+
+More: Integration Guide
+
+For the command-line interface — searching, activating, and calling tools from your shell — see the FlowMCP CLI Usage reference.
+
+## Which Client for Whom?
+
+| You are... | Recommended Client | Why |
+|-----------|-------------------|-----|
+| **Individual** | OpenClaw or Claude Desktop | Where you already are, Cron Jobs for automation |
+| **Developer** | Claude Code, Cursor, or FlowMCP CLI | Direct control, fast testing, IDE integration |
+| **Enterprise** | NemoClaw (enterprise security) | Deny-by-default policies, sandbox isolation, audit trail |
+
+Details on enterprise integration: Integration Guide
+
+---
+
+# Source-of-Truth Architecture — how FlowMCP releases reach the website
+/concepts/pipeline-architecture
+
+This page describes how a single manual change to `data/refs.manual.json` in the spec repo automatically produces updated docs, org profile, llms.txt variants, and robots.txt.
+
+## Architecture rules R1-R8
+
+| Rule | Short | Detail |
+|-------|------|--------|
+| **R1** | Information authority | The spec decides what is displayed |
+| **R2** | Payload-first | Only exchange is via `manifest.json` + spec files |
+| **R3** | Build trigger | Spec push triggers the docs build automatically |
+| **R4** | No interpretation | The docs repo MUST NOT reinterpret spec content |
+| **R5** | No abandoned content | Legacy files (e.g. `route-tests.md`) are filtered |
+| **R6a** | Spec repo English-only | No DE mirrors in `spec/v4.1.0/`, no `translations.*` fields in the manifest |
+| **R6b** | Docs site MAY have DE versions | `flowmcp.github.io/src/content/docs/de/...` is allowed, but is NOT a spec mirror — independent text with placeholder system |
+| **R7** | Single source of truth | `flowmcp-spec/data/refs.manual.json` (manual) + auto-generated `refs.resolved.json` |
+| **R8** | Placeholder-first | All consumers read values from the interface JSON. Hardcoded versions/URLs are forbidden. Build scripts fail on missing placeholders. |
+
+## Pipeline diagram
+
+```mermaid
+flowchart TD
+    subgraph SPEC["flowmcp-spec (source of truth)"]
+        M1["data/refs.manual.json<br/>(manual, PR review)"]
+        M2["data/refs.schema.json<br/>(JSON Schema)"]
+        M3["scripts/generate-refs.mjs"]
+        M4["generated/refs.resolved.json<br/>(auto, validated)"]
+        MS["data/mini-skill.template.md<br/>(single-source mini skill)"]
+        M5["scripts/generate-docs-payload.mjs"]
+        M6["scripts/generate-manifest.mjs"]
+        M7["generated/docs-payload/<br/>(Markdown + manifest.json)"]
+        M8["spec/v4.1.0/*.md<br/>(English-only, R6a)"]
+        M1 --> M3
+        M2 --> M3
+        M3 --> M4
+        M8 --> M5
+        M5 --> M7
+        M8 --> M6
+        M6 --> M7
+    end
+
+    subgraph CI1[".github/workflows"]
+        W1["generate-refs.yml"]
+        W2["notify-docs-site.yml<br/>(repo-dispatch)"]
+        W3["notify-org-profile.yml<br/>(repo-dispatch, no approval)"]
+    end
+
+    M4 --> W1
+    M4 --> W2
+    M4 --> W3
+    MS --> W2
+    MS --> W3
+
+    subgraph DOCS["flowmcp.github.io (consumer 1)"]
+        D1["sync-spec.yml<br/>(listener)"]
+        D2["scripts/fetch-refs.mjs"]
+        D3["src/data/refs.json<br/>+ mini-skill.template.md"]
+        D4["scripts/replace-placeholders.mjs<br/>(strict mode)"]
+        D5["src/templates/* (EN + de/, R6b)"]
+        D6["src/content/docs/*"]
+        D7["scripts/generate-llms-txt.mjs"]
+        D8["scripts/generate-robots-txt.mjs"]
+        D9["dist/llms.txt + docs-llms.txt + llms-full.txt + robots.txt"]
+        D10["dist/ (production)"]
+        D1 --> D6
+        D2 --> D3
+        D3 --> D4
+        D5 --> D4
+        D4 --> D6
+        D3 --> D7
+        D3 --> D8
+        D7 --> D9
+        D8 --> D9
+        D6 --> D10
+        D9 --> D10
+    end
+
+    subgraph ORG["dot-github (consumer 2)"]
+        O1["scripts/fetch-refs.mjs"]
+        O2["src/data/template.txt<br/>(placeholder)"]
+        O3["src/data/config.mjs<br/>(BadgeTable config)"]
+        O4["index.mjs<br/>(placeholder replace + BadgeTable)"]
+        O5["profile/README.md"]
+        O1 --> O4
+        O2 --> O4
+        O3 --> O4
+        O4 --> O5
+    end
+
+    W2 --> D1
+    W3 --> O1
+```
+
+## refs.manual.json — maintenance guide
+
+### Who may maintain it
+
+`flowmcp-spec/data/refs.manual.json` is the **only** manually maintained source for versions, imports and URLs.
+
+| Aspect | Value |
+|--------|-------|
+| Path | `flowmcp-spec/data/refs.manual.json` |
+| Maintenance | Pull request with review (branch protection on `main`) |
+| Protection | JSON Schema `flowmcp-spec/data/refs.schema.json` validates structure + regex |
+| Visibility | Open in the spec repo (not in `generated/`) |
+
+### JSON Schema reference
+
+Validation runs in two steps:
+
+1. **CI workflow** `generate-refs.yml` triggers on pushes that touch `data/refs.manual.json`
+2. **Resolver** `scripts/generate-refs.mjs` validates against `refs.schema.json` and the import regex `^github:FlowMCP/[\w-]+(#[\w./-]+)?$`
+
+On a violation the resolver aborts — no `refs.resolved.json`, no notify, no consumer builds.
+
+### Required fields
+
+| Field path | Validation |
+|------------|------------|
+| `schemaVersion` | `^refs/\d+\.\d+\.\d+$` |
+| `spec.currentVersion` | `^4\.\d+\.\d+$` |
+| `spec.recommendedRelease` | `^v\d+\.\d+\.\d+$` |
+| `spec.miniSkillTemplate` | `^data/.*\.md$` |
+| `imports.*` | `^github:FlowMCP/[\w-]+(#[\w./-]+)?$` |
+| `docs.canonical` | `^https://[a-z0-9.-]+(/.*)?$` |
+| `llmsFiles.*` | URL regex |
+
+## Pipeline consumers
+
+The following components read `refs.resolved.json` from the spec repo:
+
+| Consumer | Repo | Function |
+|----------|------|----------|
+| Docs website | `flowmcp.github.io` | Templates with `{{spec.currentVersion}}`, `{{imports.cli.github}}`, etc. |
+| Org profile | `.github` (org profile) | `profile/README.md` with version and spec URL placeholders |
+| llms.txt variants | `flowmcp.github.io` | `dist/llms.txt`, `dist/docs-llms.txt`, `dist/llms-full.txt` from refs |
+| robots.txt | `flowmcp.github.io` | `dist/robots.txt` from `refs.json.robotsTxt.publishedLlmsFiles` |
+| Mini skill | `flowmcp.github.io` (hosted) / `flowmcp-spec` (single source) | `data/mini-skill.template.md` with placeholders |
+
+## Troubleshooting
+
+### My placeholder was not replaced
+
+**Symptom:** A `{{key.subkey}}` string appears in the built `dist/`.
+
+**Causes and fixes:**
+
+1. The placeholder key does not exist in `refs.resolved.json` — check spelling and JSON path
+2. The template is not under `src/templates/` — the replacer only processes that folder
+3. The build did not reach strict mode — check `npm run check:placeholders`
+
+### Org profile shows the old version
+
+**Symptom:** `profile/README.md` still shows v4.0.0 although the spec is at v4.1.0.
+
+**Causes and fixes:**
+
+1. `notify-org-profile.yml` did not fire — check the spec workflow runs
+2. `.github/.github/workflows/sync-refs.yml` listener is not active
+3. `fetch-refs.mjs` in `.github` is not in the build chain — check the `index.mjs` order
+
+### Sync does not complete
+
+**Symptom:** A spec push does not trigger a docs build.
+
+**Causes and fixes:**
+
+1. Branch protection blocks direct push — push via pull request
+2. `notify-docs-site.yml` token expired — check the GitHub repo secrets
+3. The `sync-spec.yml` listener in the docs repo is not installed
+
+## Version lifecycle
+
+How a new minor version (e.g. v4.2.0) is rolled out:
+
+1. **Spec repo:** hard copy `cp -r spec/v4.1.0 spec/v4.2.0`
+2. **Spec repo:** switch generators to `SPEC_VERSION = '4.2.0'`
+3. **Spec repo:** `CHANGELOG.md` `## v4.2.0 — YYYY-MM-DD` with the release date
+4. **Spec repo:** `package.json` `"version": "4.2.0"`
+5. **Spec repo:** update `data/refs.manual.json`:
+   - `spec.currentVersion: "4.2.0"`
+   - `spec.recommendedRelease: "v4.2.0"`
+   - `imports.cli: "github:FlowMCP/flowmcp-cli#v4.2.0"`
+   - `imports.core: "github:FlowMCP/flowmcp-core#v4.2.0"`
+6. **Spec repo:** pull request → review → merge
+7. **CI:** `generate-refs.yml` validates and generates `refs.resolved.json`
+8. **CI:** `notify-docs-site.yml` + `notify-org-profile.yml` fire via repo-dispatch
+9. **Docs / org profile:** consumers pull the new refs automatically, the build runs
+10. **Spec repo:** git tag `v4.2.0` + GitHub release
+
+The old `v4.1.0` directory stays untouched as a historical release.
+
+:::note
+The R6a–R6b separation also applies to new versions: `spec/v4.2.0/` is English-only, the DE website under `src/content/docs/de/...` is updated in parallel.
+:::
+
+---
+
+# Primitives
+/concepts/primitives
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Concepts</span>
+<!-- PAGEFIND-META-END -->
+
+FlowMCP groups everything an AI agent needs into a small set of primitives: Tools, Resources, Prompts, Skills, and Agents. Tools, Resources, Prompts, and Skills live inside a schema and describe what one provider offers — only Tools are required, the rest come into play with more complex sources. Agents sit one level up: they combine tools from many schemas into a purpose-built unit. This page gives a brief, conceptual overview — for the full field definitions, validation rules, and examples, follow the spec links per section.
+
+## Tools
+
+A tool is a single, named operation that an AI agent can call. From the agent's perspective the tool is the smallest unit of action: pass typed inputs, receive a structured result. Under the hood the tool wraps one HTTP request to a data provider's API — but the agent does not need to know that. The tool description, parameter list, and result shape are all the agent sees. Each tool belongs to exactly one schema, and a schema typically contains 2-8 tools.
+
+### Tool Selection
+
+Tools are not selected as a flat list. They flow through a funnel — from provider via schema and individual tools down to the curated Tool Set that an agent actually uses. Not every tool is needed for every task; the funnel is how relevance is enforced.
+
+
+```mermaid
+graph LR
+    Cat[Schema Catalog] --> S1[Schema A: Weather]
+    Cat --> S2[Schema B: Transit]
+    Cat --> S3[Schema C: Bikes]
+    S1 --> T1[getWeather]
+    S1 --> T2[getForecast]
+    S2 --> T3[getConnections]
+    S3 --> T4[findStations]
+    T1 --> TS[Tool Set]
+    T3 --> TS
+    T4 --> TS
+```
+
+
+A Tool Set is the explicit list of tools an agent may call. It is part of the agent definition (see Agents below). The same tool can appear in many Tool Sets across many agents; the tool itself stays the same.
+
+### Tool Execution Flow
+
+A tool call goes through four stages. First, the agent (or client) invokes the tool by its fully qualified name with the input payload. Second, the FlowMCP runtime validates the payload against the parameter definitions in the schema — types, required fields, value ranges, enum membership. Third, if validation passes, the runtime resolves any `requiredServerParams` (e.g. API keys from the environment) and applies modifiers like header injection or path templating, then performs the HTTP request to the provider. Fourth, the response is shaped to match the declared output schema and returned to the caller. Errors at any stage produce a structured error response — never a raw exception.
+
+```mermaid
+flowchart TD
+    A[Agent invokes tool<br/>by fully qualified name + payload] --> B[Runtime validates payload<br/>types, required fields, ranges, enums]
+    B -->|valid| C[Resolve requiredServerParams<br/>+ apply modifiers, then HTTP request]
+    B -->|invalid| E[Structured error response]
+    C --> D[Shape response to output schema<br/>+ return to caller]
+    C -->|request fails| E
+```
+
+The full step-by-step contract, including the modifier hooks (`preRequest`, `postRequest`), is documented in the spec: FlowMCP Spec v4.1.0 — Tool Execution.
+
+The quickest way to try a tool is via the FlowMCP CLI:
+
+```bash
+flowmcp search <provider>
+flowmcp call <namespace.toolName> '{"param":"value"}'
+```
+
+The CLI handles validation, environment lookup, and HTTP execution end to end. For programmatic use, the same flow is available via the core API — see Programmatic API.
+
+## Resources
+
+A resource is a local dataset bundled with a schema, typically a SQLite database. The FlowMCP runtime loads the `.db` file and exposes each defined query as an MCP resource — no network calls, no API keys, no rate limits. Resources are ideal for bulk-downloaded open data such as company registers, transit schedules, or sanctions lists, where the data is large, rarely changes, and offline access matters.
+
+Spec: Resources.
+
+## Prompts
+
+A prompt is an explanatory text scoped to a namespace. Prompts teach an AI agent how a provider's tools work together — pagination patterns, error semantics, rate-limit guidance, how to combine endpoints. Prompts **explain**; they do not **instruct**. They are model-neutral, so any AI client benefits.
+
+Spec: Prompts.
+
+## Skills
+
+A skill is a multi-step workflow instruction embedded in a schema. Where a prompt explains context, a skill tells an LLM exactly what to do, step by step: which tool to call first, how to pass the result onward, when to branch. Each skill declares its tool dependencies, defines typed input parameters, and records which model it was tested with.
+
+```mermaid
+flowchart TD
+    A[Skill invoked<br/>with typed input parameters] --> B[Step 1: call first declared tool]
+    B --> C{Branch on result}
+    C -->|condition A| D[Step 2a: call next tool]
+    C -->|condition B| E[Step 2b: call alternate tool]
+    D --> F[Pass result onward to final step]
+    E --> F
+    F --> G[Workflow output]
+```
+
+Spec: Skills.
+
+## Agents
+
+An agent is a purpose-driven composition that bundles tools from multiple providers into a single, testable unit. Where individual schemas wrap a single API, agents combine the right tools for a specific task — for example, a mobility agent might pull from a train-schedule schema, a weather schema, and a bike-sharing schema simultaneously. An agent has its own LLM, its own system prompt, and a curated tool set, and it runs an agentic loop — understand the question, pick a tool, evaluate the result, decide whether more information is needed.
+
+
+```mermaid
+graph TD
+    Agent[Agent Manifest]
+    Agent --> LLM[Own LLM e.g. Claude Haiku]
+    Agent --> SP[System Prompt: domain expertise]
+    Agent --> SK[Skills: multi-step workflows]
+    Agent --> TS[Tool Set: selected tools]
+    TS --> Loop[Agentic Loop]
+    Loop --> Understand[1. Understand question]
+    Loop --> Select[2. Select tool]
+    Loop --> Call[3. Call tool]
+    Loop --> Evaluate[4. Evaluate result]
+    Loop --> Decide[5. Done or loop again]
+```
+
+
+FlowMCP recognises three usage architectures, from simple to complex: Level 1 (Tools Only — the client AI calls individual tools directly, no extra LLM), Level 2 (Sub-Agent — a specialised agent with its own LLM and agentic loop), Level 3 (Orchestration — a coordinator agent distributes work to multiple sub-agents). Not every request needs a full agent; many use cases are perfectly served by Level 1.
+
+
+```mermaid
+graph TD
+    subgraph Level 1: Tools Only
+        U1[User AI] -->|direct call| T1[Tool]
+    end
+    subgraph Level 2: Sub-Agent
+        U2[User AI] --> A2[Agent with own LLM]
+        A2 -->|agentic loop| T2a[Tool A]
+        A2 -->|agentic loop| T2b[Tool B]
+    end
+    subgraph Level 3: Orchestration
+        U3[User AI] --> C3[Coordinator Agent]
+        C3 --> SA1[Sub-Agent 1]
+        C3 --> SA2[Sub-Agent 2]
+        SA1 --> T3a[Tool A]
+        SA1 --> T3b[Tool B]
+        SA2 --> T3c[Tool C]
+        SA2 --> T3d[Tool D]
+    end
+```
+
+
+Spec: Agents.
+
+## Why These Layers Stay Separate
+
+The primitives above all run on top of a deliberate separation: the FlowMCP engine, the schemas, and the data operators are three distinct layers, and each is responsible for a different thing. The engine moves and signs every request, schemas only declare how to reach a source, and the operator owns the data and its terms. Keeping these apart is what makes the model trustworthy — a community-contributed schema can never reach beyond its declaration, the engine audit covers every call the same way, and no provider's terms get silently reinterpreted along the path.
+
+The canonical explanation of this three-layer model, including what FlowMCP deliberately does *not* do, lives on Schemas & Sources.
+
+---
+
+# Schemas
+/concepts/schemas
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Concepts</span>
+<!-- PAGEFIND-META-END -->
+
+## What is a Schema?
+
+A schema is the complete blueprint for accessing a single data provider — for example the German Weather Service, Deutsche Bahn, or a sharing system like nextbike. One schema per provider, multiple tools per schema. The schema translates between the provider's API and the AI agent, so the agent can query the data in a structured way without having to read the API documentation itself.
+
+
+```mermaid
+graph TD
+    P[Provider Schema] --> Tools[Tools - Required]
+    P --> Resources[Resources - Optional]
+    P --> Prompts[Prompts - Optional]
+    P --> Skills[Skills - Optional]
+    Tools --> T1[method, path, parameters]
+    Tools --> T2[modifiers, tests, output]
+    Resources --> R1[Local data: SQLite, Markdown]
+    Prompts --> P1[Model-neutral AI guidance]
+    Skills --> S1[Multi-tool step-by-step workflows]
+```
+
+
+A schema bundles four primitives — Tools, Resources, Prompts, Skills. Only Tools are required; the other three are optional and come into play with more complex data sources. The four primitives are explained on the Primitives page.
+
+## Schema Format
+
+A schema is a single `.mjs` file. It declares its tools, resources, prompts, and skills in a static `main` export. An optional `handlers` export adds response transformation. Top-level fields like `requiredServerParams` (environment-bound values such as API keys), `requiredLibraries` (npm packages loaded at runtime), and `sharedLists` (reusable reference data) are declared alongside `main`.
+
+The full field definition lives in the spec: FlowMCP Spec v4.1.0 — Schema Format. The spec also documents the validation rules and the schema ID format. This page intentionally stays at the conceptual level.
+
+## Inventory
+
+Schemas are organised under provider namespaces in the public schema repository.
+
+- 373 production schemas spanning categories such as Blockchain EVM, Blockchain Solana, DeFi, Crypto Data, Government DE/EU, Weather & Geo, Web3 Social, News & Media, Dev Tools, and NFT & Identity
+- 1608 individual tools exposed via these schemas
+- Dynamic source: github.com/FlowMCP/flowmcp-schemas-public (https://github.com/FlowMCP/flowmcp-schemas-public), `meta.stats` field per schema
+
+Live discovery via CLI: `flowmcp search <provider>` lists schemas and `flowmcp call <tool> '{...}'` runs them — every tool from the configured `schemaFolders[]` is immediately callable, no activation step.
+
+## Lifecycle
+
+A new schema starts as a draft in `tests/new-schemas/PROVIDER/`. The author validates the structure with `flowmcp validate <path>`, runs the live data pretest with `flowmcp grading deterministic <id>`, and — if all routes pass — moves the file into `schemas/v4.1.0/PROVIDER/` for release. From that point the schema is part of the global inventory and reachable via the CLI or programmatically via the core API. Updates follow the same loop: edit, validate, test, release.
+
+Author guidance for each step is collected in the Schema Creation Guide and the FlowMCP Spec v4.1.0 — Schema Lifecycle section.
+
+---
+
+# AgentProbe
+/ecosystem/agentprobe
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Ecosystem</span>
+<!-- PAGEFIND-META-END -->
+
+:::caution[Experimental — Read First]
+**Note on x402:** AgentProbe validates endpoints that may use x402. The x402 protocol itself is experimental — read the four points below before relying on its results.
+
+**What x402 is:** A machine-readable payment protocol based on HTTP status code 402 (Payment Required). It allows API endpoints — including MCP tools — to signal payment requirements and accept payment receipts in a standardized way.
+
+**Why it is experimental:** The x402 specification, network support (Base, Solana, Stacks), and reference implementations are still evolving in 2026. There is no Service-Level Agreement, no production-grade reliability guarantee, and the wire format may change between minor versions.
+
+**When to use it:** Hackathon demos, payment-gated MCP tool prototypes, proof-of-concepts, research scenarios. Suitable for closed-loop testing with known clients.
+
+**What it is not:** Not a production payment gateway. Not a replacement for established PSPs (Stripe, PayPal). Not a compliance-certified payment system. Do not route real customer revenue through this stack without additional safeguards.
+:::
+
+AgentProbe (https://github.com/FlowMCP/mcp-agent-validator) is a web-based multi-protocol validator for AI agent endpoints. Enter a URL and get instant assessment across eight protocol layers.
+
+**Live demo:** agentprobe.xyz (https://agentprobe.xyz)
+
+## What It Does
+
+- **Input:** A single agent endpoint URL
+- **Assessment:** Runs the `mcp-agent-assessment` pipeline with protocol-specific validators
+- **Output:** Unified verdicts per protocol layer plus raw assessment data
+
+One URL is enough. AgentProbe discovers which protocols the endpoint supports and validates each one independently.
+
+## Protocol Layers
+
+AgentProbe assesses eight protocol layers:
+
+| Layer | What it checks |
+|-------|---------------|
+| **HTTP** | Connectivity, HTTPS, SSL validation, CORS, HTTP/2 detection |
+| **MCP** | Server discovery, tool/resource/prompt listing, capability detection |
+| **A2A / AP2** | Agent card validation, AP2 version and role detection via `capabilities.extensions` and `X-A2A-Extensions` header |
+| **x402** | Payment-required endpoint detection with scheme, network, and token analysis |
+| **OAuth** | Authorization server metadata discovery |
+| **MCP Apps** | UI resource detection for MCP applications |
+| **HTML** | Website detection, Content-Type, SSL status, HTTP/2 |
+| **ERC-8004** | On-chain agent registry lookup with OASF classification, reputation, and metadata extraction |
+
+:::note
+Not every endpoint supports all protocols. AgentProbe gracefully handles unsupported layers and shows results only for detected protocols.
+:::
+
+## Architecture
+
+```mermaid
+flowchart TD
+    U[URL Input] --> S[Server] --> A[mcp-agent-assessment]
+    A --> H[HTTP]
+    A --> M[MCP]
+    A --> AP[A2A / AP2]
+    A --> X[x402]
+    A --> O[OAuth]
+    H --> R[Results UI]
+    M --> R
+    AP --> R
+    X --> R
+    O --> R
+```
+
+The server receives a URL, passes it to the unified assessment pipeline, and returns structured results for each protocol layer.
+
+## API Endpoints
+
+### `POST /api/validate`
+
+Returns a structured validation result with separate sections for each protocol.
+
+```bash
+curl -X POST https://agentprobe.xyz/api/validate \
+  -H 'Content-Type: application/json' \
+  -d '{"url": "https://your-endpoint.example.com/mcp"}'
+```
+
+The response contains `mcp`, `a2a`, `ui` (MCP Apps), and `oauth` objects, each with `status`, `categories`, `summary`, and `messages`.
+
+### `POST /api/assess`
+
+Returns the raw assessment result from `mcp-agent-assessment` with full layer details.
+
+```bash
+curl -X POST https://agentprobe.xyz/api/assess \
+  -H 'Content-Type: application/json' \
+  -d '{"url": "https://your-endpoint.example.com/mcp"}'
+```
+
+Optional parameters:
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `timeout` | number | Timeout in milliseconds |
+| `erc8004` | object | ERC-8004 config with `rpcNodes` |
+
+### `POST /api/lookup`
+
+Query the ERC-8004 on-chain registry for agent registration data, endpoints, OASF classification, and reputation.
+
+```bash
+curl -X POST https://agentprobe.xyz/api/lookup \
+  -H 'Content-Type: application/json' \
+  -d '{"agentId": 2340, "chainId": 8453}'
+```
+
+| Key | Type | Description | Required |
+|-----|------|-------------|----------|
+| `agentId` | number | Agent token ID in the ERC-8004 registry | Yes |
+| `chainId` | number or string | Chain ID (e.g., `8453` for Base) or CAIP-2 (e.g., `eip155:8453`) | Yes |
+| `rpcNodes` | object | Custom RPC nodes per chain alias | No |
+
+## Validate Your Own MCP Server
+
+1. **Deploy your MCP server**
+
+   Make sure your MCP server is publicly accessible (e.g., via ngrok or a cloud deployment).
+
+2. **Open AgentProbe**
+
+   Go to agentprobe.xyz (https://agentprobe.xyz) in your browser.
+
+3. **Enter your endpoint URL**
+
+   Paste your MCP server URL (e.g., `https://your-server.example.com/mcp`) and click validate.
+
+4. **Review results**
+
+   AgentProbe shows verdicts for each protocol layer. Green means supported and valid, red means issues detected, gray means not applicable.
+
+Or use the API directly:
+
+```bash
+curl -X POST https://agentprobe.xyz/api/validate \
+  -H 'Content-Type: application/json' \
+  -d '{"url": "https://your-server.example.com/mcp"}'
+```
+
+## Authentication
+
+Authentication is optional. When `API_TOKEN` is not set, the API is open (dev mode).
+
+When `API_TOKEN` is set, two authentication methods are supported:
+
+| Method | How it works |
+|--------|-------------|
+| **Session Cookie** | Browser visits the UI and receives a session cookie automatically |
+| **Bearer Token** | External scripts send `Authorization: Bearer <API_TOKEN>` header |
+
+```bash
+# With Bearer token
+curl -X POST https://agentprobe.xyz/api/validate \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer your-token-here' \
+  -d '{"url": "https://your-endpoint.example.com"}'
+```
+
+## Dependencies
+
+AgentProbe builds on the FlowMCP validator ecosystem:
+
+| Package | Purpose |
+|---------|---------|
+| mcp-agent-assessment (https://github.com/FlowMCP/mcp-server-assessment) | Unified assessment pipeline |
+| a2a-agent-validator (https://github.com/FlowMCP/a2a-agent-validator) | A2A agent card and AP2 detection |
+| x402-mcp-validator (https://github.com/FlowMCP/x402-mcp-validator) | x402 payment protocol validation |
+| mcp-apps-validator (https://github.com/FlowMCP/mcp-apps-validator) | MCP Apps UI resource detection |
+| erc8004-registry-parser (https://github.com/FlowMCP/erc8004-registry-parser) | ERC-8004 on-chain registry parsing |
+
+## Links
+
+- **Live Demo**: agentprobe.xyz (https://agentprobe.xyz)
+- **GitHub**: FlowMCP/mcp-agent-validator (https://github.com/FlowMCP/mcp-agent-validator)
+- **Video**: Watch on YouTube (https://www.youtube.com/watch?v=gnmsCEly3fA)
+- **DoraHacks**: dorahacks.io/buidl/39293 (https://dorahacks.io/buidl/39293)
+
+---
+
+# Skill-Block Pattern (internal)
+/guides/_skill-block-pattern
+
+# Skill-Block Pattern
+
+This page documents the internal pattern used by FlowMCP tutorials to expose a copyable skill snippet to LLM users (Claude Code, Cursor, etc.).
+
+The `_` prefix in the filename keeps Starlight from listing this page in the sidebar — it exists purely as guidance for tutorial authors.
+
+## What a skill block is
+
+A "skill block" is a markdown snippet, placed at the top of a tutorial, that an LLM user can copy with one click and drop into `~/.claude/skills/<skill-name>/SKILL.md`. The format mirrors the existing `SKILL.md` schema used by Anthropic's Claude Code skill system, so no transformation is needed on the user's side.
+
+## Schema
+
+Every skill block follows this fixed schema (YAML frontmatter + structured markdown body):
+
+```markdown
+---
+name: flowmcp-<tutorial-slug>
+description: <one-sentence description of what the skill does>
+---
+
+# <Skill Title>
+
+<2-3 sentences: when to use this skill, what happens, prerequisites>
+
+## Steps
+
+1. <Step 1>
+2. <Step 2>
+3. <Step 3>
+
+## References
+
+- Tutorial: https://flowmcp.github.io/guides/<tutorial-slug>/
+- FlowMCP CLI: https://github.com/FlowMCP/flowmcp-cli
+```
+
+## How to embed it in a tutorial
+
+Memo 064 Phase 4 PRD-009 retired the per-page `CopyMarkdown` component. Whole-page
+copy is now handled by ONE small header button injected on every content page via
+the `HeaderCopyButton.astro` override (wired through `PageTitleWithBreadcrumb.astro`).
+
+For the skill snippet, use a plain fenced ` ```markdown ` code block. Starlight's
+built-in code-block copy button lets the user copy it with one click — no custom
+component needed:
+
+````mdx
+## Skill for ~/.claude/skills/
+
+Drop this into `~/.claude/skills/flowmcp-my-tutorial/SKILL.md`:
+
+```markdown
+---
+name: flowmcp-my-tutorial
+description: <one-sentence description>
+---
+
+# My Tutorial Skill
+
+...skill body...
+```
+````
+
+## Rules
+
+- One skill block per tutorial — keep it focused on the tutorial's outcome.
+- Skill name is always `flowmcp-<tutorial-slug>` so it is discoverable and namespace-safe.
+- The body should be self-contained: a fresh LLM session must be able to act on the steps without reading the surrounding tutorial.
+- Reference URLs in the `References` section must use absolute `https://flowmcp.github.io/...` paths so the snippet survives being copied out of context.
+- Installation / reference pages do not get a skill block — only tutorials with an end-to-end workflow.
+
+## Phase 7 tutorials with skill blocks
+
+- `guides/hackathon-kit` → `flowmcp-hackathon-kit`
+- `guides/agent-creation` → `flowmcp-agent-creation`
+- `guides/gtfs-pilot` → `flowmcp-gtfs-pilot`
+
+CLI Setup (`quickstart/installation`) gets only the whole-page copy button (the global header button) — it has no tutorial-workflow character.
+
+---
+
+# Examples
+/guides/examples
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Guides</span>
+<!-- PAGEFIND-META-END -->
+
+These examples demonstrate the four most common FlowMCP schema patterns, from the simplest possible schema to multi-step async workflows. All examples use the v4.1.0 format.
+
+## 1. Minimal Schema
+
+The simplest possible schema: a single tool with no parameters, no handlers, and no shared lists. This is the CoinGecko API ping endpoint.
+
+```javascript
+// coingecko-ping.mjs
+export const main = {
+    namespace: 'coingecko',
+    name: 'Ping',
+    description: 'Check CoinGecko API server status',
+    version: '4.0.0',
+    docs: [ 'https://docs.coingecko.com/reference/simple-ping' ],
+    tags: [ 'utility', 'health' ],
+    root: 'https://api.coingecko.com/api/v3',
+    requiredServerParams: [],
+    requiredLibraries: [],
+    headers: {},
+    tools: {
+        ping: {
+            method: 'GET',
+            path: '/ping',
+            description: 'Check if CoinGecko API is online',
+            parameters: [],
+            output: {
+                mimeType: 'application/json',
+                schema: {
+                    type: 'object',
+                    properties: {
+                        gecko_says: { type: 'string', description: 'Response message from CoinGecko' }
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+**Key takeaways:**
+- No `requiredServerParams` -- this API needs no authentication
+- No `handlers` export -- the raw API response is returned as-is
+- The `output.schema` describes what the AI client receives
+- `parameters: []` means no user input is needed
+
+## 2. Multi-Tool Schema with Handlers
+
+Multiple tools in one schema, with `postRequest` handlers that filter and reshape API responses. This wraps the DeFi Llama protocol analytics API.
+
+### Main export
+
+```javascript
+// defillama-protocols.mjs
+export const main = {
+    namespace: 'defillama',
+    name: 'ProtocolAnalytics',
+    description: 'DeFi Llama protocol TVL and analytics data',
+    version: '4.0.0',
+    docs: [ 'https://defillama.com/docs/api' ],
+    tags: [ 'defi', 'tvl', 'analytics' ],
+    root: 'https://api.llama.fi',
+    requiredServerParams: [],
+    requiredLibraries: [],
+    headers: {},
+    tools: {
+        getProtocols: {
+            method: 'GET',
+            path: '/protocols',
+            description: 'List all DeFi protocols with TVL data',
+            parameters: [],
+            output: {
+                mimeType: 'application/json',
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            name: { type: 'string', description: 'Protocol name' },
+                            slug: { type: 'string', description: 'URL-safe identifier' },
+                            tvl: { type: 'number', description: 'Total value locked in USD' },
+                            chain: { type: 'string', description: 'Primary chain' },
+                            category: { type: 'string', description: 'Protocol category' }
+                        }
+                    }
+                }
+            }
+        },
+        getTvl: {
+            method: 'GET',
+            path: '/tvl/{{protocolSlug}}',
+            description: 'Get current TVL for a specific protocol',
+            parameters: [
+                {
+                    position: { key: 'protocolSlug', value: '{{USER_PARAM}}', location: 'insert' },
+                    z: { primitive: 'string()', options: [ 'min(1)' ] }
+                }
+            ],
+            output: {
+                mimeType: 'application/json',
+                schema: { type: 'number' }
+            }
+        },
+        getProtocolTvl: {
+            method: 'GET',
+            path: '/protocol/{{protocolSlug}}',
+            description: 'Get detailed TVL history for a protocol',
+            parameters: [
+                {
+                    position: { key: 'protocolSlug', value: '{{USER_PARAM}}', location: 'insert' },
+                    z: { primitive: 'string()', options: [ 'min(1)' ] }
+                }
+            ],
+            output: {
+                mimeType: 'application/json',
+                schema: {
+                    type: 'object',
+                    properties: {
+                        name: { type: 'string', description: 'Protocol name' },
+                        tvl: { type: 'array', items: { type: 'object' } },
+                        currentChainTvls: { type: 'object', description: 'TVL per chain' }
+                    }
+                }
+            }
+        },
+        getChainTvl: {
+            method: 'GET',
+            path: '/v2/historicalChainTvl/{{chainName}}',
+            description: 'Get historical TVL for a specific chain',
+            parameters: [
+                {
+                    position: { key: 'chainName', value: '{{USER_PARAM}}', location: 'insert' },
+                    z: { primitive: 'string()', options: [ 'min(1)' ] }
+                }
+            ],
+            output: {
+                mimeType: 'application/json',
+                schema: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            date: { type: 'number', description: 'Unix timestamp' },
+                            tvl: { type: 'number', description: 'TVL in USD' }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+### Handlers export
+
+```javascript
+export const handlers = ( { sharedLists, libraries } ) => ( {
+    getProtocols: {
+        postRequest: async ( { response } ) => {
+            const items = response
+                .filter( ( item ) => item.tvl > 0 )
+                .map( ( item ) => {
+                    const { name, slug, tvl, chain, category } = item
+
+                    return { name, slug, tvl, chain, category }
+                } )
+
+            return { response: items }
+        }
+    },
+    getProtocolTvl: {
+        postRequest: async ( { response } ) => {
+            const { name, tvl, currentChainTvls } = response
+            const simplified = {
+                name,
+                tvl: tvl || [],
+                currentChainTvls: currentChainTvls || {}
+            }
+
+            return { response: simplified }
+        }
+    }
+} )
+```
+
+**Key takeaways:**
+- Four tools in one schema covering related endpoints
+- `location: 'insert'` substitutes parameters into the URL path
+- The `handlers` export transforms responses for two of the four tools
+- Tools without handlers return the raw API response
+- The handler factory receives `{ sharedLists, libraries }` even when unused
+
+## 3. Shared List Schema
+
+Demonstrates shared list references and `{{listName:fieldName}}` interpolation. This Etherscan gas tracker schema uses the `evmChains` shared list to generate a chain selector enum.
+
+### Schema
+
+```javascript
+// etherscan-gas.mjs
+export const main = {
+    namespace: 'etherscan',
+    name: 'GasTracker',
+    description: 'EVM gas price tracking via Etherscan API',
+    version: '4.0.0',
+    docs: [ 'https://docs.etherscan.io/api-endpoints/gas-tracker' ],
+    tags: [ 'evm', 'gas', 'transactions' ],
+    root: 'https://api.etherscan.io/v2/api',
+    requiredServerParams: [ 'ETHERSCAN_API_KEY' ],
+    requiredLibraries: [],
+    headers: {},
+    sharedLists: [
+        {
+            ref: 'evmChains',
+            version: '1.0.0',
+            filter: { key: 'etherscanAlias', exists: true }
+        }
+    ],
+    tools: {
+        getGasOracle: {
+            method: 'GET',
+            path: '/api',
+            description: 'Get current gas prices for an EVM chain',
+            parameters: [
+                {
+                    position: { key: 'chainName', value: '{{USER_PARAM}}', location: 'query' },
+                    z: { primitive: 'enum({{evmChains:etherscanAlias}})', options: [] }
+                },
+                {
+                    position: { key: 'module', value: 'gastracker', location: 'query' },
+                    z: { primitive: 'string()', options: [] }
+                },
+                {
+                    position: { key: 'action', value: 'gasoracle', location: 'query' },
+                    z: { primitive: 'string()', options: [] }
+                },
+                {
+                    position: { key: 'apikey', value: '{{SERVER_PARAM:ETHERSCAN_API_KEY}}', location: 'query' },
+                    z: { primitive: 'string()', options: [] }
+                }
+            ],
+            output: {
+                mimeType: 'application/json',
+                schema: {
+                    type: 'object',
+                    properties: {
+                        LastBlock: { type: 'string', description: 'Latest block number' },
+                        SafeGasPrice: { type: 'string', description: 'Safe gas price in Gwei' },
+                        ProposeGasPrice: { type: 'string', description: 'Proposed gas price in Gwei' },
+                        FastGasPrice: { type: 'string', description: 'Fast gas price in Gwei' }
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+### Shared list definition (evmChains)
+
+```javascript
+// Shared list: evmChains v1.0.0
+export const list = {
+    meta: {
+        name: 'evmChains',
+        version: '1.0.0',
+        description: 'Unified EVM chain registry with provider-specific aliases',
+        fields: [
+            { key: 'alias', type: 'string', description: 'Canonical chain alias' },
+            { key: 'chainId', type: 'number', description: 'EVM chain ID' },
+            { key: 'name', type: 'string', description: 'Human-readable chain name' },
+            { key: 'etherscanAlias', type: 'string', optional: true, description: 'Etherscan API chain parameter' },
+            { key: 'moralisChainSlug', type: 'string', optional: true, description: 'Moralis chain slug' }
+        ],
+        dependsOn: []
+    },
+    entries: [
+        { alias: 'ETHEREUM_MAINNET', chainId: 1, name: 'Ethereum Mainnet', etherscanAlias: 'ETH', moralisChainSlug: 'eth' },
+        { alias: 'POLYGON_MAINNET', chainId: 137, name: 'Polygon Mainnet', etherscanAlias: 'POLYGON', moralisChainSlug: 'polygon' },
+        { alias: 'ARBITRUM_ONE', chainId: 42161, name: 'Arbitrum One', etherscanAlias: 'ARBITRUM', moralisChainSlug: 'arbitrum' },
+        { alias: 'BASE_MAINNET', chainId: 8453, name: 'Base Mainnet', etherscanAlias: 'BASE', moralisChainSlug: 'base' },
+        { alias: 'AVALANCHE_C_CHAIN', chainId: 43114, name: 'Avalanche C-Chain', etherscanAlias: null, moralisChainSlug: 'avalanche' }
+    ]
+}
+```
+
+**Key takeaways:**
+- `sharedLists` declares which shared lists this schema needs
+- `filter: { key: 'etherscanAlias', exists: true }` excludes chains without an Etherscan alias (Avalanche is filtered out)
+- `enum({{evmChains:etherscanAlias}})` generates `enum(["ETH","POLYGON","ARBITRUM","BASE","BSC"])` at load time
+- `{{SERVER_PARAM:ETHERSCAN_API_KEY}}` injects the API key from the environment
+- Fixed parameters like `module` and `action` have hardcoded values (not `{{USER_PARAM}}`)
+
+## 4. Async Workflow Schema
+
+A multi-step API workflow with execute, poll status, and retrieve results. This wraps the Dune Analytics query execution pipeline.
+
+```javascript
+// dune-query-engine.mjs
+export const main = {
+    namespace: 'dune',
+    name: 'QueryEngine',
+    description: 'Execute and retrieve Dune Analytics SQL queries',
+    version: '4.0.0',
+    docs: [ 'https://docs.dune.com/api-reference/executions' ],
+    tags: [ 'analytics', 'sql', 'blockchain' ],
+    root: 'https://api.dune.com',
+    requiredServerParams: [ 'DUNE_API_KEY' ],
+    requiredLibraries: [],
+    headers: {},
+    tools: {
+        executeQuery: {
+            method: 'POST',
+            path: '/api/v1/query/{{queryId}}/execute',
+            description: 'Execute a saved Dune query',
+            parameters: [
+                {
+                    position: { key: 'queryId', value: '{{USER_PARAM}}', location: 'insert' },
+                    z: { primitive: 'number()', options: [ 'min(1)' ] }
+                },
+                {
+                    position: { key: 'x-dune-api-key', value: '{{SERVER_PARAM:DUNE_API_KEY}}', location: 'body' },
+                    z: { primitive: 'string()', options: [] }
+                }
+            ],
+            output: {
+                mimeType: 'application/json',
+                schema: {
+                    type: 'object',
+                    properties: {
+                        execution_id: { type: 'string', description: 'Unique execution identifier' },
+                        state: { type: 'string', description: 'Current execution state' }
+                    }
+                }
+            }
+        },
+        getExecutionStatus: {
+            method: 'GET',
+            path: '/api/v1/execution/{{executionId}}/status',
+            description: 'Check the status of a query execution',
+            parameters: [
+                {
+                    position: { key: 'executionId', value: '{{USER_PARAM}}', location: 'insert' },
+                    z: { primitive: 'string()', options: [] }
+                },
+                {
+                    position: { key: 'x-dune-api-key', value: '{{SERVER_PARAM:DUNE_API_KEY}}', location: 'body' },
+                    z: { primitive: 'string()', options: [] }
+                }
+            ],
+            output: {
+                mimeType: 'application/json',
+                schema: {
+                    type: 'object',
+                    properties: {
+                        execution_id: { type: 'string' },
+                        state: { type: 'string', description: 'Current state' },
+                        queue_position: { type: 'number', description: 'Position in execution queue', nullable: true }
+                    }
+                }
+            }
+        },
+        getExecutionResults: {
+            method: 'GET',
+            path: '/api/v1/execution/{{executionId}}/results',
+            description: 'Get the results of a completed query execution',
+            parameters: [
+                {
+                    position: { key: 'executionId', value: '{{USER_PARAM}}', location: 'insert' },
+                    z: { primitive: 'string()', options: [] }
+                },
+                {
+                    position: { key: 'x-dune-api-key', value: '{{SERVER_PARAM:DUNE_API_KEY}}', location: 'body' },
+                    z: { primitive: 'string()', options: [] }
+                }
+            ],
+            output: {
+                mimeType: 'application/json',
+                schema: {
+                    type: 'object',
+                    properties: {
+                        execution_id: { type: 'string' },
+                        state: { type: 'string' },
+                        result: {
+                            type: 'object',
+                            properties: {
+                                rows: { type: 'array', items: { type: 'object' } },
+                                metadata: {
+                                    type: 'object',
+                                    properties: {
+                                        column_names: { type: 'array', items: { type: 'string' } },
+                                        total_row_count: { type: 'number' }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+**Key takeaways:**
+- Three tools form an async workflow: execute, poll, retrieve
+- The AI agent calls `executeQuery` first to get an `execution_id`
+- Then polls `getExecutionStatus` until `state` is `"QUERY_STATE_COMPLETED"`
+- Finally retrieves results with `getExecutionResults`
+- Each tool uses `{{SERVER_PARAM:DUNE_API_KEY}}` for authentication
+- The AI client orchestrates the multi-step flow using the tool descriptions
+
+:::note
+Async workflow schemas work naturally with AI agents. The agent reads the tool descriptions, understands the execute-poll-retrieve pattern, and orchestrates the calls in sequence.
+:::
+
+## Pattern Summary
+
+| Pattern | When to use | Example |
+|---------|-------------|---------|
+| **Minimal** | Simple endpoints with no auth | Health checks, public APIs |
+| **Multi-Tool** | Related endpoints from one API | Protocol analytics, user management |
+| **Shared List** | Multi-chain or multi-provider schemas | EVM chain selection, exchange lists |
+| **Async Workflow** | APIs with execute/poll/retrieve patterns | Query engines, batch processing |
+
+---
+
+# Integration (Coming Soon)
+/guides/integration
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Roadmap</span>
+<!-- PAGEFIND-META-END -->
+
+:::caution[In Planning]
+This page describes the planned next phase. The architecture is designed, technical implementation has not started yet.
+:::
+
+## From Demo to Real Usage
+
+FlowMCP schemas work end-to-end — from data source to AI agent response. But a standalone app is not the goal. Most people do not want to install yet another app. They want answers where they already are: in WhatsApp, Telegram, Slack, or their preferred AI assistant.
+
+That is exactly what this phase is about: integrating our schemas and agents into **existing clients** — not as an island, but as a building block in a larger ecosystem.
+
+## Why CLI-first?
+
+When we designed the first architecture in October 2025, the plan was: everything via MCP servers. The Model Context Protocol was the standard, and it worked. But since then, something has changed.
+
+In practice, AI agents work most reliably with **command-line interfaces**. The reasons are technical: session initialization with MCP is error-prone, state management across protocol boundaries is complicated, and instant updates work better with CLI.
+
+**This does not mean MCP is dead.** MCP remains as a second channel — for clients that prefer it. FlowMCP supports both. But for the primary integration path, we choose CLI because it works most reliably today.
+
+## OpenClaw: Why This Project?
+
+OpenClaw (https://docs.openclaw.ai) is an open-source AI assistant gateway under MIT license. It has existed only since November 2025 and has already reached over 330,000 GitHub stars — more than Linux, Kubernetes, and Blender combined. It is the fastest-growing software project on GitHub.
+
+For us, OpenClaw is the right partner for several reasons:
+
+**Cron jobs change everything.** Most AI interactions are reactive: the user asks, the AI responds. With OpenClaw, we can set up **proactive** queries. A cron job runs automatically — for example every morning at 7:30 AM — and delivers results without the user doing anything. This is not possible with pure MCP servers or MCPUI.
+
+**Multi-channel, not multi-app.** OpenClaw delivers answers via WhatsApp, Telegram, Slack, Discord, and more. The user decides where to receive the data — not us. Our schemas work identically in every channel.
+
+**No gatekeeper.** On other platforms (e.g., OpenAI MCPUI), you need approval to be visible. Not with OpenClaw. Open source means: anyone can install and use our plugin — immediately, without approval.
+
+## Three Integration Levels
+
+Integration is not a single step but a staged model. Each level brings our schemas closer to users:
+
+| Level | What happens | For whom | Status |
+|-------|-------------|----------|--------|
+| **Level 1: MCP Server** | Our schemas are embedded directly as an MCP server in OpenClaw. All three usage architectures work: individual tools, sub-agents with their own intelligence, or full orchestration with a coordinator. | Developers using MCP clients | Possible |
+| **Level 2: OpenClaw Plugin** | An npm package that registers each schema as a tool. Publishable on ClawHub, installable with one command. The fastest path for end users. | All OpenClaw users | Planned |
+| **Level 3: NemoClaw Policy Preset** | A YAML file bundling all API endpoints of our schemas. Enterprise customers can unlock instantly — with the security policies their organization requires. | Companies and government agencies | Planned |
+
+### Enterprise Security with NemoClaw
+
+For use in companies and government agencies, open source alone is not enough. You need security policies, sandbox isolation, and controlled release processes.
+
+NVIDIA NemoClaw (https://docs.nvidia.com/nemoclaw/) is the enterprise security layer for OpenClaw (Apache 2.0, Alpha since March 2026). It offers deny-by-default network policies, sandbox isolation, and a blueprint system. A policy preset would bundle all API endpoints of our schemas — so a security officer could enable access to all open data sources with a single approval.
+
+This matters because: public data is public, but access to it within an organization still needs to be regulated. NemoClaw makes this possible without us having to run enterprise infrastructure ourselves.
+
+## Open and Free: Local Operation
+
+Not everyone wants or can use cloud services. That is why we are working in parallel on a fully local solution:
+
+- **llama.cpp** as a local LLM — no API key, no costs, full control over your own data
+- Running on a **Raspberry Pi** — a device for under 100 euros, completely independent from cloud services
+- Ideal for **individuals** who do not want to send their data to third parties, for **schools** working on limited budgets, and for **organizations** with strict data privacy requirements
+
+Our schemas work locally just as they do in the cloud. That is the principle of open protocols: data and preparation are separate from the operating model. If you want to work locally, you can — without limitations.
+
+## Example: Multi-Source Data Integration
+
+A practical integration combines multiple FlowMCP schemas through a single MCP server.
+For instance, a travel planning system could load schedule, weather, and location schemas —
+giving any connected AI client access to all three data sources through one endpoint.
+
+The same pattern works for any domain: environmental monitoring, public administration,
+financial data, or any combination of structured data sources.
+
+## Pilot Program
+
+In parallel with technical integration, we are looking for **data partners** who want to co-develop AI connections for public data. We are not looking for money or labor — we are looking for data sources and the willingness to review a finished connection.
+
+**Meet the team →**
+
+## Next Steps
+
+This phase is in preparation. Specifically, we are working on:
+
+1. **Validation** of existing schemas with real data partners — do they work in everyday use?
+2. **Optimization** based on real-world usage — better answer quality, better error handling
+3. **OpenClaw integration** — the plugin that makes schemas available as tools
+4. **Local operation** — testing with llama.cpp on Raspberry Pi
+
+More on the timeline: Roadmap
+
+---
+
+# MCP Server Integration
+/guides/server-integration
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Guides</span>
+<!-- PAGEFIND-META-END -->
+
+FlowMCP schemas can be served as MCP tools through two transport modes: **stdio** for local AI applications like Claude Desktop, and **HTTP/SSE** for remote web applications. This guide covers both approaches.
+
+## Overview
+
+The integration path depends on your use case:
+
+| Transport | Use Case | Protocol |
+|-----------|----------|----------|
+| **stdio** | Claude Desktop, Claude Code, local AI apps | Standard input/output |
+| **HTTP/SSE** | Web services, remote clients, multi-tenant | Server-Sent Events over HTTP |
+| **CLI** | Quick testing, agent mode | `flowmcp run` |
+
+### Local Server (stdio)
+
+The stdio transport is used for local AI applications that launch the MCP server as a subprocess. This is the standard approach for Claude Desktop integration.
+
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+import { Server } from '@modelcontextprotocol/sdk/server/index.js'
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
+
+// Import your schemas
+import { main as coingeckoMain } from './schemas/coingecko-ping.mjs'
+import { main as etherscanMain, handlers as etherscanHandlers } from './schemas/etherscan-gas.mjs'
+
+// Create MCP server
+const server = new Server(
+    { name: 'my-flowmcp-server', version: '1.0.0' },
+    { capabilities: { tools: {} } }
+)
+
+// Server params (API keys from environment)
+const serverParams = {
+    ETHERSCAN_API_KEY: process.env.ETHERSCAN_API_KEY
+}
+
+// Load and activate schemas
+const { status: s1, main: m1, handlerMap: h1 } = await FlowMCP.loadSchema( {
+    filePath: './schemas/coingecko-ping.mjs'
+} )
+
+const { status: s2, main: m2, handlerMap: h2 } = await FlowMCP.loadSchema( {
+    filePath: './schemas/etherscan-gas.mjs'
+} )
+
+// Activate all schema routes as MCP tools
+FlowMCP.activateServerTools( { server, schema: m1, serverParams, validate: true } )
+FlowMCP.activateServerTools( { server, schema: m2, serverParams, validate: true } )
+
+// Connect via stdio
+const transport = new StdioServerTransport()
+await server.connect( transport )
+```
+
+:::note
+The stdio transport communicates over standard input/output. The AI application launches your server as a child process and sends MCP protocol messages through the pipe.
+:::
+
+### Remote Server (HTTP/SSE)
+
+For web applications and remote access, use the SSE transport with an HTTP server:
+
+```javascript
+import express from 'express'
+import { FlowMCP } from 'flowmcp-core'
+import { Server } from '@modelcontextprotocol/sdk/server/index.js'
+import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js'
+
+const app = express()
+
+// Create MCP server
+const server = new Server(
+    { name: 'my-remote-server', version: '1.0.0' },
+    { capabilities: { tools: {} } }
+)
+
+const serverParams = {
+    ETHERSCAN_API_KEY: process.env.ETHERSCAN_API_KEY
+}
+
+// Load and activate schemas
+const { main } = await FlowMCP.loadSchema( {
+    filePath: './schemas/etherscan-gas.mjs'
+} )
+
+FlowMCP.activateServerTools( { server, schema: main, serverParams } )
+
+// SSE endpoint
+app.get( '/sse', async ( req, res ) => {
+    const transport = new SSEServerTransport( '/messages', res )
+    await server.connect( transport )
+} )
+
+// Message endpoint
+app.post( '/messages', async ( req, res ) => {
+    await transport.handlePostMessage( req, res )
+} )
+
+app.listen( 3000, () => {
+    console.log( 'MCP server running on http://localhost:3000' )
+} )
+```
+
+### CLI (flowmcp run)
+
+The fastest way to serve schemas is through the CLI:
+
+```bash
+# Serve default group as MCP server (stdio)
+flowmcp run
+
+# Serve specific group
+flowmcp run --group crypto
+```
+
+This starts the CLI in MCP server mode using stdio transport. Configure it in your AI application's MCP settings.
+
+## Claude Desktop Configuration
+
+To use FlowMCP schemas in Claude Desktop, add your server to `claude_desktop_config.json`:
+
+### Custom Server (stdio)
+
+```json
+{
+  "mcpServers": {
+    "flowmcp-crypto": {
+      "command": "node",
+      "args": [ "/path/to/your/server.mjs" ],
+      "env": {
+        "ETHERSCAN_API_KEY": "your-key-here",
+        "COINGECKO_API_KEY": "your-key-here"
+      }
+    }
+  }
+}
+```
+
+### FlowMCP CLI
+
+```json
+{
+  "mcpServers": {
+    "flowmcp": {
+      "command": "flowmcp",
+      "args": [ "run", "--group", "crypto" ]
+    }
+  }
+}
+```
+
+The config file is located at:
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+:::tip
+After editing the config, restart Claude Desktop to pick up the new MCP server configuration.
+:::
+
+## Schema Filtering
+
+When serving many schemas, use filtering to expose only the tools you need:
+
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const allSchemas = [ schema1, schema2, schema3, schema4 ]
+
+// Filter by namespace
+const { filteredArrayOfSchemas } = FlowMCP.filterArrayOfSchemas( {
+    arrayOfSchemas: allSchemas,
+    includeNamespaces: [ 'coingecko', 'etherscan' ],
+    excludeNamespaces: [],
+    activateTags: []
+} )
+
+// Filter by tags
+const { filteredArrayOfSchemas: defiSchemas } = FlowMCP.filterArrayOfSchemas( {
+    arrayOfSchemas: allSchemas,
+    includeNamespaces: [],
+    excludeNamespaces: [],
+    activateTags: [ 'defi' ]
+} )
+
+// Filter specific routes
+const { filteredArrayOfSchemas: specific } = FlowMCP.filterArrayOfSchemas( {
+    arrayOfSchemas: allSchemas,
+    includeNamespaces: [],
+    excludeNamespaces: [],
+    activateTags: [
+        'coingecko.getPrice',       // Include only getPrice from coingecko
+        'etherscan.!getBalance'     // Exclude getBalance from etherscan
+    ]
+} )
+
+// Activate filtered schemas
+specific.forEach( ( schema ) => {
+    FlowMCP.activateServerTools( { server, schema, serverParams } )
+} )
+```
+
+## Server Parameters
+
+Server parameters (API keys, tokens) are injected at runtime and never exposed to the AI client. Declare them in the schema's `requiredServerParams` and pass them when activating tools:
+
+```javascript
+// Schema declares what it needs
+export const main = {
+    // ...
+    requiredServerParams: [ 'ETHERSCAN_API_KEY', 'MORALIS_API_KEY' ],
+    // ...
+}
+
+// Server provides the values
+const serverParams = {
+    ETHERSCAN_API_KEY: process.env.ETHERSCAN_API_KEY,
+    MORALIS_API_KEY: process.env.MORALIS_API_KEY
+}
+
+FlowMCP.activateServerTools( { server, schema: main, serverParams } )
+```
+
+:::caution
+If a required server parameter is missing, the tool will fail at execution time with a clear error message. Always verify your environment variables are set before starting the server.
+:::
+
+## Activating Individual Routes
+
+For fine-grained control, activate individual routes instead of entire schemas:
+
+```javascript
+// Activate a single route as an MCP tool
+const { toolName, mcpTool } = FlowMCP.activateServerTool( {
+    server,
+    schema: main,
+    routeName: 'getGasOracle',
+    serverParams,
+    validate: true
+} )
+
+console.log( `Activated: ${toolName}` )
+// Output: "Activated: etherscan_getGasOracle"
+```
+
+## Inspecting Tools Before Activation
+
+Use `prepareServerTool` to inspect a tool configuration without registering it:
+
+```javascript
+const toolConfig = FlowMCP.prepareServerTool( {
+    schema: main,
+    serverParams,
+    routeName: 'getGasOracle',
+    validate: true
+} )
+
+console.log( 'Tool name:', toolConfig.toolName )
+console.log( 'Description:', toolConfig.description )
+console.log( 'Zod schema:', toolConfig.zod )
+
+// Execute manually if needed
+const result = await toolConfig.func( { chainName: 'ETH' } )
+```
+
+---
+
+# Use Cases
+/introduction/use-cases
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">About</span>
+<!-- PAGEFIND-META-END -->
+
+Two scenarios that show FlowMCP + AI in action — not how to build an agent, but how FlowMCP turns scattered data sources into one usable answer. Both cases assume an AI agent (Claude, GPT, or similar) connected to a research tool, planning software, or CLI workflow, with FlowMCP-CLI running as the data-access layer.
+
+---
+
+## Use Case 1: Deep Research
+
+### Setup
+
+A research workflow — a custom pipeline, an internal dashboard, or a Notion / Obsidian workspace — has an AI agent attached. The agent's job is to pull together data from many sources to scope or answer a research question. FlowMCP-CLI runs alongside as the agent's tool for finding and calling normalized data sources.
+
+### The Prompt
+
+> We are planning an open-data project on air quality in German inner cities. Find data sources for fine-dust measurement stations, the open-data portals of Berlin, Munich, and Hamburg, weather stations for correlation, and give me a list with provider, license, sample endpoint, and update frequency.
+
+### What FlowMCP Does
+
+1. **Search the catalog** — The agent calls `flowmcp search` with tags like `airquality`, `opendata`, `berlin`, `weather`. FlowMCP returns matching schemas across many providers with provider name, license, and short description.
+2. **Sample each schema** — For promising hits, the agent runs a sample call (`flowmcp call <schema> <route>`). FlowMCP holds the API keys, signs the request, and returns the normalized response. The agent sees the data shape without seeing credentials.
+3. **Combine and summarize** — The agent merges results from federal, city, and weather sources, deduplicates overlapping stations, and produces a table the user can act on.
+
+### Fixed Data Sources, One Answer
+
+The agent draws on a fixed set of curated data sources — federal, city, and weather feeds that were normalized once and are now reused on every request. Because those sources share a consistent shape and a single auth path, the agent merges them into one consolidated answer instead of reading a separate API documentation for each one. The work of understanding each source happens once, in the schema, and every agent benefits from it afterwards.
+
+> Instead of feeding the AI hundreds of tokens of API docs per request, it searches a normalized catalog. One schema investment, any number of agents.
+
+### Next steps
+
+- CLI Setup → — first call in under 5 minutes
+
+---
+
+## Use Case 2: Mobility — Catching the Connection
+
+### Setup
+
+The GTFS pilot is real and documented (see GTFS Pilot Guide). FlowMCP v4.1 ships an add-on concept: external toolkits like `geo-gtfs-toolkit` extend the CLI with local SQLite databases for static schedules. The combination — static GTFS lookup plus live REST API for delays — is what makes this case work as a single CLI call instead of a juggling act between two agents.
+
+### The Prompt
+
+> I'm at Berlin Hbf, heading to Munich. My ICE at 8:05 is 12 minutes late. Do I still catch the connecting IC in Nuremberg at 12:33? If not, what's the next option?
+
+### What FlowMCP Does
+
+1. **GTFS-SQLite lookup** (via `geo-gtfs-toolkit` add-on, local DB) — Static schedule for ICE 8:05 → connecting IC 12:33, scheduled transfer time 9 min, platform layout in Nuremberg.
+2. **Live delay query** (Deutsche Bahn REST API via FlowMCP schema) — Current arrival forecast in Nuremberg 12:29 (was 12:17), so transfer time is now 4 min — critical.
+3. **Alternative search** (GTFS-SQLite + REST combined) — Next IC 13:33 as fallback, arriving Munich 14:55.
+4. **AI answer** — "IC 12:33 with only 4 min transfer is not reliable. Backup: IC 13:33, arriving Munich 14:55 instead of 13:13."
+
+**Local SQLite for static lookup + Live API through FlowMCP — one CLI call, one answer.** Without FlowMCP, the agent would have to orchestrate the static GTFS query and the live REST API separately, parse different formats, and merge them by hand.
+
+### Next steps
+
+- GTFS Pilot Guide → — the full mobility add-on story
+- CLI Setup → — first call in under 5 minutes
+
+---
+
+# How It Works
+/quickstart/how-it-works
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Docs > Getting Started</span>
+<!-- PAGEFIND-META-END -->
+
+## Architecture Overview
+
+FlowMCP transforms declarative schema files into MCP tools that AI clients can call. Data flows through four layers:
+
+```
+Web Data Sources → Schemas → Core Runtime → MCP Server → AI Client
+    (APIs)         (.mjs)    (FlowMCP)      (stdio/HTTP)   (Claude, etc.)
+```
+
+The schema layer is where you work. Everything else is handled by the runtime.
+
+## The Four Steps
+
+1. **Define**
+
+   Write a schema as a `.mjs` file. Each schema declares one or more API tools with their endpoints, parameters, authentication, and expected responses.
+
+   ```javascript
+   // coingecko-ping.mjs
+   export const main = {
+       namespace: 'coingecko',
+       name: 'Ping',
+       description: 'Check CoinGecko API server status',
+       version: '4.1.0',
+       root: 'https://api.coingecko.com/api/v3',
+       requiredServerParams: [],
+       requiredLibraries: [],
+       headers: {},
+       tools: {
+           ping: {
+               method: 'GET',
+               path: '/ping',
+               description: 'Check if CoinGecko API is online',
+               parameters: []
+           }
+       }
+   }
+   ```
+
+2. **Validate**
+
+   FlowMCP Core validates your schema against validation rules covering structure, naming conventions, parameter formats, security constraints, and output declarations.
+
+   ```javascript
+   import { FlowMCP } from 'flowmcp-core'
+   import { main } from './coingecko-ping.mjs'
+
+   const { status, messages } = FlowMCP.validateSchema( { schema: main } )
+   // status: true — schema is valid
+   // messages: [] — no validation errors
+   ```
+
+   Validation catches issues at development time — before your schema reaches production.
+
+3. **Activate**
+
+   FlowMCP Core transforms your schema into MCP tools with auto-generated Zod validation for each parameter. One schema with 5 tools becomes 5 MCP tools.
+
+   ```javascript
+   import { Server } from '@modelcontextprotocol/sdk/server/index.js'
+
+   const server = new Server(
+       { name: 'my-server', version: '1.0.0' },
+       { capabilities: { tools: {} } }
+   )
+
+   FlowMCP.activateServerTools( { server, schemas: [main] } )
+   // Registers: coingecko__ping as an MCP tool
+   ```
+
+4. **Use**
+
+   AI clients discover and call your tools through the MCP protocol. The client sees tool names, descriptions, and input schemas — everything needed to make informed tool calls.
+
+   ```
+   AI Client: "What tools are available?"
+   MCP Server: [coingecko__ping] — Check if CoinGecko API is online
+
+   AI Client: calls coingecko__ping({})
+   MCP Server: { "gecko_says": "(V3) To the Moon!" }
+   ```
+
+## Schema Anatomy
+
+Every FlowMCP v4.3.0 schema uses the **two-export pattern**:
+
+### main (required)
+
+The `main` export is a plain JavaScript object that declares everything about your API endpoints. It is JSON-serializable and can be hashed for integrity verification.
+
+```javascript
+export const main = {
+    // Identity
+    namespace: 'provider',       // Provider name (lowercase)
+    name: 'ToolName',            // Human-readable name
+    description: 'What it does', // Used by AI clients
+    version: '4.1.0',            // Schema format version
+
+    // Connection
+    root: 'https://api.example.com', // Base URL
+    requiredServerParams: ['API_KEY'], // Server-side secrets
+    requiredLibraries: [],        // Allowed npm packages
+    headers: {                    // Request headers
+        'Authorization': 'Bearer {{API_KEY}}'
+    },
+
+    // Tools (API endpoints)
+    tools: {
+        toolName: {
+            method: 'GET',
+            path: '/endpoint/{{PARAM}}',
+            description: 'What this tool does',
+            parameters: [/* ... */],
+            output: {/* ... */}
+        }
+    },
+
+    // Resources (optional, SQLite read-only data)
+    resources: {
+        resourceName: {
+            description: 'Read-only data lookup',
+            source: 'sqlite',
+            database: 'data.db',
+            queries: { /* ... */ }
+        }
+    },
+
+    // Skills (optional, AI agent instructions)
+    skills: [
+        { name: 'skill-name', file: 'skill-name.mjs', description: 'What this skill does' }
+    ]
+}
+```
+
+### handlers (optional)
+
+The `handlers` export is a **factory function** that receives injected dependencies and returns handler functions keyed by tool name. Use it when API responses need transformation.
+
+```javascript
+export const handlers = ( { sharedLists, libraries } ) => ({
+    toolName: {
+        postProcess: ( { data } ) => {
+            // Transform the raw API response
+            const parsed = JSON.parse( data )
+            const summary = parsed.results
+                .map( ( item ) => `${item.name}: ${item.value}` )
+                .join( '\n' )
+
+            return summary
+        }
+    }
+})
+```
+
+The factory pattern ensures:
+- No free imports — dependencies are injected
+- Shared lists are available without file access
+- Libraries are pre-approved via `requiredLibraries`
+
+## Parameter Flow
+
+When an AI client calls a FlowMCP tool, the request flows through several stages:
+
+```
+User Input          →  Zod Validation     →  URL Construction     →  API Call
+{ "id": "bitcoin" }    Validates types,       Replaces {{ID}} in     GET https://api.
+                       lengths, formats       path and query         coingecko.com/...
+
+                                                                         ↓
+
+MCP Response        ←  Handler (optional)  ←  Raw Response
+{ content: [...] }     postProcess()          { "bitcoin": { ... } }
+                       transforms data
+```
+
+Each stage is deterministic: the same input always produces the same API call. Parameter validation uses Zod schemas auto-generated from the `parameters` array in your schema.
+
+## Shared Lists
+
+Some parameter values are reusable across schemas — chain IDs, token symbols, protocol names. Instead of each schema defining these independently, FlowMCP injects **shared lists** at load-time.
+
+```javascript
+// In the schema — reference a shared list
+parameters: [
+    {
+        position: { key: 'chain', value: '{{CHAIN}}', location: 'insert' },
+        z: { primitive: 'enum()', options: ['$chainIds'] }
+        //                                  ^ injected at runtime
+    }
+]
+
+// In handlers — access shared lists
+export const handlers = ( { sharedLists } ) => ({
+    toolName: {
+        postProcess: ( { data } ) => {
+            const chainName = sharedLists.chainIds[data.chainId]
+            return `Chain: ${chainName}`
+        }
+    }
+})
+```
+
+This keeps schemas DRY and ensures consistency across providers.
+
+## Security Model
+
+FlowMCP enforces security at the schema level:
+
+| Constraint | Purpose |
+|------------|---------|
+| **Zero imports** | Schemas cannot use `import` or `require` — all dependencies are injected |
+| **Library allowlist** | Only packages declared in `requiredLibraries` are available in handlers |
+| **Static scan** | Schemas are analyzed at load-time for forbidden patterns |
+| **Server params** | API keys stay server-side — never exposed to AI clients |
+| **Integrity hash** | The `main` export can be hashed to detect schema tampering |
+
+:::caution
+Schemas that attempt to import modules, access the filesystem, or use undeclared libraries are rejected at load-time. This is by design — it protects both the server operator and the AI client.
+:::
+
+:::note
+For the full specification including all validation rules, parameter formats, and security details, see the Specification v4.3.0.
+:::
+
+---
+
+# Core API Methods
+/reference/core-methods
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Reference</span>
+<!-- PAGEFIND-META-END -->
+
+Complete reference for all public methods in `flowmcp-core`. Methods are organized by usage category. All methods are static.
+
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+```
+
+:::note
+FlowMCP Core exports both v3 (default) and legacy APIs. This reference covers the current v3 API. For v1 methods, import from `flowmcp-core/v1`.
+:::
+
+## Method Overview
+
+| Method | Purpose | Returns |
+|--------|---------|---------|
+| `.loadSchema()` | Load and validate a schema file | `{ status, main, handlerMap }` |
+| `.validateMain()` | Validate a main export against validation rules | `{ status, messages }` |
+| `.scanSecurity()` | Run security scan on a schema file | `{ status, messages }` |
+| `.fetch()` | Execute an API request for a tool | `{ status, dataAsString, messages }` |
+| `.resolveSharedLists()` | Resolve shared list references | `{ sharedLists }` |
+| `.interpolateEnum()` | Interpolate shared list values into enum templates | `{ result }` |
+| `.loadLibraries()` | Load declared libraries from allowlist | `{ libraries }` |
+| `.createHandlers()` | Create handler map from factory function | `{ handlerMap }` |
+| `.detectLegacy()` | Detect if a module uses v1 format | `{ isLegacy, format }` |
+| `.adaptLegacy()` | Convert a v1 schema to v2 format | `{ main, handlersFn, hasHandlers, warnings }` |
+| `.getDefaultAllowlist()` | Get the default library allowlist | `{ allowlist }` |
+| `.generateOutputSchema()` | Generate output schema from API response | `{ output }` |
+
+---
+
+## Schema Loading & Validation
+
+### .loadSchema()
+
+Loads a `.mjs` schema file, runs security scanning, validates the `main` export, resolves shared lists, loads declared libraries, creates the handler map, and processes any resources and skills. This is the primary entry point for working with schemas.
+
+**Method**
+```javascript
+const result = await FlowMCP.loadSchema( { filePath, listsDir, allowlist } )
+```
+
+**Parameters**
+
+| Key | Type | Description | Required |
+|-----|------|-------------|----------|
+| `filePath` | string | Absolute or relative path to the `.mjs` schema file | Yes |
+| `listsDir` | string | Directory containing shared list files | No |
+| `allowlist` | array | Allowed library names for handlers. Uses default if omitted | No |
+
+**Example**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const { status, main, handlerMap } = await FlowMCP.loadSchema( {
+    filePath: './schemas/coingecko-price.mjs'
+} )
+
+if( !status ) {
+    console.error( 'Schema loading failed' )
+}
+
+// Use the loaded schema
+const result = await FlowMCP.fetch( {
+    main,
+    handlerMap,
+    userParams: { id: 'bitcoin' },
+    serverParams: {},
+    routeName: 'getPrice'
+} )
+```
+
+**Returns**
+```javascript
+{
+    status: true,          // false if loading, validation, or security scan failed
+    main: { ... },         // The validated main export object (with tools, resources, skills)
+    handlerMap: { ... }    // Tool-keyed handler functions (empty object if no handlers)
+}
+```
+
+### .validateMain()
+
+Validates a `main` export object against the FlowMCP specification. Runs validation rules across categories including structure, naming, parameters, security, output declarations, resources, and skills.
+
+**Method**
+```javascript
+const { status, messages } = FlowMCP.validateMain( { main } )
+```
+
+**Parameters**
+
+| Key | Type | Description | Required |
+|-----|------|-------------|----------|
+| `main` | object | The `main` export from a schema file. Accepts both `tools` and `routes` (deprecated alias) | Yes |
+
+**Example**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+import { main } from './schemas/coingecko-price.mjs'
+
+const { status, messages } = FlowMCP.validateMain( { main } )
+
+if( status ) {
+    console.log( 'Schema is valid' )
+} else {
+    console.error( 'Validation failed:' )
+    messages.forEach( ( msg ) => console.error( `  - ${msg}` ) )
+}
+```
+
+**Returns**
+```javascript
+{
+    status: true,      // true if all rules pass
+    messages: []       // Array of error messages when status is false
+}
+```
+
+:::tip
+Use `validateMain()` during development to catch schema errors early. In production, use `loadSchema()` which includes validation as part of the full pipeline.
+:::
+
+### .scanSecurity()
+
+Runs a static security scan on a schema file. Checks for forbidden patterns like `import` statements, `require()` calls, filesystem access, `eval()`, and other disallowed constructs.
+
+**Method**
+```javascript
+const { status, messages } = await FlowMCP.scanSecurity( { filePath } )
+```
+
+**Parameters**
+
+| Key | Type | Description | Required |
+|-----|------|-------------|----------|
+| `filePath` | string | Path to the `.mjs` schema file to scan | Yes |
+
+**Example**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const { status, messages } = await FlowMCP.scanSecurity( {
+    filePath: './schemas/my-schema.mjs'
+} )
+
+if( !status ) {
+    console.error( 'Security violations found:' )
+    messages.forEach( ( msg ) => console.error( `  - ${msg}` ) )
+}
+```
+
+**Returns**
+```javascript
+{
+    status: true,      // false if forbidden patterns are detected
+    messages: []       // Descriptions of security violations
+}
+```
+
+---
+
+## Execution
+
+### .fetch()
+
+Executes an HTTP request for a specific tool using the loaded schema. Handles parameter substitution, URL construction, header injection, and optional pre/post-processing via handlers.
+
+**Method**
+```javascript
+const result = await FlowMCP.fetch( { main, handlerMap, userParams, serverParams, routeName } )
+```
+
+**Parameters**
+
+| Key | Type | Description | Required |
+|-----|------|-------------|----------|
+| `main` | object | The validated `main` export from a schema | Yes |
+| `handlerMap` | object | Handler map from `loadSchema()` or `createHandlers()` | Yes |
+| `userParams` | object | User-provided parameters (from AI client input) | Yes |
+| `serverParams` | object | Server-side parameters (API keys, tokens) | Yes |
+| `routeName` | string | Name of the tool to execute | Yes |
+
+**Example**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const { status, main, handlerMap } = await FlowMCP.loadSchema( {
+    filePath: './schemas/coingecko-price.mjs'
+} )
+
+const result = await FlowMCP.fetch( {
+    main,
+    handlerMap,
+    userParams: { id: 'bitcoin', vs_currency: 'usd' },
+    serverParams: {},
+    routeName: 'getPrice'
+} )
+
+if( result.status ) {
+    console.log( 'Response:', result.dataAsString )
+} else {
+    console.error( 'Request failed:', result.messages )
+}
+```
+
+**Returns**
+```javascript
+{
+    status: true,                              // false if request failed
+    dataAsString: '{"bitcoin":{"usd":45000}}', // Response body as string
+    messages: []                               // Error messages when status is false
+}
+```
+
+:::caution
+The `serverParams` object should contain API keys and secrets. These values are injected into headers and parameters at runtime but are never exposed to AI clients.
+:::
+
+---
+
+## Shared Lists & Dependencies
+
+### .resolveSharedLists()
+
+Resolves shared list references from a directory of list files. Shared lists are reusable value collections (chain IDs, token symbols, protocol names) that schemas reference via `$listName` syntax in enum parameters.
+
+**Method**
+```javascript
+const { sharedLists } = await FlowMCP.resolveSharedLists( { sharedListRefs, listsDir } )
+```
+
+**Parameters**
+
+| Key | Type | Description | Required |
+|-----|------|-------------|----------|
+| `sharedListRefs` | array | Array of shared list reference strings from the schema | Yes |
+| `listsDir` | string | Directory path containing shared list `.mjs` files | Yes |
+
+**Example**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const { sharedLists } = await FlowMCP.resolveSharedLists( {
+    sharedListRefs: [ 'evmChains', 'stablecoins' ],
+    listsDir: './lists/'
+} )
+
+console.log( 'Resolved lists:', Object.keys( sharedLists ) )
+// Output: ['evmChains', 'stablecoins']
+```
+
+**Returns**
+```javascript
+{
+    sharedLists: {
+        evmChains: [ 'ethereum', 'polygon', 'arbitrum', ... ],
+        stablecoins: [ 'USDT', 'USDC', 'DAI', ... ]
+    }
+}
+```
+
+### .interpolateEnum()
+
+Interpolates shared list values into an enum template string. Replaces `$listName` references with actual values from resolved shared lists.
+
+**Method**
+```javascript
+const { result } = FlowMCP.interpolateEnum( { template, sharedLists } )
+```
+
+**Parameters**
+
+| Key | Type | Description | Required |
+|-----|------|-------------|----------|
+| `template` | string | Enum template containing `$listName` references | Yes |
+| `sharedLists` | object | Resolved shared lists from `resolveSharedLists()` | Yes |
+
+**Example**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const sharedLists = {
+    evmChains: [ 'ethereum', 'polygon', 'arbitrum' ]
+}
+
+const { result } = FlowMCP.interpolateEnum( {
+    template: '$evmChains',
+    sharedLists
+} )
+
+console.log( result )
+// Output: ['ethereum', 'polygon', 'arbitrum']
+```
+
+**Returns**
+```javascript
+{
+    result: [ 'ethereum', 'polygon', 'arbitrum' ]  // Resolved enum values
+}
+```
+
+### .loadLibraries()
+
+Loads npm packages declared in a schema's `requiredLibraries` field. Only packages on the allowlist can be loaded. This enforces the zero-import security model.
+
+**Method**
+```javascript
+const { libraries } = await FlowMCP.loadLibraries( { requiredLibraries, allowlist } )
+```
+
+**Parameters**
+
+| Key | Type | Description | Required |
+|-----|------|-------------|----------|
+| `requiredLibraries` | array | Library names declared in the schema | Yes |
+| `allowlist` | array | Permitted library names. Use `getDefaultAllowlist()` for defaults | Yes |
+
+**Example**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const { allowlist } = FlowMCP.getDefaultAllowlist()
+
+const { libraries } = await FlowMCP.loadLibraries( {
+    requiredLibraries: [ 'ethers' ],
+    allowlist
+} )
+
+// libraries.ethers is now available for handler injection
+```
+
+**Returns**
+```javascript
+{
+    libraries: {
+        ethers: { ... }  // The loaded library module
+    }
+}
+```
+
+### .getDefaultAllowlist()
+
+Returns the default library allowlist. These are the npm packages that handlers are permitted to use via dependency injection.
+
+**Method**
+```javascript
+const { allowlist } = FlowMCP.getDefaultAllowlist()
+```
+
+**Parameters**
+
+None.
+
+**Example**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const { allowlist } = FlowMCP.getDefaultAllowlist()
+console.log( 'Allowed libraries:', allowlist )
+```
+
+**Returns**
+```javascript
+{
+    allowlist: [ 'ethers', 'viem', ... ]  // Array of permitted library names
+}
+```
+
+---
+
+## Handler Management
+
+### .createHandlers()
+
+Creates a handler map by invoking the `handlers` factory function with injected dependencies. The resulting map is keyed by tool name and contains `preProcess` and `postProcess` functions.
+
+**Method**
+```javascript
+const { handlerMap } = FlowMCP.createHandlers( { handlersFn, sharedLists, libraries, routeNames } )
+```
+
+**Parameters**
+
+| Key | Type | Description | Required |
+|-----|------|-------------|----------|
+| `handlersFn` | function | The `handlers` factory function from a schema | Yes |
+| `sharedLists` | object | Resolved shared lists to inject | Yes |
+| `libraries` | object | Loaded libraries to inject | Yes |
+| `routeNames` | array | Expected tool names for validation | Yes |
+
+**Example**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+import { handlers } from './schemas/my-schema.mjs'
+
+const { handlerMap } = FlowMCP.createHandlers( {
+    handlersFn: handlers,
+    sharedLists: { evmChains: [ 'ethereum', 'polygon' ] },
+    libraries: {},
+    routeNames: [ 'getPrice', 'getHistory' ]
+} )
+
+// handlerMap.getPrice.postProcess is now available
+```
+
+**Returns**
+```javascript
+{
+    handlerMap: {
+        getPrice: {
+            postProcess: async ( { data } ) => { ... }
+        },
+        getHistory: {
+            preProcess: async ( { params } ) => { ... },
+            postProcess: async ( { data } ) => { ... }
+        }
+    }
+}
+```
+
+:::tip
+You rarely need to call `createHandlers()` directly. The `loadSchema()` pipeline handles handler creation automatically. Use this method when you need manual control over the dependency injection process.
+:::
+
+---
+
+## Legacy Compatibility
+
+### .detectLegacy()
+
+Detects whether a loaded module uses the v1 schema format. Returns the detected format version.
+
+**Method**
+```javascript
+const { isLegacy, format } = FlowMCP.detectLegacy( { module } )
+```
+
+**Parameters**
+
+| Key | Type | Description | Required |
+|-----|------|-------------|----------|
+| `module` | object | The imported module from a `.mjs` schema file | Yes |
+
+**Example**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const schemaModule = await import( './schemas/old-schema.mjs' )
+const { isLegacy, format } = FlowMCP.detectLegacy( { module: schemaModule } )
+
+if( isLegacy ) {
+    console.log( `Legacy format detected: ${format}` )
+    // Use adaptLegacy() to convert
+}
+```
+
+**Returns**
+```javascript
+{
+    isLegacy: true,    // true if the module uses v1 format
+    format: 'v1'       // Detected format version string
+}
+```
+
+### .adaptLegacy()
+
+Converts a v1 schema object to the v2 two-export format. Returns the adapted `main` export, optional handlers factory function, and any conversion warnings.
+
+**Method**
+```javascript
+const { main, handlersFn, hasHandlers, warnings } = FlowMCP.adaptLegacy( { legacySchema } )
+```
+
+**Parameters**
+
+| Key | Type | Description | Required |
+|-----|------|-------------|----------|
+| `legacySchema` | object | A v1 format schema object | Yes |
+
+**Example**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const oldSchema = { namespace: 'myapi', root: '...', routes: { ... } }
+const { main, handlersFn, hasHandlers, warnings } = FlowMCP.adaptLegacy( {
+    legacySchema: oldSchema
+} )
+
+if( warnings.length > 0 ) {
+    console.log( 'Migration warnings:' )
+    warnings.forEach( ( w ) => console.log( `  - ${w}` ) )
+}
+
+// Use the adapted schema with current methods
+const result = await FlowMCP.fetch( {
+    main,
+    handlerMap: {},
+    userParams: { ... },
+    serverParams: {},
+    routeName: 'myRoute'
+} )
+```
+
+**Returns**
+```javascript
+{
+    main: { ... },             // Converted main export
+    handlersFn: Function|null, // Handlers factory (null if no handlers)
+    hasHandlers: false,        // Whether the schema had handlers
+    warnings: []               // Conversion warnings (deprecated features, etc.)
+}
+```
+
+---
+
+## Output Schema Generation
+
+### .generateOutputSchema()
+
+Generates an output schema from a captured API response. The output schema declares the expected response shape for downstream consumers and documentation.
+
+**Method**
+```javascript
+const { output } = FlowMCP.generateOutputSchema( { response, mimeType } )
+```
+
+**Parameters**
+
+| Key | Type | Description | Required |
+|-----|------|-------------|----------|
+| `response` | string | Raw API response body | Yes |
+| `mimeType` | string | Response MIME type (e.g. `application/json`) | Yes |
+
+**Example**
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+const { output } = FlowMCP.generateOutputSchema( {
+    response: '{"bitcoin":{"usd":45000,"eur":38000}}',
+    mimeType: 'application/json'
+} )
+
+console.log( output )
+// { type: 'object', fields: { bitcoin: { type: 'object', fields: { ... } } } }
+```
+
+**Returns**
+```javascript
+{
+    output: {
+        type: 'object',
+        fields: { ... }    // Inferred field structure from the response
+    }
+}
+```
+
+:::tip
+Use this method during schema development to auto-generate the `output` block for your tools. Capture a real API response with `fetch()`, then pass it to `generateOutputSchema()`.
+:::
+
+---
+
+## v1 API (Legacy)
+
+The v1 API is still available for backward compatibility. Import it separately:
+
+```javascript
+import { v1 } from 'flowmcp-core'
+const { FlowMCP } = v1
+```
+
+<details>
+<summary>v1 Method Overview</summary>
+
+The v1 API uses a flat schema format (single export) with different method signatures.
+
+| Method | v1 Signature | Current Equivalent |
+|--------|-------------|---------------|
+| `.validateSchema()` | `FlowMCP.validateSchema( { schema } )` | `.validateMain( { main } )` |
+| `.fetch()` | `FlowMCP.fetch( { schema, userParams, serverParams, routeName } )` | `.fetch( { main, handlerMap, ... } )` |
+| `.activateServerTools()` | `FlowMCP.activateServerTools( { server, schema, serverParams } )` | Use MCP SDK directly with `.loadSchema()` |
+| `.activateServerTool()` | `FlowMCP.activateServerTool( { server, schema, routeName, serverParams } )` | Use MCP SDK directly |
+| `.prepareServerTool()` | `FlowMCP.prepareServerTool( { schema, serverParams, routeName } )` | Use `.loadSchema()` + `.fetch()` |
+| `.filterArrayOfSchemas()` | `FlowMCP.filterArrayOfSchemas( { arrayOfSchemas, ... } )` | Same (v1 only) |
+| `.getArgvParameters()` | `FlowMCP.getArgvParameters( { argv } )` | Same (v1 only) |
+| `.getZodInterfaces()` | `FlowMCP.getZodInterfaces( { schema } )` | Zod schemas are generated during `.loadSchema()` |
+| `.getAllTests()` | `FlowMCP.getAllTests( { schema } )` | Test values are in parameter `test` fields |
+
+:::caution
+The v1 API will be maintained for backward compatibility but will not receive new features. All new schemas should use the v3 format.
+:::
+
+</details>
+
+---
+
+## Typical Workflow
+
+The standard workflow for using FlowMCP Core combines these methods:
+
+```javascript
+import { FlowMCP } from 'flowmcp-core'
+
+// 1. Load schema (validates, scans security, resolves lists, creates handlers)
+const { status, main, handlerMap } = await FlowMCP.loadSchema( {
+    filePath: './schemas/coingecko-price.mjs'
+} )
+
+if( !status ) {
+    throw new Error( 'Schema loading failed' )
+}
+
+// 2. Execute a tool
+const result = await FlowMCP.fetch( {
+    main,
+    handlerMap,
+    userParams: { id: 'bitcoin' },
+    serverParams: { API_KEY: process.env.COINGECKO_KEY },
+    routeName: 'getPrice'
+} )
+
+// 3. Use the result
+if( result.status ) {
+    console.log( 'Price data:', result.dataAsString )
+} else {
+    console.error( 'Errors:', result.messages )
+}
+```
+
+For MCP server integration, see the Server Integration Guide.
+
+---
+
+# MCP Server
+/reference/mcp-server
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Reference</span>
+<!-- PAGEFIND-META-END -->
+
+<!-- RF4 Discovery (PRD-019, 2026-05-25): CLI command is `flowmcp run` (previously documented as `flowmcp server`). Implementation: repos/flowmcp-cli/src/task/FlowMcpCli.mjs:2450ff using @modelcontextprotocol/sdk/server/mcp.js with StdioServerTransport. -->
+## What is MCP?
+
+The **Model Context Protocol (MCP)** is an open standard for connecting AI models to external tools and data sources. FlowMCP can run as an MCP server, exposing all active schemas as tools to any MCP-compatible AI client.
+
+Instead of writing custom server code for each API, you declare schemas and FlowMCP handles the MCP protocol, parameter validation, and API execution.
+
+## Architecture
+
+How FlowMCP bridges AI clients and APIs:
+
+The AI client sends tool calls over the MCP protocol. FlowMCP resolves the correct schema, validates parameters, calls the upstream API, and returns the result.
+
+## Starting the Server
+
+The fastest way to serve schemas is through the CLI:
+
+```bash
+# Serve all active tools as MCP server (stdio)
+flowmcp run
+
+# Serve a specific group
+flowmcp run --group crypto
+```
+
+For programmatic control, see the Server Integration guide.
+
+## Client Integration
+
+### Claude Desktop
+
+Add FlowMCP to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "flowmcp": {
+      "command": "npx",
+      "args": ["-y", "flowmcp", "run"],
+      "env": {
+        "ETHERSCAN_API_KEY": "your_key_here",
+        "MORALIS_API_KEY": "your_key_here"
+      }
+    }
+  }
+}
+```
+
+Config file location:
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+:::tip
+After editing the config, restart Claude Desktop to pick up the new MCP server configuration.
+:::
+
+### Cursor
+
+Add FlowMCP to your Cursor MCP settings:
+
+```json
+{
+  "mcpServers": {
+    "flowmcp": {
+      "command": "npx",
+      "args": ["-y", "flowmcp", "run"]
+    }
+  }
+}
+```
+
+Open Cursor Settings and navigate to the MCP section to add this configuration.
+
+### Claude Code
+
+Add FlowMCP as a local MCP server:
+
+```bash
+claude mcp add flowmcp --scope local -- npx -y flowmcp run
+```
+
+Claude Code will automatically start the server when needed.
+
+## Environment Variables
+
+API keys required by your schemas can be provided in three ways:
+
+| Method | Example | Best For |
+|--------|---------|----------|
+| `~/.flowmcp/.env` file | `ETHERSCAN_API_KEY=abc123` | Persistent local setup |
+| `env` block in client config | See Claude Desktop example above | Per-client configuration |
+| System environment variables | `export ETHERSCAN_API_KEY=abc123` | CI/CD and containers |
+
+:::note[Security]
+API keys are injected as server parameters at runtime and are never exposed to the AI client. They are only used when FlowMCP calls the upstream API on behalf of the AI.
+:::
+
+## What Gets Exposed
+
+All active tools from your `.flowmcp/config.json` become MCP primitives:
+
+| Schema Primitive | MCP Primitive | Description |
+|-----------------|---------------|-------------|
+| Tools | MCP Tools | API endpoints the AI can call |
+| Resources | MCP Resources | Static data the AI can read |
+| Prompts | MCP Prompts | Pre-built prompt templates |
+
+Each tool is registered with its name, description, and a Zod-validated parameter schema -- giving the AI client everything it needs to discover and call the tool correctly.
+
+## What's Next
+
+:::note[Server Integration]
+For programmatic server setup with stdio and HTTP/SSE transports, see the Server Integration guide.
+:::
+
+---
+
+# Roadmap
+/roadmap/index
+
+<!-- PAGEFIND-META-START -->
+<span style="display:none" data-pagefind-meta="section">Roadmap</span>
+<!-- PAGEFIND-META-END -->
+
+## Public Schemas
+
+**Status: Available**
+
+FlowMCP schemas are publicly available — curated, validated, and open source.
+Currently covering transportation, weather, geocoding, and infrastructure data.
+
+- [x] **14 public schemas** across 9 data providers
+- [x] **Automated schema catalog** with JSON generation
+- [x] **Schema validation** and test infrastructure
+- [ ] Expand to additional domains (environment, administration, health)
+
+Schema Catalog →
+
+---
+
+## Integration
+
+**Status: In Progress**
+
+Integration into existing MCP clients — not standalone, but embedded in platforms
+that developers already use.
+
+- [ ] CLI-first approach with FlowMCP CLI
+- [ ] OpenClaw integration
+- [ ] Documentation and getting-started guides
+
+Details →
+
+---
+
+## Community Hub
+
+**Status: Planned**
+
+A community-driven schema ecosystem where anyone can contribute, review,
+and validate schemas through a structured pipeline.
+
+- [ ] 5-stage contribution pipeline
+- [ ] Automated validation and scoring
+- [ ] Community governance process
+
+Details →
+
+---
+
+## Get Involved
+
+- **Use schemas** — Schema Catalog →
+- **Contribute schemas** — Community Hub →
+- **Follow development** — GitHub (https://github.com/flowmcp)
+
+---
+
+# Schemas & Sources
+/schemas-and-sources
+
+FlowMCP is built from three layers that are easy to confuse but stay strictly separate. Keeping them apart is the key to understanding what FlowMCP is responsible for and what it is not.
+
+## Engine, Schemas, and Data Operators
+
+The **engine** is the part FlowMCP builds and maintains. It is the Core library and the CLI that load a schema, sign the request, call the source, and normalize the response. The engine is MIT-licensed, open source, and the same audit covers every call that flows through it.
+
+A **schema** is a thin declaration that tells the engine how to reach one data source and how to shape its response. Schemas are community contributions: anyone can write one for an API or dataset. They are not part of the engine, and a schema can be added, replaced, or removed without touching the engine at all.
+
+A **data operator** is whoever runs the API or publishes the dataset behind a schema. They decide their own Terms of Service, data license, and rate limits. FlowMCP has no control over that layer — it only passes the call through and returns the answer.
+
+These three layers never merge. The engine moves data, schemas describe sources, and operators own the data. Confusing them is the most common source of misunderstanding about what FlowMCP does.
+
+## What FlowMCP Does Not Do
+
+FlowMCP **does not publish schemas, and it does not show schemas on this website.** There is no catalog page, no schema browser, and no hosted list of sources here. Schemas live in their own repositories and are loaded by the CLI on demand; the website explains the engine and the model, not the individual schemas.
+
+Because the data operators own the source and its terms, FlowMCP also makes no judgment about them. We record a few neutral facts where a provider publishes them — the Terms of Service URL (`meta.termsOfService`), the date we last checked it (`meta.termsOfServiceCheckedAt`), and the data license name when one is stated (`meta.dataLicenseName`) — and we link out to the original. We do not classify those terms, interpret them, or advise on commercial use. Reviewing a provider's Terms of Service, rate limits, and data license before you rely on a source remains your responsibility, and FlowMCP makes no warranty about fitness for any purpose.
+
+## See Also
+
+- Specification: License & ToS (spec/v4.3.0/23-license-and-tos.md) (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.3.0/23-license-and-tos.md)
+- DISCLAIMER.md in flowmcp-core (https://github.com/FlowMCP/flowmcp-core/blob/main/DISCLAIMER.md)
+- DISCLAIMER.md in flowmcp-cli (https://github.com/FlowMCP/flowmcp-cli/blob/main/DISCLAIMER.md)
