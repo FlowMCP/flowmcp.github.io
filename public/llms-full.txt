@@ -737,10 +737,10 @@ AgentProbe builds on the FlowMCP validator ecosystem:
 /grading/about-convention
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/11-about-convention.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/11-about-convention.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -868,9 +868,9 @@ The deterministic sub-part is binary: the declared `about` Resource and its file
 
 ---
 
-## Relationship to the Schemas-Spec v4.2.0
+## Relationship to the Schemas-Spec v4.3.0
 
-The Schemas-Spec v4.2.0 — particularly `13-resources.md` — defines the Resource primitive. This Grading-Spec adds the **convention** that one Resource named `about` carries the content contract above. The reservation is **forward-looking convention**, applied by graders that conform to this Grading-Spec.
+The Schemas-Spec v4.3.0 — particularly `13-resources.md` — defines the Resource primitive. This Grading-Spec adds the **convention** that one Resource named `about` carries the content contract above. The reservation is **forward-looking convention**, applied by graders that conform to this Grading-Spec.
 
 A schema-validator at v4.2 MUST NOT reject a schema for failing the About convention; the convention's enforcement lives entirely in the grader.
 
@@ -878,8 +878,8 @@ A schema-validator at v4.2 MUST NOT reject a schema for failing the About conven
 
 ## Cross-References
 
-- Schemas-Spec v4.2.0 `13-resources.md` — the external Resource primitive against which the convention is defined.
-- Schemas-Spec v4.2.0 `17-selections.md` — the selection primitive.
+- Schemas-Spec v4.3.0 `13-resources.md` — the external Resource primitive against which the convention is defined.
+- Schemas-Spec v4.3.0 `17-selections.md` — the selection primitive.
 - `10-domain-knowledge.md` — the selection-level About Resource as the Domain-Knowledge content (seven mandatory sections).
 - `12-personas-contract.md` — the personas reference required by Content Contract.
 - `13-skills.md` — the skill obligation to reference the About Resource.
@@ -889,7 +889,7 @@ A schema-validator at v4.2 MUST NOT reject a schema for failing the About conven
 ## Related
 
 - **Depends on:** `00-overview.md`, `08-grading-model.md`
-- **Related:** Schemas-Spec v4.2.0 `13-resources.md`, `10-domain-knowledge.md`, `12-personas-contract.md`, `13-skills.md`, `19-folder-layout.md`, `21-pre-conditions.md`
+- **Related:** Schemas-Spec v4.3.0 `13-resources.md`, `10-domain-knowledge.md`, `12-personas-contract.md`, `13-skills.md`, `19-folder-layout.md`, `21-pre-conditions.md`
 
 ---
 
@@ -897,10 +897,10 @@ A schema-validator at v4.2 MUST NOT reject a schema for failing the About conven
 /grading/default-journey
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/01-default-journey.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/01-default-journey.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -985,10 +985,10 @@ Gap reporting is mandatory; gap penalisation is conditional on the absence of an
 /grading/determinism-and-tier
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/06-determinism-and-tier.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/06-determinism-and-tier.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -1032,6 +1032,30 @@ For mixed forms, implementers MAY:
 
 - split the dimension into two sub-dimensions (one `deterministic`, one `non-deterministic`), or
 - collapse it into a single dimension with `determinism = non-deterministic` (the strictly reproducible sub-part still runs, but the aggregate carries the weaker reproducibility claim).
+
+---
+
+## Deterministic Pretest — Test-Leiter (Working-Test Bar)
+
+Before any non-deterministic (LLM) grading runs, a deterministic **data-pretest** executes every tool's declared tests live and counts the **working** ones. A working test is a downloadable primitive (`tool` / `resource`) that returns HTTP 200 **and** a non-empty payload; HTTP 4xx, `status:false`, or an empty payload is a FAIL — never a pass.
+
+The working-test count per tool maps to a **Test-Leiter** rung. This is the deterministic readiness ladder that gates `deterministic-green`:
+
+| Working tests / tool | Rung (`testDepth`) | Meaning |
+|----------------------|--------------------|---------|
+| 0 | `unavailable` | No working test — `blocked` (repairable). In practice does not occur (every tool declares ≥ 1 test). |
+| 1 | `reachable` | Minimum, **INSUFFICIENT** — the deterministic test does NOT pass. The tool is reachable but its output schema cannot be validated against repeated evidence. |
+| 2 | `schema-validatable` | **Pass bar — the deterministic test PASSES.** Two working responses make the output schema validatable; the schema is **deterministic-green**. |
+| ≥ 3 | `data-analyzable` | Ideal gradient (a later wave). Not a second gate. |
+
+**Binding rules:**
+
+1. **The pass bar is `2` working tests per tool, applied per tool (not as a schema-file total).** A schema reaches `deterministic-green` only when **every** downloadable tool independently has ≥ 2 working tests. (MUST)
+2. **The bar is binary at 2.** Reaching 3+ does not change the pass/fail decision; it only raises the `testDepth` rung from `schema-validatable` to `data-analyzable`. (MUST)
+3. **A tool with exactly 1 working test is NOT `deterministic-green`, but is NOT `rejected`.** It is a repairable `blocked`/not-green state, resolved by adding a second working test — never a terminal rejection. (MUST)
+4. **`testDepth` is its own deterministic dimension**, recorded on the tool node in the index rollup, and is **independent** of the LLM `outputSchemaMatch` dimension. The two are never conflated: `testDepth` measures *how many* working responses exist; `outputSchemaMatch` judges *whether* the declared output schema matches a response. (MUST)
+
+> **Rationale.** A single working response cannot distinguish a correct output schema from a coincidentally-shaped one. Two independent working responses are the minimum deterministic evidence that the declared output schema holds. Raising coverage is **work** (add tests), not grounds for lowering the bar.
 
 ---
 
@@ -1129,10 +1153,12 @@ The node status of a graded primitive is one of **five** values, derived by the 
 | Status | Meaning |
 |--------|---------|
 | `pending` | Not yet graded. |
-| `blocked` | Cannot be graded right now, with a `reason` (fewer than 3 working tests, no About Resource, API unreachable) — repairable. |
+| `blocked` | Cannot be graded right now, with a `reason` (`validation-failed`, fewer than 2 working tests, no About Resource, API unreachable) — repairable. |
 | `graded` | A grade exists. |
 | `stable` | Fully graded via a `mode: "full"` operation and above threshold — ready for use; only this status passes the selection pre-condition. |
 | `rejected` | Veto raised — **terminal and irreversible**. |
+
+The five status **values** are unchanged in `3.0.0`; only the `blocked` **reason** vocabulary is extended. `validation-failed` is a documented, repairable `blocked` reason: emit-on-failure (the `grading import` gate, see `22-workbench-island.md`) produces a `blocked` node — **not** a `pending` node — when a folder's schemas cannot be parsed or validated. The full pinned reason set lives in `23-index-json.md`. A `blocked`/`validation-failed` node is a **status record**, not a grading entry (see `08-grading-model.md`).
 
 The `partial`/`full` distinction (see Partial vs. Full Grading and the `stable` Status) interacts directly with this status set: `partial` keeps the node at its last full status, only `full` can move a node to `stable`.
 
@@ -1164,10 +1190,10 @@ Cross-Refs:
 /grading/domain-knowledge
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/10-domain-knowledge.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/10-domain-knowledge.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -1289,10 +1315,10 @@ A grading entry that uses Domain-Knowledge content records the resolved About Re
 /grading/eligibility
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/02-eligibility.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/02-eligibility.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -1424,10 +1450,10 @@ The detailed verification method belongs to the grader implementation and is out
 /grading/entry-point-prompt
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/20-entry-point-prompt.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/20-entry-point-prompt.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -1454,7 +1480,7 @@ You are performing a FlowMCP grading. Instructions:
 1. Persona: crypto-trader-2026
 2. Selection: crypto-domain-full, lockSnapshot hash: <sha>
 3. Mode: Full (initial baseline)
-4. Spec version: gradingSpec/2.0.0
+4. Spec version: gradingSpec/3.0.0
 5. Pre-condition: all member schemas have gradingStatus: stable
 6. Output format: _gradings/<area>--<timestamp>.json
 ```
@@ -1465,7 +1491,7 @@ Six numbered lines. For Single-Gradings, line 2 is replaced and line 5 is droppe
 1. Persona: crypto-trader-2026
 2. Single-Schema: etherscan.getContractEthereum, area: single-test
 3. Mode: Full (initial baseline)
-4. Spec version: gradingSpec/2.0.0
+4. Spec version: gradingSpec/3.0.0
 6. Output format: _gradings/<area>--<timestamp>.json
 ```
 
@@ -1510,10 +1536,10 @@ The README in the grading repository contains the ready-to-use prompt with examp
 /grading/flywheel-loop
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/18-flywheel-loop.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/18-flywheel-loop.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -1617,10 +1643,10 @@ The following patterns break the flywheel and are excluded by the spec:
 /grading/folder-layout
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/19-folder-layout.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/19-folder-layout.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -1668,6 +1694,29 @@ Rationale: an in-source hash drifts the moment the file is edited, so the record
 `providers/` is the source of truth for schema content — no duplication. Schema files are NOT copied into `selections/`. A selection references its member schemas by logical id; the member resolution and hash binding are recorded in `index.json`. A content change creates a new file *next to* the old one — never *over* it (see `15-versioning-axes.md`).
 
 `index.json` is the **only overwritable file** — it is fully derived and 100% reproducible from the source files and grading artefacts. Source schemas, selection definitions, and grading snapshots are **never** overwritten.
+
+### Folder ↔ Namespace Invariant (NEW in 3.0.0)
+
+The `providers/<dir>/` directory name MUST equal `main.namespace` of **every** schema it contains. This is the binding folder↔namespace invariant — previously only described loosely as "one namespace, several schemas". It is the same invariant the Schemas-Spec writes as a tested validation rule (`VAL012`, see Schemas-Spec v4.3.0 §09 and §16 Namespace Resolution); the grading import asserts it on the island side and the grading track consumes it. The grading module enforces it as `IMP-007` (folder↔namespace invariant violation).
+
+#### Unparseable-folder case (fallback key)
+
+A `providers/<folder>/` with **0 valid schemas** still produces an `index.json` — it carries a `blocked` rollup keyed by the **folder name** as the fallback namespace identifier (`reason: validation-failed` / `all-schemas-unparseable`; see the pinned set in `23-index-json.md`). The fallback folder name MUST itself be a valid namespace (`/^[a-z][a-z0-9-]*$/`); a folder name that is not a valid namespace is a hard error (`IMP-006`), never silently normalised.
+
+#### Rename-on-parse lifecycle
+
+Once **≥1** schema in the folder parses and exposes `main.namespace`, that field is **authoritative** and the folder is renamed to match it. A rename is an **identity transition**, not a delete: the never-delete / never-overwrite framing of this chapter is extended to cover folder-identity transitions. The rename runs **exactly once** and never clobbers a differing existing target (the grading module reports `IMP-008` instead of overwriting). This is the IN-side reconciliation of a folder that was first imported under a foldername-fallback placeholder and later acquired a real declared namespace.
+
+#### Provider-proof location (NEW in 3.0.0)
+
+The committed, CI-visible per-namespace grade/status rollup — the **provider-proof** `providers/<ns>/grade.json` — lives **inside the provider folder** in `flowmcp-schemas-private` (Memo 093 Kap. 4, F10). It is distinct from the island-local `index.json`:
+
+| Artefact | Location | Nature | CI-visible |
+|----------|----------|--------|------------|
+| `index.json` | `grading-data/providers/<ns>/` (the island) | born + rebuilt on the workbench, gitignored | no |
+| `grade.json` (provider-proof) | `flowmcp-schemas-private/providers/<ns>/` (the repo) | exported, committed, per-namespace rollup | yes |
+
+The full data flow (where each is born, where it is committed, what the board sync reads) is specified in `26-monitoring-track.md`.
 
 ### Naming Conventions
 
@@ -1748,6 +1797,8 @@ The following v1 folders and files are **removed** and folded into `index.json`:
 - `index.json.lockSnapshot` + selection definition → `16-selection-lockfile.md`
 - About-Pages (schema-level resource) → `11-about-convention.md`
 - Pre-conditions (`index.json.lockSnapshot` lookup) → `21-pre-conditions.md`
+- Emit-on-failure import gate (folder↔namespace fallback) → `22-workbench-island.md`
+- Pinned `blocked` reason set + provider-proof data flow → `23-index-json.md`, `26-monitoring-track.md`
 
 ## Related
 
@@ -1760,10 +1811,10 @@ The following v1 folders and files are **removed** and folded into `index.json`:
 /grading/grading-model
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/08-grading-model.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/08-grading-model.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -1772,6 +1823,26 @@ The following v1 folders and files are **removed** and folded into `index.json`:
 A grading is an **array of evaluations** that carries **veto power**, a **tier trim** (autonomous max `B` / group max `A`), and can be **re-triggered by the user**. It is described as **one data model** with **two skill families** writing into it. The Categorical Veto, when present, overrides every aggregation logic and yields `aggregateGrade = REJECTED`.
 
 The grading entry is the **only** durable artefact emitted by a grader; it MUST be valid against `08-grading-model.schema.json`.
+
+---
+
+## Status Record vs. Grading Entry (NEW in 3.0.0)
+
+`3.0.0` introduces a second, **non-grading** artefact class: the **status record**. It is produced by the emit-on-failure import gate (see `22-workbench-island.md`) and lives in `index.json` as a `blocked` node — it is **not** a grading entry.
+
+1. **It is not a graded entry.** A `blocked`/`validation-failed` status record carries only `status` (always `blocked`) and `reason` (from the pinned reason set, see `23-index-json.md`), plus the optional idempotency backrefs `githubIssue` / `boardColumn`. The grading-entry requirements — `gradings[]` with `minLength: 1` and a real `aggregateGrade` — **do NOT apply** to it. Concretely, the producing call (`createEntry` with `status: 'blocked'` + a closed-set `blockedReason`) yields an entry with top-level `blocked: true`, `blockedReason`, `gradings: []`, and `aggregateGrade: null` — it deliberately carries no scorable answers and no computed grade.
+
+2. **It MUST NOT be consumed as a grade.** A status record MUST NOT be treated as a graded entry anywhere a grade is consumed (rollup aggregate, registry pages, selection member resolution, dashboards). A consumer that sees `status: blocked` reads the `reason`, not a grade.
+
+3. **It never becomes `stable`.** A `blocked` node never advances to `stable` (consistent with `06-determinism-and-tier.md` and the schema lifecycle gate in the Schemas-Spec §21). The selection pre-condition (`21-pre-conditions.md`) — "only `stable` members pass" — therefore remains correct without change: a member with a `validation-failed` status record fails the pre-condition.
+
+The canonical `blockedReason` set — shared by the grading module and `index.json` — is:
+
+```
+"validation-failed" | "fewer-than-three-tests" | "fewer-than-two-tests" | "no-about" | "api-down" | "all-schemas-unparseable" | "not-imported"
+```
+
+This 7-value set is the **single source of truth** (also encoded in `index.schema.json` `$defs/blockedReason`). Earlier versions of this document listed only `"validation-failed"` as the grading-module subset (`Grading.VALID_BLOCKED_REASONS`) — that narrower list is superseded by this canonical set. A free-text `blockedReason` is rejected (`GRD-038` when `status != 'blocked'`, `GRD-039` when the reason is outside the closed set). The full pinned reason set including prose definitions is in `23-index-json.md`.
 
 ---
 
@@ -1896,7 +1967,7 @@ Each element of the `gradings[]` array is a JSON object describing **one answer*
 
 ### The 11 Grading Areas
 
-As of `gradingSpec/2.0.0`, a grading targets exactly one **Area**. The `area` field is a `const` per grading entry. There are **11 Areas**, split between provider (namespace) grading and selection grading. Each Area carries its own question set; the per-question answers live in the `gradings[]` array (see [`gradings[]` Element](#data-model--gradings-element-per-question-answer)). The detailed question definitions and output schemas are specified in the per-Area chapters and the Area output schemas.
+As of `gradingSpec/3.0.0`, a grading targets exactly one **Area**. The `area` field is a `const` per grading entry. There are **11 Areas**, split between provider (namespace) grading and selection grading. Each Area carries its own question set; the per-question answers live in the `gradings[]` array (see [`gradings[]` Element](#data-model--gradings-element-per-question-answer)). The detailed question definitions and output schemas are specified in the per-Area chapters and the Area output schemas.
 
 | # | Area | Grades | Persona-bound | Det / Non-det |
 |---|------|--------|---------------|---------------|
@@ -1923,6 +1994,12 @@ Areas 1–6 are **provider** areas (tier `autonomous`, max Grade B, rollup in `p
 #### Answers per Area
 
 Each Area defines how many answers its grading entry must carry, split into a deterministic block (computed by code) and a non-deterministic block (produced by the harness sub-agent). A deterministic block alone is not a valid Area grading — the two blocks are merged into one entry. The per-Area answer counts and question sets are normative in the Area output schemas.
+
+#### `single-test` deterministic gate — `testDepth` (Test-Leiter)
+
+The `single-test` Area (Area 1) opens with a **deterministic gate**: the data-pretest counts the working tests per tool and assigns the Test-Leiter rung (see `06-determinism-and-tier.md` — Deterministic Pretest). The gate's pass bar is **2 working tests per tool**; a schema is `deterministic-green` only when every downloadable tool clears it.
+
+The rung is surfaced as the deterministic dimension **`testDepth`** (`unavailable` / `reachable` / `schema-validatable` / `data-analyzable`), recorded on the tool node in `index.json`. `testDepth` is **independent** of the non-deterministic `outputSchemaMatch` dimension and MUST NOT be folded into it: `testDepth` measures *how many* working responses exist (deterministic count), while `outputSchemaMatch` judges *whether* the declared output schema matches a response (LLM judgement). A tool at `reachable` (1 working test) is not green but is repairable — never `rejected`.
 
 ### Score Values
 
@@ -2222,9 +2299,9 @@ import { readFileSync } from 'node:fs'
 import Ajv2020 from 'ajv/dist/2020.js'
 import addFormats from 'ajv-formats'
 
-const schema = JSON.parse( readFileSync( 'grading/2.0.0/08-grading-model.schema.json', 'utf8' ) )
-const valid = JSON.parse( readFileSync( 'grading/2.0.0/examples/grading-autonomous.json', 'utf8' ) )
-const rejected = JSON.parse( readFileSync( 'grading/2.0.0/examples/grading-rejected.json', 'utf8' ) )
+const schema = JSON.parse( readFileSync( 'grading/3.0.0/08-grading-model.schema.json', 'utf8' ) )
+const valid = JSON.parse( readFileSync( 'grading/3.0.0/examples/grading-autonomous.json', 'utf8' ) )
+const rejected = JSON.parse( readFileSync( 'grading/3.0.0/examples/grading-rejected.json', 'utf8' ) )
 
 const ajv = new Ajv2020( { strict: true, allErrors: true } )
 addFormats( ajv )
@@ -2252,7 +2329,7 @@ if( rejected.aggregateGrade !== 'REJECTED' ) { throw new Error( 'rejected exampl
 ## Related
 
 - **Depends on:** `00-overview.md`, `06-determinism-and-tier.md`, `07-scoring-vs-grading.md`
-- **Related:** `09-security-and-development.md`, `10-domain-knowledge.md`, `12-personas-contract.md`, `13-skills.md`, `15-versioning-axes.md`, `16-selection-lockfile.md`, `19-folder-layout.md`
+- **Related:** `09-security-and-development.md`, `10-domain-knowledge.md`, `12-personas-contract.md`, `13-skills.md`, `15-versioning-axes.md`, `16-selection-lockfile.md`, `19-folder-layout.md`, `22-workbench-island.md`, `23-index-json.md`
 - **Annex:** `08-grading-model.schema.json` — JSON-Schema 2020-12 of the grading entry
 
 ---
@@ -2261,7 +2338,7 @@ if( rejected.aggregateGrade !== 'REJECTED' ) { throw new Error( 'rejected exampl
 /grading/harness-and-goal
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/25-harness-and-goal.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/25-harness-and-goal.md.
 </aside>
 
 > Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`.
@@ -2348,7 +2425,7 @@ The prompt builder appends a **Goal-Block** (a fitting completion condition plus
 /grading/index-json
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/23-index-json.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/23-index-json.md.
 </aside>
 
 > Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`.
@@ -2390,12 +2467,32 @@ Each primitive node (a tool, a schema, an about, a skill, a member) carries one 
 | Status | Meaning |
 |--------|---------|
 | `pending` | Not yet graded. |
-| `blocked` | Cannot be graded right now; carries a `reason` (e.g. fewer than three tests, no about, API down). Repairable. |
+| `blocked` | Cannot be graded right now; carries a `reason` from the pinned reason set below. Repairable. |
 | `graded` | A grade exists. |
 | `stable` | Fully graded **and** above threshold; ready to use. |
 | `rejected` | Veto — **terminal and irreversible** (see Irreversible veto — terminal status `rejected`). |
 
 `graded` and `stable` are **node** values.
+
+#### Pinned `blocked` reason set
+
+A `blocked` node MUST carry a `reason` from the following **closed set**. Free-text reasons are not permitted (the `index.schema.json` annex enforces the enum):
+
+| `reason` | When |
+|----------|------|
+| `validation-failed` | The schema(s) failed the `grading import` validate gate (emit-on-failure, see `22-workbench-island.md`). Matches the closed reason set in the grading module (`Grading.VALID_BLOCKED_REASONS`). |
+| `fewer-than-three-tests` | The schema has fewer than three working downloadable tests. |
+| `fewer-than-two-tests` | The schema has fewer than two working downloadable tests (the current Bar=2 minimum; the genuine "below 2" reason that previously collapsed onto `fewer-than-three-tests`). |
+| `no-about` | No About Resource is declared / found namespace-wide. |
+| `api-down` | The API is unreachable at grading time. |
+| `all-schemas-unparseable` | Every `.mjs` in the folder is unparseable (the namespace folder name is the fallback key — see `19-folder-layout.md`). |
+| `not-imported` | A referenced member exists logically but was never imported. |
+
+Adding a reason value is a `gradingSpec` bump.
+
+#### Status record vs. grading entry
+
+A `blocked` node MAY exist **without a conformant grading entry**. An emit-on-failure `blocked`/`validation-failed` node is a **status record** (it lives in `index.json` with only `status` + `reason`, and optionally `githubIssue` / `boardColumn`), not a graded entry — see the status-record artefact class in `08-grading-model.md`. It MUST NOT be treated as a graded entry anywhere a grade is consumed.
 
 ### Rollup status (operational vocabulary)
 
@@ -2410,6 +2507,27 @@ The top-level namespace/selection rollup summarises its nodes with a **different
 | `rejected` | A veto propagated to the rollup. |
 
 `operational` and `partial` are **rollup** values. A node is never `operational`; a rollup is never `graded`.
+
+### Which vocabulary drives the board
+
+The grading-monitoring board columns (see `26-monitoring-track.md`) are driven by the **rollup operational vocabulary** (`operational` / `partial` / `blocked` / `pending` / `rejected`), **not** the node 5-status enum. The status→column mapping is specified in `26-monitoring-track.md`.
+
+---
+
+## Which `index.json` CI reads (exported, repo-resident copy)
+
+`index.json` is **born and rebuilt inside the workbench island** (`grading-data/`), which is gitignored and never CI-visible. The copy that CI and the board sync read is the **exported, repo-resident** per-namespace rollup committed into the provider folder of `flowmcp-schemas-private` (the **provider-proof** `providers/<ns>/grade.json`; see `19-folder-layout.md` and the full data flow in `26-monitoring-track.md`). The island-local `index.json` is **never** CI-visible. The producer/sync detail lives in `26-monitoring-track.md`; this chapter only pins the location rule.
+
+## Idempotency backref: `githubIssue` / `boardColumn`
+
+A node MAY carry two optional backref fields used by the deterministic board sync:
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `githubIssue` | `string` | The number/URL of the one grading-issue already created for this namespace. |
+| `boardColumn` | `string` | The board column the node currently occupies. |
+
+The sync MUST treat a present `githubIssue` backref as idempotency proof: it MUST NOT create a second issue for the namespace — it updates the existing issue / column instead (see `26-monitoring-track.md`). Both fields are OPTIONAL in `index.schema.json`.
 
 ---
 
@@ -2477,15 +2595,33 @@ A categorical veto maps to the node status `rejected`, which is **terminal**. Th
         }
       }
     },
-    "coins": { "status": "pending", "reason": "not yet imported" }
+    "coins": { "status": "blocked", "reason": "not-imported" }
   },
   "blockers": [
-    { "node": "schemas.coins", "reason": "selection member, not imported" }
+    { "node": "schemas.coins", "reason": "not-imported" }
   ]
 }
 ```
 
 A selection `index.json` is analogous, with a `lockSnapshot` block and a `members` resolution manifest in place of `schemas`.
+
+### Example — emit-on-failure status record (namespace-level)
+
+When every schema in a folder fails the import validate gate, the namespace rollup carries a `blocked` status record with `reason: validation-failed` and no grading entry. The optional backref fields appear once the deterministic sync has created the namespace grading-issue:
+
+```json
+{
+  "indexVersion": 2,
+  "namespace": "example-broken",
+  "updatedAt": "2026-06-02T09-00-00Z",
+  "status": "blocked",
+  "reason": "validation-failed",
+  "githubIssue": "FlowMCP/flowmcp-schemas-private#1234",
+  "boardColumn": "Blocked"
+}
+```
+
+This record validates against `index.schema.json` with only `status` (+ `reason`); see the status-record artefact class in `08-grading-model.md`.
 
 ---
 
@@ -2509,7 +2645,7 @@ A selection `index.json` is analogous, with a `lockSnapshot` block and a `member
 ## Related
 
 - **Depends on:** `00-overview.md`, `19-folder-layout.md`
-- **Related:** `14-kanban-data-contract.md` (superseded by this chapter), `16-selection-lockfile.md`, `21-pre-conditions.md`, `08-grading-model.md`
+- **Related:** `14-kanban-data-contract.md` (superseded by this chapter), `16-selection-lockfile.md`, `21-pre-conditions.md`, `08-grading-model.md`, `26-monitoring-track.md`
 - **Annex:** `index.schema.json` — JSON-Schema 2020-12 for `index.json`
 
 ---
@@ -2518,7 +2654,7 @@ A selection `index.json` is analogous, with a `lockSnapshot` block and a `member
 /grading/kanban-data-contract
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/14-kanban-data-contract.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/14-kanban-data-contract.md.
 </aside>
 
 > Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`.
@@ -2530,6 +2666,8 @@ A selection `index.json` is analogous, with a `lockSnapshot` block and a `member
 The earlier `1.1.0` Kanban data contract exposed a per-phase status response (`P1`–`P7`, `S1`–`S4`) with a `single`/`selection` lane separation. The `2.0.0` break replaces this with a single derived rollup file per namespace and per selection: **`index.json`**. The rollup carries the per-node status, the per-member resolution, the frozen lock snapshot, and the aggregate grade in one place. There is no longer a separate phase-status response surface, and the `P*`/`S*` phase identifiers are replaced by the eleven grading areas (see `23-index-json.md` and the area chapters).
 
 Consumers MUST read status from `index.json`. The phase-status response described in `1.1.0` and its annex schema are no longer normative.
+
+> **As of `gradingSpec/3.0.0`:** the grading-monitoring board returns **in scope** in `26-monitoring-track.md`. The two salvaged rules below (audit trail; irreversible veto) remain normative and now apply to that monitoring track.
 
 ---
 
@@ -2560,17 +2698,190 @@ A categorical veto produces the terminal node status `rejected`. This status is 
 
 ---
 
+# "Grading-Monitoring Track"
+/grading/monitoring-track
+
+<aside class="edit-warning" role="note">
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/26-monitoring-track.md.
+</aside>
+
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
+
+---
+
+## Scope — the board is back
+
+This chapter brings the **grading-monitoring board back into scope**, reversing the `2.0.x` stance where the GitHub-Kanban wiring was declared out of scope and "superseded by `index.json`" (the scope flip is recorded in `00-overview.md`). The board is a deterministic projection of the per-namespace grading state; it is **separate** from the schema-development track.
+
+What is in scope here: the **two-track decoupling**, the **one-grading-issue-per-namespace** contract and its metadata source, the **board contract** (which status vocabulary drives which column, idempotency), and the explicit **island ↔ repo ↔ provider-proof data flow**. What is not: the executable sync workflow, the producer that writes the provider-proof, and the consuming skills — those are implementation phases (see Out of scope).
+
+---
+
+## Two Tracks (decoupling)
+
+The pipeline is split into two tracks that are **not linked**.
+
+### Track A — Schema-Development
+
+File versioning via Git plus the existing schema issues. Owned by the **Schemas-Spec lifecycle** (Schemas-Spec v4.3.0 §21). The development gate is unchanged: a schema must pass `flowmcp validate` (clean) before it reaches `stage:production`. The Grading-Spec does **not** own Track A issues.
+
+### Track B — Grading-Monitoring
+
+**One grading-issue per namespace**, driven by the **provider-proof** (`providers/<ns>/grade.json`) and synced deterministically to a board. This is the track this chapter defines.
+
+### The binding non-coupling invariant
+
+The two tracks are **NOT linked**:
+
+- A Track B grading-issue carries **no reference** into Track A schema-issue numbers, and vice versa.
+- This protects the existing schema-issue commit references — the Git history that links commits to schema issues stays valid because Track B never reuses or rewrites those numbers.
+
+**Selection** (which providers to bundle into a domain selection) remains **OUT OF SCOPE** (a separate memo). The selection gate is unchanged: selection runs only once all member providers are `stable` (the `stable`-only pre-condition, `21-pre-conditions.md`).
+
+---
+
+## One Grading-Issue per Namespace
+
+Exactly **one** grading-issue exists per namespace. This supersedes the per-primitive sub-issue model that the Schemas-Spec used to describe (the sub-issue wording is removed from Schemas-Spec v4.3.0 §21); a removed primitive is now a `blockers[]` entry under the namespace grading-issue, not its own issue.
+
+### Metadata source — the provider-proof
+
+The grading-issue metadata is sourced **only** from the provider-proof `providers/<ns>/grade.json`:
+
+| Source field | Used for |
+|--------------|----------|
+| `namespace` | issue identity (one issue per namespace) |
+| schema names | issue body — the schemas under the namespace |
+| the 5-status per node | issue body — per-schema/per-tool status |
+| `namespaceAggregate` (the aggregate grade) | the provider grade shown on the issue and board |
+| `blockers[]` | the actionable list (e.g. removed primitives, `validation-failed` records) |
+
+### Provider grade = `namespaceAggregate`
+
+The **provider grade is the `namespaceAggregate`** — the namespace-level rollup grade (Memo 093 F3/F4). A per-schema grade **rolls up** into the namespace aggregate; the per-schema grade is **not** the gate. This resolves the schema-spec conflict where §21 implied a per-schema grade gate: §21 now consumes the `namespaceAggregate` (see Schemas-Spec v4.3.0 §21).
+
+### Namespace anlage (where the namespace name comes from)
+
+The namespace is normally derived from the schema `namespace` field. When **all** schemas in a folder are unparseable, the **folder name** is the fallback namespace identifier (cross-ref `19-folder-layout.md`); the folder↔namespace consistency rule is the tested invariant (Schemas-Spec v4.3.0 §09, `VAL012`). Once a schema parses and exposes a real namespace, that field is authoritative and the folder is renamed to match (rename-later). The fallback namespace MUST be a valid namespace (`/^[a-z][a-z0-9-]*$/`).
+
+---
+
+## Board Contract
+
+The board is a **deterministic** projection of the provider-proof. The contract has five parts.
+
+### 1. One writer, pure code
+
+The **sync workflow (a script) is the only writer** of issue / board state. The chain `provider-proof → issue/board` is pure code (`jq` / node plus `gh` GraphQL) — **no LLM**. Before any board update, the proof is validated against `index.schema.json`. A proof that does not validate is not synced.
+
+### 2. Column mapping (rollup operational vocabulary)
+
+The board columns are driven by the **rollup operational vocabulary** (`operational` / `partial` / `blocked` / `pending` / `rejected`, defined in `23-index-json.md`), **NOT** the node 5-status enum. The mapping is:
+
+| Rollup status | Board column |
+|---------------|--------------|
+| `pending` | Backlog |
+| `partial` | In Progress |
+| `blocked` (incl. `reason: validation-failed`) | Blocked |
+| `operational` | Done |
+| `rejected` | Rejected |
+
+Every status value in this table exists in the operational rollup enum of `23-index-json.md`; the `validation-failed` reason matches the pinned reason set there.
+
+### 3. Idempotency (backref)
+
+The sync reads the `githubIssue` / `boardColumn` backref (defined on the node and the namespace rollup in `23-index-json.md`, enforced in `index.schema.json`). When the `githubIssue` backref is **present**, the sync MUST NOT create a second issue for the namespace — it **updates** the existing issue / moves the existing card instead.
+
+### 4. Determinism boundary
+
+The **only** non-deterministic part of the whole pipeline is the LLM evaluation of the six grading areas. Everything downstream of the provider-proof — the issue creation, the column move, the board state — is deterministic. The issue/board sync is **never** non-deterministic.
+
+### 5. Read-only consumer
+
+A `kanban-readonly` consumer reads the proof / board and answers "which provider next". The binding invariant is that the **reader never writes**: a read-only consumer MUST NOT create or mutate issues, cards, or proofs. (The implementing skill ships in a later phase; this chapter only states the contract it must honour.)
+
+---
+
+## Island ↔ Repo ↔ Provider-Proof Data Flow
+
+This is the explicit data-flow contract: where `index.json` is born, where it is committed, and what CI reads.
+
+1. **Island** (`~/.flowmcp/grading` = `grading-data/`) is an internal workbench, **not a repo**. It is gitignored and **never CI-visible**. Grading runs here; `index.json` is **born and rebuilt** here (see `22-workbench-island.md` and `23-index-json.md`).
+2. **Repo** (`flowmcp-schemas-private`) holds the neutral source `.mjs` and **receives** the committed **provider-proof** `providers/<ns>/grade.json` — the CI-visible, per-namespace grade/status rollup (Memo 093 F10).
+3. The **export step** (`grading export`, the OUT side of `22-workbench-island.md`) lands the proof into the provider folder of the repo. CI reads the **repo-resident** proof, **never** the island-local `index.json`.
+4. A **push on the provider-proof** triggers the deterministic sync workflow (Memo 093 F10, decision A). The push is the event; the sync is the deterministic reaction.
+
+### Island vs. Repo (comparison)
+
+| Aspect | Island (`grading-data/`) | Repo (`flowmcp-schemas-private`) |
+|--------|--------------------------|----------------------------------|
+| Nature | internal workbench, not a repo | versioned source repository |
+| Structure | verbose (timestamp + hash, per-primitive folders) | neutral `.mjs` + per-namespace `providers/<ns>/grade.json` |
+| `index.json` / proof location | `grading-data/providers/<ns>/index.json` (born + rebuilt here) | `providers/<ns>/grade.json` (exported, committed) |
+| CI-visible | no (gitignored) | yes (the proof is the CI/board source) |
+
+### Flow
+
+```mermaid
+flowchart TD
+    A[Backlog: provider folder] --> B[grading import]
+    B --> C{parse + validate?}
+    C -- no --> D[blocked node: reason validation-failed]
+    C -- yes --> E[grade 6 areas + aggregate]
+    D --> F[provider-proof: providers/ns/grade.json]
+    E --> F
+    F --> G[git push on provider-proof]
+    G --> H[deterministic sync: jq/node + gh GraphQL]
+    H --> I[1 grading-issue per namespace + board column]
+    I --> J[kanban-readonly: which provider next]
+```
+
+The diagram mirrors the Soll-Ablauf of Memo 093 Kap. 10: `Backlog → import → {parse?} → blocked-node | grade+aggregate → provider-proof → git push → deterministic sync → 1 issue/namespace + board → kanban-readonly`. The only non-deterministic node is `grade 6 areas`.
+
+---
+
+## Relationship to the superseded Chapter 14
+
+The two salvaged rules from `14-kanban-data-contract.md` remain normative and now apply to this monitoring track:
+
+- **Audit trail — never delete, newest is current.** Grading entries and provider-proofs are never deleted or overwritten in place; the current state is the newest entry. The board projection follows the newest proof.
+- **Irreversible veto — `rejected` is terminal.** A `rejected` namespace stays `rejected`; the board MUST NOT move a `rejected` card back to another column by editing or deleting an entry. A veto is lifted only by a fully new evaluation.
+
+---
+
+## Cross-References
+
+- The emit-on-failure import gate that produces `blocked` records: `22-workbench-island.md`
+- The `index.json` rollup, pinned reason set, board vocabulary, and backref fields: `23-index-json.md`
+- Folder↔namespace invariant, fallback, rename-on-parse, provider-proof location: `19-folder-layout.md`
+- The status-record artefact class (non-grading `blocked` node): `08-grading-model.md`
+- The salvaged audit-trail / irreversible-veto rules: `14-kanban-data-contract.md`
+
+## Out of scope
+
+- The executable **sync workflow** (proof → issue/board via `gh` GraphQL) — implementation phase; this chapter writes only its contract.
+- The **producer** that writes the provider-proof — implementation phase.
+- The `kanban-readonly` and provider-grading-issue / provider-grade-bridge **skills** — implementation phase; this chapter states only the read-only and deterministic invariants they must honour.
+- **Selection** (which providers to bundle) — a separate memo.
+
+## Related
+
+- **Depends on:** `22-workbench-island.md`, `23-index-json.md`, `19-folder-layout.md`
+- **Related:** `06-determinism-and-tier.md`, `08-grading-model.md`, `14-kanban-data-contract.md`
+
+---
+
 # "Overview"
 /grading/overview
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/00-overview.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/00-overview.md.
 </aside>
 
-> **Spec:** `gradingSpec/2.0.1`
-> **Status:** stable (v2 — a clean break from the 1.0.0/1.1.0 line)
+> **Spec:** `gradingSpec/3.0.0`
+> **Status:** stable (v3 — emit-on-failure import + monitoring track; v2 was a clean break from the 1.0.0/1.1.0 line)
 
-> Normative language (MUST/SHOULD/MAY) follows the conventions defined in the FlowMCP Schemas Specification v4.2.0 00-overview.md (Conformance Language). This Grading-Spec is a separate, independently versioned document; it does not re-define normative keywords.
+> Normative language (MUST/SHOULD/MAY) follows the conventions defined in the FlowMCP Schemas Specification v4.3.0 00-overview.md (Conformance Language). This Grading-Spec is a separate, independently versioned document; it does not re-define normative keywords.
 
 ---
 
@@ -2578,22 +2889,22 @@ A categorical veto produces the terminal node status `rejected`. This status is 
 
 This document uses the key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" as defined in BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all capitals.
 
-The binding source for this conformance interpretation is the FlowMCP Schemas Specification v4.2.0 00-overview.md. Some chapters of this Grading-Spec are intentionally written in prose without normative keywords because they describe history, motivation, or conceptual background (this overview document). All other chapters use normative language and assume this conformance interpretation.
+The binding source for this conformance interpretation is the FlowMCP Schemas Specification v4.3.0 00-overview.md. Some chapters of this Grading-Spec are intentionally written in prose without normative keywords because they describe history, motivation, or conceptual background (this overview document). All other chapters use normative language and assume this conformance interpretation.
 
 ---
 
 ## Hierarchy — where this spec sits
 
-The Grading-Spec is **not** the highest instance. The FlowMCP Schemas Specification v4.2.0 defines what a schema is, what a selection is, and which primitives exist. This Grading-Spec describes **how** schemas and selections are evaluated and graded.
+The Grading-Spec is **not** the highest instance. The FlowMCP Schemas Specification v4.3.0 defines what a schema is, what a selection is, and which primitives exist. This Grading-Spec describes **how** schemas and selections are evaluated and graded.
 
 | Level | Source | Role |
 |-------|--------|------|
-| Top | `repos/flowmcp-spec/spec/v4.2.0/` (Schemas-Spec, main body) | **Highest instance** — defines what a schema/selection is and which primitives exist |
-| Middle | `repos/flowmcp-spec/spec/v4.2.0/22-scoring-protocol.md` (Scoring v1) | Existing `prompts.json` / `scores.json` contract (sub-consumed by this Grading-Spec) |
+| Top | `repos/flowmcp-spec/spec/v4.3.0/` (Schemas-Spec, main body) | **Highest instance** — defines what a schema/selection is and which primitives exist |
+| Middle | `repos/flowmcp-spec/spec/v4.3.0/22-scoring-protocol.md` (Scoring v1) | Existing `prompts.json` / `scores.json` contract (sub-consumed by this Grading-Spec) |
 | Middle | Grading-Spec in `repos/flowmcp-grading/` (this document) | Independent — describes phases, Scoring System, Grading System, Veto, Tier, Skills, Domain Knowledge |
 | Bottom | Scripts and modules in `repos/flowmcp-grading/src/` | Implementation derived from this spec |
 
-Cross-reference: Schemas-Spec v4.2.0 — Overview.
+Cross-reference: Schemas-Spec v4.3.0 — Overview.
 
 ---
 
@@ -2621,9 +2932,9 @@ This Grading-Spec is a **living document**. It begins minimally with the chapter
 
 This repository tracks **three** independent versions. None of them is coupled to the others; bumping one does **not** imply bumping the others.
 
-### `gradingSpec/2.0.0`
+### `gradingSpec/3.0.0`
 
-The specification documents under `grading/2.0.0/`. This is the document set you are reading. Version is bumped when the normative content (MUST/SHOULD/MAY rules, areas, chapters, data contracts) changes in a way that affects compliance. `2.0.0` is the **v2 break**: it replaces the 1.0.0/1.1.0 phase model with the eleven-area model, the five-status node enum, the workbench island, and the `index.json` rollup. Existing 1.0.0/1.1.0 gradings are treated as legacy.
+The specification documents under `grading/3.0.0/`. This is the document set you are reading. Version is bumped when the normative content (MUST/SHOULD/MAY rules, areas, chapters, data contracts) changes in a way that affects compliance. The `2.0.0` v2 break replaced the 1.0.0/1.1.0 phase model with the eleven-area model, the five-status node enum, the workbench island, and the `index.json` rollup. `3.0.0` is the **v3 break**: the import contract flips from a **hard abort** (validate-fail / multiple namespaces) to an **emit-`blocked`-node-and-continue** behaviour, the grading-monitoring track + board contract come **into scope** (new `26-monitoring-track.md`), and `index.json` gains a pinned `validation-failed` reason plus `githubIssue` / `boardColumn` backrefs. A consumer relying on the old fail-closed import guarantee breaks — hence a MAJOR bump. The legacy `grading/2.0.0/` directory is retained unchanged. Existing 1.0.0/1.1.0 gradings remain legacy.
 
 ### `scoringSystem/1.0.0`
 
@@ -2635,9 +2946,9 @@ The grading rules — how scores are mapped to grades, how the categorical veto 
 
 ---
 
-## Cross-References to the Schemas-Spec v4.2.0
+## Cross-References to the Schemas-Spec v4.3.0
 
-This Grading-Spec relies on definitions from the Schemas-Spec. The following chapters of v4.2.0 are particularly relevant:
+This Grading-Spec relies on definitions from the Schemas-Spec. The following chapters of v4.3.0 are particularly relevant:
 
 - 22-scoring-protocol.md — the existing `prompts.json` / `scores.json` contract that this Grading-Spec sub-consumes.
 - 20-validation-strategy.md — the deterministic baseline; the Grading System defined here extends (and partly replaces) the Grade System described there.
@@ -2693,6 +3004,7 @@ The spec is organised as a set of standalone chapters. Each is delivered as a st
 | `23-index-json.md` | **NEW** — `index.json` rollup (5-status, two natures, member resolution) |
 | `24-selection-aggregate.md` | **NEW** — the 11th area `selection-aggregate` |
 | `25-harness-and-goal.md` | **NEW** — harness + `/goal` + surfacing convention |
+| `26-monitoring-track.md` | **NEW in 3.0.0** — Grading-monitoring track + board contract + island↔repo↔proof |
 
 ---
 
@@ -2713,17 +3025,22 @@ The following are the headline additions of the v2 break over the 1.0.0/1.1.0 li
 
 ## What Changed
 
+### 3.0.0
+
+`3.0.0` is the **v3 break**. The import contract changes from "MUST abort on a `flowmcp validate` failure or a multi-namespace folder" to "emit a `blocked` node with `reason: validation-failed` and continue" (emit-on-failure, see `22-workbench-island.md`). The grading-monitoring track — one grading-issue per namespace, driven deterministically by the per-namespace provider-proof — comes **into scope** in the new `26-monitoring-track.md`, reversing the old "Kanban out of scope" stance. `index.json` gains a pinned `blocked` reason set and the `githubIssue` / `boardColumn` idempotency backrefs; a `blocked`/`validation-failed` node is recognised as a non-grading **status record** (see `08-grading-model.md`). The folder↔namespace invariant is now binding with an unparseable-folder fallback and a rename-on-parse lifecycle (see `19-folder-layout.md`). Because the fail-closed import guarantee is removed, this is a MAJOR bump; the legacy `grading/2.0.0/` directory is retained unchanged. See `CHANGELOG.md`.
+
 ### 2.0.0
 
 `2.0.0` is the **v2 break**. The earlier 1.0.0/1.1.0 line was a short-lived experiment; v2 reorganises grading around eleven areas, a five-status model, the workbench island, the derived `index.json` rollup, and a `/goal`-driven harness. Breaking changes are permitted; there is no backwards-compatibility promise toward the 1.0.0/1.1.0 phase model (`P1`–`P7` / `S1`–`S4`). See `CHANGELOG.md` for the version history.
 
 ---
 
-## Out of Scope for `gradingSpec/2.0.0`
+## Out of Scope for `gradingSpec/3.0.0`
 
-- The GitHub Kanban wiring (columns, board UI) — superseded by `index.json`; not part of this spec.
 - The actual grading-module and CLI implementation — derived from this spec, delivered in the grading and CLI repositories.
 - Migration tooling for legacy 1.0.0/1.1.0 gradings — those are treated as legacy.
+
+> **Now IN scope as of `3.0.0`:** the grading-monitoring track and its board contract — previously declared out of scope and "superseded by `index.json`" — are defined in the new `26-monitoring-track.md`. The board is the GitHub-Kanban surface driven **deterministically** by the per-namespace provider-proof; it is **separate** from the schema-development track. Selection (which providers to bundle) remains out of scope (separate memo).
 
 ---
 
@@ -2731,10 +3048,10 @@ The following are the headline additions of the v2 break over the 1.0.0/1.1.0 li
 /grading/personas-contract
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/12-personas-contract.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/12-personas-contract.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -2856,7 +3173,7 @@ The Lens (`lensId`) when present refines the base persona but does NOT replace i
 
 ## Technical Schema-Persona Tier (added in 2.0.0)
 
-> **Additive section — new in `gradingSpec/2.0.0`.** This tier is added on top of the existing
+> **Additive section — new in `gradingSpec/3.0.0`.** This tier is added on top of the existing
 > base-persona contract (Source of Truth–Grading Effect). The four generalised base personas and their Lens model remain
 > unchanged and remain the single source of truth for `group-bound` (Selection / Task B) grading.
 > This section introduces a **second, technical** persona tier used for autonomous schema
@@ -2909,7 +3226,7 @@ content (identity, review focus, sign-off / block criteria) lives in the grading
 
 ---
 
-Technical Schema-Persona tier (see Technical Schema-Persona Tier) added in `gradingSpec/2.0.0`.
+Technical Schema-Persona tier (see Technical Schema-Persona Tier) added in `gradingSpec/3.0.0`.
 
 ## Related
 
@@ -2922,10 +3239,10 @@ Technical Schema-Persona tier (see Technical Schema-Persona Tier) added in `grad
 /grading/phases-selection
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/05-phases-selection.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/05-phases-selection.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -3041,7 +3358,7 @@ This tier is the **only** path to grade **A**. The provider-side Areas (`autonom
 - `13-skills.md` — selection-skill levels and per-skill grading.
 - `19-folder-layout.md` — `_gradings/` placement, `index.json`, member resolution.
 - `21-pre-conditions.md` — the "all members stable" gate.
-- FlowMCP Schemas Specification v4.2.0 — `17-selections.md`.
+- FlowMCP Schemas Specification v4.3.0 — `17-selections.md`.
 
 ## Related
 
@@ -3054,10 +3371,10 @@ This tier is the **only** path to grade **A**. The provider-side Areas (`autonom
 /grading/phases-single
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/04-phases-single.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/04-phases-single.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -3098,7 +3415,7 @@ The Area model retains four procedures that previously lived inside the phase mo
 
 The description cascade is a **mandatory ordered procedure** for validating tool descriptions. It MUST be executed in the following order; skipping or reordering steps is a finding.
 
-1. **Run tests against the endpoint.** SHOULD: at least **3 working tests per tool** (status true and non-empty data), covering the breadth of the parameter space. Fewer than 3 working tests blocks the tool from full grading and is recorded with a status reason (see `06-determinism-and-tier.md`).
+1. **Run tests against the endpoint.** MUST: at least **3 working tests per tool** (status true and non-empty data), covering the breadth of the parameter space. Fewer than 3 working tests blocks the tool from full grading and is recorded with a status reason (see `06-determinism-and-tier.md`).
 2. **Check the responses** and validate the tool description against the actual responses.
 3. **Normalise / update the tool description** to match the validated responses.
 4. **All tools, resources, and prompts MUST have descriptions** — and each description MUST be individually checked.
@@ -3176,10 +3493,10 @@ The provider-side Areas produce `gradingTier = autonomous`. Per `06-determinism-
 /grading/pre-conditions
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/21-pre-conditions.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/21-pre-conditions.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -3266,10 +3583,10 @@ Follow-up action: complete the Single-Gradings, then rebuild the index and refre
 /grading/scope-whitelist
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/17-scope-whitelist.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/17-scope-whitelist.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -3334,10 +3651,10 @@ The two complement each other. A schema can satisfy the exclusion criteria and a
 /grading/scoring-vs-grading
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/07-scoring-vs-grading.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/07-scoring-vs-grading.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -3345,7 +3662,7 @@ The two complement each other. A schema can satisfy the exclusion criteria and a
 
 The terms **"Scoring"** and **"Grading"** are used **strictly separately** throughout this specification. They name two different sub-systems with two independent version namespaces. A scoring update does **not** automatically imply a grading update — and vice versa.
 
-A grader, scorer, or aggregator that conforms to `gradingSpec/2.0.0` MUST keep both names — and both version strings — apart in every emitted artefact (grading entries, logs, error codes).
+A grader, scorer, or aggregator that conforms to `gradingSpec/3.0.0` MUST keep both names — and both version strings — apart in every emitted artefact (grading entries, logs, error codes).
 
 ---
 
@@ -3380,7 +3697,7 @@ The third namespace `gradingSpec/X.Y.Z` (the document set you are reading) is ve
 
 ## Binding Rules
 
-The following rules are **binding** for every grader, scorer, and aggregator that conforms to `gradingSpec/2.0.0`.
+The following rules are **binding** for every grader, scorer, and aggregator that conforms to `gradingSpec/3.0.0`.
 
 1. **Both version strings MUST be present in every grading entry.** Every grading entry (defined in `08-grading-model.md`) MUST carry both `scoringSystem` and `gradingSystem` as top-level version fields. A grading entry that lacks either field is INVALID. The same two version strings are additionally surfaced in the `index.json` rollup (per namespace and per selection), so the version under which an aggregated node was last scored and graded is visible without opening each grading entry.
 2. **Scoring-System bump and Grading-System bump are independent triggers.** A change in the Scoring System triggers a **re-scoring** at the next re-grading run, but does NOT automatically bump the Grading System. A change in the Grading System triggers a **re-grading** but does NOT automatically bump the Scoring System. Implementers MUST NOT couple the two version namespaces.
@@ -3406,11 +3723,11 @@ Changing any threshold, the tier-trim rule, or the numeric mapping bumps the `gr
 
 ---
 
-## Relationship to the Schemas-Spec v4.2.0
+## Relationship to the Schemas-Spec v4.3.0
 
-The Schemas-Spec v4.2.0 provides the **upstream contract** for scoring: the `prompts.json` / `scores.json` artefact pair is defined in `22-scoring-protocol.md` of the Schemas-Spec (sister repository `flowmcp-spec`). The Scoring System named here **sub-consumes** that protocol: scores produced by the Schemas-Spec scoring protocol enter this spec's Scoring System as inputs, and the dimensions enumerated in `08-grading-model.md`, "Dimension Enum", extend that protocol with the additional grading dimensions defined here.
+The Schemas-Spec v4.3.0 provides the **upstream contract** for scoring: the `prompts.json` / `scores.json` artefact pair is defined in `22-scoring-protocol.md` of the Schemas-Spec (sister repository `flowmcp-spec`). The Scoring System named here **sub-consumes** that protocol: scores produced by the Schemas-Spec scoring protocol enter this spec's Scoring System as inputs, and the dimensions enumerated in `08-grading-model.md`, "Dimension Enum", extend that protocol with the additional grading dimensions defined here.
 
-This Grading-Spec does NOT re-define the `prompts.json` / `scores.json` contract. Implementers MUST treat the Schemas-Spec v4.2.0 `22-scoring-protocol.md` as the **highest instance** for the artefact pair; conflicting prose in this spec is to be read as a refinement, not as a replacement.
+This Grading-Spec does NOT re-define the `prompts.json` / `scores.json` contract. Implementers MUST treat the Schemas-Spec v4.3.0 `22-scoring-protocol.md` as the **highest instance** for the artefact pair; conflicting prose in this spec is to be read as a refinement, not as a replacement.
 
 ---
 
@@ -3418,13 +3735,13 @@ This Grading-Spec does NOT re-define the `prompts.json` / `scores.json` contract
 
 - `08-grading-model.md` — how scores become a grade (the data model and the JSON-Schema annex).
 - `04-phases-single.md` / `05-phases-selection.md` — where scores are produced.
-- Schemas-Spec v4.2.0 `22-scoring-protocol.md` — sub-consumed scoring artefact contract (external).
+- Schemas-Spec v4.3.0 `22-scoring-protocol.md` — sub-consumed scoring artefact contract (external).
 - `06-determinism-and-tier.md` — interaction of version bumps with reproducibility.
 
 ## Related
 
 - **Depends on:** `00-overview.md`, `06-determinism-and-tier.md`
-- **Related:** `08-grading-model.md`, `04-phases-single.md`, `05-phases-selection.md`, Schemas-Spec v4.2.0 `22-scoring-protocol.md`
+- **Related:** `08-grading-model.md`, `04-phases-single.md`, `05-phases-selection.md`, Schemas-Spec v4.3.0 `22-scoring-protocol.md`
 
 ---
 
@@ -3432,10 +3749,10 @@ This Grading-Spec does NOT re-define the `prompts.json` / `scores.json` contract
 /grading/security-and-development
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/09-security-and-development.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/09-security-and-development.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -3508,7 +3825,7 @@ The full error-code catalogue for the grading subsystem itself (codes `GRD-*`, `
 
 ## Best-Practice Reference — Preload Pattern
 
-The Schemas-Spec v4.2.0 defines the **Preload pattern** in `11-preload.md`. For schemas that handle **large, infrequently-updated data sets**, Preload SHOULD be used.
+The Schemas-Spec v4.3.0 defines the **Preload pattern** in `11-preload.md`. For schemas that handle **large, infrequently-updated data sets**, Preload SHOULD be used.
 
 **Example.** A schema fetches a 2-MB reference data file that is updated daily. The schema SHOULD use Preload to cache the file once per day rather than re-fetching it on every tool call.
 
@@ -3552,7 +3869,7 @@ This sub-dimension is deterministic: the test runs a fixed jq expression against
 
 ## Veto-Trigger Overview
 
-The following table lists all four Categorical-Veto triggers defined by `gradingSpec/2.0.0`. The trigger names are **identical to** the enum values in `08-grading-model.schema.json` `properties.categoricalVeto.oneOf[1].properties.triggeredBy.enum`. The grader MUST NOT introduce new names at runtime.
+The following table lists all four Categorical-Veto triggers defined by `gradingSpec/3.0.0`. The trigger names are **identical to** the enum values in `08-grading-model.schema.json` `properties.categoricalVeto.oneOf[1].properties.triggeredBy.enum`. The grader MUST NOT introduce new names at runtime.
 
 | Trigger | Class | Source |
 |---------|-------|--------|
@@ -3590,7 +3907,7 @@ Concrete weights, thresholds, and score-boost magnitudes belong in the `gradingS
 - `07-scoring-vs-grading.md` — the version namespaces (`scoringSystem` / `gradingSystem`) that bind score changes from this chapter.
 - `08-grading-model.md` — the data model of the Categorical Veto entries defined here.
 - `10-domain-knowledge.md` — Shared Lists and forbidden provider conventions (forward reference).
-- Schemas-Spec v4.2.0 `11-preload.md` — the Preload pattern (external).
+- Schemas-Spec v4.3.0 `11-preload.md` — the Preload pattern (external).
 - `node-formatting` skill — formatting rules.
 - `node-error-codes` skill — PREFIX-NUMBER error-code pattern.
 - No-silent-defaults rule — anti-defaults rule.
@@ -3599,7 +3916,7 @@ Concrete weights, thresholds, and score-boost magnitudes belong in the `gradingS
 ## Related
 
 - **Depends on:** `00-overview.md`, `07-scoring-vs-grading.md`, `08-grading-model.md`
-- **Related:** `10-domain-knowledge.md`, Schemas-Spec v4.2.0 `11-preload.md`, `node-formatting` skill, `node-error-codes` skill
+- **Related:** `10-domain-knowledge.md`, Schemas-Spec v4.3.0 `11-preload.md`, `node-formatting` skill, `node-error-codes` skill
 
 ---
 
@@ -3607,7 +3924,7 @@ Concrete weights, thresholds, and score-boost magnitudes belong in the `gradingS
 /grading/selection-aggregate
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/24-selection-aggregate.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/24-selection-aggregate.md.
 </aside>
 
 > Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`.
@@ -3703,10 +4020,10 @@ Like every area, `selection-aggregate` is backed by a skill triad — the three-
 /grading/selection-lockfile
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/16-selection-lockfile.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/16-selection-lockfile.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -3749,7 +4066,7 @@ A Selection binds N schemas into a domain coverage. The definition lives in `sel
 | `whenToUse` | string | mandatory trigger sentence — graded as its own field, never collapsed into `description` |
 | `personaIds[]` | array (min 1) | mandatory personas — see `20-entry-point-prompt.md` |
 | `members[]` | array (min 1) | contained schemas (only `schemaId`) |
-| `skills[]` | array (max 4) | bound skills (map / `file` form, see FlowMCP-Spec v4.2.0 SKL018) |
+| `skills[]` | array (max 4) | bound skills (map / `file` form, see FlowMCP-Spec v4.3.0 SKL018) |
 
 **Removed from the source definition:** `selectionHash`, `aboutHash`, `selectionVersion`. The snapshot identity lives in the filename timestamp and (frozen) in `index.json.lockSnapshot`. `version` (the FlowMCP-format field) stays. See `15-versioning-axes.md`.
 
@@ -3786,12 +4103,14 @@ The pins that used to live in `selection.lock.json` now live in `index.json.lock
 | Value | Meaning |
 |-------|---------|
 | `pending` | not yet graded |
-| `blocked` | cannot be graded yet (carries a `reason`: fewer than 3 tests, no About, API down — repairable) |
+| `blocked` | cannot be graded yet (carries a `reason`: `validation-failed`, fewer than 3 tests, no About, API down — repairable) |
 | `graded` | a grade is present |
 | `stable` | fully graded and over threshold — ready for use |
 | `rejected` | veto raised (terminal, irreversible) |
 
 `gradingStatus` is the cheap lock lookup consumed by the pre-condition check (see `21-pre-conditions.md`). A content change to a member (new file → new `schemaHash`) invalidates `stable`; the next rebuild reflects the new status, but the **frozen** `lockSnapshot` is preserved until a new grading run regenerates it.
+
+A member that fails to validate is `blocked` with `reason: validation-failed` (the same pinned reason set used in `06-determinism-and-tier.md` and `23-index-json.md`); it is **not** `stable` and therefore correctly fails the `stable`-only selection pre-condition. All three status definitions (`06`/`16`/`23`) agree on the `validation-failed`-as-`blocked` reason.
 
 ### Selection-Grading Workflow
 
@@ -3847,10 +4166,10 @@ The annex schemas `selection.lock.schema.json` and `namespace.schema.json` are *
 /grading/skills
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/13-skills.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/13-skills.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -3866,7 +4185,7 @@ The two categories cover different scopes (a namespace versus a selection of nam
 
 ### `type` (Schemas-Spec field)
 
-The Schemas-Spec v4.2.0 distinguishes the three skill scopes via the `type` field. The relevant definition is at `repos/flowmcp-spec/spec/v4.2.0/14-skills.md`:
+The Schemas-Spec v4.3.0 distinguishes the three skill scopes via the `type` field. The relevant definition is at `repos/flowmcp-spec/spec/v4.3.0/14-skills.md`:
 
 ```text
 | `type` | `string` | One of: `'namespace'`, `'selection'`, `'agent'` | … |
@@ -4012,9 +4331,9 @@ The two categories differ on:
 
 ---
 
-## Relationship to the Schemas-Spec v4.2.0
+## Relationship to the Schemas-Spec v4.3.0
 
-The Schemas-Spec v4.2.0 `14-skills.md` declares the `type` field with values `'namespace'`, `'selection'`, `'agent'`. The tier consequences of these values are the binding interpretation of the `type` values for grading purposes (see `type` (Schemas-Spec field)).
+The Schemas-Spec v4.3.0 `14-skills.md` declares the `type` field with values `'namespace'`, `'selection'`, `'agent'`. The tier consequences of these values are the binding interpretation of the `type` values for grading purposes (see `type` (Schemas-Spec field)).
 
 The `level` field (see `level` (Grading-Spec extension)) is a **Grading-Spec extension** — it is not part of the Schemas-Spec skill object. A v4.2 schema-validator MUST NOT reject a skill for carrying or omitting `level`; the field is read only by the grader.
 
@@ -4024,7 +4343,7 @@ The Schemas-Spec rule `SKL018` (max 4 skills per selection / agent registration 
 
 ## Cross-References
 
-- Schemas-Spec v4.2.0 `14-skills.md` — the `type` field and the `SKL018` limit.
+- Schemas-Spec v4.3.0 `14-skills.md` — the `type` field and the `SKL018` limit.
 - `11-about-convention.md` — the About-Resource obligation that skills reference.
 - `12-personas-contract.md` — the persona contract that the persona focus draws from.
 - `10-domain-knowledge.md` — the soft 5 / hard 7 thresholds that determine whether a selection skill is allowed at full scope.
@@ -4034,7 +4353,7 @@ The Schemas-Spec rule `SKL018` (max 4 skills per selection / agent registration 
 ## Related
 
 - **Depends on:** `00-overview.md`, `08-grading-model.md`, `11-about-convention.md`, `12-personas-contract.md`
-- **Related:** Schemas-Spec v4.2.0 `14-skills.md`, `10-domain-knowledge.md`
+- **Related:** Schemas-Spec v4.3.0 `14-skills.md`, `10-domain-knowledge.md`
 
 ---
 
@@ -4042,10 +4361,10 @@ The Schemas-Spec rule `SKL018` (max 4 skills per selection / agent registration 
 /grading/tos
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/03-tos.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/03-tos.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -4157,10 +4476,10 @@ The disclaimer is **non-optional**. A grading entry that contains a `legalAssess
 /grading/versioning-axes
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/15-versioning-axes.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/15-versioning-axes.md.
 </aside>
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.2.0.
+> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
 
 ---
 
@@ -4233,7 +4552,7 @@ Reference implementation: `src/HashGenerator.mjs` (`computeSchemaHash` / `comput
 /grading/workbench-island
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/2.0.0/22-workbench-island.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/22-workbench-island.md.
 </aside>
 
 > Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`.
@@ -4271,17 +4590,28 @@ The island is connected to the real repositories by a two-way round-trip. Both d
 Source (a provider folder or a selection) flows into the workbench:
 
 1. Scan the `.mjs` files.
-2. Run `flowmcp validate` as a gate.
-3. Assert a **single namespace** (one folder = one namespace; several namespaces MUST abort).
+2. Run `flowmcp validate`. **On failure, do NOT abort the run** — emit a `blocked` node with `reason: "validation-failed"` into `index.json`, snapshot the unparseable source if it is readable, and CONTINUE with the remaining files in the folder. This is the **emit-on-failure** contract (the `3.0.0` break, see Emit-on-failure import contract (NEW in 3.0.0)).
+3. The **single-namespace expectation is retained as a normative invariant** (one folder = one namespace), but its violation is now an **emitted record, not an abort**: a folder whose schemas cannot be parsed to a single namespace emits a `blocked` node rather than aborting. (A genuine *disagreement* between two declared namespaces remains a hard configuration error — see the emit-on-failure section below.)
 4. Existence check: missing → create; changed (new hash) → write a **new snapshot alongside** the old one; identical hash → skip. The import **never overwrites** an existing snapshot.
 5. Convert into the island structure (resources to `resources/about/`, skills to `skills/`, inline skills normalised into files).
 6. Rebuild `index.json`.
+
+#### Emit-on-failure import contract (NEW in 3.0.0)
+
+Up to and including `gradingSpec/2.0.x`, the import gate was a **hard gate**: a `flowmcp validate` failure or a folder that resolved to anything other than a single namespace **aborted** the whole import. `3.0.0` flips this to **emit-a-`blocked`-node-and-continue**:
+
+- **Validate failure → `blocked` node.** When a schema fails the validate gate, the import does NOT abort. It emits a `blocked` node with `reason: "validation-failed"` (the pinned reason, matching the closed `blockedReason` set in the grading module — see `23-index-json.md`), snapshots the unparseable source if readable, and continues with the remaining files.
+- **All-unparseable folder → namespace-folder fallback.** When **all** schemas in a folder are unparseable (no readable `main.namespace`), the **folder name** is the fallback namespace identifier for the emitted `blocked` rollup. The fallback name MUST itself be a valid namespace (`/^[a-z][a-z0-9-]*$/`); a folder name that is not a valid namespace is a hard error (no silent normalisation). See `19-folder-layout.md` for the folder↔namespace consistency rule and the rename-on-parse lifecycle.
+- **Single-namespace invariant retained, violation emitted.** The one-folder-one-namespace expectation is still normative. A folder that simply could not be parsed to a namespace emits a `blocked` node (it does not abort). A folder whose parsed schemas **disagree** on a declared namespace (≥2 distinct usable namespaces) is a genuine misconfiguration, not a fallback case, and is reported as a hard error.
+
+> **Non-destructive guarantee restated.** Emit-on-failure changes only the *control flow* (continue instead of abort); it does **not** weaken the non-destructive guarantees. The island still **never overwrites** a source snapshot (Step 4), the export **never overwrites** the destination (OUT), and `index.json` remains the **only** overwritable artifact. No source snapshot is written for an unparseable/blocked schema — only the `index.json` status record is emitted.
 
 ### OUT — `grading export <namespace|selection>`
 
 Workbench flows back toward the source:
 
 - The **primary hand-off is the `index.json`** — the complete graded state (status, grade, member resolution, lock snapshot).
+- The export lands the per-namespace rollup as the committed, CI-visible **provider-proof** `providers/<ns>/grade.json` inside the provider folder of the source repo (`flowmcp-schemas-private`); CI reads that **repo-resident** copy, never the island-local `index.json`. The data flow is specified in `26-monitoring-track.md`.
 - Optionally, the clean schema `.mjs` files (resolved via `resolveLatest`, names stripped) MAY accompany the export.
 - The export **MUST NOT overwrite the source**; it writes into a fresh export folder.
 
@@ -4291,14 +4621,15 @@ The round-trip is the concrete shape of the flywheel loop described in `18-flywh
 
 ## Cross-References
 
-- Folder layout and the namespace special case: `19-folder-layout.md`
+- Folder layout, namespace special case, folder↔namespace + rename-on-parse: `19-folder-layout.md`
 - Naming grammar (date-before-hash, `resolveLatest`): `15-versioning-axes.md`
 - The derived rollup that the round-trip hands off: `23-index-json.md`
+- The grading-monitoring track + provider-proof data flow: `26-monitoring-track.md`
 
 ## Related
 
 - **Depends on:** `00-overview.md`, `19-folder-layout.md`
-- **Related:** `15-versioning-axes.md`, `23-index-json.md`, `18-flywheel-loop.md`
+- **Related:** `15-versioning-axes.md`, `23-index-json.md`, `18-flywheel-loop.md`, `26-monitoring-track.md`
 
 ---
 
@@ -5341,7 +5672,7 @@ The schema layer is where you work. Everything else is handled by the runtime.
 
 ## Schema Anatomy
 
-Every FlowMCP v4.2.0 schema uses the **two-export pattern**:
+Every FlowMCP v4.3.0 schema uses the **two-export pattern**:
 
 ### main (required)
 
@@ -5478,7 +5809,7 @@ Schemas that attempt to import modules, access the filesystem, or use undeclared
 :::
 
 :::note
-For the full specification including all validation rules, parameter formats, and security details, see the Specification v4.2.0.
+For the full specification including all validation rules, parameter formats, and security details, see the Specification v4.3.0.
 :::
 
 ---
@@ -6330,7 +6661,7 @@ Because the data operators own the source and its terms, FlowMCP also makes no j
 
 ## See Also
 
-- Specification: License & ToS (spec/v4.2.0/23-license-and-tos.md) (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.2.0/23-license-and-tos.md)
+- Specification: License & ToS (spec/v4.3.0/23-license-and-tos.md) (https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.3.0/23-license-and-tos.md)
 - DISCLAIMER.md in flowmcp-core (https://github.com/FlowMCP/flowmcp-core/blob/main/DISCLAIMER.md)
 - DISCLAIMER.md in flowmcp-cli (https://github.com/FlowMCP/flowmcp-cli/blob/main/DISCLAIMER.md)
 
@@ -6340,7 +6671,7 @@ Because the data operators own the source and its terms, FlowMCP also makes no j
 /specification/agents
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/06-agents.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/06-agents.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -7409,7 +7740,7 @@ export const agent = {
 /specification/catalog
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/15-catalog.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/15-catalog.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -7464,7 +7795,7 @@ schemas/v3.0.0/
     │   │   ├── simple-price.mjs
     │   │   └── prompts/             <- Provider prompts (model-neutral)
     │   └── ...
-    ├── selections/                  <- Curated tool subsets (v4.2.0)
+    ├── selections/                  <- Curated tool subsets (v4.3.0)
     │   ├── evm-research/
     │   │   └── selection.mjs
     │   └── defi-monitor/
@@ -7491,7 +7822,7 @@ schemas/v3.0.0/
 | `_lists/` | Root | Shared value lists consumed by all providers and agents |
 | `_shared/` | Root | Shared helper modules consumed by provider schemas |
 | `providers/` | Root | Provider schema directories, one per namespace |
-| `selections/` | Root | Curated tool subsets for agent context loading (v4.2.0). See `17-selections.md`. |
+| `selections/` | Root | Curated tool subsets for agent context loading (v4.3.0). See `17-selections.md`. |
 | `providers/{namespace}/` | Provider | Schema files for a single data source |
 | `providers/{namespace}/prompts/` | Provider | Model-neutral prompts for the provider's tools |
 | `agents/` | Root | Agent definition directories |
@@ -7505,6 +7836,7 @@ schemas/v3.0.0/
 - The catalog directory name MUST match the `name` field in `registry.json`
 - Directory names use kebab-case: `flowmcp-community`, `my-company-tools`
 - Provider namespace directories use kebab-case: `coingecko-com`, `defi-llama`
+- A provider namespace directory name MUST equal `main.namespace` of every schema it contains (folder↔namespace invariant, `VAL019` in `09-validation-rules.md`). For an all-unparseable folder the directory name is the fallback namespace and is renamed to match once a schema parses (rename-on-parse, see 16-id-schema).
 - Agent directories use kebab-case: `crypto-research`, `defi-monitor`
 
 ---
@@ -7528,7 +7860,7 @@ schemas/v3.0.0/
 1. **No cross-catalog shared lists** — a schema in `my-company-tools` cannot reference a shared list defined in `flowmcp-community`. If both catalogs need the same list, each MUST include its own copy.
 2. **No namespace collisions across catalogs** — two catalogs MAY contain providers with the same namespace (e.g. both have `etherscan/`). The runtime qualifies tool names with the catalog name to prevent collisions.
 3. **Independent versioning** — each catalog has its own `version` field. Updating `flowmcp-community` to version `3.1.0` does not affect `my-company-tools` at version `3.0.0`.
-4. **Independent import** — `flowmcp import-registry` targets a single catalog. Importing one catalog does not pull in others.
+4. **Independent configuration** — each catalog is referenced independently in the CLI's `schemaFolders[]`. Adding one catalog does not pull in others.
 
 ---
 
@@ -7653,47 +7985,46 @@ Each object in the `agents` array describes one agent definition.
 
 ---
 
-## Import Flow
+## Catalog Resolution Flow
 
-The import flow describes how a catalog is downloaded and activated locally. The v3 import flow extends the v2 flow by adding agent manifest resolution.
+This describes how a catalog's contents are resolved once its directory is referenced in the CLI's `schemaFolders[]`. Agent manifests are resolved alongside provider schemas and shared lists.
 
 ```mermaid
 flowchart LR
-    A["flowmcp import-registry URL"] --> B[Download registry.json]
-    B --> C[Download shared lists]
-    B --> D[Download provider schemas]
-    B --> E[Download agent manifests]
+    A["catalog dir in schemaFolders[]"] --> B[Read registry.json]
+    B --> C[Load shared lists]
+    B --> D[Load provider schemas]
+    B --> E[Load agent manifests]
     E --> F[Agents available locally]
-    F --> G["flowmcp import-agent crypto-research"]
-    G --> H[Activate agent tools locally]
+    F --> G[agent tools available]
 ```
 
-The diagram shows the two-phase import process: `import-registry` downloads the catalog contents, and `import-agent` activates a specific agent's tools locally.
+The diagram shows how a catalog referenced in `schemaFolders[]` is resolved: registry.json is read, then shared lists, provider schemas, and agent manifests are loaded, making the catalog's tools and agents available locally.
 
-### Phase 1: Catalog Import (`import-registry`)
+### Phase 1: Catalog Read
 
-1. **Download `registry.json`** from the remote URL.
+1. **Read `registry.json`** from the referenced catalog directory.
 2. **Validate manifest** — check required fields, verify `schemaSpec` compatibility.
-3. **Download shared lists** — resolve each `shared[].file` path and download the `.mjs` files.
-4. **Download provider schemas** — resolve each `schemas[].file` path and download the `.mjs` files.
-5. **Download agent manifests** — resolve each `agents[].manifest` path and download the `agent.mjs` files (and associated prompt, skill, and resource files).
-6. **Store locally** — write all downloaded files into the local catalog directory.
+3. **Load shared lists** — resolve each `shared[].file` path and load the `.mjs` files.
+4. **Load provider schemas** — resolve each `schemas[].file` path and load the `.mjs` files.
+5. **Load agent manifests** — resolve each `agents[].manifest` path and load the `agent.mjs` files (and associated prompt, skill, and resource files).
+6. **Index locally** — register all loaded entries from the catalog directory.
 
-### Phase 2: Agent Activation (`import-agent`)
+### Phase 2: Agent Resolution
 
 1. **Read agent manifest** — parse the locally stored `agent.mjs` for the named agent.
 2. **Resolve tool dependencies** — identify which provider schemas the agent requires.
-3. **Activate tools** — add the agent's required tools to the local project configuration.
+3. **Make tools available** — the agent's required tools become callable from the resolved catalog.
 4. **Register prompts** — make the agent's prompts available as MCP prompts.
 
 ### v2 vs v3 Comparison
 
 | Step | v2 (Current) | v3 (New) |
 |------|-------------|----------|
-| Download | Schemas + shared lists | Schemas + shared lists + agent manifests |
-| Agent setup | User creates groups manually | Pre-built agents available via `import-agent` |
-| Tool composition | Manual cherry-picking into groups | Agent manifest declares required tools |
-| Prompts | Group-level prompts only | Schema-level + agent-level prompts |
+| Load | Schemas + shared lists | Schemas + shared lists + agent manifests |
+| Agent setup | User composes tool sets manually | Pre-built agents available from the catalog |
+| Tool composition | Manual cherry-picking | Agent manifest declares required tools |
+| Prompts | Set-level prompts only | Schema-level + agent-level prompts |
 
 ---
 
@@ -7812,7 +8143,7 @@ The command runs all CAT rules and reports errors and warnings. A catalog with a
 /specification/id-schema
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/16-id-schema.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/16-id-schema.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -7890,7 +8221,7 @@ Each segment serves a distinct purpose: the namespace identifies the owner, the 
 
 #### Namespace
 
-The namespace identifies the owner of the primitive. It is derived from the provider's domain name or agent name and MUST be globally unique within a FlowMCP registry.
+The namespace identifies the owner of the primitive. It is derived from the provider's domain name or agent name and MUST be unique within its own `schemaFolder` — each folder is its own registry (see Namespace Rules). The CLI aggregates multiple folders into one catalog, so the same namespace MAY appear in more than one aggregated folder; cross-folder collisions are disambiguated by the optional source coordinate `<source>:<namespace>` (see Source Coordinate).
 
 ```
 coingecko          ← provider namespace
@@ -7908,7 +8239,7 @@ Namespace rules:
 
 #### Resource Type
 
-The resource type discriminates between the seven kinds of addressable primitives in v4.2.0:
+The resource type discriminates between the seven kinds of addressable primitives in v4.3.0:
 
 | Type | Maps To | Defined In |
 |------|---------|-----------|
@@ -7965,6 +8296,18 @@ schemas/v4.1.0/providers/etherscan-io/contracts.mjs
 → Schema-File-ID: etherscan-io/contracts
 ```
 
+The path segment labelled "namespace" above **MUST equal** `main.namespace` of every schema in the directory — it is a binding equality, not merely a label or a derivation. This is the folder↔namespace invariant `VAL019` (see 09-validation-rules). The grading-monitoring track and the namespace-resolution fallback below consume this invariant.
+
+### Namespace Resolution / Fallback
+
+The namespace of a provider folder is resolved as follows:
+
+1. **Normal case.** The namespace is `main.namespace`, declared in the schema. The folder name MUST equal it (`VAL019`).
+2. **All-unparseable fallback.** When **all** schemas in a folder are unparseable (no readable `main.namespace`), the **folder name** is the fallback namespace identifier. The fallback name MUST itself be a valid namespace (`^[a-z][a-z0-9-]*$`); a folder name that is not a valid namespace is an error, never silently normalised.
+3. **Rename-on-parse.** Once a schema parses and exposes `main.namespace`, that field is **authoritative** and the folder is renamed to match it. A rename is an identity transition, not a delete.
+
+The "all-unparseable → folder name" behaviour is **pipeline** behaviour, owned by the grading track (see the Grading-Spec `19-folder-layout.md` (https://github.com/FlowMCP/flowmcp-spec/blob/main/grading/3.0.0/19-folder-layout.md) and `22-workbench-island.md` (https://github.com/FlowMCP/flowmcp-spec/blob/main/grading/3.0.0/22-workbench-island.md)). The Schemas-Spec's job here is only to (a) name the fallback source (the folder name) and (b) assert the post-parse equality invariant (`VAL019`).
+
 ---
 
 ## CLI-Adapter
@@ -7980,11 +8323,22 @@ The MCP protocol does not allow slashes in tool names. The CLI maps Spec-IDs to 
 
 This mapping is internal. Users and agents always use full Spec-IDs.
 
+### Source Coordinate in the MCP Tool Name
+
+When the CLI aggregates several `schemaFolders[]` and two folders expose the same namespace, the bare `routeName_namespace` tool name would collide at the MCP layer (the MCP protocol requires unique tool names). To let both folders coexist, the source coordinate (see Source Coordinate) is carried through `#buildToolName()` and appended to the internal MCP tool name on collision, so each tool stays addressable:
+
+| External Spec-ID | Internal MCP Tool Name |
+|------------------|------------------------|
+| `folder-a:coingecko/tool/simplePrice` | `simplePrice_coingecko` (uncontested source kept bare) |
+| `folder-b:coingecko/tool/simplePrice` | `simplePrice_coingecko_folder-b` (source appended to break the collision) |
+
+Without this propagation, two equally-named folders cannot both be served — the MCP layer aborts on the duplicate tool name (the `serve` dedup/rename/error path). The CLI applies a deterministic dedup-or-rename so the source disambiguation reaches all the way into the served tool name; a genuine duplicate that cannot be disambiguated is reported, never silently dropped.
+
 ---
 
 ## No Short Form
 
-Short Form is not supported in FlowMCP v4. `flowmcp add getTokenBalance` (without namespace/type) is not allowed.
+Short Form is not supported in FlowMCP v4. `flowmcp call getTokenBalance` (without namespace/type) is not allowed.
 
 **Reason:** Ambiguity and hidden data provenance. `moralis/tool/getTokenBalance` is explicit — the namespace immediately shows the data source. For LLMs especially, full Spec-IDs are semantically unambiguous.
 
@@ -8018,7 +8372,7 @@ The diagram shows the resolution flow from receiving an ID string through parsin
 ### Resolution Steps
 
 1. **Parse** — split the ID string on `/` to extract segments. Three segments required: namespace, type, name. Any other count: validation error ID001 (Short Form is not supported).
-2. **Find** — look up the namespace in the loaded registry or schema catalog. The registry maps namespaces to schema file locations.
+2. **Find** — look up the namespace in the loaded catalog. The catalog is the aggregation of the per-folder registries from `schemaFolders[]`; each folder maps its namespaces to schema file locations. When more than one aggregated folder owns the namespace, a qualified reference (`<source>:<namespace>/...`, see Source Coordinate) selects the exact folder, while an unqualified reference resolves first-wins (first folder in `schemaFolders[]` order) plus a visible collision warning.
 3. **Match** — within the namespace, find the schema, tool, resource, or prompt with the matching name and type.
 4. **Return** — produce the resolved reference: file path to the schema file and the internal key path (e.g., `main.tools.simplePrice`).
 
@@ -8049,7 +8403,34 @@ The ID schema provides the canonical identifier format (`namespace/type/name`) u
 
 ## Namespace Rules
 
-Namespaces are the top-level organizational unit. They must be unique within a registry and follow strict governance rules.
+Namespaces are the top-level organizational unit. They must be unique within a folder — each `schemaFolder` is its own registry. The CLI aggregates multiple folders into one catalog; across aggregated folders the same namespace is allowed and is disambiguated by the optional source coordinate (see Source Coordinate). Namespaces follow strict governance rules.
+
+### One Folder, One Registry
+
+A `schemaFolder` is a self-contained registry: namespace uniqueness is required **within** a folder, not across all folders the CLI knows about. The folder↔namespace invariant `VAL019` (see Directory Mapping) already operates per folder — the folder name MUST equal `main.namespace` of every schema in that folder.
+
+The CLI aggregates the folders listed in `schemaFolders[]` into a single catalog at load time. Two different folders MAY each carry a schema with the same namespace; this is not an error. References are resolved as follows:
+
+- **Qualified** — a reference prefixed with the source coordinate (`<source>:<namespace>/...`, see Source Coordinate) selects exactly one folder's namespace.
+- **Unqualified** — a reference without a source coordinate resolves first-wins across the aggregated folders (the first folder in `schemaFolders[]` order that owns the namespace), and the CLI emits a visible collision warning so the ambiguity is never silent.
+
+### Source Coordinate
+
+When the CLI aggregates several `schemaFolders[]`, two folders may expose the same namespace. The **source coordinate** is an optional prefix that qualifies a reference to exactly one folder:
+
+```
+<source>:<namespace>[/<type>/<name>]
+```
+
+```
+folder-a:coingecko/tool/simplePrice
+folder-b:coingecko/tool/simplePrice
+```
+
+- `<source>` identifies the originating `schemaFolder` (the source key the CLI assigns to that folder).
+- The separator is a **colon** (`:`), chosen so it does not disturb the slash grammar of the ID: the namespace/type/name segments are still split on `/` exactly as before, and the three-segment count is unchanged. The colon prefix is parsed off before the slash resolution runs.
+- The coordinate applies to all referenceable primitives — `tool`, `resource`, `prompt`, `skill`, `list`, `selection`, and `agent`.
+- **Unqualified** references (no `<source>:` prefix) resolve first-wins across the aggregated folders plus a visible collision warning; the source coordinate is the way to pin the exact folder.
 
 ### Namespace Assignment
 
@@ -8202,7 +8583,7 @@ The ID schema provides a single, consistent format that replaces these context-s
 /specification/license-and-tos
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/23-license-and-tos.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/23-license-and-tos.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -8317,7 +8698,7 @@ ToS change. FlowMCP recommends:
 /specification/mcp-integration
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/19-mcp-integration.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/19-mcp-integration.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -8332,7 +8713,7 @@ When FlowMCP is used as an MCP Server, each Tool is registered with MCP-specific
 
 ## Meta Block (Required per Tool)
 
-Every Tool in v4.2.0 MUST have a `meta` block:
+Every Tool in v4.3.0 MUST have a `meta` block:
 
 ```javascript
 export const schema = {
@@ -8416,7 +8797,7 @@ Empty array `[]` is valid — means no aliases.
 /specification/migration
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/08-migration.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/08-migration.md.
 </aside>
 
 This guide covers migrating schemas between FlowMCP versions in chronological order. Section 1 covers v1.2.0 to v2.0.0 migration, Section 2 covers v2.0.0 to v3.0.0, and Section 3 covers v3.0.0 to v4.0.0.
@@ -8926,7 +9307,7 @@ Per schema:
 - [ ] `routes` renamed to `tools`
 - [ ] `version` updated to `'3.0.0'`
 - [ ] Validation passes (`flowmcp validate`)
-- [ ] Tests pass (`flowmcp test single`)
+- [ ] Tests pass (`flowmcp grading deterministic`)
 - [ ] (Optional) Resources added if applicable
 - [ ] (Optional) Skills added if applicable
 
@@ -8952,7 +9333,7 @@ The v3.0.0 to v4.0.0 migration requires adding a required `meta` block to every 
 | 3 | Enum enforcement | Enums matching a Shared List MUST use `{{listName:alias}}` |
 | 4 | Update version to 4.0.0 | `main.version: '4.0.0'` |
 | 5 | Validate | `flowmcp validate` → PASS |
-| 6 | API-Test | `flowmcp test single` → min. 1 response |
+| 6 | API-Test | `flowmcp grading deterministic` → min. 1 response |
 
 ### Breaking Changes
 
@@ -9020,7 +9401,7 @@ export const schema = {
 /specification/output-schema
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/04-output-schema.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/04-output-schema.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -9537,7 +9918,7 @@ The diagram shows the non-blocking validation flow: mismatches produce warnings 
 /specification/overview
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/00-overview.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/00-overview.md.
 </aside>
 
 FlowMCP is a **Tool Catalog with pre-built API templates** and a **Knowledge Base for API workflows**. It unifies access to APIs through two equal channels:
@@ -9545,7 +9926,7 @@ FlowMCP is a **Tool Catalog with pre-built API templates** and a **Knowledge Bas
 1. **CLI** — Direct access to Tools, Resources, Prompts, and Skills
 2. **MCP/A2A Server** — Agents and MCP clients can use FlowMCP as a server (compatible with OpenClaw)
 
-This document provides the conceptual foundation, positioning, terminology, and document index for the v4.2.0 specification.
+This document provides the conceptual foundation, positioning, terminology, and document index for the v4.3.0 specification.
 
 ---
 
@@ -9553,7 +9934,7 @@ This document provides the conceptual foundation, positioning, terminology, and 
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all capitals, as shown here.
 
-Some specification files in `spec/v4.2.0/` are intentionally written in prose without normative keywords because they describe history, lifecycle, or conceptual background (this overview document, the migration guide, the schema lifecycle document). All other specification files use normative language and assume this conformance interpretation.
+Some specification files in `spec/v4.3.0/` are intentionally written in prose without normative keywords because they describe history, lifecycle, or conceptual background (this overview document, the migration guide, the schema lifecycle document). All other specification files use normative language and assume this conformance interpretation.
 
 References:
 - RFC2119 (https://www.rfc-editor.org/rfc/rfc2119) — Key words for use in RFCs to Indicate Requirement Levels
@@ -9718,7 +10099,7 @@ flowchart TD
 
 ### Provider Level
 
-One API provider per namespace. Each provider directory contains:
+One API provider per namespace. The provider directory name MUST equal `main.namespace` of every schema it contains — the folder↔namespace invariant `VAL019` (see 09-validation-rules and the fallback/rename rules in `16-id-schema.md`). Each provider directory contains:
 
 - **Tools** — Deterministic API endpoint wrappers (`main.tools`)
 - **Resources** — Local SQLite data access (`main.resources`)
@@ -9759,6 +10140,9 @@ Agent-level prompts are **model-specific** — they are written and tested for a
 | **Catalog** | A named directory containing a `registry.json` manifest with shared lists, provider schemas, and agent definitions. The top-level organizational unit. |
 | **Main Export** | `export const main = {...}` — the declarative, JSON-serializable part of a schema. Contains `tools`, `resources`, and `prompts`. Hashable for integrity verification. Schemas use `export const main`; agents use `export const agent` (see Agent). |
 | **Handlers Export** | `export const handlers = ({ sharedLists, libraries }) => ({...})` — factory function receiving injected dependencies. Subject to security scanning. |
+| **Agent-Skill** | A `SKILL.md` file — a Claude Code skill that runs in the IDE harness (e.g. `flowmcp-schema-create`, `flowmcp-schema-diagnose`, indexed by the `flowmcp-schema` entry point). These are **not** part of the FlowMCP schema format. They live in `flowmcp-spec/skills/` or a project `.claude/skills/` directory and are invoked by the developer's AI coding assistant. Do not confuse with Schema-Skills. |
+| **Schema-Skill** | A `.mjs` file with `export const skill` — a FlowMCP first-class primitive (see 14-skills) that maps to the MCP `server.prompt` interface. Schema-Skills live inside the schema catalog (`providers/{ns}/skills/`, etc.) and are invoked via `flowmcp call` or by an MCP client. Do not confuse with Agent-Skills. |
+| **lens** | Overloaded term with two distinct meanings depending on context. (1) **Grading context:** a Persona sub-facet forming the second part of the `<base>--<lens>` Persona slug (e.g. `mira-tanaka--domain`). It is a structural parameter that selects which Grading persona variant to use. (2) **Spec-Documentation context:** one of the per-persona review questions defined in `personas/persona-lens.md` — a review-checklist item, not a structural field. |
 
 ---
 
@@ -9775,7 +10159,7 @@ Agent-level prompts are **model-specific** — they are written and tested for a
 | `06-agents.md` | Agents | Agent manifest format (`agent.mjs` with `export const agent`), tool cherry-picking, model binding, system prompts, integrity verification |
 | `07-tasks.md` | Tasks | Deferred — MCP Tasks integration placeholder |
 | `08-migration.md` | Migration | v1.2.0 to v2.0.0 and v2.0.0 to v3.0.0 migration guides, backward compatibility |
-| `09-validation-rules.md` | Validation Rules | Complete validation checklist for schemas, lists, agents, resources, and prompts |
+| `09-validation-rules.md` | Validation Rules | Complete validation checklist for schemas, lists, agents, resources, and prompts; folder↔namespace invariant `VAL019` |
 | `10-tests.md` | Tests | Test format for tools and resources, design principles, response capture lifecycle, output schema generation |
 | `12-prompt-architecture.md` | Prompt Architecture | Provider-Prompts (model-neutral), Agent-Prompts (model-specific), placeholder syntax, cross-schema composition |
 | `13-resources.md` | Resources | SQLite resource format, queries, parameters, SQL security, handler integration |
@@ -9785,8 +10169,8 @@ Agent-level prompts are **model-specific** — they are written and tested for a
 | `17-selections.md` | Selections | Curated tool subsets for agent loading — `whenToUse`, reference resolution, SEL validation rules |
 | `18-prefill.md` | Prefill | Pre-execute tools before delivering a Skill — prefill array, execution order, result injection |
 | `19-mcp-integration.md` | MCP Integration | `meta` block for Tools (isReadOnly, isConcurrencySafe, isDestructive, searchHint, aliases, alwaysLoad) |
-| `20-validation-strategy.md` | Validation Strategy | Validation pipeline, grade system, quality thresholds, CI integration |
-| `21-schema-lifecycle.md` | Schema Lifecycle | Six lifecycle stages, API-test special rule for static schemas, partial schema policy |
+| `20-validation-strategy.md` | Validation Strategy | Validation pipeline, grade system, quality thresholds, CI integration; dev-track grade F vs. monitoring-track `blocked` record |
+| `21-schema-lifecycle.md` | Schema Lifecycle | Six lifecycle stages, API-test special rule for static schemas, partial schema policy; two-track split (dev lifecycle here, grading-monitoring in the Grading-Spec) |
 
 ---
 
@@ -9829,9 +10213,9 @@ Security by default, explicit opt-in for capabilities. Schema files have zero im
 
 ## What Changed
 
-### v4.2.0
+### v4.3.0
 
-The v4.2.0 release adds remote-data resources, a fifth primitive, and richer agent validation:
+The v4.3.0 release adds remote-data resources, a fifth primitive, and richer agent validation:
 
 - **HTTP Resources** — `source: 'http'` references remote files (typically SQLite databases) fetched via HTTPS and cached locally. Validated by RES024 (HTTPS required). See `13-resources.md`.
 - **Selection primitive** — A fifth primitive: a named collection of Tools, Resources, Prompts, and Skills that belong together thematically, activated as a coherent set. See `17-selections.md`.
@@ -9914,7 +10298,7 @@ The migration path from v1.2.0 to v2.0.0 is documented in `08-migration.md`.
 /specification/parameters
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/02-parameters.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/02-parameters.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -10554,7 +10938,7 @@ See `14-skills.md` for the complete skill specification.
 /specification/prefill
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/18-prefill.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/18-prefill.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -10644,7 +11028,7 @@ This ensures the Skill is always delivered — even if some references are broke
 /specification/preload
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/11-preload.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/11-preload.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -10861,7 +11245,7 @@ The output schema (`04-output-schema.md`) describes the response shape regardles
 /specification/prompt-architecture
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/12-prompt-architecture.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/12-prompt-architecture.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -11778,7 +12162,7 @@ agents/
 /specification/resources
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/13-resources.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/13-resources.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -12061,7 +12445,7 @@ Intermediate modes (append-only, insert-but-no-delete) are intentionally omitted
 
 ### Overview
 
-The `source: 'sqlite-gtfs'` resource type is a **top-level sub-type of `sqlite`** (Design C — top-level with inheritance). It denotes a SQLite database that has been produced by a FlowMCP add-on (such as `gtfs-sqlite-toolkit`) and carries a verified quality seal in its `meta` table. The seal guarantees that the database structure, validation status, and discoverable capabilities are conformant with a known add-on contract — which allows FlowMCP-CLI to automatically inject standard tools without the schema author writing any SQL by hand.
+The `source: 'sqlite-gtfs'` resource type is a **top-level sub-type of `sqlite`** (Design C — top-level with inheritance). It denotes a SQLite database that has been produced by a FlowMCP add-on (the `geo-gtfs-toolkit` package, cloned from `github:FlowMCP/gtfs-sqlite-toolkit`) and carries a verified quality seal in its `meta` table. The seal guarantees that the database structure, validation status, and discoverable capabilities are conformant with a known add-on contract — which allows FlowMCP-CLI to automatically inject standard tools without the schema author writing any SQL by hand.
 
 `sqlite-gtfs` is **not** a fallback for `sqlite`. A database without a valid seal is rejected (see Validation Rules — `RES032`). Users who want full manual control over a SQLite database continue to use `source: 'sqlite'`.
 
@@ -12072,7 +12456,7 @@ The `source: 'sqlite-gtfs'` resource type is a **top-level sub-type of `sqlite`*
 | `source` | `'sqlite-gtfs'` | Yes | Resource type. Must be `'sqlite-gtfs'`. |
 | `mode` | `'file-based'` | Yes | Access mode. Only `'file-based'` is allowed. `'in-memory'` is rejected (`RES030`) because the seal verification depends on the persisted `meta` table. |
 | `path` | `string` | Yes | Absolute path to the converted SQLite database. May contain the path variable `${FLOWMCP_RESOURCES}` (see Path Variable Support). |
-| `addon` | `string` | Yes | Name of the FlowMCP add-on responsible for producing and interpreting the database (e.g. `gtfs-sqlite-toolkit`). The add-on is the authority over which standard tools are auto-injected. |
+| `addon` | `string` | Yes | Name of the FlowMCP add-on responsible for producing and interpreting the database (e.g. `geo-gtfs-toolkit`). The add-on is the authority over which standard tools are auto-injected. |
 
 ### Optional Fields
 
@@ -12085,7 +12469,7 @@ The `source: 'sqlite-gtfs'` resource type is a **top-level sub-type of `sqlite`*
 
 Every `sqlite-gtfs` resource MUST point to a database whose `meta` table contains the entry `qualitySeal === 'sqlite-gtfs'`. This is a hard requirement enforced by the validator (`RES032`). A database that does not carry the seal — whether because it was produced by an unverified converter, manually edited, or partially converted — is rejected at schema activation time.
 
-The seal is written by the converter (e.g. `MetaWriter` in `gtfs-sqlite-toolkit`) only when the conversion completes successfully and all pre-validation checks pass strictly. A failed or partial conversion produces `qualitySeal: null` and the database is not usable as a `sqlite-gtfs` resource.
+The seal is written by the converter (e.g. `MetaWriter` in `github:FlowMCP/gtfs-sqlite-toolkit`) only when the conversion completes successfully and all pre-validation checks pass strictly. A failed or partial conversion produces `qualitySeal: null` and the database is not usable as a `sqlite-gtfs` resource.
 
 ### Required Meta Keys
 
@@ -12096,7 +12480,7 @@ The `meta` table of a sealed database MUST contain the following ten keys. They 
 | `qualitySeal` | Add-on identifier (here: `'sqlite-gtfs'`). The seal value. |
 | `specRevision` | FlowMCP spec revision the converter targeted (e.g. `'2026-04-27'`). Used for spec-drift warnings (`RES034`). |
 | `specUrl` | URL of the spec revision document. |
-| `converterVersion` | SemVer of the add-on that produced the database (e.g. `gtfs-sqlite-toolkit@0.1.0`). |
+| `converterVersion` | SemVer of the add-on that produced the database (e.g. `github:FlowMCP/gtfs-sqlite-toolkit@0.1.0`). |
 | `capabilities` | JSON-encoded map of capability booleans (e.g. `basicLookup`, `routing`, `shapesVisualization`, `flexService`). Drives auto-injection. |
 | `validationReport` | JSON-encoded summary of pre-validation results (counts of errors / warnings / info). |
 | `buildDate` | ISO-8601 timestamp of the conversion run. |
@@ -12131,7 +12515,7 @@ export const schema = {
                 source: 'sqlite-gtfs',                              // Design C
                 mode: 'file-based',
                 path: '${FLOWMCP_RESOURCES}/gtfs-de.db',            // User-configurable
-                addon: 'gtfs-sqlite-toolkit',                       // Authority over default methods
+                addon: 'geo-gtfs-toolkit',                          // Authority over default methods
                 addonVersion: '>=0.1.0',                            // optional
                 addonSource: 'github:FlowMCP/gtfs-sqlite-toolkit'   // NPM is not supported
             }
@@ -12144,11 +12528,11 @@ export const schema = {
 }
 ```
 
-When the FlowMCP-CLI activates this schema via `flowmcp add`, it (1) resolves the path variable, (2) verifies the seal, (3) reads `capabilities` from the `meta` table, (4) loads the add-on declared in `addon`, and (5) injects the standard toolset that the add-on derives from the active capabilities.
+When the FlowMCP-CLI initializes this resource schema (on first use — there is no separate activation command), it (1) resolves the path variable, (2) verifies the seal, (3) reads `capabilities` from the `meta` table, (4) loads the add-on declared in `addon`, and (5) injects the standard toolset that the add-on derives from the active capabilities.
 
 ### Add-on Authority
 
-The `sqlite-gtfs` resource type **delegates the definition of standard tools to the add-on**. The spec describes the resource contract; the add-on (e.g. `gtfs-sqlite-toolkit`) owns the catalog of default methods — `searchStops`, `searchRoutes`, `getDepartures`, `getShapeForRoute`, `getFlexBookingRules`, and so on — and decides which ones become available based on the `capabilities` map.
+The `sqlite-gtfs` resource type **delegates the definition of standard tools to the add-on**. The spec describes the resource contract; the add-on (the `geo-gtfs-toolkit` package, cloned from `github:FlowMCP/gtfs-sqlite-toolkit`) owns the catalog of default methods — `searchStops`, `searchRoutes`, `getDepartures`, `getShapeForRoute`, `getFlexBookingRules`, and so on — and decides which ones become available based on the `capabilities` map.
 
 This split keeps the spec stable while letting add-ons evolve independently. New add-ons (for example a future `sqlite-netex` or `sqlite-trias`) follow the same `Design C` pattern: top-level source value, seal requirement, add-on reference, capability-driven auto-injection.
 
@@ -12156,7 +12540,79 @@ This split keeps the spec stable while letting add-ons evolve independently. New
 
 **Provider GTFS data MUST NOT be committed to the spec repository, the add-on repository, or any other public FlowMCP repository.** GTFS feeds carry third-party licensing terms that typically prohibit redistribution. Users provide their own GTFS data locally — either by downloading from the provider directly or by using the add-on's converter against a local source archive. The converted database lives under the user-controlled `${FLOWMCP_RESOURCES}` directory and is never published.
 
-The synthetic Mini-GTFS fixture shipped with `gtfs-sqlite-toolkit` (under a CC0 license) is the only GTFS-shaped data permitted in any public FlowMCP repository. It exists exclusively for testing and CI.
+The synthetic Mini-GTFS fixture shipped with `github:FlowMCP/gtfs-sqlite-toolkit` (under a CC0 license) is the only GTFS-shaped data permitted in any public FlowMCP repository. It exists exclusively for testing and CI.
+
+---
+
+## Add-on URL Mode (`mode: 'url'`)
+
+Add-on resources (`source: 'geo-geojson'`, `source: 'geo-csv'`) support a second access mode, `mode: 'url'`, in addition to the file-based mode used by `sqlite-gtfs`. In URL mode the schema carries only a thin reference — `source`, `mode`, `url`, `addon` (and, for CSV, a mandatory `parseConfig`). At schema activation the add-on fetches the **complete** dataset in a **single** request, parses it, validates it on load, and holds it **in memory** for the lifetime of the process. There is no SQLite file, no on-disk artifact, and no quality seal.
+
+### How it Differs from `source: 'http'`
+
+`source: 'http'` (see below) downloads a **SQLite file**, caches it on disk, and exposes it through `runSql`/`queries`. `mode: 'url'` on an add-on source downloads a **complete GeoJSON or CSV document**, holds it **in memory**, and exposes it through the add-on's central default methods (`featuresInBBox`, `nearPoint`, `byType`) — not through hand-written SQL. The two are deliberately distinct: file-cache + `runSql` versus in-memory + add-on methods.
+
+### Required Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `source` | `'geo-geojson'` \| `'geo-csv'` | Yes | Add-on resource type. `sqlite-gtfs` does NOT support URL mode (`RES043`). |
+| `mode` | `'url'` | Yes | Access mode. Explicit — there is no default mode (`RES044`). |
+| `url` | `string` | Yes | HTTPS URL of the complete dataset. MUST use HTTPS (`RES044`). |
+| `addon` | `string` | Yes | Add-on package that owns the parser and default methods (e.g. `geo-geojson-toolkit`). |
+
+### Conditional Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `parseConfig` | `object` | For `geo-csv`: Yes | Parse configuration (delimiter, header, column types, lat/lon columns). For CSV this is **mandatory** — there is no silent default (`RES045`). For GeoJSON, omit (structure is self-describing). |
+
+### Lifecycle
+
+1. **Init (on first use):** the CLI loads the add-on declared in `addon`, calls its consumer API to fetch the full file from `url` in one request, parse it, and **validate it on load** (valid GeoJSON / required CSV columns) — replacing the file-based seal check. The parsed records are held in memory, keyed by URL.
+2. **Runtime:** queries are served from the in-memory store via the add-on's default methods. Spatial queries (`nearPoint`, `featuresInBBox`) use a pure-`Math` Haversine implementation; no external module is required.
+3. **Central maintenance:** the add-on owns the methods. A fix in the add-on propagates to every schema that references it.
+
+### Scope
+
+URL mode is for **complete datasets downloadable in a single step** — small static GeoJSON files and tabular CSV (Memo-090 class K3). Paginated or windowed sources (e.g. WFS) are out of scope and require a dedicated adapter.
+
+### Schema Example
+
+A minimal `mode: 'url'` GeoJSON schema:
+
+```javascript
+resources: {
+    berlinPois: {
+        source: 'geo-geojson',
+        mode: 'url',
+        url: 'https://example.org/berlin-pois.geojson',   // HTTPS only
+        addon: 'geo-geojson-toolkit',                      // owns nearPoint / featuresInBBox / byType
+        description: 'Berlin points of interest — fetched and held in memory'
+    }
+}
+```
+
+For CSV the `parseConfig` field is mandatory:
+
+```javascript
+resources: {
+    stations: {
+        source: 'geo-csv',
+        mode: 'url',
+        url: 'https://example.org/stations.csv',
+        addon: 'geo-csv-tsv-toolkit',
+        parseConfig: {                                     // mandatory — no silent default
+            delimiter: ',',
+            header: true,
+            columns: { name: 'string', lat: 'number', lon: 'number' },
+            latColumn: 'lat',
+            lonColumn: 'lon'
+        },
+        description: 'Charging stations — in-memory, spatial queries via lat/lon'
+    }
+}
+```
 
 ---
 
@@ -12433,7 +12889,7 @@ These access parameters are auto-injected by the runtime. Schema authors do not 
 
 ---
 
-## HTTP Resources (v4.2.0)
+## HTTP Resources (v4.3.0)
 
 HTTP Resources allow schemas to reference remote files (typically SQLite databases) that are fetched via HTTPS and cached locally. They combine the rich query interface of SQLite resources with the distribution flexibility of remote hosting.
 
@@ -13033,7 +13489,7 @@ Resource validation codes are shared with 09-validation-rules.md, which is the c
 | RES021 | error | `output.schema.type` must be `'array'` for resource queries. |
 | RES022 | error | Test parameter values MUST pass the corresponding `z` validation. |
 | RES023 | error | Test objects MUST be JSON-serializable. |
-| RES024 | error | `source: 'http'` requires a `url` field. The URL MUST use HTTPS. (added in v4.2.0) |
+| RES024 | error | `source: 'http'` requires a `url` field. The URL MUST use HTTPS. (added in v4.3.0) |
 | RES025 | error | `mode` is required for `source: 'sqlite'` and MUST be `'in-memory'` or `'file-based'`. |
 | RES026 | error | `origin` is required and MUST be `'global'`, `'project'`, or `'inline'`. |
 | RES027 | error | `name` is required, must be a non-empty string with the correct extension (`.db` for sqlite, `.md` for markdown). |
@@ -13045,13 +13501,16 @@ Resource validation codes are shared with 09-validation-rules.md, which is the c
 | RES033 | error | Database at `path` cannot be opened (file missing or corrupt). |
 | RES034 | warning | Database `meta.specRevision` is outside the expected range. |
 | RES035 | error | Path variable in `path` (e.g. `${FLOWMCP_RESOURCES}`) cannot be resolved (environment variable not set AND no default available). |
-| RES036 | error | `source: 'http'` requires a `path` field (local cache file). Enforced by core (`ResourceDatabaseManager`). (added in v4.2.0) |
+| RES036 | error | `source: 'http'` requires a `path` field (local cache file). Enforced by core (`ResourceDatabaseManager`). (added in v4.3.0) |
 | RES037 | error | `mode: 'file-based'` requires `origin: 'project'`. |
 | RES038 | error | `source: 'markdown'` MUST NOT have a `mode` field. |
 | RES039 | error | `source: 'markdown'` MUST NOT have a `queries` field. |
 | RES040 | warning | `source: 'sqlite'` with `origin: 'inline'` is not recommended (data privacy). |
 | RES041 | error | All resource fields are required. No field MAY be omitted. |
 | RES042 | info | SQLite resources MAY include a `getSchema` query for CLI bootstrap (file-based) or downstream tooling. Not required. |
+| RES043 | error | `mode: 'url'` is only valid for `source: 'geo-geojson'` or `'geo-csv'`. `sqlite-gtfs` does not support URL mode. (added in v4.3.0) |
+| RES044 | error | `mode: 'url'` requires `url` (HTTPS) and `addon`. The URL MUST use HTTPS. `mode` MUST be explicit (no default). (added in v4.3.0) |
+| RES045 | error | `source: 'geo-csv'` with `mode: 'url'` requires a `parseConfig` object. No silent default. (added in v4.3.0) |
 
 ---
 
@@ -13411,7 +13870,7 @@ capture/
 /specification/schema-format
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/01-schema-format.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/01-schema-format.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -13486,9 +13945,9 @@ All fields in `main` must be JSON-serializable. No functions, no dynamic values,
 | `description` | `string` | What this schema does, 1-2 sentences. Appears in tool discovery. |
 | `version` | `string` | Must match pattern `4.\d+.\d+` (semver, major MUST be `4`). Version `3.\d+.\d+` is accepted during migration. **FlowMCP-Spec-Version** (frozen by Major). |
 | `schemaVersion` | `string` | **NEW in v4.1.1.** Schema-Content-Version, must match pattern `\d+\.\d+\.\d+` (semver, free per schema). Bump rules defined in the grading specification. Initial value for migrated schemas: `1.0.0`. |
-| `schemaHash` | `string` | **NEW in v4.1.1.** 8-character sha256-prefix (`[0-9a-f]{8}`) of canonical-JSON-serialised schema (excluding the `schemaHash` field itself). Used as stable identifier in `grading-data/schemas/<namespace>/<hash>--v<X.Y.Z>.mjs` snapshots. Automatically generated. |
 | `root` | `string` | Base URL for all tools. Must start with `https://` (no trailing slash). Not required for resource-only schemas. |
 | `tools` | `object` | Tool definitions. Keys are tool names in camelCase. Maximum 8 tools. May be empty `{}` if the schema defines resources or skills. |
+| `meta` | `object` | MCP integration metadata block applied to all tools. Required when the schema defines at least one tool. See `19-mcp-integration.md`. |
 
 #### Two Version Axes (v4.1.1+)
 
@@ -13506,18 +13965,30 @@ export const main = {
     description: 'Fetch verified contract source by address',
     version: '4.0.0',
     schemaVersion: '1.0.0',
-    schemaHash: 'a1b2c3d4',
     root: 'https://api.etherscan.io',
     tools: { /* ... */ }
 }
 ```
 
+> **Note:** `schemaHash` is a **derived-only** field. It is computed by the grading toolchain (`HashGenerator`) from the canonical-JSON-serialised schema **excluding** the `schemaHash` field itself, and stored only in grading entries, `SourceSnapshot`s, and `index.json`. It MUST NOT appear as a source field in `.mjs` schema files. The `FolderScanner` flags an in-source `schemaHash` as defect `SCN-012`.
+
+### Mandatory Informational Fields
+
+These fields are required (`MUST` be present). They carry **no functional effect** on the runtime — the runtime does not validate URLs, interpret ToS, or classify licenses. Their purpose is to document provenance for schema authors and the grading pipeline.
+
+> **Enforcement is phased:** validation currently emits a **Warning** (VAL027, VAL028) for missing/invalid values; this will escalate to **Error** in a future minor release once existing schemas have been migrated. See `09-validation-rules.md`.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `docs` | `string[]` | Non-empty array of documentation URLs for the API provider. Every API has documentation — this MUST be filled. |
+| `termsOfService` | `string` | URL to the API provider's Terms of Service — **OR** the sentinel value `"no-tos-found"` when the provider publishes no ToS. The field MUST be present; omitting it is a validation warning (escalates to error). **FlowMCP does not classify or interpret ToS.** See `23-license-and-tos.md`. |
+
+**Sentinel contract for `termsOfService`:** Use `"no-tos-found"` (exact string) when the provider has no published ToS. This signals a conscious author decision rather than an accidentally omitted field.
+
 ### Optional Fields
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `docs` | `string[]` | `[]` | Documentation URLs for the API provider. Informational only. |
-| `termsOfService` | `string \| null` | `null` | URL to the API provider's Terms of Services. **Informational only — FlowMCP does not classify or interpret ToS.** See `23-license-and-tos.md`. |
 | `termsOfServiceCheckedAt` | `string \| null` | `null` | ISO-Date (YYYY-MM-DD) when `termsOfService` URL was last verified by FlowMCP authors. |
 | `termsOfServiceLanguage` | `string \| null` | `null` | Two-letter language code of the ToS document (`'en'`, `'de'`, `'multi'`). |
 | `dataLicense` | `string \| null` | `null` | URL to the data license of API responses (e.g. CC-BY, Public Domain), if separately published by provider. |
@@ -13528,7 +13999,6 @@ export const main = {
 | `headers` | `object` | `{}` | Default HTTP headers applied to all routes. Route-level headers override these. |
 | `sharedLists` | `object[]` | `[]` | Shared list references. See `03-shared-lists.md` for format. |
 | `resources` | `object` | `{}` | Resource definitions. Keys are resource names in camelCase. Maximum 2 resources. See `13-resources.md`. |
-| `meta` | `object` | — | **Required.** MCP integration metadata block for all tools. See `19-mcp-integration.md`. |
 
 ### Deprecated Fields
 
@@ -13541,6 +14011,8 @@ export const main = {
 #### `namespace`
 
 The namespace is the primary grouping mechanism. It identifies the API provider and is used in the fully qualified tool name (`namespace/schemaFile::routeName`). Lowercase ASCII letters, digits, and hyphens are allowed — no underscores or uppercase.
+
+The namespace is **also the provider folder name** (`providers/<namespace>/`), and the two MUST stay in sync — the folder↔namespace invariant `VAL019` (see 09-validation-rules); the all-unparseable fallback and rename-on-parse rules are in `16-id-schema.md`.
 
 ```javascript
 // Valid
@@ -13652,7 +14124,7 @@ tools: {
 | `parameters` | `array` | Yes | Input parameter definitions. Can be empty `[]` for no-input tools. |
 | `output` | `object` | No | Output schema declaring expected response shape. See `04-output-schema.md`. |
 | `preload` | `object` | No | Cache configuration for static/slow-changing datasets. See `11-preload.md`. |
-| `tests` | `array` | Yes | Executable test cases with real parameter values. At least 1 per tool. See `10-tests.md`. |
+| `tests` | `array` | Yes | Executable test cases with real parameter values. Each tool MUST have at least 3 tests. See `10-tests.md`. |
 
 ### Tool Field Details
 
@@ -14077,7 +14549,7 @@ export const handlers = ( { sharedLists } ) => ({
 /specification/schema-lifecycle
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/21-schema-lifecycle.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/21-schema-lifecycle.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -14086,7 +14558,11 @@ export const handlers = ( { sharedLists } ) => ({
 
 ## Overview
 
+> **Canonical Reference.** This document (§21) is the **Recommended Way** for FlowMCP schema development. The six stages below plus the Prospect-prelude (tracked on the Kanban board, before `stage:research`) define the complete path from idea to production. All other lifecycle descriptions in the project (README files, CLAUDE.md runbooks, skill documentation) are subordinate to this document. When in doubt, §21 takes precedence.
+
 Every FlowMCP schema passes through a defined lifecycle from initial research to production deployment. This document defines the six stages, special rules for static schemas and migrated schemas, and the policy for handling partially passing schemas.
+
+**Prospect-prelude (pre-stage:research):** Before `stage:research`, a namespace candidate lives as a **Prospect** on the Kanban board (see Grading-Spec §26 Monitoring Track). A Prospect has been identified as interesting but not yet confirmed as reachable or feasible. It is not tracked within the six stages of this document — it is upstream of the lifecycle. The transition from Prospect to `stage:research` is the act of verifying reachability and feasibility.
 
 ---
 
@@ -14096,10 +14572,12 @@ Every FlowMCP schema passes through a defined lifecycle from initial research to
 |-------|-------|-----------------|----------------|
 | 1 | `stage:research` | API endpoint discovered | API reachable, schema creation is feasible |
 | 2 | `stage:creation` | Research complete | Schema file created in `tests/new-schemas/` |
-| 3 | `stage:api-test` | Schema created | `flowmcp test single` → min. 1 PASS (see Special Rule) |
+| 3 | `stage:api-test` | Schema created | `flowmcp grading deterministic` → min. 1 PASS (see Special Rule) |
 | 4 | `stage:validation` | API test passed | `flowmcp validate` → 0 errors |
-| 5 | `stage:grade` | Validation passed | Grade B or better |
-| 6 | `stage:production` | Grade B+ confirmed | Deployed to `providers/` in production catalog |
+| 5 | `stage:grade` | Validation passed | `namespaceAggregate` grade B or better |
+| 6 | `stage:production` | `namespaceAggregate` grade B+ confirmed | Deployed to `providers/` in production catalog |
+
+> **Two tracks.** The six stages above are the **development lifecycle** and live here. *Monitoring, issue tracking, and the grade rollup* live in the **Grading-Spec**, not here (see Grading-Spec v3.0.0 §26 Monitoring Track (https://github.com/FlowMCP/flowmcp-spec/blob/main/grading/3.0.0/26-monitoring-track.md)). These two are no longer the same single sequential gate — see Validate-before-grade ordering.
 
 ### Stage Details
 
@@ -14107,13 +14585,22 @@ Every FlowMCP schema passes through a defined lifecycle from initial research to
 
 **`stage:creation`** — The schema file is written and placed in `tests/new-schemas/{provider}/`. This stage covers the authoring process — defining tools, parameters, shared list references, handlers, and test cases.
 
-**`stage:api-test`** — The schema is tested against the live API using `flowmcp test single <path>`. At least one tool must return a PASS result. See the API-Test Special Rule below for schemas with no HTTP tools.
+**`stage:api-test`** — The schema is tested against the live API using `flowmcp grading deterministic <id>`. At least one tool must return a PASS result. See the API-Test Special Rule below for schemas with no HTTP tools.
 
 **`stage:validation`** — The schema passes structural validation: `flowmcp validate <path>` returns 0 errors. All validation rules from `09-validation-rules.md` must be satisfied.
 
-**`stage:grade`** — The schema receives a quality grade. Grade B or better is required for production deployment. See the Grading-Spec 2.0.0 (https://github.com/FlowMCP/flowmcp-spec/blob/main/grading/2.0.0/00-overview.md) for the grading criteria — FlowMCP delegates the grading model to this standard.
+**`stage:grade`** — The schema receives a quality grade. The gate references the **`namespaceAggregate`** grade — the provider-level rollup — not an implied per-schema grade computed inside this lifecycle. A per-schema grade rolls up into the namespace aggregate; the aggregate is the gate (Memo 093 F3/F4). The `namespaceAggregate` grade B or better is required for production deployment. See the Grading-Spec v3.0.0 (https://github.com/FlowMCP/flowmcp-spec/blob/main/grading/3.0.0/00-overview.md) for the grading criteria. **The grade computation — including the aggregate — is owned entirely by the Grading-Spec; §21 only consumes the resulting `namespaceAggregate`.** FlowMCP delegates the grading model, the rollup, and the aggregate to that standard.
 
 **`stage:production`** — The schema is moved from `tests/new-schemas/` to `providers/{namespace}/` in the production catalog and registered in `registry.json`.
+
+### Validate-before-grade ordering (two tracks)
+
+Up to v4.2.0 this lifecycle implied a single strict sequence: validation passes, *then* a grade is produced. v4.3.0 relaxes that sequencing for the **monitoring/grading track**:
+
+- A **monitoring/grading record MAY exist in a `blocked` state for a schema that has NOT cleared `stage:validation`** (emit-on-failure — the Grading-Spec import gate emits a `blocked` node with `reason: validation-failed` instead of aborting).
+- This `blocked` monitoring record does **NOT** advance the schema toward `stage:production`. The **development gate is unchanged**: validate-clean (`flowmcp validate` → 0 errors) is still required before `stage:production`.
+
+In other words: the *development gate* (validate before production) stays; the *monitoring record* (emitted regardless of validation outcome) is the grading track's concern. §21 no longer implies these are the same single sequential gate. See Grading-Spec v3.0.0 §22 / §23 (https://github.com/FlowMCP/flowmcp-spec/blob/main/grading/3.0.0/22-workbench-island.md) for the emit-on-failure contract and the pinned `blocked` reason set.
 
 ---
 
@@ -14148,6 +14635,8 @@ This shortens the migration path: a previously passing v3 schema that has been u
 
 ## Partial Schema Policy
 
+> **Two tracks.** This policy is part of the *development lifecycle* (the six stages above). *Monitoring, issue tracking, and the grade rollup* live in the Grading-Spec — see Grading-Spec v3.0.0 §26 Monitoring Track (https://github.com/FlowMCP/flowmcp-spec/blob/main/grading/3.0.0/26-monitoring-track.md). A removed primitive becomes a **blocker on the one grading-issue per namespace**, not a standalone GitHub issue.
+
 ### Core Rule
 
 All failing primitives **MUST** be removed before a schema is deployed to production. A schema with failing tools, resources, or skills cannot enter `stage:production`.
@@ -14169,7 +14658,7 @@ tools: {
     getContractAbi: { /* ... */ },      // PASS
     getSourceCode: { /* ... */ }        // PASS
 }
-// getCreationCode removed — tracked as separate sub-issue
+// getCreationCode removed — tracked as a blocker on the namespace grading-issue
 ```
 
 ### Threshold
@@ -14186,7 +14675,7 @@ The threshold-free policy prevents edge cases where a "60% pass rate" is conside
 
 Removed primitives are not abandoned — they are tracked for future resolution:
 
-1. **Sub-Issue created** — A GitHub issue is opened for each removed primitive. The issue is linked to the parent schema issue.
+1. **Blocker on the namespace grading-issue** — A removed primitive becomes a `blocked` node / `blockers[]` entry under the **one grading-issue per namespace** (defined in the Grading-Spec `26-monitoring-track.md` (https://github.com/FlowMCP/flowmcp-spec/blob/main/grading/3.0.0/26-monitoring-track.md)). No separate per-primitive GitHub issue is opened, and there is no parent-schema-issue link — the two tracks are not coupled.
 2. **Backlog stage** — The removed primitive starts at `stage:research` (with the API reachability already known).
 3. **Resolution path** — When the underlying issue is fixed (changed API, missing auth, updated handler), the primitive is re-added to the schema and goes through `stage:api-test` → `stage:validation` → `stage:grade`.
 4. **Re-integration** — The fixed primitive is merged back into the production schema. A new grade check may be required if the primitive significantly changes the schema's scope.
@@ -14212,7 +14701,7 @@ A primitive passes when at least one of its test cases returns a 2xx response wi
 /specification/scoring-protocol
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/22-scoring-protocol.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/22-scoring-protocol.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -14439,7 +14928,7 @@ A Grader MUST NOT:
 /specification/security
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/05-security.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/05-security.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -14791,7 +15280,7 @@ All violations in a single file are reported together (the scan does not stop at
 /specification/selections
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/17-selections.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/17-selections.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -14871,7 +15360,7 @@ Directory `selections/` is at root level, alongside `providers/` and `agents/`.
 A Selection-File can be used as a transitive test trigger via:
 
 ```
-flowmcp dev test single <selection-file>
+flowmcp grading deterministic <selection-id>
 ```
 
 This:
@@ -14929,7 +15418,7 @@ If a Selection includes inline-skill objects, the SelectionValidator additionall
 /specification/shared-lists
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/03-shared-lists.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/03-shared-lists.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -15484,7 +15973,7 @@ Each `.mjs` file contains exactly one shared list. Combining multiple lists in a
 /specification/skills
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/14-skills.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/14-skills.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -15631,7 +16120,7 @@ The `export const skill` object contains all metadata and instructions for the s
 | `input` | `object[]` | `[]` | See below | Parameters the user provides when invoking the skill. |
 | `prefill` | `array` | `[]` | **New in v4.** Array of tool call specifications to execute before delivering the Skill. See `18-prefill.md`. |
 
-### Skill Types (v4.2.0)
+### Skill Types (v4.3.0)
 
 The `type` field classifies the skill's intended scope. Values are bare strings without `-skill` suffix.
 
@@ -15641,7 +16130,7 @@ The `type` field classifies the skill's intended scope. Values are bare strings 
 | `'selection'` | Skill bound to a specific Selection (curated tool subset) | `selections/{selectionName}/skills/{name}.mjs` |
 | `'agent'` | Agent-specific skill, tested with a specific LLM | `agents/{agentName}/skills/{name}.mjs` |
 
-Skills are registered into their parent scope via the parent's manifest (`selection.skills`, `agent.skills`) or by being placed in the namespace's `skills/` directory. **There is no `main.skills` field on schemas in v4.2.0** — that pattern is forbidden (see VAL016).
+Skills are registered into their parent scope via the parent's manifest (`selection.skills`, `agent.skills`) or by being placed in the namespace's `skills/` directory. **There is no `main.skills` field on schemas in v4.3.0** — that pattern is forbidden (see VAL016).
 
 ### Field Details
 
@@ -15678,7 +16167,7 @@ version: '1.0.0'               // missing prefix
 version: '4.0.0'               // must include flowmcp/ prefix
 ```
 
-Unified versioning in v4.2.0: all FlowMCP primitives (Schema, Selection, Agent, Skill, Prompt) carry the same `flowmcp/X.Y.Z` version string. When the FlowMCP specification changes in a breaking way, the version increments across all primitives in lockstep (e.g. `flowmcp/5.0.0`).
+Unified versioning in v4.3.0: all FlowMCP primitives (Schema, Selection, Agent, Skill, Prompt) carry the same `flowmcp/X.Y.Z` version string. When the FlowMCP specification changes in a breaking way, the version increments across all primitives in lockstep (e.g. `flowmcp/5.0.0`).
 
 #### `description`
 
@@ -15853,9 +16342,9 @@ If a placeholder references a name that does not exist in the schema, the valida
 
 ---
 
-## Skill Registration (v4.2.0)
+## Skill Registration (v4.3.0)
 
-Skills in v4.2.0 are **top-level entities** that live outside the schema's `main` block. Each skill `.mjs` file is registered into one of three scopes via the parent's manifest or by directory placement. **The `main.skills` field is forbidden** in v4.2.0 (see VAL016).
+Skills in v4.3.0 are **top-level entities** that live outside the schema's `main` block. Each skill `.mjs` file is registered into one of three scopes via the parent's manifest or by directory placement. **The `main.skills` field is forbidden** in v4.3.0 (see VAL016).
 
 ### Three Registration Scopes
 
@@ -16019,7 +16508,7 @@ The following aspects cannot be checked by static validation. They depend on AI 
 
 ---
 
-## One-Shot Design Principle (v4.2.0)
+## One-Shot Design Principle (v4.3.0)
 
 A Skill MUST be written so that an AI agent can execute the complete workflow in a single pass — without requiring additional ToolSearch roundtrips for disambiguation or parameter discovery.
 
@@ -16262,7 +16751,7 @@ flowchart TD
     L --> M[Register as MCP prompts]
 ```
 
-The diagram shows how skill loading collects from three scope sources and runs the same validation pipeline on each. There is no `main.skills` step in v4.2.0.
+The diagram shows how skill loading collects from three scope sources and runs the same validation pipeline on each. There is no `main.skills` step in v4.3.0.
 
 ### Step-by-Step
 
@@ -16421,7 +16910,7 @@ etherscan/
 /specification/tasks
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/07-tasks.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/07-tasks.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -16467,7 +16956,7 @@ Schema authors MAY include an `async` field in route definitions for forward com
 /specification/tests
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/10-tests.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/10-tests.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -17060,7 +17549,7 @@ A crypto-research agent with three tests demonstrating breadth:
 
 ---
 
-## Skill Tests (v4.2.0)
+## Skill Tests (v4.3.0)
 
 Skills have two test types: structural and one-shot.
 
@@ -17153,14 +17642,14 @@ See `14-skills.md` (One-Shot Design Principle) for authoring guidelines.
 /specification/validation-rules
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/09-validation-rules.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/09-validation-rules.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
 
 This document defines all validation rules enforced by `flowmcp validate`. Each rule has a code, severity, and description.
 
-This file is the **central code registry** for FlowMCP v4.2.0. All validation, selection, agent, skill, resource, and placeholder codes (VAL/SEL/AGT/SKL/RES/DEP/SEC/LST/PRM/CAT/ID/PH/TST) are defined here. Other specification documents and downstream tooling reference this registry but do not redefine codes.
+This file is the **central code registry** for FlowMCP v4.3.0. All validation, selection, agent, skill, resource, and placeholder codes (VAL/SEL/AGT/SKL/RES/DEP/SEC/LST/PRM/CAT/ID/PH/TST) are defined here. Other specification documents and downstream tooling reference this registry but do not redefine codes.
 
 ---
 
@@ -17199,6 +17688,7 @@ This file is the **central code registry** for FlowMCP v4.2.0. All validation, s
 | VAL016 | error | `main.tools` (or deprecated `main.routes`) must be an object. May be empty `{}` if `main.resources` is defined. `main.skills` is forbidden in v4.0.0 — skills are namespace-, selection-, or agent-scoped (see 14-skills). |
 | VAL017 | error | Schema MUST NOT define both `main.tools` and `main.routes` simultaneously |
 | VAL018 | warning | `main.routes` is deprecated. Use `main.tools` instead. |
+| VAL019 | error | Folder↔namespace invariant: the `providers/<dir>/` directory name MUST equal `main.namespace` of every schema it contains. This is the idiom of `CAT002` (catalog `name` ↔ catalog dir), `AGT001` (agent name ↔ dir), and `SKL003` (skill name ↔ file basename). When all schemas in a folder are unparseable, the folder name is the fallback namespace; the equality is asserted once a schema parses (rename-on-parse, see 16-id-schema). |
 
 ---
 
@@ -17213,6 +17703,8 @@ This file is the **central code registry** for FlowMCP v4.2.0. All validation, s
 | VAL024 | error | `main.sharedLists` (if present) must be an array of objects |
 | VAL025 | error | `main.requiredLibraries` (if present) must be an array of strings |
 | VAL026 | error | Each entry in `requiredLibraries` must be on the runtime allowlist |
+| VAL027 | **warning** | `main.docs` MUST be a non-empty array of strings. An empty array or absent field is a validation warning. **Will escalate to error in a future release.** Every API has documentation — this field must be filled by the schema author. |
+| VAL028 | **warning** | `main.termsOfService` MUST be present and MUST be either a URL string or the sentinel `"no-tos-found"`. A `null` value or absent field is a validation warning. **Will escalate to error in a future release.** The sentinel signals a conscious author decision that no ToS was found. |
 
 ---
 
@@ -17302,8 +17794,11 @@ This file is the **central code registry** for FlowMCP v4.2.0. All validation, s
 | RES021 | error | `output.schema.type` must be `'array'` for resource queries. |
 | RES022 | error | Test parameter values MUST pass the corresponding `z` validation. |
 | RES023 | error | Test objects MUST be JSON-serializable. |
-| RES024 | error | `source: 'http'` requires a `url` field. The URL MUST use HTTPS. (added in v4.2.0) |
-| RES036 | error | `source: 'http'` requires a `path` field (local cache file). Enforced by core (`ResourceDatabaseManager`). (added in v4.2.0) |
+| RES024 | error | `source: 'http'` requires a `url` field. The URL MUST use HTTPS. (added in v4.3.0) |
+| RES036 | error | `source: 'http'` requires a `path` field (local cache file). Enforced by core (`ResourceDatabaseManager`). (added in v4.3.0) |
+| RES043 | error | `mode: 'url'` is only valid for `source: 'geo-geojson'` or `'geo-csv'`. `sqlite-gtfs` does not support URL mode. (added in v4.3.0) |
+| RES044 | error | `mode: 'url'` requires `url` (HTTPS) and `addon`. `mode` MUST be explicit (no default). (added in v4.3.0) |
+| RES045 | error | `source: 'geo-csv'` with `mode: 'url'` requires a `parseConfig` object. No silent default. (added in v4.3.0) |
 
 `RES001` and `RES036` are enforced by core (`ResourceDatabaseManager`); all other RES codes are pipeline-level validation checks.
 
@@ -17420,8 +17915,8 @@ Async fields are reserved for future versions. If present, they are ignored by t
 | AGT016 | error | Referenced prompt/skill files MUST exist and be `.mjs` files |
 | AGT017 | error | Prompt files MUST have `export const prompt` (with `content` or `contentFile`) |
 | AGT018 | error | Skill files MUST have `export const skill` (with `name`, `version`, `content`/`contentFile`, `requires`, `input`, `output`) |
-| AGT030 | error | All IDs in `agent.selections` must be resolvable Selection IDs (added in v4.2.0) |
-| AGT031 | error | `elicitation.maxRounds` must be a positive integer (>= 1) (added in v4.2.0) |
+| AGT030 | error | All IDs in `agent.selections` must be resolvable Selection IDs (added in v4.3.0) |
+| AGT031 | error | `elicitation.maxRounds` must be a positive integer (>= 1) (added in v4.3.0) |
 
 `AGT004`, `AGT030`, and `AGT031` are enforced by core at agent load/startup time; all other AGT codes are pipeline-level validation checks.
 
@@ -17429,7 +17924,7 @@ See `06-agents.md` for the complete agent specification.
 
 ---
 
-## MCP Integration Meta Rules (v4.2.0)
+## MCP Integration Meta Rules (v4.3.0)
 
 | Code | Severity | Rule |
 |------|----------|------|
@@ -17447,7 +17942,7 @@ See `19-mcp-integration.md` for the complete meta block specification.
 
 ---
 
-## Selection Validation Rules (v4.2.0)
+## Selection Validation Rules (v4.3.0)
 
 | Code | Severity | Rule |
 |------|----------|------|
@@ -17593,7 +18088,7 @@ flowmcp validate --security etherscan/contracts.mjs
 /specification/validation-strategy
 
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/20-validation-strategy.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/20-validation-strategy.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in Conformance Language.
@@ -17602,13 +18097,13 @@ flowmcp validate --security etherscan/contracts.mjs
 
 ## Overview
 
-FlowMCP v4.2.0 introduces a two-layer validation strategy: **deterministic** (structural) and **probabilistic** (LLM-based). Together they produce a **Grade Report** with a letter grade (A–F).
+FlowMCP v4.3.0 introduces a two-layer validation strategy: **deterministic** (structural) and **probabilistic** (LLM-based). Together they produce a **Grade Report** with a letter grade (A–F).
 
 ---
 
 ## See also — Grading-Spec in `flowmcp-grading`
 
-A separate **Grading-Spec** (`gradingSpec/1.0.0`) covers Single-Schema and Selection grading in the flowmcp-grading (https://github.com/FlowMCP/flowmcp-grading) repo. The Validation Strategy in this file remains the deterministic baseline; the Grading System defined in the Grading-Spec extends (and partly replaces) the simple A–F Grade System described below. The Schemas-Spec v4.2.0 remains the highest instance.
+A separate **Grading-Spec** (`gradingSpec/3.0.0`) covers Single-Schema and Selection grading in the flowmcp-grading (https://github.com/FlowMCP/flowmcp-grading) repo. The Validation Strategy in this file remains the deterministic baseline; the Grading System defined in the Grading-Spec extends (and partly replaces) the simple A–F Grade System described below. The Schemas-Spec v4.3.0 remains the highest instance.
 
 Entry point: flowmcp-grading/spec/1.0.0/00-overview.md (https://github.com/FlowMCP/flowmcp-grading/blob/main/spec/1.0.0/00-overview.md).
 
@@ -17625,6 +18120,15 @@ Entry point: flowmcp-grading/spec/1.0.0/00-overview.md (https://github.com/FlowM
 | F | FAIL | Not loadable |
 
 **PASS** means the deterministic validator found no errors (warnings are allowed).
+
+### Two tracks: dev-track grade F vs. monitoring-track `blocked` record
+
+A validation FAIL is recorded differently depending on the track:
+
+- **Development track** (this strategy, the Grade Report). A validation FAIL yields the terminal grade **F = "Not loadable"**. The development gate is unchanged: validate-clean is still required before `stage:production` (see 21-schema-lifecycle). Grade F continues to represent a not-loadable schema in the dev/grade-report sense.
+- **Monitoring / grading track.** The same FAIL produces a **`blocked` record with a repairable reason** (e.g. `validation-failed`), **not** the terminal grade F. This is the emit-on-failure behaviour of the Grading-Spec: the import gate emits a `blocked` node and continues rather than aborting. The pinned `blocked` reason set and the status-record semantics live in the Grading-Spec `23-index-json.md` (https://github.com/FlowMCP/flowmcp-spec/blob/main/grading/3.0.0/23-index-json.md) (status + reason, no grade).
+
+The two tracks are reconciled in `21-schema-lifecycle.md`: the dev gate (validate before production) stays; the monitoring record (emitted regardless) is the grading track's concern.
 
 ## Grade Report Format
 
@@ -17703,7 +18207,7 @@ Score range: 0.0 (unusable) to 5.0 (excellent).
 
 Before Production deploy, all failing Primitives MUST be removed from the schema file.
 
-A Language Model calling `flowmcp add etherscan-io/contracts` receives the tool list and assumes all tools work. A failing tool in Production causes unpredictable errors.
+A Language Model calling tools from `etherscan-io/contracts` receives the tool list and assumes all tools work. A failing tool in Production causes unpredictable errors.
 
 **Rule:** 1 failing primitive gets removed — regardless of how many others pass.
 
