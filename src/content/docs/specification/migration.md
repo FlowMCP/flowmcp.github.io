@@ -1,20 +1,20 @@
 ---
 title: "Migration Guide"
 description: "This guide covers migrating schemas between FlowMCP versions in chronological order. Section 1 covers v1.2.0 to v2.0.0 migration, Section 2 covers v2.0.0 to v3.0.0, and Section 3 covers v3.0.0 to..."
-spec_version: "4.2.0"
+spec_version: "4.3.0"
 spec_file: "08-migration.md"
 order: 8
 section: "Specification"
 normative: false
-source_commit: "b25ff5d"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/b25ff5d/spec/v4.2.0/08-migration.md"
-generated_at: "2026-06-01T01:39:52.471Z"
-generated_from: "spec/v4.2.0/08-migration.md"
+source_commit: "62b50d4"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/62b50d4/spec/v4.3.0/08-migration.md"
+generated_at: "2026-06-04T13:49:20.413Z"
+generated_from: "spec/v4.3.0/08-migration.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.2.0/08-migration.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.3.0/08-migration.md."
 ---
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/08-migration.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/08-migration.md.
 </aside>
 
 This guide covers migrating schemas between FlowMCP versions in chronological order. Section 1 covers v1.2.0 to v2.0.0 migration, Section 2 covers v2.0.0 to v3.0.0, and Section 3 covers v3.0.0 to v4.0.0.
@@ -524,7 +524,7 @@ Per schema:
 - [ ] `routes` renamed to `tools`
 - [ ] `version` updated to `'3.0.0'`
 - [ ] Validation passes (`flowmcp validate`)
-- [ ] Tests pass (`flowmcp test single`)
+- [ ] Tests pass (`flowmcp grading deterministic`)
 - [ ] (Optional) Resources added if applicable
 - [ ] (Optional) Skills added if applicable
 
@@ -550,7 +550,7 @@ The v3.0.0 to v4.0.0 migration requires adding a required `meta` block to every 
 | 3 | Enum enforcement | Enums matching a Shared List MUST use `{{listName:alias}}` |
 | 4 | Update version to 4.0.0 | `main.version: '4.0.0'` |
 | 5 | Validate | `flowmcp validate` → PASS |
-| 6 | API-Test | `flowmcp test single` → min. 1 response |
+| 6 | API-Test | `flowmcp grading deterministic` → min. 1 response |
 
 ### Breaking Changes
 

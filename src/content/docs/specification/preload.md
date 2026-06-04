@@ -1,20 +1,20 @@
 ---
 title: "Preload & Caching"
 description: "This document defines the optional `preload` field on route level. It signals that a route returns a static or slow-changing dataset and that the runtime MAY cache the response locally."
-spec_version: "4.2.0"
+spec_version: "4.3.0"
 spec_file: "11-preload.md"
 order: 11
 section: "Specification"
 normative: true
-source_commit: "b25ff5d"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/b25ff5d/spec/v4.2.0/11-preload.md"
-generated_at: "2026-06-01T01:39:52.471Z"
-generated_from: "spec/v4.2.0/11-preload.md"
+source_commit: "62b50d4"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/62b50d4/spec/v4.3.0/11-preload.md"
+generated_at: "2026-06-04T13:49:20.413Z"
+generated_from: "spec/v4.3.0/11-preload.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.2.0/11-preload.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.3.0/11-preload.md."
 ---
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/11-preload.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/11-preload.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in [Conformance Language](/specification/overview/#conformance-language).

@@ -1,20 +1,20 @@
 ---
 title: "Shared Lists"
 description: "Shared lists eliminate duplication of common value sets across schemas. Instead of every Etherscan schema maintaining its own chain list, they reference a single `evmChains` shared list. This..."
-spec_version: "4.2.0"
+spec_version: "4.3.0"
 spec_file: "03-shared-lists.md"
 order: 3
 section: "Specification"
 normative: true
-source_commit: "b25ff5d"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/b25ff5d/spec/v4.2.0/03-shared-lists.md"
-generated_at: "2026-06-01T01:39:52.471Z"
-generated_from: "spec/v4.2.0/03-shared-lists.md"
+source_commit: "62b50d4"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/62b50d4/spec/v4.3.0/03-shared-lists.md"
+generated_at: "2026-06-04T13:49:20.413Z"
+generated_from: "spec/v4.3.0/03-shared-lists.md"
 generator: "scripts/generate-docs-payload.mjs"
-edit_warning: "This file is auto-generated. Source: spec/v4.2.0/03-shared-lists.md."
+edit_warning: "This file is auto-generated. Source: spec/v4.3.0/03-shared-lists.md."
 ---
 <aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.2.0/03-shared-lists.md.
+  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/03-shared-lists.md.
 </aside>
 
 > Normative language (MUST/SHOULD/MAY) follows the conventions defined in [Conformance Language](/specification/overview/#conformance-language).
