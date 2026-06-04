@@ -27,7 +27,7 @@ It is a **sibling of [`gtfs-sqlite-toolkit`](/blog/2026-05-flowmcp-v41-gtfs-add-
 npm install github:FlowMCP/geojson-sqlite-toolkit
 ```
 
-On `flowmcp add`, the add-on does four things:
+On init (the resource loads on first use — there is no `add` step), the add-on does four things:
 
 | Step | What happens |
 |------|--------------|
@@ -77,10 +77,10 @@ export const schema = {
     main: {
         resources: [
             {
-                source:       'sqlite-geojson',
+                source:       'geo-geojson',
                 mode:         'url',
                 url:          'https://example.org/features.geojson',
-                addon:        'geojson-sqlite-toolkit',
+                addon:        'geo-geojson-toolkit',
                 addonVersion: '>=0.1.0',
                 addonSource:  'github:FlowMCP/geojson-sqlite-toolkit'
             }

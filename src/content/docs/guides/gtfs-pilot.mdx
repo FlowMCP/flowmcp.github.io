@@ -25,7 +25,7 @@ Use this skill when a user wants to set up local mobility databases (VBB Berlin,
 1. Pick the feed: VBB Berlin (~30 MB) for a small demo, DELFI (~245 MB) for nationwide coverage
 2. Download the GTFS ZIP and unpack it into a working directory
 3. Convert the GTFS files to SQLite with the quality-seal converter from the tutorial
-4. Activate the FlowMCP GTFS schema: `flowmcp add gtfs-de`
+4. Make the FlowMCP GTFS schema available to the CLI — its directory is listed in `schemaFolders[]` in `~/.flowmcp/config.json` (there is no activation step; configured schemas are directly callable)
 5. Point the schema at the local SQLite via its required server param
 6. Run a transit-routing query end-to-end (e.g. stops near a coordinate, departures within 30 min)
 7. Reference the full tutorial: https://flowmcp.github.io/guides/gtfs-pilot/

@@ -1,6 +1,6 @@
 ---
 title: CLI Usage
-description: Search, add, and call FlowMCP tools from the command line
+description: Search, list, and call FlowMCP tools from the command line
 ---
 {/* PAGEFIND-META-START */}
 <span style="display:none" data-pagefind-meta="section">Reference</span>
@@ -18,14 +18,12 @@ This page is the complete CLI reference. For a guided five-minute install and yo
 
 ## CLI Workflow
 
-The CLI follows a three-step pattern: discover tools, activate them, then call them.
+The CLI follows a two-step pattern: discover tools, then call them. There is no activation step — every tool in the configured `schemaFolders[]` is immediately callable.
 
 ```mermaid
 flowchart TD
-    A[flowmcp search query] --> B[Browse matching tools]
-    B --> C[flowmcp add tool-name]
-    C --> D[Tool activated + parameters shown]
-    D --> E[flowmcp call tool-name JSON-args]
+    A[flowmcp search query] --> B[Browse matching tools + parameters]
+    B --> E[flowmcp call tool-name JSON-args]
     E --> F[Tool result returned]
 ```
 
@@ -33,24 +31,21 @@ flowchart TD
 
 | Command | Description |
 |---------|-------------|
-| `flowmcp search <query>` | Find tools (max 10 results) |
-| `flowmcp add <tool-name>` | Activate a tool + show parameters |
+| `flowmcp search <query>` | Find tools (max 10 results), showing required parameters |
+| `flowmcp list` | Show all available tools (with `disabledCount`) |
 | `flowmcp call <tool-name> '{json}'` | Call a tool with JSON parameters |
-| `flowmcp remove <tool-name>` | Deactivate a tool |
-| `flowmcp list` | Show active tools |
 | `flowmcp status` | Health check |
 
-## Search, Add, Call
+## Search, List, Call
 
-Discover tools by keyword. Add a tool to activate it for your project — the response shows the tool's parameters. Then call the tool with JSON arguments.
+Discover tools by keyword — the response shows each tool's required parameters. Then call the tool directly with JSON arguments. There is no activation step: every tool from the configured `schemaFolders[]` is immediately callable. A tool that is missing an API key shows up as `[disabled: missing KEY]`.
 
 ```bash
 flowmcp search ethereum
-flowmcp add get_contract_abi_etherscan
 flowmcp call get_contract_abi_etherscan '{"address": "0xdAC17F958D2ee523a2206206994597C13D831ec7"}'
 ```
 
-The parameter schema for each added tool is saved locally in `.flowmcp/tools/` for inspection.
+`flowmcp list` shows the full catalog, including how many tools are disabled because of missing keys.
 
 :::note[Programmatic Usage]
 For programmatic access (not via CLI), see the [Programmatic API](/reference/core-methods).
@@ -62,8 +57,8 @@ The CLI has two operating modes that control which commands are available:
 
 | Mode | Commands | Use Case |
 |------|----------|----------|
-| **Agent** | search, add, call, remove, list, status | Daily AI agent usage |
-| **Dev** | + validate, test, migrate | Schema development |
+| **Agent** | search, list, call, status | Daily AI agent usage |
+| **Dev** | + validate, grading, migrate | Schema development |
 
 ```bash
 flowmcp mode dev    # Switch to dev mode
@@ -71,7 +66,7 @@ flowmcp mode agent  # Switch back to agent mode
 ```
 
 :::note[Default Mode]
-Agent mode is the default. It exposes only the commands an AI agent needs to discover, activate, and call tools. Switch to Dev mode for schema development and validation workflows.
+Agent mode is the default. It exposes only the commands an AI agent needs to discover and call tools. Switch to Dev mode for schema development and validation workflows.
 :::
 
 ## Dev Mode Commands
@@ -79,33 +74,22 @@ Agent mode is the default. It exposes only the commands an AI agent needs to dis
 Dev mode unlocks additional commands for schema authors:
 
 ```bash
-flowmcp validate <path>           # Validate schema structure
-flowmcp test single <path>        # Live API test
-flowmcp validate-agent <path>     # Validate agent manifest
+flowmcp validate <path>                       # Validate schema structure
+flowmcp grading deterministic <id>            # Structural validate + live data pretest (alias: det)
+flowmcp grading non-deterministic <ns>        # LLM scoring (alias: nondet)
+flowmcp validate-agent <path>                 # Validate agent manifest
 ```
 
 ## Local Project Config
 
-When you `add` tools, a `.flowmcp/` directory is created in your project:
+The CLI reads its configured `schemaFolders[]` from a `.flowmcp/` directory in your project:
 
 ```
 .flowmcp/
-├── config.json              # Active tools + mode
-└── tools/                   # Parameter schemas (auto-generated)
-    └── get_contract_abi_etherscan.json
+└── config.json              # Configured schemaFolders[] + mode
 ```
 
-Each file in `tools/` contains the tool name, description, and expected input parameters:
-
-```json
-{
-    "name": "get_contract_abi_etherscan",
-    "description": "Returns the Contract ABI of a verified smart contract",
-    "parameters": {
-        "address": { "type": "string", "required": true }
-    }
-}
-```
+`config.json` lists the schema folders the CLI loads. Every tool in those folders is immediately available to `search`, `list`, and `call` — no per-tool activation file is written.
 
 ## API Keys
 

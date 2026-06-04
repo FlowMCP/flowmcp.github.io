@@ -1,6 +1,6 @@
 ---
 title: "FlowMCP v4.3 — Zwei Spuren: Entwicklung und Grading-Monitoring"
-description: "FlowMCP Spec v4.3 teilt den Schema-Lebenszyklus in zwei Spuren und richtet das Grading auf die breaking Grading-Spec 3.0.0 aus, bei der ein fehlgeschlagener Import jetzt einen blockierten Eintrag erzeugt statt abzubrechen."
+description: "FlowMCP Spec v4.3 teilt den Schema-Lebenszyklus in zwei Spuren und richtet das Grading auf die breaking Grading-Spec 3.0.0 aus, bei der ein fehlgeschlagener Pretest jetzt einen blockierten Eintrag erzeugt statt abzubrechen — dazu eine schlankere CLI, ein einziger Grading-Pfad und vier Geodaten-Add-ons."
 date: 2026-06-02
 author: "FlowMCP Team"
 tags: ["release", "v43", "grading", "lifecycle", "spec"]
@@ -17,14 +17,24 @@ Der Entwicklungs-Lebenszyklus und die Grading-Monitoring-Spur beantworten unters
 
 v4.3 trennt beide, damit jede ehrlich sein kann. Der **Entwicklungs-Lebenszyklus** — die sechs Stufen von der Recherche bis zur Produktion — bleibt in der Schemas-Spec. **Monitoring, Issue-Tracking und das Grade-Rollup** wandern in die Grading-Spec, in eine neue `§26 monitoring-track`.
 
-## Emit-on-failure: der Grading-Import bricht nicht mehr ab
+## Emit-on-failure: ein fehlgeschlagener Pretest bricht nicht mehr ab
 
-Die konkreteste Änderung steckt im Grading-Import-Vertrag. Die Grading-Delegation zielt jetzt auf **`gradingSpec/3.0.0`** (vorher `2.0.0`), und das Import-Verhalten kippt:
+Die konkreteste Änderung steckt im Grading-Vertrag. Die Grading-Delegation zielt jetzt auf **`gradingSpec/3.0.0`** (vorher `2.0.0`), und das Verhalten des deterministischen Pretests kippt:
 
-- **Vorher:** Ein Schema, das die Validierung nicht bestanden hatte, führte zum **harten Abbruch** des Grading-Imports. Es kam kein Eintrag heraus.
-- **Jetzt:** Der Import erzeugt einen **`blocked`-Knoten** mit `reason: validation-failed` und fährt fort. Das Schema, das die Validierung nicht bestanden hat, erzeugt trotzdem einen Monitoring-Eintrag — er ist lediglich als blockiert markiert.
+- **Vorher:** Ein Schema, das die Validierung nicht bestanden hatte, führte zum **harten Abbruch** des Gradings. Es kam kein Eintrag heraus.
+- **Jetzt:** Der deterministische Pretest erzeugt einen **`blocked`-Knoten** mit `reason: validation-failed` und fährt fort. Das Schema, das die Validierung nicht bestanden hat, erzeugt trotzdem einen Monitoring-Eintrag — er ist lediglich als blockiert markiert.
 
-Deshalb ist der Grading-Bump **MAJOR**: Der Import-Vertrag hat sich auf eine nicht abwärtskompatible Weise geändert. Das alte Verzeichnis `grading/2.0.0/` bleibt unverändert erhalten, für alles, was noch darauf festgelegt ist.
+Deshalb ist der Grading-Bump **MAJOR**: Der Vertrag hat sich auf eine nicht abwärtskompatible Weise geändert. Das alte Verzeichnis `grading/2.0.0/` bleibt unverändert erhalten, für alles, was noch darauf festgelegt ist.
+
+### Emit-on-failure in der Praxis
+
+```bash
+# Ein Schema, das die Validierung nicht bestanden hat, erzeugt weiterhin einen Monitoring-Eintrag:
+flowmcp grading deterministic myprovider/broken-schema
+# → erzeugt einen `blocked`-Knoten (reason: validation-failed) statt abzubrechen
+```
+
+Vor v4.3 hätte derselbe Lauf hart abgebrochen, ohne etwas zum Verfolgen. Jetzt ist das kaputte Schema in der Monitoring-Spur als `blocked`-Eintrag sichtbar — ohne je näher an die Produktion zu rücken.
 
 ## Das Entwicklungs-Tor bleibt unverändert
 
@@ -34,15 +44,18 @@ Das gehört klar gesagt: **Emit-on-failure senkt die Latte fürs Ausliefern nich
 
 v4.3 fügt außerdem eine neue Validierungsregel hinzu, **VAL019** — eine Ordner↔Namespace-Invariante. Ein Verzeichnisname `providers/<dir>/` **MUSS** dem `main.namespace` jedes Schemas entsprechen, das er enthält. Sie steht neben den bestehenden Prüfungen `CAT002` / `AGT001` / `SKL003` und kommt mit einem Fallback für nicht parsbare Ordner sowie einem Rename-on-parse-Lebenszyklus. Kleine Regel, echter Nutzen: Das Ordner-Layout kann nicht mehr von dem abdriften, was die enthaltenen Schemas deklarieren.
 
-## Was ist neu
+## Jenseits der Spec — das v4.3-Ökosystem
 
-- **Zwei-Spuren-Aufteilung** — die sechs Entwicklungsstufen bleiben in der Schemas-Spec; Monitoring, Issue-Tracking und das Grade-Rollup wandern in die Grading-Spec (`§26 monitoring-track`).
-- **Grading-Delegation zielt auf `gradingSpec/3.0.0`** — ein breaking Grading-Release.
-- **Emit-on-failure** — der Grading-Import erzeugt einen `blocked`-Knoten (`reason: validation-failed`) statt abzubrechen.
-- **Entwicklungs-Tor unverändert** — `flowmcp validate` → 0 Fehler bleibt vor der Produktion Pflicht.
-- **VAL019** — neue Ordner↔Namespace-Invariante, Geschwister von `CAT002` / `AGT001` / `SKL003`.
+Die Spec-Aufteilung kam zusammen mit einer Runde von Ökosystem-Änderungen, die die Zwei-Spuren-Idee im Alltag praktikabel machen:
 
-Begleitend zur Spec-Arbeit liefert v4.3 außerdem zwei neue Datenformat-Add-ons — `geojson-sqlite-toolkit` und `csv-tsv-sqlite-toolkit` — um vollständige GeoJSON/CSV-Dateien per URL zu laden und aus dem Speicher abzufragen.
+- **Eine schlankere CLI (Memo 099).** Der Aktivierungsschritt ist weg — die alten Befehle `add` / `import` / `group` gibt es nicht mehr. Jedes Schema in einem konfigurierten `schemaFolders[]`-Verzeichnis ist sofort aufrufbar, der Workflow ist also nur `flowmcp search <query>` (oder `flowmcp list`) → `flowmcp call <tool> '{...}'`. Ein Tool, dem der API-Key fehlt, erscheint als `[disabled: missing KEY]`, statt still zu scheitern.
+- **Ein einziger Grading-Pfad (Memo 102).** Das Grading ist auf einen Pfad zusammengefallen: `flowmcp grading deterministic <id>` führt die strukturelle Validierung plus den Live-Daten-Pretest aus (HTTP 200 **und** nicht-leere Daten), und `flowmcp grading non-deterministic <ns>` treibt das LLM-Scoring. Es gibt keinen separaten Import-Schritt — Schemas werden live aus `schemaFolders[]` gelesen, und die Workbench-Island ist rein der Output-Store.
+- **Vier Geodaten-Add-ons.** Das v4.3-FlowMCP liefert vier externe Toolkit-Add-ons, jedes ein eigenes Repository, keines in `flowmcp-core` eingebaut:
+  - `geo-gtfs-toolkit` — GTFS-Transit-Feeds als versiegelte lokale SQLite-Datenbank.
+  - `geo-geojson-toolkit` und `geo-csv-tsv-toolkit` — laden eine vollständige GeoJSON- oder CSV/TSV-Datei per URL, validieren sie beim Laden und fragen sie aus dem Speicher ab (keine SQLite-Datei, kein Qualitätssiegel).
+  - `geo-overpass-toolkit` — führt Live-Overpass-Abfragen (OpenStreetMap) hinter einer gecachten HTTP-Quelle aus.
+
+  Jedes Add-on benennt sein Paket `geo-*-toolkit`; die GitHub-Repositories behalten ihre ursprünglichen Namen (zum Beispiel `github:FlowMCP/geojson-sqlite-toolkit`).
 
 ## Wo man es liest
 

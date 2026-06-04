@@ -27,7 +27,7 @@ Use this skill when a user is preparing for a hackathon with FlowMCP. Walk them 
 3. Run `flowmcp init` to create `~/.flowmcp/`
 4. Verify with `flowmcp status`
 5. For offline demos: activate mock mode per call with `--mock`
-6. Activate a ready-made tool set (mobility or crypto) via `flowmcp add <schema>`
+6. Discover a ready-made tool set (mobility or crypto) via `flowmcp search <topic>`, then call tools directly with `flowmcp call <tool> '{...}'` — no activation step
 7. Reference the live tutorial for full context: https://flowmcp.github.io/guides/hackathon-kit/
 
 ## References
@@ -65,15 +65,15 @@ Every schema ships with a `tests` block that defines its mock response. Mock-mod
 
 ## Ready-made tool sets
 
-Three curated bundles cover the common hackathon themes:
+Three curated bundles cover the common hackathon themes. Every schema below is already available from the configured `schemaFolders[]` — discover it with `flowmcp search`, then call it directly with `flowmcp call`. No activation step.
 
 ### Mobility (Berlin / Germany)
 
 ```bash
-flowmcp add gtfsvbb           # Berlin / Brandenburg transit
-flowmcp add gtfsde            # Germany-wide schedules
-flowmcp add overpass-osm      # OpenStreetMap geo queries
-flowmcp add dwd-weather       # German weather forecasts
+flowmcp search gtfsvbb        # Berlin / Brandenburg transit
+flowmcp search gtfsde         # Germany-wide schedules
+flowmcp search overpass-osm   # OpenStreetMap geo queries
+flowmcp search dwd-weather    # German weather forecasts
 ```
 
 Pairs naturally with the [GTFS Pilot Guide](/guides/gtfs-pilot/).
@@ -81,19 +81,19 @@ Pairs naturally with the [GTFS Pilot Guide](/guides/gtfs-pilot/).
 ### Crypto / DeFi
 
 ```bash
-flowmcp add coingecko-tokens       # Token prices, market data
-flowmcp add etherscan-tokens       # On-chain contract data
-flowmcp add defillama-tvl          # DeFi TVL
-flowmcp add dexscreener            # DEX pairs + boosts
+flowmcp search coingecko-tokens    # Token prices, market data
+flowmcp search etherscan-tokens    # On-chain contract data
+flowmcp search defillama-tvl       # DeFi TVL
+flowmcp search dexscreener         # DEX pairs + boosts
 ```
 
 ### Government / Open Data
 
 ```bash
-flowmcp add arbeitsagentur         # German job market
-flowmcp add dpma                   # Patents / trademarks
-flowmcp add bundesgesetzblatt      # German federal law
-flowmcp add dip                    # German parliament docs
+flowmcp search arbeitsagentur      # German job market
+flowmcp search dpma                # Patents / trademarks
+flowmcp search bundesgesetzblatt   # German federal law
+flowmcp search dip                 # German parliament docs
 ```
 
 ## Live demo pattern

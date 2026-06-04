@@ -28,10 +28,10 @@ Schemas are organised under provider namespaces in the public schema repository.
 - {{stats.count_tools}} individual tools exposed via these schemas
 - Dynamic source: [github.com/FlowMCP/flowmcp-schemas-public](https://github.com/FlowMCP/flowmcp-schemas-public), `meta.stats` field per schema
 
-Live discovery via CLI: `flowmcp search <provider>` lists schemas, `flowmcp add <namespace>` activates them locally.
+Live discovery via CLI: `flowmcp search <provider>` lists schemas and `flowmcp call <tool> '{...}'` runs them — every tool from the configured `schemaFolders[]` is immediately callable, no activation step.
 
 ## Lifecycle
 
-A new schema starts as a draft in `tests/new-schemas/PROVIDER/`. The author validates the structure with `flowmcp validate <path>`, runs the live API tests with `flowmcp test single <path>`, and — if all routes pass — moves the file into `schemas/v4.1.0/PROVIDER/` for release. From that point the schema is part of the global inventory and reachable via the CLI or programmatically via the core API. Updates follow the same loop: edit, validate, test, release.
+A new schema starts as a draft in `tests/new-schemas/PROVIDER/`. The author validates the structure with `flowmcp validate <path>`, runs the live data pretest with `flowmcp grading deterministic <id>`, and — if all routes pass — moves the file into `schemas/v4.1.0/PROVIDER/` for release. From that point the schema is part of the global inventory and reachable via the CLI or programmatically via the core API. Updates follow the same loop: edit, validate, test, release.
 
 Author guidance for each step is collected in the [Schema Creation Guide](/guides/schema-creation/) and the [FlowMCP Spec v4.1.0 — Schema Lifecycle](/specification/schema-lifecycle/) section.

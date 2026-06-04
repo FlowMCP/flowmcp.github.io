@@ -24,14 +24,14 @@ Die vollstaendige Felddefinition steht in der Spezifikation: [FlowMCP Spec v4.1.
 
 Schemas sind in Provider-Namespaces im oeffentlichen Schema-Repository organisiert.
 
-- 365 Production-Schemas ueber Kategorien wie Blockchain EVM, Blockchain Solana, DeFi, Crypto Data, Government DE/EU, Weather & Geo, Web3 Social, News & Media, Dev Tools und NFT & Identity
-- 1575 einzelne Tools, die ueber diese Schemas bereitgestellt werden
+- 373 Production-Schemas ueber Kategorien wie Blockchain EVM, Blockchain Solana, DeFi, Crypto Data, Government DE/EU, Weather & Geo, Web3 Social, News & Media, Dev Tools und NFT & Identity
+- 1608 einzelne Tools, die ueber diese Schemas bereitgestellt werden
 - Dynamische Quelle: [github.com/FlowMCP/flowmcp-schemas-public](https://github.com/FlowMCP/flowmcp-schemas-public), `meta.stats`-Feld pro Schema
 
-Live-Discovery via CLI: `flowmcp search <provider>` listet Schemas, `flowmcp add <namespace>` aktiviert sie lokal.
+Live-Discovery via CLI: `flowmcp search <provider>` listet Schemas und `flowmcp call <tool> '{...}'` fuehrt sie aus — jedes Tool aus den konfigurierten `schemaFolders[]` ist sofort aufrufbar, ohne Aktivierungsschritt.
 
 ## Lifecycle
 
-Ein neues Schema startet als Entwurf in `tests/new-schemas/PROVIDER/`. Der Autor validiert die Struktur mit `flowmcp validate <pfad>`, faehrt die Live-API-Tests mit `flowmcp test single <pfad>` und — wenn alle Routen passieren — verschiebt die Datei nach `schemas/v4.1.0/PROVIDER/` zum Release. Ab diesem Punkt ist das Schema Teil des globalen Inventars und ueber die CLI oder programmatisch ueber die Core-API erreichbar. Updates folgen derselben Schleife: edit, validate, test, release.
+Ein neues Schema startet als Entwurf in `tests/new-schemas/PROVIDER/`. Der Autor validiert die Struktur mit `flowmcp validate <pfad>`, faehrt den Live-Daten-Pretest mit `flowmcp grading deterministic <id>` und — wenn alle Routen passieren — verschiebt die Datei nach `schemas/v4.1.0/PROVIDER/` zum Release. Ab diesem Punkt ist das Schema Teil des globalen Inventars und ueber die CLI oder programmatisch ueber die Core-API erreichbar. Updates folgen derselben Schleife: edit, validate, test, release.
 
 Anleitungen pro Schritt liegen im [Schema Creation Guide](/guides/schema-creation/) und in der Spezifikation: [FlowMCP Spec v4.1.0 — Schema Lifecycle](/specification/schema-lifecycle/).

@@ -39,7 +39,6 @@ The quickest way to try a tool is via the FlowMCP CLI:
 
 ```bash
 flowmcp search <provider>
-flowmcp add <namespace>
 flowmcp call <namespace.toolName> '{"param":"value"}'
 ```
 

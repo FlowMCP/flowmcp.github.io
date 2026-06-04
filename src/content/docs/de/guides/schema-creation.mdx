@@ -157,8 +157,8 @@ Bevor du ein Schema erstellst, brauchst du:
    Live-API-Aufrufe ausfuehren, um zu pruefen, ob das Schema funktioniert:
 
    ```bash
-   flowmcp test single ./my-schema.mjs
-   flowmcp test single ./my-schema.mjs --route getData
+   flowmcp grading deterministic <namespace>/<schema-name>
+   flowmcp grading deterministic <namespace>/tool/getData
    ```
 
 ## Parameter-Muster
@@ -316,7 +316,7 @@ Immer `output.schema` fuer jedes Tool definieren. Das hilft KI-Clients zu verste
 :::
 
 :::note[Mit echten Daten testen]
-`flowmcp test single` verwenden, um gegen die echte API zu verifizieren. Schema-Validierung allein kann API-seitige Probleme nicht erkennen.
+`flowmcp grading deterministic` verwenden, um gegen die echte API zu verifizieren (HTTP 200 + nicht-leere Daten). Schema-Validierung allein kann API-seitige Probleme nicht erkennen.
 :::
 
 :::caution[Haeufige Fehler]

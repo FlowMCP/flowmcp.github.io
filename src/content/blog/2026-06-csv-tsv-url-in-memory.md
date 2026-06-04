@@ -47,7 +47,7 @@ The same principle governs types. A column of `0`s and `1`s is the classic ambig
 
 ## How it plugs into FlowMCP
 
-The toolkit follows the same add-on pattern as its sibling `geojson-sqlite-toolkit`: own repo → thin URL schema → in-memory load → auto-injected tools. On `flowmcp add`, the add-on fetches the **complete** CSV/TSV in a **single HTTPS request**, parses it with the mandatory `parseConfig`, validates the declared columns exist, and holds the rows **in memory** keyed by URL — there is no SQLite file and no quality seal. A schema then just declares the URL:
+The toolkit follows the same add-on pattern as its sibling `geojson-sqlite-toolkit`: own repo → thin URL schema → in-memory load → auto-injected tools. On init (the resource loads on first use — there is no `add` step), the add-on fetches the **complete** CSV/TSV in a **single HTTPS request**, parses it with the mandatory `parseConfig`, validates the declared columns exist, and holds the rows **in memory** keyed by URL — there is no SQLite file and no quality seal. A schema then just declares the URL:
 
 ```javascript
 export const schema = {
@@ -57,10 +57,10 @@ export const schema = {
     main: {
         resources: [
             {
-                source:       'sqlite-csv',
+                source:       'geo-csv',
                 mode:         'url',
                 url:          'https://example.org/places.csv',
-                addon:        'csv-tsv-sqlite-toolkit',
+                addon:        'geo-csv-tsv-toolkit',
                 addonVersion: '>=0.1.0',
                 addonSource:  'github:FlowMCP/csv-tsv-sqlite-toolkit',
                 parseConfig: {
@@ -79,7 +79,7 @@ export const schema = {
 }
 ```
 
-When the FlowMCP CLI sees a `source: 'sqlite-csv'` resource, it loads and validates the file on add, reads the capability matrix, then auto-injects the spatial tools the loaded file can actually answer:
+When the FlowMCP CLI sees a `source: 'geo-csv'` resource, it loads and validates the file on load, reads the capability matrix, then auto-injects the spatial tools the loaded file can actually answer:
 
 | Tool | Returns | Requires |
 |------|---------|----------|

@@ -50,7 +50,7 @@ flowmcp status
 
 **Use the CLI when you want to:**
 - Search the schema catalog (`flowmcp search coingecko`)
-- Activate schemas for a project (`flowmcp add coingecko_ping`)
+- List available schemas for a project (`flowmcp list`)
 - Call APIs directly (`flowmcp call coingecko_ping '{}'`)
 - Validate schemas during development
 
@@ -60,16 +60,16 @@ The CLI and Core library are independent packages. Install Core for programmatic
 
 ## Discover Schemas
 
-365+ production-ready schemas ship with the CLI, covering providers like Etherscan, Moralis, DeFi Llama, Dune Analytics, OpenWeather, GitHub, and many more. Each schema is validated, tested, and follows the v4.1.0 specification.
+373+ production-ready schemas ship with the CLI, covering providers like Etherscan, Moralis, DeFi Llama, Dune Analytics, OpenWeather, GitHub, and many more. Each schema is validated, tested, and follows the v4.1.0 specification.
 
-Browse and activate schemas directly from the CLI:
+Browse and call schemas directly from the CLI — every tool from the configured `schemaFolders[]` is immediately callable, no activation step:
 
 ```bash
 flowmcp search ethereum
-# Shows matching schemas with descriptions
+# Shows matching schemas with descriptions and parameters
 
-flowmcp add get_contract_abi_etherscan
-# Activates the schema and shows its parameters
+flowmcp call get_contract_abi_etherscan '{"address": "0x..."}'
+# Calls the tool directly with JSON parameters
 ```
 
 ## MCP SDK

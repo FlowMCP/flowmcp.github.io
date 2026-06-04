@@ -31,17 +31,16 @@ flowmcp --version
 flowmcp list
 ```
 
-`flowmcp list` ist nach frischer Installation leer — das ist erwartet. Weiter unten fuegst du dein erstes Schema hinzu.
+`flowmcp list` zeigt jedes Tool aus den konfigurierten `schemaFolders[]`, mit einem `disabledCount` fuer Tools, denen ein API-Schluessel fehlt. Weiter unten taetigst du deinen ersten Aufruf.
 
-## Erstes Schema hinzufuegen (CLI-Modus)
+## Erstes Schema aufrufen (CLI-Modus)
 
 ```bash
 flowmcp search coingecko
-flowmcp add coingecko-tokens
 flowmcp call coingecko-tokens.simplePrice '{"ids":"bitcoin","vs_currencies":"usd"}'
 ```
 
-Drei Befehle und du hast einen Live-API-Aufruf. Die CLI ist der empfohlene Weg fuer Hackathons, schnelle Prototypen und das Erkunden des Katalogs.
+Zwei Befehle und du hast einen Live-API-Aufruf — es gibt keinen Aktivierungsschritt. Die CLI ist der empfohlene Weg fuer Hackathons, schnelle Prototypen und das Erkunden des Katalogs.
 
 ## Voraussetzungen
 
@@ -63,7 +62,7 @@ Lerne das vollstaendige Schema-Format mit Authentifizierung, Parametern und Hand
 :::
 
 :::note[CLI-Referenz]
-Suche, aktiviere und rufe {schemaCount} vorgefertigte Schemas von der Kommandozeile auf. Siehe [CLI Usage](/de/reference/cli/).
+Suche, liste und rufe {schemaCount} vorgefertigte Schemas von der Kommandozeile auf. Siehe [CLI Usage](/de/reference/cli/).
 :::
 
 :::note[Beispiele]

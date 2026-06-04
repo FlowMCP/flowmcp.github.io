@@ -2,10 +2,6 @@
 title: Schemas & Sources
 description: The three layers of FlowMCP — engine, schemas, and data operators — and why FlowMCP neither publishes nor displays schemas.
 ---
-<!-- PAGEFIND-META-START -->
-<span style="display:none" data-pagefind-meta="section">About</span>
-<!-- PAGEFIND-META-END -->
-
 
 FlowMCP is built from three layers that are easy to confuse but stay strictly separate. Keeping them apart is the key to understanding what FlowMCP is responsible for and what it is not.
 
@@ -27,6 +23,6 @@ Because the data operators own the source and its terms, FlowMCP also makes no j
 
 ## See Also
 
-- [Specification: License & ToS (spec/v4.1.0/23-license-and-tos.md)](https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.1.0/23-license-and-tos.md)
+- [Specification: License & ToS (spec/v4.2.0/23-license-and-tos.md)](https://github.com/FlowMCP/flowmcp-spec/blob/main/spec/v4.2.0/23-license-and-tos.md)
 - [DISCLAIMER.md in flowmcp-core](https://github.com/FlowMCP/flowmcp-core/blob/main/DISCLAIMER.md)
 - [DISCLAIMER.md in flowmcp-cli](https://github.com/FlowMCP/flowmcp-cli/blob/main/DISCLAIMER.md)

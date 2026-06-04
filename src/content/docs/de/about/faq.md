@@ -2,15 +2,11 @@
 title: Haeufige Fragen
 description: Antworten zu Installation, MCP-Clients, Schemas und Beitraegen.
 ---
-<!-- PAGEFIND-META-START -->
-<span style="display:none" data-pagefind-meta="section">About</span>
-<!-- PAGEFIND-META-END -->
-
 
 <details>
 <summary>Was ist FlowMCP genau?</summary>
 
-FlowMCP ist eine Schema-Library + Engine, die Datenquellen zu AI-aufrufbaren Tools normalisiert. Die Library enthaelt aktuell 365 produktionsreife Schemas (v4) ueber 288 Datenquellen. Die Engine routet Calls, validiert Inputs/Outputs und handhabt Authentifizierung. AI-Agenten rufen FlowMCP; FlowMCP ruft die zugrundeliegenden APIs.
+FlowMCP ist eine Schema-Library + Engine, die Datenquellen zu AI-aufrufbaren Tools normalisiert. Die Library enthaelt aktuell 373 produktionsreife Schemas (v4) ueber 291 Datenquellen. Die Engine routet Calls, validiert Inputs/Outputs und handhabt Authentifizierung. AI-Agenten rufen FlowMCP; FlowMCP ruft die zugrundeliegenden APIs.
 
 </details>
 
@@ -24,7 +20,7 @@ Nein. FlowMCP ist **CLI-First**. Der MCP-Server-Modus ist optional. Wenn dein Cl
 <details>
 <summary>Was bedeutet CLI-First konkret?</summary>
 
-Du rufst `flowmcp call <schema>.<tool> '{...}'` aus deinem Terminal, einem LLM-Call oder einem Node/Python-Script. Tools werden bei Bedarf geladen — keine Notwendigkeit, 1575 Tools im Kontext zu halten.
+Du rufst `flowmcp call <schema>.<tool> '{...}'` aus deinem Terminal, einem LLM-Call oder einem Node/Python-Script. Tools werden bei Bedarf geladen — keine Notwendigkeit, 1608 Tools im Kontext zu halten.
 
 </details>
 

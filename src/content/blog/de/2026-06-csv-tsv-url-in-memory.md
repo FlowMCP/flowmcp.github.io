@@ -47,7 +47,7 @@ Dasselbe Prinzip regiert die Typen. Eine Spalte aus `0` und `1` ist die klassisc
 
 ## Wie es sich in FlowMCP einfügt
 
-Das Toolkit folgt demselben Add-on-Muster wie sein Geschwister `geojson-sqlite-toolkit`: eigenes Repo → schlankes URL-Schema → In-Memory-Laden → automatisch eingespeiste Tools. Beim `flowmcp add` lädt das Add-on die **vollständige** CSV/TSV in einem **einzigen HTTPS-Request**, parst sie mit der verpflichtenden `parseConfig`, prüft, dass die deklarierten Spalten existieren, und hält die Zeilen **im Speicher**, nach URL geschlüsselt — es gibt keine SQLite-Datei und kein Qualitätssiegel. Ein Schema deklariert dann nur noch die URL:
+Das Toolkit folgt demselben Add-on-Muster wie sein Geschwister `geojson-sqlite-toolkit`: eigenes Repo → schlankes URL-Schema → In-Memory-Laden → automatisch eingespeiste Tools. Beim Initialisieren (die Resource lädt beim ersten Gebrauch — kein `add`-Schritt) lädt das Add-on die **vollständige** CSV/TSV in einem **einzigen HTTPS-Request**, parst sie mit der verpflichtenden `parseConfig`, prüft, dass die deklarierten Spalten existieren, und hält die Zeilen **im Speicher**, nach URL geschlüsselt — es gibt keine SQLite-Datei und kein Qualitätssiegel. Ein Schema deklariert dann nur noch die URL:
 
 ```javascript
 export const schema = {
@@ -57,10 +57,10 @@ export const schema = {
     main: {
         resources: [
             {
-                source:       'sqlite-csv',
+                source:       'geo-csv',
                 mode:         'url',
                 url:          'https://example.org/places.csv',
-                addon:        'csv-tsv-sqlite-toolkit',
+                addon:        'geo-csv-tsv-toolkit',
                 addonVersion: '>=0.1.0',
                 addonSource:  'github:FlowMCP/csv-tsv-sqlite-toolkit',
                 parseConfig: {
@@ -79,7 +79,7 @@ export const schema = {
 }
 ```
 
-Sieht die FlowMCP-CLI eine `source: 'sqlite-csv'`-Resource, lädt und validiert sie die Datei beim Hinzufügen, liest die Capability-Matrix und speist dann die Spatial-Tools ein, die die geladene Datei tatsächlich beantworten kann:
+Sieht die FlowMCP-CLI eine `source: 'geo-csv'`-Resource, lädt und validiert sie die Datei beim Laden, liest die Capability-Matrix und speist dann die Spatial-Tools ein, die die geladene Datei tatsächlich beantworten kann:
 
 | Tool | Liefert | Benötigt |
 |------|---------|----------|

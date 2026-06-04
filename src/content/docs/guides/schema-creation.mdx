@@ -157,8 +157,8 @@ Before creating a schema, you need:
    Execute live API calls to verify the schema works:
 
    ```bash
-   flowmcp test single ./my-schema.mjs
-   flowmcp test single ./my-schema.mjs --route getData
+   flowmcp grading deterministic <namespace>/<schema-name>
+   flowmcp grading deterministic <namespace>/tool/getData
    ```
 
 ## Parameter Patterns
@@ -316,7 +316,7 @@ Always define `output.schema` for each tool. This helps AI clients understand wh
 :::
 
 :::note[Test with real data]
-Use `flowmcp test single` to verify against the real API. Schema validation alone cannot catch API-side issues.
+Use `flowmcp grading deterministic` to verify against the real API (HTTP 200 + non-empty data). Schema validation alone cannot catch API-side issues.
 :::
 
 :::caution[Common Mistakes]

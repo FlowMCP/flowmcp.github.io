@@ -8,7 +8,7 @@ description: What FlowMCP is, why it exists, and where it stands today.
 
 > *FlowMCP normalises hundreds of data sources into a searchable library of AI-ready tools — so your agents can search, combine, and answer without turning you into an integrations maintainer.*
 
-FlowMCP started as a way to attach multiple data sources to a single MCP server. Today it is a schema library — **365 production-ready definitions, 288 data sources, 1575 callable tools** — all routed through one auditable engine. AI agents call FlowMCP, never the underlying APIs directly. Your API keys stay in your control.
+FlowMCP started as a way to attach multiple data sources to a single MCP server. Today it is a schema library — **373 production-ready definitions, 291 data sources, 1608 callable tools** — all routed through one auditable engine. AI agents call FlowMCP, never the underlying APIs directly. Your API keys stay in your control.
 
 ## What FlowMCP is — and isn't
 
@@ -17,14 +17,13 @@ FlowMCP started as a way to attach multiple data sources to a single MCP server.
 | Aspect | Description |
 |--------|-------------|
 | **Primitive idea** | A flow of data — from heterogeneous sources, through normalised schemas, into AI pipelines |
-| **Schema library** | 365 schemas (v4 production), 288 data sources, 1575 tool routes |
-| **Primary use** | CLI tool — no MCP client holds 1575 tools in context, the CLI loads them dynamically |
+| **Schema library** | 373 schemas (v4 production), 291 data sources, 1608 tool routes |
+| **Primary use** | CLI tool — no MCP client holds 1608 tools in context, the CLI loads them dynamically |
 | **Secondary use** | MCP server mode still supported, but not the default |
 | **Key isolation** | Keys live in FlowMCP, never in the AI context — the AI sees calls and answers, never credentials |
 | **Reverse search** | Schemas register themselves in Shared Lists like "Ethereum Mainnet" or "Berlin", so an AI can ask which schemas cover a given topic |
 | **v4** | Skills, Prefill, Selections, Output-Schema, Pipes |
-| **v4.1+** | Data-format add-ons — external toolkits (`gtfs-sqlite-toolkit`, `geojson-sqlite-toolkit`, `csv-tsv-sqlite-toolkit`) fetch complete GeoJSON/CSV files by URL and query them from memory |
-| **v4.3** | Two-track lifecycle — development and grading-monitoring split (grading delegated to Grading-Spec 3.0.0) |
+| **v4.1+ Add-ons** | Four external toolkit add-ons extend FlowMCP — `geo-gtfs-toolkit` (transit/GTFS), `geo-geojson-toolkit` and `geo-csv-tsv-toolkit` (URL → in-memory geodata), and `geo-overpass-toolkit` (live OpenStreetMap queries) |
 | **Data classes** | Crypto (EVM, Solana, DeFi, Identity, NFT), Open Data (DE/EU), Weather/Geo, Web3 Social, News, Dev-Tools |
 
 ### What it isn't (anymore)
@@ -69,7 +68,7 @@ Two scenarios that show FlowMCP + AI in action — not how to build an agent, bu
 | License | **MIT** — use, fork, distribute |
 | Source | [github.com/FlowMCP](https://github.com/FlowMCP) — active repositories |
 | Test coverage | Per repo, published via Codecov |
-| Spec version | v4.3 active, data-format add-on layer, v3 in archive |
+| Spec version | v4 active, v4.1 add-on layer, v3 in archive |
 | Schema lifecycle | Defined per provider (Lifecycle docs in spec) |
 | Maintainer status | Visible — see [Team](/team/) for contact |
 
@@ -78,7 +77,7 @@ Two scenarios that show FlowMCP + AI in action — not how to build an agent, bu
 - **Open source from day one.** Schemas, core, CLI — all MIT, all on GitHub.
 - **Audit one engine, cover thousands of endpoints.** The engine is central; schemas are thin declarations.
 - **API keys stay with you.** FlowMCP holds keys at runtime — the AI sees calls and answers, never credentials.
-- **Spec evolution is documented.** v3 → v4 → v4.3 changes live in the [CHANGELOG](https://github.com/FlowMCP/flowmcp-spec/blob/main/CHANGELOG.md).
+- **Spec evolution is documented.** v3 → v4 → v4.1 changes live in the [CHANGELOG](https://github.com/FlowMCP/flowmcp-spec/blob/main/CHANGELOG.md).
 
 ## Community
 

@@ -22,8 +22,8 @@ Use this skill when a user wants to build an AI agent that uses FlowMCP schemas 
 
 ## Steps
 
-1. Pick the data sources: `flowmcp search <topic>` then `flowmcp add <schema>` (e.g. one crypto + one mobility schema)
-2. Verify the active toolset: `flowmcp list`
+1. Pick the data sources: `flowmcp search <topic>` then `flowmcp call <tool> '{...}'` (e.g. one crypto + one mobility schema) — every tool in the configured `schemaFolders[]` is immediately callable, no activation step
+2. List the available tools: `flowmcp list`
 3. Define the agent skill in `~/.claude/skills/<agent-name>/SKILL.md` — describe purpose, allowed tools, output shape
 4. Wire the LLM loop: call FlowMCP with the user query, pass tool results back into the next turn
 5. Test with a real prompt and verify the agent invokes the expected schemas
@@ -54,16 +54,15 @@ Total time: 15–20 minutes.
 - FlowMCP CLI installed: `npm install -g github:FlowMCP/flowmcp-cli`
 - An API key for one LLM (Anthropic, OpenAI, or local Ollama)
 
-## Step 1 — Activate two schemas
+## Step 1 — Discover two schemas
 
 ```bash
 flowmcp search coingecko
-flowmcp add coingecko-tokens
-flowmcp add etherscan-tokens
+flowmcp search etherscan
 flowmcp list
 ```
 
-You should now see two tools active. The CLI auto-loaded them into a local group.
+The tools from the configured `schemaFolders[]` are immediately available — `flowmcp list` shows them, and any tool missing an API key appears as `[disabled: missing KEY]`.
 
 ## Step 2 — Define a Skill
 
@@ -115,12 +114,13 @@ console.log( response.content )
 
 You should see the LLM pick `simplePrice` first, then `tokenInfo` — without you scripting the order.
 
-## Step 4 — Add a second tool group
+## Step 4 — Reach for a third schema
 
-When the user asks a different kind of question (e.g. "What is Aave's TVL?"), activate a third schema:
+When the user asks a different kind of question (e.g. "What is Aave's TVL?"), discover and call a third schema:
 
 ```bash
-flowmcp add defillama-tvl
+flowmcp search defillama
+flowmcp call defillama-tvl '{...}'
 ```
 
 The agent now has three tools and can reason about which to call.
