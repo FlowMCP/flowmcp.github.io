@@ -1,0 +1,4839 @@
+{
+  "meta": {
+    "demo": true,
+    "note": "Demo payload for the FlowMCP Configurator. Namespaces/tools/counts/access/detVerified are GENERATED from the real v4 schemas + the deterministic grading island (scripts/build-configurator-payload.mjs). 'detVerified' = the deterministic test passes (HTTP 200 + non-empty data) — it is NOT a quality grade; LLM grading is still pending. UI marker: 'live-tested'.",
+    "regionFocus": "Berlin",
+    "source": "Memo 120/121 demo · flowmcp-schemas-private v4.0.0 · det-grading island projects/flowmcp/_grading"
+  },
+  "accessClasses": [
+    {
+      "id": "tool-keyless",
+      "label": "Free",
+      "hint": "Ready to use — no sign-up, no key.",
+      "icon": "free"
+    },
+    {
+      "id": "tool-key",
+      "label": "Needs key",
+      "hint": "Register an API key with the provider.",
+      "icon": "key"
+    },
+    {
+      "id": "resource-local",
+      "label": "Local",
+      "hint": "Runs locally — needs install / a data file.",
+      "icon": "local"
+    }
+  ],
+  "categories": [
+    {
+      "id": "mobility",
+      "name": "Mobility & Transit",
+      "desc": "Public transit, sharing, rail, roads, charging."
+    },
+    {
+      "id": "environment",
+      "name": "Environment, Weather & Energy",
+      "desc": "Air, weather, water, alerts, energy."
+    },
+    {
+      "id": "culture",
+      "name": "Culture, Events & History",
+      "desc": "Events, monuments, memory, museums."
+    },
+    {
+      "id": "demographics",
+      "name": "Demographics & Statistics",
+      "desc": "Population, rent, crime, indicators."
+    },
+    {
+      "id": "geo",
+      "name": "Geo & Addresses",
+      "desc": "Geocoding, postal codes, spatial lookup."
+    },
+    {
+      "id": "admin",
+      "name": "Administration & Politics",
+      "desc": "Budget, elections, parliament, councils."
+    },
+    {
+      "id": "economy",
+      "name": "Economy, Health & Discovery",
+      "desc": "Companies, hospitals, jobs, data catalogs."
+    }
+  ],
+  "regions": [
+    "Berlin",
+    "Germany",
+    "Europe",
+    "global"
+  ],
+  "collections": [
+    {
+      "id": "berlin-open-data",
+      "label": "Berlin Open Data",
+      "filters": {
+        "region": "Berlin",
+        "access": "tool-keyless"
+      },
+      "recommended": [
+        "transportrestvbb",
+        "kulturdatenberlin",
+        "luftdatenberlin"
+      ]
+    },
+    {
+      "id": "german-mobility",
+      "label": "German Mobility",
+      "filters": {
+        "category": "mobility",
+        "region": "Germany"
+      },
+      "recommended": [
+        "transportrestdb",
+        "nextbike",
+        "autobahn"
+      ]
+    },
+    {
+      "id": "berlin-culture",
+      "label": "Berlin Culture & Memory",
+      "filters": {
+        "category": "culture",
+        "region": "Berlin"
+      },
+      "recommended": [
+        "museumdigitalberlin",
+        "gedenktafelnberlin",
+        "berlinclub"
+      ]
+    },
+    {
+      "id": "open-data-germany",
+      "label": "Open Data Germany",
+      "filters": {
+        "region": "Germany",
+        "access": "tool-keyless"
+      },
+      "recommended": [
+        "nina",
+        "openplz",
+        "autobahn"
+      ]
+    },
+    {
+      "id": "all",
+      "label": "All sources",
+      "filters": {},
+      "recommended": []
+    }
+  ],
+  "sources": [
+    {
+      "namespace": "berlinclub",
+      "title": "Berlin Club History (106 lost clubs)",
+      "category": "culture",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "Community GeoJSON (tifa365/berlin_club_history)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 3,
+      "desc": "Lost Berlin nightclubs — search by name, music and district.",
+      "tools": [
+        {
+          "name": "listClubs",
+          "desc": "List closed Berlin clubs from the dataset, optionally narrowed by a music style substring. Returns each club with name, district, music styles, active years, address, a short description and GPS coordinates. Without a filter it returns the whole catalogue (106 venues).",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "music",
+              "type": "string",
+              "required": false,
+              "note": "min 2"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 106 · default 50"
+            }
+          ]
+        },
+        {
+          "name": "searchClubs",
+          "desc": "Free-text search across the Berlin club dataset. The query is matched case-insensitively against the club name, address and historical description. Returns matching venues with full details and GPS coordinates.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": true,
+              "note": "min 2"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 106 · default 50"
+            }
+          ]
+        },
+        {
+          "name": "getClubsByDistrict",
+          "desc": "List closed Berlin clubs located in a specific district (Bezirk), e.g. \"Mitte\", \"Kreuzberg\" or \"Friedrichshain\". The district name is matched case-insensitively. Returns matching venues with full details and GPS coordinates.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "district",
+              "type": "string",
+              "required": true,
+              "note": "min 2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "berlinkriminalitaet",
+      "title": "Berlin Crime Atlas",
+      "category": "demographics",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "DL-DE-BY-2.0 (Berlin Open Data)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 2,
+      "desc": "Crime statistics per district and sub-region.",
+      "tools": [
+        {
+          "name": "getDistrictStatistics",
+          "desc": "Get crime statistics for all 12 Berlin districts (Bezirke). Returns frequency rates (HZ, cases per 100,000 residents) and absolute case numbers for 17 crime categories across 10 years (2015-2024). Data is a static JSON file from the Berlin Kriminalitaetsatlas InstantAtlas application.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "getRegionStatistics",
+          "desc": "Get crime statistics for all 143 Berlin district regions (Bezirksregionen). Returns frequency rates (HZ, cases per 100,000 residents) and absolute case numbers for 17 crime categories across 10 years (2015-2024). Data is a static JSON file from the Berlin Kriminalitaetsatlas InstantAtlas application.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        }
+      ]
+    },
+    {
+      "namespace": "berlinmietspiegel",
+      "title": "Berlin Rent Index (WFS)",
+      "category": "demographics",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "DL-DE-BY-2.0 (gdi.berlin.de)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 2,
+      "desc": "Residential location ratings from the Berlin rent index.",
+      "tools": [
+        {
+          "name": "getWohnlagen",
+          "desc": "Get residential area classifications for Berlin addresses. Filter by bounding box, district, street, postal code, or Wohnlage category via CQL. Returns address, classification, district, and coordinates.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "COUNT",
+              "type": "string",
+              "required": false,
+              "note": "default 50"
+            },
+            {
+              "name": "CQL_FILTER",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "BBOX",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getWohnlageByAddress",
+          "desc": "Get the Wohnlage classification for a specific Berlin address. Provide a CQL filter with street name and house number (zero-padded to 3 digits, e.g. 001, 012, 077). Returns einfach, mittel, or gut.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "CQL_FILTER",
+              "type": "string",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "berlinwfs",
+      "title": "Berlin Geodata (WFS)",
+      "category": "geo",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "DL-DE-BY-2.0 (gdi.berlin.de / LAGeSo)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 11,
+      "desc": "Berlin spatial layers — monuments, trees, fountains, graves, bathing water, events (WFS).",
+      "tools": [
+        {
+          "name": "natural_monuments",
+          "desc": "Berlin natural monuments (Naturdenkmale) — protected trees and glacial boulders (Findlinge) with their protection reason (schutzgrund). Returns a GeoJSON FeatureCollection. The full layer holds ~708 features; use count to limit. Source layer schutzgebiete:a_nd.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "service",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "version",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "request",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "typeNames",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "outputFormat",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "srsName",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "count",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · max 708 · default 20"
+            }
+          ]
+        },
+        {
+          "name": "war_victim_graves",
+          "desc": "Berlin burial sites of victims of war and tyranny (Opfer von Krieg und Gewaltherrschaft) — individual and mass graves per cemetery with cemetery name, denomination and address. Returns a GeoJSON FeatureCollection. Source layer okg:okg_1.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "service",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "version",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "request",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "typeNames",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "outputFormat",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "srsName",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "count",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · max 500 · default 20"
+            }
+          ]
+        },
+        {
+          "name": "drinking_fountains",
+          "desc": "Berlin public drinking-water fountains (Trinkbrunnen) with location, district (bezirk), build year and any current restrictions (einschraenkungen). Returns a GeoJSON FeatureCollection. Source layer trinkwasserbrunnen:trinkwasserbrunnen.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "service",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "version",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "request",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "typeNames",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "outputFormat",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "srsName",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "count",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · max 500 · default 50"
+            }
+          ]
+        },
+        {
+          "name": "street_trees",
+          "desc": "Berlin street trees (Strassenbaeume, ~625,000 features) with species (art_dtsch/art_bot), street name and location. The dataset is huge, so a bounding box is mandatory. bbox format minLon,minLat,maxLon,maxLat,EPSG:4326 (longitude first, WGS84). Central Berlin example: 13.37,52.51,13.40,52.52,EPSG:4326. Source layer baumbestand:strassenbaeume.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "service",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "version",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "request",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "typeNames",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "outputFormat",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "srsName",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "bbox",
+              "type": "string",
+              "required": true,
+              "note": "min 7"
+            },
+            {
+              "name": "count",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · max 500 · default 50"
+            }
+          ]
+        },
+        {
+          "name": "planned_street_events",
+          "desc": "Berlin planned events in public street space (planbare Ereignisse) — construction sites and closures with start/end date, street, district and a severity rating. Returns a GeoJSON FeatureCollection (~7,435 features). Source layer planb_ereignisse:ereignisse.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "service",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "version",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "request",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "typeNames",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "outputFormat",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "srsName",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "count",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · max 500 · default 20"
+            }
+          ]
+        },
+        {
+          "name": "bathing_water_quality",
+          "desc": "Berlin bathing-water quality (Badegewaesser) from LAGeSo — the latest measurement per supervised bathing site (~39 lakes/rivers) with quality rating, water temperature and coordinates. Source is a German-locale CSV (semicolon-separated, comma decimal); this tool fetches and parses it into JSON. Optional district (bezirk) filter, case-insensitive substring match.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "bezirk",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "dog_parks",
+          "desc": "All dog parks (Hundefreilauefe) in Berlin as GeoJSON FeatureCollection via Berlin.de.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "bbq_areas",
+          "desc": "All BBQ areas (Grillflaechen) in Berlin as GeoJSON FeatureCollection via Berlin.de.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "heritage_sites",
+          "desc": "List heritage sites (Denkmale) from the Berlin monument registry (Denkmalliste) as a GeoJSON FeatureCollection via Berlin.de. Returns monument id, type and database link. Use count to limit results and startIndex for pagination. The full dataset contains roughly 9,553 monuments.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "service",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "version",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "request",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "typeNames",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "outputFormat",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "srsName",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "count",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · max 500 · default 20"
+            },
+            {
+              "name": "startIndex",
+              "type": "number",
+              "required": true,
+              "note": "min 0 · default 0"
+            }
+          ]
+        },
+        {
+          "name": "heritage_sites_by_type",
+          "desc": "Filter Berlin heritage sites by monument type using a CQL filter. Valid types: Baudenkmal (architectural monument), Gesamtanlage (complex), Gartendenkmal (garden monument), Ensemble (ensemble), Bodendenkmal (ground monument). Example CQL_FILTER: typ='Gartendenkmal'.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "service",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "version",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "request",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "typeNames",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "outputFormat",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "srsName",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "CQL_FILTER",
+              "type": "string",
+              "required": true,
+              "note": "min 1"
+            },
+            {
+              "name": "count",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · max 500 · default 20"
+            }
+          ]
+        },
+        {
+          "name": "heritage_sites_by_bbox",
+          "desc": "Get Berlin heritage sites within a geographic bounding box. Coordinates in WGS84 (EPSG:4326) as minLon,minLat,maxLon,maxLat,EPSG:4326. Central Berlin example: 13.37,52.51,13.40,52.52,EPSG:4326.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "service",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "version",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "request",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "typeNames",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "outputFormat",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "srsName",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "bbox",
+              "type": "string",
+              "required": true,
+              "note": "min 7"
+            },
+            {
+              "name": "count",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · max 500 · default 50"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "ckanberlin",
+      "title": "Berlin Open Data Register (CKAN)",
+      "category": "economy",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "DL-DE-BY-2.0 (daten.berlin.de)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 5,
+      "desc": "Discovery layer for the Berlin open-data portal — search datasets.",
+      "tools": [
+        {
+          "name": "searchDatasets",
+          "desc": "Full-text search for datasets in the Berlin open-data catalog. Returns matching datasets with title, name (slug), notes and resources.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "q",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "rows",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · max 100 · default 10"
+            }
+          ]
+        },
+        {
+          "name": "getDataset",
+          "desc": "Get full metadata for a single dataset by its name (slug) or id, including resources, tags, groups and organization.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "listCategories",
+          "desc": "List the thematic categories (CKAN groups) used to classify datasets in the Berlin open-data catalog.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "all_fields",
+              "type": "boolean",
+              "required": true,
+              "note": "default false"
+            }
+          ]
+        },
+        {
+          "name": "listOrganizations",
+          "desc": "List the publishing organizations (Berlin Senate departments, districts, agencies) that provide datasets in the catalog.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "all_fields",
+              "type": "boolean",
+              "required": true,
+              "note": "default false"
+            }
+          ]
+        },
+        {
+          "name": "listTags",
+          "desc": "List dataset tags, optionally filtered by a substring query. Useful to discover the keyword vocabulary used across Berlin datasets.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "gedenktafelnberlin",
+      "title": "Berlin Memorial Plaques",
+      "category": "culture",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "Gedenktafeln in Berlin (Aktives Museum) — attribution",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 2,
+      "desc": "~3,900 memorial plaques across Berlin — search by name and district.",
+      "tools": [
+        {
+          "name": "gedenktafelnSearch",
+          "desc": "Search Berlin memorial plaques by free text. Matches case-insensitively against name, dedication text, explanation, street and district. Returns up to \"limit\" plaques with corrected lat/lon coordinates.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": true,
+              "note": "min 2"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 100 · default 10"
+            }
+          ]
+        },
+        {
+          "name": "gedenktafelnByDistrict",
+          "desc": "List Berlin memorial plaques located in a given district (Ortsteil), matched case-insensitively (substring). Returns up to \"limit\" plaques with corrected lat/lon coordinates.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "district",
+              "type": "string",
+              "required": true,
+              "note": "min 2"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 100 · default 10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "giessdenkiez",
+      "title": "Gieß den Kiez (Tree Watering)",
+      "category": "environment",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "ODbL / CityLAB Berlin (public anon API)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 5,
+      "desc": "Berlin street trees, adoptions and waterings (CityLAB).",
+      "tools": [
+        {
+          "name": "getTrees",
+          "desc": "List Berlin street trees with optional filters. Filter by district (bezirk) or by a coordinate bounding box (latMin/latMax/lngMin/lngMax). Returns species, planting year, location and rainfall sum (radolan_sum). Use the PostgREST select to keep payloads small.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "select",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "bezirk",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "lat",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "lng",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "default 20 · max 1000"
+            }
+          ]
+        },
+        {
+          "name": "getTreeById",
+          "desc": "Get the full record of a single tree by its cadastre id (e.g. 00008100:0037fcd1), including species, dimensions, owner, adoption/watering flags and the 365-day rainfall array (radolan_days).",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getAdoptedTrees",
+          "desc": "Return the aggregated adoption and watering status of all tracked trees. Each row gives a tree_id with adopted (1 if adopted) and watered (1 if recently watered) flags. Useful to find which trees citizens have taken care of.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "getWateredToday",
+          "desc": "List the trees that received water today, each with the total amount (in litres) poured. Reflects the live citizen watering activity in Berlin.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "getWateringsForTree",
+          "desc": "Return the full watering log of a single tree: every watering event with amount (litres), ISO-8601 timestamp and the username who watered it. Pass the tree cadastre id as t_id.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "t_id",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "ihkberlin",
+      "title": "IHK Berlin Business Data",
+      "category": "economy",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "IHK Berlin open data — attribution",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 3,
+      "desc": "363k+ registered businesses — searchable.",
+      "tools": [
+        {
+          "name": "searchBusinesses",
+          "desc": "Search IHK Berlin registered businesses. Filter by Berlin district (Bezirk), registration type (Handelsregister vs Kleingewerbetreibender), employee-size range, and a free-text term matched against branch descriptions. Returns a paginated list of businesses with location, branch classification and district.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "district",
+              "type": "enum",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "registrationType",
+              "type": "enum",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "employeesRange",
+              "type": "enum",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "q",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "default 25 · min 1 · max 200"
+            },
+            {
+              "name": "offset",
+              "type": "number",
+              "required": false,
+              "note": "default 0 · min 0"
+            }
+          ]
+        },
+        {
+          "name": "listColumns",
+          "desc": "Return the column schema of the IHK Berlin Gewerbedaten CSV dataset: the raw header names and a short description of each field. Useful to discover which fields are available before searching.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "getStats",
+          "desc": "Return aggregate statistics for the IHK Berlin Gewerbedaten dataset: total business count and a breakdown of business counts per Berlin district (Bezirk), sorted by count.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        }
+      ]
+    },
+    {
+      "namespace": "infravelo",
+      "title": "infraVelo Cycling",
+      "category": "mobility",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "infraVelo open data — attribution",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 2,
+      "desc": "Berlin cycling-infrastructure projects by district.",
+      "tools": [
+        {
+          "name": "getAllProjects",
+          "desc": "Get all cycling infrastructure projects in Berlin as GeoJSON FeatureCollection. Includes bike lanes, parking, traffic signals with coordinates, status, district, and cost info. Use getProjectsByDistrict to filter by a specific Berlin district.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "getProjectsByDistrict",
+          "desc": "Get cycling infrastructure projects filtered by Berlin district (Bezirk). Returns GeoJSON FeatureCollection. Use getAllProjects to see available district names.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "district",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "kulturdatenberlin",
+      "title": "Kulturdaten Berlin",
+      "category": "culture",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "CC-BY-4.0 (kulturdaten.berlin)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 7,
+      "desc": "~13k cultural events, attractions and venues across Berlin.",
+      "tools": [
+        {
+          "name": "listAttractions",
+          "desc": "List published cultural attractions (concerts, plays, lectures and other cultural happenings) in Berlin with pagination.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "page",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · default 1"
+            },
+            {
+              "name": "pageSize",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · max 100 · default 10"
+            }
+          ]
+        },
+        {
+          "name": "getAttraction",
+          "desc": "Get a single cultural attraction by its identifier.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "identifier",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "listEvents",
+          "desc": "List published cultural events (an attraction taking place at a specific location and time) in Berlin with pagination.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "page",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · default 1"
+            },
+            {
+              "name": "pageSize",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · max 100 · default 10"
+            }
+          ]
+        },
+        {
+          "name": "listLocations",
+          "desc": "List cultural venue locations (theatres, community centres, museums and other places) in Berlin with pagination.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "page",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · default 1"
+            },
+            {
+              "name": "pageSize",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · max 100 · default 10"
+            }
+          ]
+        },
+        {
+          "name": "getLocation",
+          "desc": "Get a single cultural venue location by its identifier.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "identifier",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "listOrganizations",
+          "desc": "List cultural organizations (districts, institutions and other bodies that curate cultural data) in Berlin with pagination.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "page",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · default 1"
+            },
+            {
+              "name": "pageSize",
+              "type": "number",
+              "required": true,
+              "note": "min 1 · max 100 · default 10"
+            }
+          ]
+        },
+        {
+          "name": "getOrganization",
+          "desc": "Get a single cultural organization by its identifier.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "identifier",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "kultureinrichtungenberlin",
+      "title": "Berlin Funded Cultural Institutions",
+      "category": "culture",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "DL-DE-BY-2.0 (Sen Kultur Berlin)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 3,
+      "desc": "Publicly funded cultural institutions in Berlin — list, filter, search.",
+      "tools": [
+        {
+          "name": "listInstitutions",
+          "desc": "List all publicly funded cultural institutions in Berlin from the official Senate statistics file. Optionally limit the number of returned institutions. Each institution carries its address, coordinates, nearest stop with distance, nearest U/S-Bahn station, operator and category.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 200 · default 50"
+            }
+          ]
+        },
+        {
+          "name": "filterByCategory",
+          "desc": "Return Berlin cultural institutions belonging to one top-level category (GruppeA). The readable category key is mapped to the German label used in the source file. Throws if the category is unknown — no silent default.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "category",
+              "type": "enum",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "searchByName",
+          "desc": "Find Berlin cultural institutions whose name contains a case-insensitive substring. Returns the matching institutions with full location and transport details.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": true,
+              "note": "min 2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "luftdatenberlin",
+      "title": "Berlin Air Quality (BLUME)",
+      "category": "environment",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "DL-DE-BY-2.0 (luftdaten.berlin)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 6,
+      "desc": "Berlin air-quality measuring network — stations and components.",
+      "tools": [
+        {
+          "name": "listStations",
+          "desc": "List all air-quality measurement stations of the Berlin network, including code, address, coordinates and measured components.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "getStation",
+          "desc": "Get detailed information for a single Berlin measurement station by its station code.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "listComponents",
+          "desc": "List all measurable components (pollutant plus aggregation period, e.g. pm10_1h) with unit, value range and description.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "listCores",
+          "desc": "List all pollutant cores (PM10, NO2, O3, etc.) with name, group, default period and available periods.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "getCore",
+          "desc": "Get detailed information for a single pollutant core by its code (e.g. pm10, no2, o3).",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getAirQualityIndex",
+          "desc": "Get the current air-quality index (Luftguete-Index) for all Berlin stations, including per-pollutant sub-indices and the measurement timestamp.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        }
+      ]
+    },
+    {
+      "namespace": "museumdigitalberlin",
+      "title": "museum-digital : Berlin",
+      "category": "culture",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "museum-digital (per-object licenses; imprint)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 6,
+      "desc": "Berlin museum objects, institutions and collections (JSON API).",
+      "tools": [
+        {
+          "name": "listObjects",
+          "desc": "List the most recently catalogued museum objects across all Berlin institutions. Returns a flat array of object summaries (id, name, inventory number, capture date, holding institution, thumbnail).",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "institution",
+              "type": "number",
+              "required": false,
+              "note": "min 1"
+            }
+          ]
+        },
+        {
+          "name": "searchObjects",
+          "desc": "Full-text search for museum objects by a free-text term (matched against object names and metadata). Returns a flat array of matching object summaries with the same shape as listObjects.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "s",
+              "type": "string",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        },
+        {
+          "name": "getObject",
+          "desc": "Retrieve the full detail record of a single museum object by its id: inventory number, type, name, description, material/technique, dimensions, holding institution, collections, related events and images.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "objectId",
+              "type": "number",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        },
+        {
+          "name": "listInstitutions",
+          "desc": "List all Berlin museum institutions participating in museum-digital, including geographic coordinates and object/collection counts.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "getInstitution",
+          "desc": "Retrieve the detail record of a single museum institution by its id: name, ISIL, image, license and contact metadata.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "institutionId",
+              "type": "number",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        },
+        {
+          "name": "getCollection",
+          "desc": "Retrieve the detail record of a single collection by its id: name, description and object counts. Collection ids can be discovered via the holding institution metadata.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "collectionId",
+              "type": "number",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "overpassberlin",
+      "title": "OpenStreetMap Berlin POIs",
+      "category": "geo",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "ODbL (OpenStreetMap)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 3,
+      "desc": "OSM points of interest in Berlin by category/tag (Overpass).",
+      "tools": [
+        {
+          "name": "findPoisByCategory",
+          "desc": "Find OSM points of interest in Berlin by a human-readable category preset. The bounding box defaults to the full Berlin extent and is given as GeoJSON order [minLon,minLat,maxLon,maxLat]; it is clamped to Berlin so queries cannot leave the city. Returns OSM elements with coordinates and tags.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "category",
+              "type": "enum",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "minLon",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "minLat",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "maxLon",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "maxLat",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "default 50 · max 1000"
+            }
+          ]
+        },
+        {
+          "name": "findPoisByTag",
+          "desc": "Find OSM points of interest in Berlin by an arbitrary OSM tag key/value (for example amenity=marketplace or artwork_type=statue). The bounding box is GeoJSON order [minLon,minLat,maxLon,maxLat], defaults to and is clamped to the Berlin extent. Returns OSM elements with coordinates and tags.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "tagKey",
+              "type": "string",
+              "required": true,
+              "note": "min 1"
+            },
+            {
+              "name": "tagValue",
+              "type": "string",
+              "required": true,
+              "note": "min 1"
+            },
+            {
+              "name": "minLon",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "minLat",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "maxLon",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "maxLat",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "includeAreas",
+              "type": "enum",
+              "required": true,
+              "note": "default nodes-only"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "default 50 · max 1000"
+            }
+          ]
+        },
+        {
+          "name": "countPoisByTag",
+          "desc": "Count OSM elements matching an OSM tag key/value inside a Berlin bounding box, without returning the full element list. Cheap way to size a category before fetching it. Bounding box is GeoJSON order [minLon,minLat,maxLon,maxLat], defaults to and clamped to the Berlin extent.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "tagKey",
+              "type": "string",
+              "required": true,
+              "note": "min 1"
+            },
+            {
+              "name": "tagValue",
+              "type": "string",
+              "required": true,
+              "note": "min 1"
+            },
+            {
+              "name": "minLon",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "minLat",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "maxLon",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "maxLat",
+              "type": "number",
+              "required": false,
+              "note": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "simplesearchberlin",
+      "title": "Berlin SimpleSearch",
+      "category": "economy",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "DL-DE-BY-2.0 (berlin.de)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 2,
+      "desc": "Cross-portal search across berlin.de services.",
+      "tools": [
+        {
+          "name": "searchList",
+          "desc": "Full-text search a Berlin.de SimpleSearch list and return the tabular JSON index. The dataset parameter is the CMS path of the SimpleSearch application (the part between www.berlin.de and /index.php, no leading or trailing slash), e.g. \"sen/web/service/maerkte-feste/weihnachtsmaerkte\". Use q for the search term (empty string returns the full list); fields per row vary by dataset.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "dataset",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "q",
+              "type": "string",
+              "required": true,
+              "note": "default"
+            },
+            {
+              "name": "page",
+              "type": "number",
+              "required": false,
+              "note": "min 1"
+            }
+          ]
+        },
+        {
+          "name": "searchGeo",
+          "desc": "Full-text search a Berlin.de SimpleSearch list and return the results as a GeoJSON FeatureCollection of Point features. The dataset parameter is the CMS path of the SimpleSearch application (between www.berlin.de and /index.php, no leading or trailing slash). Only datasets that carry geographic coordinates yield non-empty features; use q to filter by free text (empty string returns the full list). Server-side spatial filtering is not supported.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "dataset",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "q",
+              "type": "string",
+              "required": true,
+              "note": "default"
+            },
+            {
+              "name": "page",
+              "type": "number",
+              "required": false,
+              "note": "min 1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "stolpersteineberl",
+      "title": "Stolpersteine Berlin",
+      "category": "culture",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "CC-BY (stolpersteine-berlin.de)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 4,
+      "desc": "Memorial stones for victims of National Socialism — searchable by location.",
+      "tools": [
+        {
+          "name": "getAllStones",
+          "desc": "Get all Stolpersteine in Berlin. Returns the complete dataset. Use limit/offset for pagination.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 10000 · default 100"
+            },
+            {
+              "name": "offset",
+              "type": "number",
+              "required": false,
+              "note": "min 0 · default 0"
+            }
+          ]
+        },
+        {
+          "name": "searchStones",
+          "desc": "Search Stolpersteine by person name or address. Filtering happens client-side on the full dataset.. Use IDs from results in getAllStones",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "q",
+              "type": "string",
+              "required": false,
+              "note": "min 1"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": false,
+              "note": "min 2"
+            },
+            {
+              "name": "address",
+              "type": "string",
+              "required": false,
+              "note": "min 3"
+            }
+          ]
+        },
+        {
+          "name": "getStonesByDistrict",
+          "desc": "Get Stolpersteine in a specific Berlin district. Filtering happens client-side.. Use getAllStones first to find valid IDs",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "bezirk",
+              "type": "enum",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "ortsteil",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getStonesByLocation",
+          "desc": "Get Stolpersteine near coordinates. Filtering by distance happens client-side.. Use getAllStones first to find valid IDs",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "lat",
+              "type": "number",
+              "required": true,
+              "note": "min 52.3 · max 52.7"
+            },
+            {
+              "name": "lon",
+              "type": "number",
+              "required": true,
+              "note": "min 13.0 · max 13.8"
+            },
+            {
+              "name": "radius",
+              "type": "number",
+              "required": false,
+              "note": "min 0.1 · max 5.0 · default 1.0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "transportrestvbb",
+      "title": "transport.rest VBB",
+      "category": "mobility",
+      "region": "Berlin",
+      "access": "tool-keyless",
+      "license": "ToS: transport.rest (open, attribution)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 7,
+      "desc": "Berlin & Brandenburg public transit (VBB) — stops, departures, journeys.",
+      "tools": [
+        {
+          "name": "searchLocations",
+          "desc": "Search for stops, stations, and addresses in the VBB network by name. Returns matching locations with coordinates, available transport products (S-Bahn, U-Bahn, tram, bus, ferry, regional), and station weight.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "results",
+              "type": "number",
+              "required": false,
+              "note": "default 10 · min 1 · max 50"
+            },
+            {
+              "name": "fuzzy",
+              "type": "boolean",
+              "required": false,
+              "note": "default true"
+            }
+          ]
+        },
+        {
+          "name": "getStop",
+          "desc": "Get detailed information about a specific stop/station by its VBB stop ID including name, coordinates, available products, and connected lines.. Use searchLocations first to find valid IDs",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "stopId",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getDepartures",
+          "desc": "Get real-time departures from a VBB stop/station. Returns scheduled and actual departure times, platform, line name, direction, delay, and transport mode for all VBB services.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "stopId",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "required": false,
+              "note": "default 30"
+            },
+            {
+              "name": "results",
+              "type": "number",
+              "required": false,
+              "note": "default 10 · max 50"
+            }
+          ]
+        },
+        {
+          "name": "getArrivals",
+          "desc": "Get real-time arrivals at a VBB stop/station. Returns scheduled and actual arrival times, origin, platform, delay, and line information.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "stopId",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "required": false,
+              "note": "default 30"
+            },
+            {
+              "name": "results",
+              "type": "number",
+              "required": false,
+              "note": "default 10 · max 50"
+            }
+          ]
+        },
+        {
+          "name": "getRadar",
+          "desc": "Get real-time positions of vehicles in a geographic bounding box. Returns active vehicles with their current coordinates, line info, and trip details. Only available for VBB network.. Use searchLocations first to find valid IDs",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "north",
+              "type": "number",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "west",
+              "type": "number",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "south",
+              "type": "number",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "east",
+              "type": "number",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "results",
+              "type": "number",
+              "required": false,
+              "note": "default 50 · max 200"
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "required": false,
+              "note": "default 30"
+            }
+          ]
+        },
+        {
+          "name": "getReachableFrom",
+          "desc": "Find stops reachable from a given location within a travel time limit. Requires address, latitude, and longitude. Returns stops grouped by travel duration.. Use searchLocations first to find valid IDs",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "address",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "latitude",
+              "type": "number",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "longitude",
+              "type": "number",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "maxDuration",
+              "type": "number",
+              "required": false,
+              "note": "default 20"
+            },
+            {
+              "name": "maxTransfers",
+              "type": "number",
+              "required": false,
+              "note": "default 3"
+            }
+          ]
+        },
+        {
+          "name": "planJourney",
+          "desc": "Plan a journey between two VBB stops/stations. Returns journey options with legs, transfers, duration, and real-time delay information. Use stop IDs from searchLocations.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "from",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "to",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "results",
+              "type": "number",
+              "required": false,
+              "note": "default 3 · min 1 · max 10"
+            },
+            {
+              "name": "transfers",
+              "type": "number",
+              "required": false,
+              "note": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "autobahn",
+      "title": "Autobahn Traffic",
+      "category": "mobility",
+      "region": "Germany",
+      "access": "tool-keyless",
+      "license": "DL-DE-BY-2.0 (Autobahn GmbH)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 6,
+      "desc": "Roadworks, closures and traffic on the German Autobahn.",
+      "tools": [
+        {
+          "name": "listRoads",
+          "desc": "List all German motorway identifiers (A1, A2, …, A995) as known to the Autobahn-API. Use this once to discover valid road IDs, then pass them to traffic/incident/parking endpoints. Keyless, slow-changing — cache-friendly.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "getRoadworks",
+          "desc": "Get current roadworks and construction sites for a specific motorway. Required: roadId.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "roadId",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getWarnings",
+          "desc": "Get current traffic warnings for a specific motorway via Autobahn API — query by roadId.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "roadId",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getClosures",
+          "desc": "Get current road closures for a specific motorway via Autobahn API — query by roadId.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "roadId",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getChargingStations",
+          "desc": "Get electric vehicle charging stations along a specific motorway. Required: roadId.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "roadId",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getWebcams",
+          "desc": "Get traffic webcams along a specific motorway via Autobahn API — query by roadId.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "roadId",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "destatis",
+      "title": "DESTATIS GENESIS",
+      "category": "demographics",
+      "region": "Germany",
+      "access": "tool-keyless",
+      "license": "DL-DE-BY-2.0 (DESTATIS)",
+      "detVerified": false,
+      "status": "HAVE",
+      "toolCount": 9,
+      "desc": "Federal statistics database — tables and indicators.",
+      "tools": [
+        {
+          "name": "search",
+          "desc": "Universal search across all DESTATIS data — returns matching statistics, tables, variables, and timeseries. Works without authentication (guest access). Use listTables for related data. Use listStatistics for related data.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "term",
+              "type": "string",
+              "required": true,
+              "note": "min 2"
+            },
+            {
+              "name": "category",
+              "type": "string",
+              "required": false,
+              "note": "default all"
+            },
+            {
+              "name": "pagelength",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 500 · default 100"
+            }
+          ]
+        },
+        {
+          "name": "listTables",
+          "desc": "Browse available tables by code pattern (e.g. \"12411*\" for population tables). Requires authentication. Use search for related data. Use listStatistics for related data.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "selection",
+              "type": "string",
+              "required": true,
+              "note": "min 1"
+            },
+            {
+              "name": "pagelength",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 500 · default 100"
+            },
+            {
+              "name": "area",
+              "type": "string",
+              "required": false,
+              "note": "default free"
+            }
+          ]
+        },
+        {
+          "name": "listStatistics",
+          "desc": "Browse available statistics by code pattern (e.g. \"124*\" for population statistics). Requires authentication. Use search for related data. Use listTables for related data.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "selection",
+              "type": "string",
+              "required": false,
+              "note": "default *"
+            },
+            {
+              "name": "pagelength",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 500 · default 100"
+            },
+            {
+              "name": "area",
+              "type": "string",
+              "required": false,
+              "note": "default free"
+            }
+          ]
+        },
+        {
+          "name": "getTableMetadata",
+          "desc": "Get detailed metadata for a specific table (description, variables, time range). Requires authentication. Use search for related data. Use listTables for related data.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        },
+        {
+          "name": "getStatisticMetadata",
+          "desc": "Get detailed metadata for a specific statistic (description, tables, variables). Requires authentication. Use search for related data. Use listTables for related data.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        },
+        {
+          "name": "getQualitySigns",
+          "desc": "Reference data for quality signs used in statistical tables (e.g. \"/\" = confidential, \"...\" = not yet available). Works without authentication. Use search for related data. Use listTables for related data.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "getTableData",
+          "desc": "Retrieve the actual data values of a specific GENESIS table as a flat CSV-like block with headers and values. Use startyear/endyear to limit the time range. Requires a GENESIS account credential. Use search for related data. Use getTablesForStatistic for related data.",
+          "access": "tool-key",
+          "detVerified": false,
+          "params": [
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "note": "min 1"
+            },
+            {
+              "name": "startyear",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "endyear",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "regionalvariable",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "regionalkey",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "area",
+              "type": "enum",
+              "required": false,
+              "note": "default free"
+            }
+          ]
+        },
+        {
+          "name": "getTablesForStatistic",
+          "desc": "List all data tables belonging to a specific statistic code. Useful for discovering the available table breakdowns before retrieving data. Requires a GENESIS account credential. Use getTableData for related data. Use search for related data.",
+          "access": "tool-key",
+          "detVerified": false,
+          "params": [
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "note": "min 1"
+            },
+            {
+              "name": "pagelength",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 500 · default 100"
+            },
+            {
+              "name": "area",
+              "type": "enum",
+              "required": false,
+              "note": "default free"
+            }
+          ]
+        },
+        {
+          "name": "catalogueVariables",
+          "desc": "Browse the variables (dimensions) of the GENESIS database. Variables define the axes of statistical tables such as year, region or age group. Requires a GENESIS account credential. Use getTableData for related data. Use search for related data.",
+          "access": "tool-key",
+          "detVerified": false,
+          "params": [
+            {
+              "name": "selection",
+              "type": "string",
+              "required": false,
+              "note": "default *"
+            },
+            {
+              "name": "type",
+              "type": "enum",
+              "required": false,
+              "note": "default Alle"
+            },
+            {
+              "name": "pagelength",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 500 · default 100"
+            },
+            {
+              "name": "area",
+              "type": "enum",
+              "required": false,
+              "note": "default free"
+            }
+          ]
+        }
+      ],
+      "keys": [
+        "STATISTISCHES_BUNDESAMT"
+      ]
+    },
+    {
+      "namespace": "klinikatlas",
+      "title": "Federal Hospital Atlas",
+      "category": "economy",
+      "region": "Germany",
+      "access": "tool-keyless",
+      "license": "DL-DE-BY-2.0 (Bundes-Klinik-Atlas)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 14,
+      "desc": "All German hospitals — searchable, with proximity.",
+      "tools": [
+        {
+          "name": "getAllHospitals",
+          "desc": "Get all hospital locations in Germany with pagination. Use limit/offset to page through ~1600 hospitals.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 2000 · default 100"
+            },
+            {
+              "name": "offset",
+              "type": "number",
+              "required": false,
+              "note": "min 0 · default 0"
+            }
+          ]
+        },
+        {
+          "name": "searchHospitals",
+          "desc": "Search hospitals by name, city, or postal code. Filtering happens client-side on the full dataset. Equivalent to getHospitalsByCity when only city param is used.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "q",
+              "type": "string",
+              "required": false,
+              "note": "min 1"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": false,
+              "note": "min 2"
+            },
+            {
+              "name": "city",
+              "type": "string",
+              "required": false,
+              "note": "min 2"
+            },
+            {
+              "name": "zip",
+              "type": "string",
+              "required": false,
+              "note": "min 3"
+            }
+          ]
+        },
+        {
+          "name": "getHospitalsByCity",
+          "desc": "Get all hospitals in a specific city. Filtering happens client-side.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "city",
+              "type": "string",
+              "required": true,
+              "note": "min 2"
+            }
+          ]
+        },
+        {
+          "name": "getHospitalsNearby",
+          "desc": "Find hospitals near geographic coordinates within a radius. Filtering by distance happens client-side.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "lat",
+              "type": "number",
+              "required": true,
+              "note": "min 47 · max 55.5"
+            },
+            {
+              "name": "lon",
+              "type": "number",
+              "required": true,
+              "note": "min 5.5 · max 15.5"
+            },
+            {
+              "name": "radius",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 50 · default 10"
+            }
+          ]
+        },
+        {
+          "name": "getStateStatistics",
+          "desc": "Get healthcare statistics per federal state including case numbers, caregiver counts, and hospital counts. Small dataset (17 entries), returned in full. State names can be used as reference for city-based searches.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "searchIcdCodes",
+          "desc": "Search ICD diagnostic codes by code prefix or keyword in description. ICD codes classify diagnoses (e.g. I10 = hypertension). Use getIcdCode for exact code lookup.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "required": false,
+              "note": "min 1"
+            },
+            {
+              "name": "q",
+              "type": "string",
+              "required": false,
+              "note": "min 2"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 500 · default 50"
+            }
+          ]
+        },
+        {
+          "name": "getIcdCode",
+          "desc": "Exact ICD code lookup. Returns the matching code and description. Use searchIcdCodes to discover valid codes first.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        },
+        {
+          "name": "searchOpsCodes",
+          "desc": "Search OPS procedure codes by code prefix or keyword in description. OPS codes classify medical procedures (e.g. 5-820 = hip replacement). Use getOpsCode for exact lookup.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "required": false,
+              "note": "min 1"
+            },
+            {
+              "name": "q",
+              "type": "string",
+              "required": false,
+              "note": "min 2"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 500 · default 50"
+            }
+          ]
+        },
+        {
+          "name": "getOpsCode",
+          "desc": "Exact OPS code lookup. Returns the matching code and description. Use searchOpsCodes to discover valid codes first.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        },
+        {
+          "name": "searchPlaces",
+          "desc": "Search German places by city name, postal code prefix, or district. Filtering happens client-side on the full dataset (~82K entries). Use getGermanStates to discover valid state/district names.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "city",
+              "type": "string",
+              "required": false,
+              "note": "min 2"
+            },
+            {
+              "name": "zip",
+              "type": "string",
+              "required": false,
+              "note": "min 3"
+            },
+            {
+              "name": "district",
+              "type": "string",
+              "required": false,
+              "note": "min 2"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 500 · default 50"
+            }
+          ]
+        },
+        {
+          "name": "getPlaceByZip",
+          "desc": "Exact postal code lookup. Returns all places matching the 5-digit German postal code. This is a strict subset of searchPlaces with exact zip matching.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "zip",
+              "type": "string",
+              "required": true,
+              "note": "length 5"
+            }
+          ]
+        },
+        {
+          "name": "getPlacesByDistrict",
+          "desc": "Get all places in a specific district (Landkreis). Filtering happens client-side. Use searchPlaces with district param for partial matches.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "district",
+              "type": "string",
+              "required": true,
+              "note": "min 2"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 500 · default 100"
+            }
+          ]
+        },
+        {
+          "name": "getPlacesNearby",
+          "desc": "Find places near geographic coordinates within a radius. Filtering by distance happens client-side. Results are sorted by distance ascending.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "lat",
+              "type": "number",
+              "required": true,
+              "note": "min 47 · max 55.5"
+            },
+            {
+              "name": "lon",
+              "type": "number",
+              "required": true,
+              "note": "min 5.5 · max 15.5"
+            },
+            {
+              "name": "radius",
+              "type": "number",
+              "required": false,
+              "note": "min 0.5 · max 50 · default 5"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 500 · default 50"
+            }
+          ]
+        },
+        {
+          "name": "getGermanStates",
+          "desc": "Get all 16 German federal states with their geographic center coordinates. State names can be used as reference for district filtering in searchPlaces and getPlacesByDistrict.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        }
+      ]
+    },
+    {
+      "namespace": "nextbike",
+      "title": "nextbike Bike-Sharing",
+      "category": "mobility",
+      "region": "Germany",
+      "access": "tool-keyless",
+      "license": "GBFS (nextbike) — attribution",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 2,
+      "desc": "Bike-sharing networks across 50+ German cities (GBFS).",
+      "tools": [
+        {
+          "name": "getStationsAndBikes",
+          "desc": "Get all stations and available bikes for a nextbike city/network. Returns station locations, capacity, available bikes by type, and individual bike details. Use city parameter for specific networks (e.g. 362 for Berlin). Get valid city IDs from getAllNetworks.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "city",
+              "type": "number",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getAllNetworks",
+          "desc": "Get a list of all nextbike networks/cities worldwide with summary statistics. Returns country, city names, available bikes count, and network metadata. No city parameter returns all networks. Optionally filter by ISO country code(s) via countries (e.g. DE, PL). Use returned uid values as city parameter in getStationsAndBikes.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "list_cities",
+              "type": "number",
+              "required": false,
+              "note": "default 1"
+            },
+            {
+              "name": "countries",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "nina",
+      "title": "NINA Civil-Protection Alerts",
+      "category": "environment",
+      "region": "Germany",
+      "access": "tool-keyless",
+      "license": "DL-DE-BY-2.0 (BBK)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 9,
+      "desc": "Official hazard and weather warnings (BBK).",
+      "tools": [
+        {
+          "name": "getDashboard",
+          "desc": "Get active warnings for a specific German district by its AGS/ARS code (Amtlicher Gemeindeschlüssel). Returns all current alerts from all providers.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "ars",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getWarningById",
+          "desc": "Retrieve full details of a specific warning by its identifier. Returns CAP (Common Alerting Protocol) formatted warning with all areas and instructions.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "identifier",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getMowasMapData",
+          "desc": "Get all active MoWaS (Modulares Warnsystem) warnings for the entire Germany map. Returns BBK civil protection warnings.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "getDwdMapData",
+          "desc": "Get all active DWD (Deutscher Wetterdienst) weather warnings for Germany. Returns severe weather alerts including storms, heavy rain, and snow.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "getKatwarnMapData",
+          "desc": "Get all active KATWARN warnings for Germany. Returns civil protection alerts from the KATWARN platform.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "getLhpMapData",
+          "desc": "Get all active LHP (Länderübergreifendes Hochwasser Portal) flood warnings for Germany. Returns river flood level alerts.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "getEventCodes",
+          "desc": "Retrieve the list of all available event codes used in NINA warnings. Useful for understanding warning categories and icons.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "getMowasWarnings",
+          "desc": "Get all current MOWAS (Modulares Warnsystem) official civil protection warnings across Germany. This is the nationwide channel that usually carries data; for warnings affecting a specific region use getRegionWarnings.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "getRegionWarnings",
+          "desc": "Get all active warnings affecting a specific region, identified by its 12-digit Amtlicher Regionalschluessel (ARS). The dashboard aggregates warnings from all providers (MOWAS, DWD, BIWAPP, KATWARN) for that district. Use the district-level ARS (state code + district + trailing zeros, e.g. 066350000000 for Waldeck-Frankenberg).",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "ars",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "oparl",
+      "title": "OParl Council Information",
+      "category": "admin",
+      "region": "Germany",
+      "access": "tool-keyless",
+      "license": "OParl (per-council licenses)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 8,
+      "desc": "Council information systems for German councils.",
+      "tools": [
+        {
+          "name": "getBodies",
+          "desc": "List the bodies (Koerperschaften) of a German council. Pick the council via the name enum; the vendor path style is resolved internally.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "name",
+              "type": "enum",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getMeetings",
+          "desc": "List meetings (Sitzungen) of a council body, paginated. Optional bodyId (default 1), page, created/modified date filters. limit and reverse are applied client-side. The newest meetings are on the last page: read pagination.totalPages, then call with that page and reverse=true (where the server reports totals).",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "name",
+              "type": "enum",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "bodyId",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "page",
+              "type": "number",
+              "required": false,
+              "note": "min 1"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 100"
+            },
+            {
+              "name": "reverse",
+              "type": "boolean",
+              "required": false,
+              "note": "default false"
+            },
+            {
+              "name": "created_since",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "created_until",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "modified_since",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "modified_until",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getMeeting",
+          "desc": "Get a single meeting (Sitzung) by id, including its agenda items. Requires the council name and the meeting id.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "name",
+              "type": "enum",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "bodyId",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getPapers",
+          "desc": "List papers (Drucksachen) of a council body, paginated. Optional bodyId (default 1), page, date filters. limit and reverse client-side.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "name",
+              "type": "enum",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "bodyId",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "page",
+              "type": "number",
+              "required": false,
+              "note": "min 1"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 100"
+            },
+            {
+              "name": "reverse",
+              "type": "boolean",
+              "required": false,
+              "note": "default false"
+            },
+            {
+              "name": "created_since",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "created_until",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "modified_since",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "modified_until",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getPaper",
+          "desc": "Get a single paper (Drucksache) by id, including reference, date and linked files. Requires the council name and the paper id.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "name",
+              "type": "enum",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "bodyId",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getPersons",
+          "desc": "List persons (members) of a council body, paginated. Optional bodyId (default 1), page, date filters. limit and reverse client-side.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "name",
+              "type": "enum",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "bodyId",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "page",
+              "type": "number",
+              "required": false,
+              "note": "min 1"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 100"
+            },
+            {
+              "name": "reverse",
+              "type": "boolean",
+              "required": false,
+              "note": "default false"
+            },
+            {
+              "name": "created_since",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "created_until",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "modified_since",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "modified_until",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getOrganizations",
+          "desc": "List organizations (Gremien, Fraktionen, Dienststellen) of a council body, paginated. Filter the returned data by organizationType. Optional bodyId (default 1), page, date filters. limit and reverse client-side.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "name",
+              "type": "enum",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "bodyId",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "page",
+              "type": "number",
+              "required": false,
+              "note": "min 1"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 100"
+            },
+            {
+              "name": "reverse",
+              "type": "boolean",
+              "required": false,
+              "note": "default false"
+            },
+            {
+              "name": "created_since",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "created_until",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "modified_since",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "modified_until",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getAgendaItem",
+          "desc": "Get a single agenda item (Tagesordnungspunkt) by id, including its consultation and linked paper. Requires the council name and the agenda item id. Only available on OParl 1.1 endpoints (e.g. SD.NET RIM); not supported on ALLRIS 1.0.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "name",
+              "type": "enum",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "bodyId",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "openplz",
+      "title": "OpenPLZ Postal Directory",
+      "category": "geo",
+      "region": "Germany",
+      "access": "tool-keyless",
+      "license": "ODbL (OpenPLZ)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 8,
+      "desc": "Postal codes and streets for DE / AT / CH.",
+      "tools": [
+        {
+          "name": "getGermanFederalStates",
+          "desc": "Returns all 16 German federal states (Bundeslaender) with their official keys and names.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "searchGermanLocalities",
+          "desc": "Search German localities by postal code or name. Returns locality, municipality, district, and federal state. For street-level data use searchGermanStreets. For combined search use germanFullTextSearch.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "postalCode",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "page",
+              "type": "number",
+              "required": false,
+              "note": "default 1 · min 1"
+            },
+            {
+              "name": "pageSize",
+              "type": "number",
+              "required": false,
+              "note": "default 10 · max 50"
+            }
+          ]
+        },
+        {
+          "name": "searchGermanStreets",
+          "desc": "Search German streets by name, postal code, or locality. Returns street name with locality, municipality, district, and federal state context.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "name",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "postalCode",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "locality",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "page",
+              "type": "number",
+              "required": false,
+              "note": "default 1 · min 1"
+            },
+            {
+              "name": "pageSize",
+              "type": "number",
+              "required": false,
+              "note": "default 10 · max 50"
+            }
+          ]
+        },
+        {
+          "name": "germanFullTextSearch",
+          "desc": "Full-text search across German streets, postal codes, and localities. For structured queries use searchGermanLocalities or searchGermanStreets. For Austrian or Swiss data, use the country-specific tools.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "searchTerm",
+              "type": "string",
+              "required": true,
+              "note": "min 1"
+            },
+            {
+              "name": "page",
+              "type": "number",
+              "required": false,
+              "note": "default 1 · min 1"
+            },
+            {
+              "name": "pageSize",
+              "type": "number",
+              "required": false,
+              "note": "default 10 · max 50"
+            }
+          ]
+        },
+        {
+          "name": "getAustrianProvinces",
+          "desc": "Returns all 9 Austrian federal provinces (Bundeslaender) with their official keys and names.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "searchAustrianLocalities",
+          "desc": "Search Austrian localities by postal code or name. Returns locality name, postal code, municipality, district, and federal province.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "postalCode",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "page",
+              "type": "number",
+              "required": false,
+              "note": "default 1 · min 1"
+            },
+            {
+              "name": "pageSize",
+              "type": "number",
+              "required": false,
+              "note": "default 10 · max 50"
+            }
+          ]
+        },
+        {
+          "name": "getSwissCantons",
+          "desc": "Returns all 26 Swiss cantons with their official keys and names.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": []
+        },
+        {
+          "name": "searchSwissLocalities",
+          "desc": "Search Swiss localities by postal code or name. Returns locality name, postal code, commune, district, and canton.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "postalCode",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "page",
+              "type": "number",
+              "required": false,
+              "note": "default 1 · min 1"
+            },
+            {
+              "name": "pageSize",
+              "type": "number",
+              "required": false,
+              "note": "default 10 · max 50"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "transportrestdb",
+      "title": "transport.rest Deutsche Bahn",
+      "category": "mobility",
+      "region": "Germany",
+      "access": "tool-keyless",
+      "license": "ToS: transport.rest (open, attribution)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 8,
+      "desc": "Nationwide DB rail — stations, departures, journeys.",
+      "tools": [
+        {
+          "name": "searchLocations",
+          "desc": "Search for stations and addresses by name. Returns matching locations with coordinates, product availability (ICE, IC, regional, S-Bahn, bus), and station weight (importance). Use IDs from results in getNearbyLocations.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "results",
+              "type": "number",
+              "required": false,
+              "note": "default 10"
+            },
+            {
+              "name": "fuzzy",
+              "type": "boolean",
+              "required": false,
+              "note": "default true"
+            }
+          ]
+        },
+        {
+          "name": "getStop",
+          "desc": "Get detailed information about a specific stop/station by its IBNR ID including name, coordinates, available transport products, and connected lines. Use searchLocations first to find valid IDs.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "stopId",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getDepartures",
+          "desc": "Get real-time departures from a station. Returns scheduled and real-time departure times, platform, line name, direction, and delay information for all transport modes.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "stopId",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "required": false,
+              "note": "default 30"
+            },
+            {
+              "name": "results",
+              "type": "number",
+              "required": false,
+              "note": "default 10"
+            }
+          ]
+        },
+        {
+          "name": "getArrivals",
+          "desc": "Get real-time arrivals at a station. Returns scheduled and actual arrival times, origin, platform, delay, and line information.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "stopId",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "duration",
+              "type": "number",
+              "required": false,
+              "note": "default 30"
+            },
+            {
+              "name": "results",
+              "type": "number",
+              "required": false,
+              "note": "default 10"
+            }
+          ]
+        },
+        {
+          "name": "planJourney",
+          "desc": "Plan a journey between two stations. IMPORTANT: from and to MUST be IBNR station IDs (e.g. 8000191 for Karlsruhe Hbf, 8011160 for Berlin Hbf). Use searchLocations first to get the IBNR. Do NOT pass city names. Set tickets=true for prices.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "from",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "to",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "results",
+              "type": "number",
+              "required": false,
+              "note": "default 3"
+            },
+            {
+              "name": "transfers",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "tickets",
+              "type": "boolean",
+              "required": false,
+              "note": "default false"
+            },
+            {
+              "name": "bestprice",
+              "type": "boolean",
+              "required": false,
+              "note": "default false"
+            },
+            {
+              "name": "firstClass",
+              "type": "boolean",
+              "required": false,
+              "note": "default false"
+            },
+            {
+              "name": "loyaltyCard",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getNearbyLocations",
+          "desc": "Find stops and stations near geographic coordinates. Returns nearby locations sorted by walking distance in meters.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "latitude",
+              "type": "number",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "longitude",
+              "type": "number",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "results",
+              "type": "number",
+              "required": false,
+              "note": "default 8"
+            },
+            {
+              "name": "distance",
+              "type": "number",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "searchStations",
+          "desc": "Autocomplete DB station names using the db-stations dataset. Returns richer data than /locations including address, operator, category, and facilities.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "default 3"
+            },
+            {
+              "name": "fuzzy",
+              "type": "boolean",
+              "required": false,
+              "note": "default false"
+            },
+            {
+              "name": "completion",
+              "type": "boolean",
+              "required": false,
+              "note": "default true"
+            }
+          ]
+        },
+        {
+          "name": "getTrip",
+          "desc": "Get detailed information about a specific trip including all stops, arrival/departure times, delays, and current position. The tripId is ephemeral (it encodes the service date) and must be taken from a recent getDepartures or planJourney result.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "tripId",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "wikidata",
+      "title": "Wikidata SPARQL",
+      "category": "economy",
+      "region": "global",
+      "access": "tool-keyless",
+      "license": "CC0 (Wikidata)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 6,
+      "desc": "Structured knowledge graph via SPARQL.",
+      "tools": [
+        {
+          "name": "countriesByPopulation",
+          "desc": "List countries ranked by population. Returns country name, Wikidata ID, and population count ordered by population descending.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "default 20 · min 1 · max 300"
+            }
+          ]
+        },
+        {
+          "name": "citiesByCountry",
+          "desc": "List cities in a given country by Wikidata country ID (e.g. Q183 for Germany, Q30 for USA). Returns city names and optional population data.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "countryId",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "default 20 · min 1 · max 200"
+            }
+          ]
+        },
+        {
+          "name": "programmingLanguages",
+          "desc": "List programming languages with optional inception year and developer. Returns language names, Wikidata IDs, and metadata.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "default 50 · min 1 · max 500"
+            }
+          ]
+        },
+        {
+          "name": "universitiesByCountry",
+          "desc": "List universities in a given country by Wikidata country ID. Returns university names, founding dates, and locations.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "countryId",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "default 20 · min 1 · max 200"
+            }
+          ]
+        },
+        {
+          "name": "nobelLaureatesByYear",
+          "desc": "List Nobel Prize laureates for a given year. Returns names, prize category, and Wikidata references.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "year",
+              "type": "number",
+              "required": true,
+              "note": "min 1901 · max 2025"
+            }
+          ]
+        },
+        {
+          "name": "querySparql",
+          "desc": "Execute a custom SPARQL query against the Wikidata knowledge graph. Full SPARQL 1.1 support with Wikidata-specific extensions like the label service.",
+          "access": "tool-keyless",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "format",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "namespace": "dbsharedmobility",
+      "title": "DB Shared Mobility",
+      "category": "mobility",
+      "region": "Germany",
+      "access": "tool-key",
+      "license": "DB API Marketplace ToS (key)",
+      "detVerified": false,
+      "status": "HAVE",
+      "toolCount": 5,
+      "desc": "Deutsche Bahn shared-mobility (GBFS) — needs a DB developer key.",
+      "tools": [
+        {
+          "name": "getGbfsDiscovery",
+          "desc": "Get the GBFS discovery feed listing all available data feeds and their URLs. Entry point for discovering available shared mobility data. Use getStationInformation for related data. Use getStationStatus for related data.",
+          "access": "tool-key",
+          "detVerified": false,
+          "params": []
+        },
+        {
+          "name": "getStationInformation",
+          "desc": "Get all shared mobility stations with location, name, capacity, and rental URIs. Call a Bike stations across Germany. Use getGbfsDiscovery for related data. Use getStationStatus for related data.",
+          "access": "tool-key",
+          "detVerified": false,
+          "params": []
+        },
+        {
+          "name": "getStationStatus",
+          "desc": "Get real-time status for all shared mobility stations. Returns number of available bikes, available docks, and whether the station is installed/renting/returning. Use getGbfsDiscovery for related data. Use getStationInformation for related data.",
+          "access": "tool-key",
+          "detVerified": false,
+          "params": []
+        },
+        {
+          "name": "getVehicleTypes",
+          "desc": "Get available vehicle types (bike types, e-bikes, cargo bikes etc.) with propulsion type, range, and form factor. Use getGbfsDiscovery for related data. Use getStationInformation for related data.",
+          "access": "tool-key",
+          "detVerified": false,
+          "params": []
+        },
+        {
+          "name": "getSystemInformation",
+          "desc": "Get system-level information about the shared mobility provider including name, operator, timezone, contact info, and supported features. Use getGbfsDiscovery for related data. Use getStationInformation for related data.",
+          "access": "tool-key",
+          "detVerified": false,
+          "params": []
+        }
+      ],
+      "keys": [
+        "DB_CLIENT_ID",
+        "DB_API_KEY"
+      ]
+    },
+    {
+      "namespace": "dip",
+      "title": "Bundestag DIP",
+      "category": "admin",
+      "region": "Germany",
+      "access": "tool-key",
+      "license": "DIP Bundestag ToS (free key)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 16,
+      "desc": "Parliamentary documents and protocols — needs a free DIP key.",
+      "tools": [
+        {
+          "name": "listDrucksachen",
+          "desc": "Search and list Drucksachen (printed papers) of the German Bundestag. Filter by legislative period, date range, or title. Returns paginated results. Use getDrucksache for related data. Use listDrucksacheTexts for related data.",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "f.wahlperiode",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.datum.start",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.datum.end",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.titel",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.dokumentnummer",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.zuordnung",
+              "type": "enum",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "cursor",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getDrucksache",
+          "desc": "Get a single Drucksache (printed paper) by its ID from the German Bundestag. Returns full document details. Use listDrucksachen for related data. Use listDrucksacheTexts for related data.",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "id",
+              "type": "number",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        },
+        {
+          "name": "listDrucksacheTexts",
+          "desc": "Search and list full texts of Drucksachen from the German Bundestag. Filter by legislative period, date range, or title. Use listDrucksachen for related data. Use getDrucksache for related data.",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "f.wahlperiode",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.datum.start",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.datum.end",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.titel",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "cursor",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getDrucksacheText",
+          "desc": "Get the full text of a single Drucksache by its ID from the German Bundestag. Use listDrucksachen for related data. Use getDrucksache for related data.",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "id",
+              "type": "number",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        },
+        {
+          "name": "listPlenarprotokolle",
+          "desc": "Search and list Plenarprotokolle (plenary protocols) of the German Bundestag. Filter by legislative period, date range, or title. Use listDrucksachen for related data. Use getDrucksache for related data.",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "f.wahlperiode",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.datum.start",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.datum.end",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.titel",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.dokumentnummer",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.zuordnung",
+              "type": "enum",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "cursor",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getPlenarprotokoll",
+          "desc": "Get a single Plenarprotokoll (plenary protocol) by its ID from the German Bundestag. Use listDrucksachen for related data. Use getDrucksache for related data.",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "id",
+              "type": "number",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        },
+        {
+          "name": "listPlenarprotokollTexts",
+          "desc": "Search and list full texts of Plenarprotokolle from the German Bundestag. Filter by legislative period or date range. Use listDrucksachen for related data. Use getDrucksache for related data.",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "f.wahlperiode",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.datum.start",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.datum.end",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.titel",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "cursor",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getPlenarprotokollText",
+          "desc": "Get the full text of a single Plenarprotokoll by its ID from the German Bundestag. Use listDrucksachen for related data. Use getDrucksache for related data.",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "id",
+              "type": "number",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        },
+        {
+          "name": "listVorgaenge",
+          "desc": "Search and list Vorgaenge (legislative proceedings) of the German Bundestag. Filter by legislative period, date range, type, or descriptor. Use getVorgang for related data. Use listVorgangspositionen for related data.",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "f.wahlperiode",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.datum.start",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.datum.end",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.titel",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.vorgangstyp",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.beratungsstand",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.deskriptor",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "cursor",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getVorgang",
+          "desc": "Get a single Vorgang (legislative proceeding) by its ID from the German Bundestag. Returns full proceeding details including related documents and activities. Use listVorgaenge for related data. Use listVorgangspositionen for related data.",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "id",
+              "type": "number",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        },
+        {
+          "name": "listVorgangspositionen",
+          "desc": "Search and list Vorgangspositionen (proceeding positions) of the German Bundestag. Filter by legislative period or date range. Use listVorgaenge for related data. Use getVorgang for related data.",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "f.wahlperiode",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.datum.start",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.datum.end",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.titel",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "cursor",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getVorgangsposition",
+          "desc": "Get a single Vorgangsposition (proceeding position) by its ID from the German Bundestag. Use listVorgaenge for related data. Use getVorgang for related data.",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "id",
+              "type": "number",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        },
+        {
+          "name": "listAktivitaeten",
+          "desc": "Search and list Aktivitaeten (parliamentary activities) of the German Bundestag. Filter by legislative period, date range, person, or document type. Use listVorgaenge for related data. Use getVorgang for related data.",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "f.wahlperiode",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.datum.start",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.datum.end",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.titel",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.dokumentart",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "cursor",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getAktivitaet",
+          "desc": "Get a single Aktivitaet (parliamentary activity) by its ID from the German Bundestag. Use listVorgaenge for related data. Use getVorgang for related data.",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "id",
+              "type": "number",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        },
+        {
+          "name": "listPersonen",
+          "desc": "Search and list Personen (members of parliament) in the German Bundestag. Filter by legislative period or name. Use listVorgaenge for related data. Use getVorgang for related data.",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "f.wahlperiode",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.datum.start",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.datum.end",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "f.person",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "cursor",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "getPerson",
+          "desc": "Get a single Person (member of parliament) by their ID from the German Bundestag. Returns full biographical and political details. Use listVorgaenge for related data. Use getVorgang for related data.",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "id",
+              "type": "number",
+              "required": true,
+              "note": "min 1"
+            }
+          ]
+        }
+      ],
+      "keys": [
+        "DIP_BUNDESTAG_API_KEY"
+      ]
+    },
+    {
+      "namespace": "ticketmaster",
+      "title": "Ticketmaster Discovery",
+      "category": "culture",
+      "region": "global",
+      "access": "tool-key",
+      "license": "Ticketmaster Developer ToS (free key)",
+      "detVerified": false,
+      "status": "HAVE",
+      "toolCount": 6,
+      "desc": "Events, attractions and venues worldwide — needs a free Discovery API key.",
+      "tools": [
+        {
+          "name": "searchEvents",
+          "desc": "Search live events by keyword, city, country and classification (genre). Returns event records with name, dates, venues and price ranges. Use city=Berlin&countryCode=DE for Berlin large events.",
+          "access": "tool-key",
+          "detVerified": false,
+          "params": [
+            {
+              "name": "apikey",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "keyword",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "city",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "countryCode",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "classificationName",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "size",
+              "type": "number",
+              "required": false,
+              "note": "default 20 · min 1 · max 100"
+            },
+            {
+              "name": "page",
+              "type": "number",
+              "required": false,
+              "note": "default 0 · min 0"
+            }
+          ]
+        },
+        {
+          "name": "getEvent",
+          "desc": "Get full details for a single event by its Ticketmaster event id, including dates, venue, classifications, images and price ranges.",
+          "access": "tool-key",
+          "detVerified": false,
+          "params": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "apikey",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "searchAttractions",
+          "desc": "Search attractions (artists, sports teams, shows) by keyword. Returns attraction records with name, classifications and external links.",
+          "access": "tool-key",
+          "detVerified": false,
+          "params": [
+            {
+              "name": "apikey",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "keyword",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "classificationName",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "size",
+              "type": "number",
+              "required": false,
+              "note": "default 20 · min 1 · max 100"
+            },
+            {
+              "name": "page",
+              "type": "number",
+              "required": false,
+              "note": "default 0 · min 0"
+            }
+          ]
+        },
+        {
+          "name": "getAttraction",
+          "desc": "Get full details for a single attraction (artist, team, show) by its Ticketmaster attraction id, including classifications, images and external links.",
+          "access": "tool-key",
+          "detVerified": false,
+          "params": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "apikey",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "searchVenues",
+          "desc": "Search venues by keyword, city and country. Returns venue records with name, address, location (latitude/longitude) and timezone.",
+          "access": "tool-key",
+          "detVerified": false,
+          "params": [
+            {
+              "name": "apikey",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "keyword",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "city",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "countryCode",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "size",
+              "type": "number",
+              "required": false,
+              "note": "default 20 · min 1 · max 100"
+            },
+            {
+              "name": "page",
+              "type": "number",
+              "required": false,
+              "note": "default 0 · min 0"
+            }
+          ]
+        },
+        {
+          "name": "getVenue",
+          "desc": "Get full details for a single venue by its Ticketmaster venue id, including address, location (latitude/longitude), timezone and general info.",
+          "access": "tool-key",
+          "detVerified": false,
+          "params": [
+            {
+              "name": "id",
+              "type": "string",
+              "required": true,
+              "note": ""
+            },
+            {
+              "name": "apikey",
+              "type": "string",
+              "required": true,
+              "note": ""
+            }
+          ]
+        }
+      ],
+      "keys": [
+        "TICKETMASTER_API_KEY"
+      ]
+    },
+    {
+      "namespace": "offeneregister",
+      "title": "OffeneRegister Companies",
+      "category": "economy",
+      "region": "Germany",
+      "access": "resource-local",
+      "license": "ODbL (OffeneRegister)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 5,
+      "desc": "5.3M German companies — local SQLite (FTS5), needs the bulk DB.",
+      "tools": [
+        {
+          "name": "searchCompany",
+          "desc": "Full-text search German companies by name (FTS5, column-scoped to the name). Returns company_number, name, status, address, federal state and registrar. Empty query: OFFREG-002.",
+          "access": "resource-local",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": true,
+              "note": "min 2"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 100"
+            }
+          ]
+        },
+        {
+          "name": "getCompany",
+          "desc": "Get a single German company by its unique company_number. Returns the full company row. Missing company_number: OFFREG-003. No match: OFFREG-004.",
+          "access": "resource-local",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "company_number",
+              "type": "string",
+              "required": true,
+              "note": "min 2"
+            }
+          ]
+        },
+        {
+          "name": "searchOfficer",
+          "desc": "Full-text search company officers (Geschaeftsfuehrer, Prokuristen, Vorstand) by name (FTS5, column-scoped to the name). Returns name, position, dates and the linked company_number. Empty query: OFFREG-002.",
+          "access": "resource-local",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": true,
+              "note": "min 2"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 100"
+            }
+          ]
+        },
+        {
+          "name": "getCompanyOfficers",
+          "desc": "List all officers (current and former) of a company by its company_number, newest start_date first. Missing company_number: OFFREG-003.",
+          "access": "resource-local",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "company_number",
+              "type": "string",
+              "required": true,
+              "note": "min 2"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 200"
+            }
+          ]
+        },
+        {
+          "name": "getCompanyRegistrations",
+          "desc": "List registration events (registration, subsequent-registration, alternate-registration ...) of a company by its company_number, newest publication_date first. Missing company_number: OFFREG-003.",
+          "access": "resource-local",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "company_number",
+              "type": "string",
+              "required": true,
+              "note": "min 2"
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "min 1 · max 200"
+            }
+          ]
+        }
+      ],
+      "requiredLibraries": [
+        "better-sqlite3"
+      ]
+    },
+    {
+      "namespace": "geo",
+      "title": "Geo Entry-Point",
+      "category": "geo",
+      "region": "global",
+      "access": "resource-local",
+      "license": "Mixed (OSM/Nominatim/local DBs)",
+      "detVerified": true,
+      "status": "HAVE",
+      "toolCount": 8,
+      "desc": "Canonical geocoding orchestrator — keyless lookups + local SQLite + keyed station depth.",
+      "tools": [
+        {
+          "name": "geoResolve",
+          "desc": "geo-resolve — dispatcher. Provide EXACTLY ONE of {latlon, address, placeName, postalCode, osmId}. Ambiguous (0 or >1) input is rejected (GEO-RESOLVE-001), never guessed. Returns a canonical Location.",
+          "access": "resource-local",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "latlon",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "address",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "placeName",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "postalCode",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "osmId",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "geoForward",
+          "desc": "geo-forward — geocode a free-form query or structured address (street/city/state/country/postalCode) to a point. Provider order (keyless first): Nominatim → OpenPLZ → Geoapify (key) → GeoNames (key). No hit: GEO-FWD-001; upstream chain fails: GEO-FWD-002; no usable input: GEO-FWD-003.",
+          "access": "resource-local",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "street",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "city",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "state",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "country",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "postalCode",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "geoReverse",
+          "desc": "geo-reverse (Handgriff 3) — reverse geocode lat/lon to an address. Snap hierarchy houseNumber → street → point. Meadow case: nearest house with snapDistanceMeters and lowered confidence. Order: Nominatim.reverse → local DB-POI / OpenPLZ. Overpass is NOT default. Unresolvable: GEO-REV-001.",
+          "access": "resource-local",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "lat",
+              "type": "number",
+              "required": false,
+              "note": "min -90 · max 90"
+            },
+            {
+              "name": "lon",
+              "type": "number",
+              "required": false,
+              "note": "min -180 · max 180"
+            }
+          ]
+        },
+        {
+          "name": "geoPostal",
+          "desc": "geo-postal — resolve a postal code to a locality and admin anchor. Order: OpenPLZ → Nominatim. No hit: GEO-PLZ-001.",
+          "access": "resource-local",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "postalCode",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "geoLookup",
+          "desc": "geo-lookup — look up an OSM object by id (N…/W…/R…) via Nominatim.lookup. No hit: GEO-LOOKUP-001.",
+          "access": "resource-local",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "osmId",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "name": "geoNearby",
+          "desc": "geo-nearby (Handgriff 2) — find features within radiusMeters of a point (location object OR lat/lon). Optional theme, timeRange (passed through), sources[]. Fans out over local SQLite (gtfs/overture); Overpass only when explicitly in sources[]. Results are normalised + deduped (PRD-F) into one FeatureCollection with _source and licence per feature.",
+          "access": "resource-local",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "lat",
+              "type": "number",
+              "required": false,
+              "note": "min -90 · max 90"
+            },
+            {
+              "name": "lon",
+              "type": "number",
+              "required": false,
+              "note": "min -180 · max 180"
+            },
+            {
+              "name": "radiusMeters",
+              "type": "number",
+              "required": false,
+              "note": "min 1"
+            },
+            {
+              "name": "theme",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "sources",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "selection",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "categories",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "limit",
+              "type": "number",
+              "required": false,
+              "note": "default 50 · min 1 · max 500"
+            }
+          ]
+        },
+        {
+          "name": "geoExtent",
+          "desc": "geo-extent — pure calculation. From lat/lon + radiusMeters (>0) + targetCrs + axisOrder compute a bounding box. No network call. radiusMeters <= 0: GEO-EXTENT-001. axisOrder is explicit (lonlat|latlon), never silently defaulted.",
+          "access": "resource-local",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "lat",
+              "type": "number",
+              "required": false,
+              "note": "min -90 · max 90"
+            },
+            {
+              "name": "lon",
+              "type": "number",
+              "required": false,
+              "note": "min -180 · max 180"
+            },
+            {
+              "name": "radiusMeters",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "targetCrs",
+              "type": "string",
+              "required": false,
+              "note": "default EPSG:4326"
+            },
+            {
+              "name": "axisOrder",
+              "type": "enum",
+              "required": false,
+              "note": "default lonlat"
+            }
+          ]
+        },
+        {
+          "name": "geoStation",
+          "desc": "geo-station (Memo 118) — depth pivot: resolve a German railway station from EXACTLY ONE selector {latlon, eva, dhid, bahnhofsnummer, name} to all five identifiers (bahnhofsnummer, EVA, DHID/IFOPT, AGS, RIL100) plus a canonical location, confidence and provenance. Keyed (DB StaDa + RIS::Stations); the dhid path bridges via the zHV registry. Without DB_CLIENT_ID/DB_API_KEY this schema is disabled (the keyless geo tools stay available). Ambiguous (0 or >1) selector input is rejected (GEO-STATION-001), never guessed. Optional opt-in enrich (comma list): elevators (FaSta lift state); departures is deferred (time-bound, flowmcp-grading#63).",
+          "access": "tool-key",
+          "detVerified": true,
+          "params": [
+            {
+              "name": "latlon",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "eva",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "dhid",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "bahnhofsnummer",
+              "type": "number",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": false,
+              "note": ""
+            },
+            {
+              "name": "radiusMeters",
+              "type": "number",
+              "required": false,
+              "note": "default 1000 · min 1"
+            },
+            {
+              "name": "enrich",
+              "type": "string",
+              "required": false,
+              "note": ""
+            }
+          ]
+        }
+      ],
+      "keys": [
+        "DB_CLIENT_ID",
+        "DB_API_KEY"
+      ],
+      "requiredLibraries": [
+        "better-sqlite3",
+        "geo-overpass-toolkit",
+        "geo-dzt-toolkit",
+        "geo-idbridge-toolkit"
+      ]
+    }
+  ]
+}
