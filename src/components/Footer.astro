@@ -109,7 +109,9 @@ const columns = [
     margin: 0 auto 1.5rem;
     padding: 0 1.5rem;
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    /* Memo 124 Kap 11 (F5=B): equal thirds so the three zones are evenly distributed
+     * (left / center / right) instead of a floating auto-width middle column. */
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 2rem;
     align-items: start;
 }

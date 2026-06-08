@@ -126,8 +126,9 @@ const frontmatter = {
      * into the StarlightPage frame. Header stays LEFT-aligned (no centering). */
     .blog-index {
         max-width: 1100px;
-        margin: 2rem auto 4rem;
-        padding: 0 1.5rem;
+        /* unified CI spacing tokens (Memo 124 Kap 10) — same top/bottom + side padding site-wide */
+        margin: var( --page-mt, 2rem ) auto var( --page-mb, 4rem );
+        padding: 0 var( --page-pad-x, 1.5rem );
     }
 
     /* Memo 069 PRD-001 (A1): the duplicate Starlight splash <h1 id="_top"> is

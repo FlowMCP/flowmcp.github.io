@@ -81,6 +81,13 @@ starlight-theme-select {
     --color-accent-babyblue: var(--accent);
     --color-text-secondary: var(--text-inactive);
 
+    /* Canonical page-spacing tokens (Memo 124 Kap 10, F7=C) — derived from the blog layout
+     * (margin: 2rem auto 4rem; padding: 0 1.5rem). Shared so every content layout uses the
+     * same top/bottom margin + side padding. Per-layout max-width stays (configurator = 1200px). */
+    --page-mt: 2rem;
+    --page-mb: 4rem;
+    --page-pad-x: 1.5rem;
+
     /* Mapping auf Starlight-Tokens */
     --sl-color-accent-low: #0a1a2e;
     --sl-color-accent: var(--accent);
@@ -559,7 +566,8 @@ body.has-pencil-hero h1#_top {
  * so Starlight's splash <h1 id="_top"> is a visible duplicate. Suppress it,
  * scoped via :has() to blog pages only. frontmatter.title stays for <title>/SEO. */
 body:has(.blog-index) h1#_top,
-body:has(.blog-post) h1#_top {
+body:has(.blog-post) h1#_top,
+body:has(.cfg) h1#_top {
     display: none !important;
 }
 /* Hiding just the h1 left its Starlight content-panel as an empty 48px band
@@ -567,11 +575,13 @@ body:has(.blog-post) h1#_top {
  * panel and drop the content-panel divider so the blog content sits cleanly
  * under the header — no empty band, no double line. */
 body:has(.blog-index) .content-panel:has(h1#_top),
-body:has(.blog-post) .content-panel:has(h1#_top) {
+body:has(.blog-post) .content-panel:has(h1#_top),
+body:has(.cfg) .content-panel:has(h1#_top) {
     display: none !important;
 }
 body:has(.blog-index) .content-panel,
-body:has(.blog-post) .content-panel {
+body:has(.blog-post) .content-panel,
+body:has(.cfg) .content-panel {
     border-top: none !important;
 }
 
@@ -635,7 +645,11 @@ footer .meta {
 body > .page {
     display: flex;
     flex-direction: column;
+    /* Memo 124 Kap 11: 100vh excludes Chrome's dynamic bottom UI, so the footer's lower
+     * edge fell below the visible area (cut off in Chrome, fine in Safari). 100dvh tracks
+     * the actually-visible viewport; the 100vh line stays as a fallback for older browsers. */
     min-height: 100vh;
+    min-height: 100dvh;
 }
 
 body > .page > .main-frame {
