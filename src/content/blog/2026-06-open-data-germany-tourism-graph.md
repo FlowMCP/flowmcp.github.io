@@ -63,7 +63,7 @@ We measured coverage per type instead of trusting the spec. The one universal gu
 | **…-NC** variants | **non-commercial only** | a commercial product may not use the object |
 | **…-ND** variants | as-is only | **no modifications / derivatives** allowed |
 
-This matters because a single radius result can mix a CC0 trail with an attribution-only POI and a more restrictive object — there is no blanket "it's open data, so anything goes." Official DZT guidance treats only CC0 / CC BY / CC BY-SA as true open data and discourages the `-ND` variants, but what is actually attached is decided **per object**. That is exactly why the toolkit attaches the per-object `schema:license` to **every** feature (and images, which are CDN-hosted and attribution-bound): so you can honour the precise terms downstream instead of guessing.
+And the licences really are mixed: a quick scan of the graph turns up **dozens of distinct licence URIs** on objects — the full Creative Commons range from `CC0` through `CC BY` and `CC BY-SA` all the way to the restrictive `CC BY-NC`, `CC BY-ND` and `CC BY-NC-ND`, plus non-CC ones such as the German government's `DL-DE` and even the `GNU FDL`. Official DZT guidance treats only CC0 / CC BY / CC BY-SA as true open data and discourages `-ND`, yet restricted objects exist in the data anyway — so a single radius result can legitimately hand you a CC0 trail next to a non-commercial, no-derivatives POI. There is no blanket "it's open data, so anything goes." That is exactly why the toolkit attaches the per-object `schema:license` to **every** feature (and images, which are CDN-hosted and attribution-bound): so you can honour the precise terms downstream instead of guessing.
 
 ## Scope
 
