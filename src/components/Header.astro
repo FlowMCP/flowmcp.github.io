@@ -18,16 +18,16 @@ const prefix = isDE ? '/de' : '';
 // Roadmap and Team moved to Footer-Widget (PRD-012).
 // PRD-013 audit: DE-Mirror complete — navLinks branch on isDE; both locales
 // show 3 entries. EN: About/Docs/Blog. DE: Über/Docs/Blog.
+// Memo 127 follow-up: the Data Configurator lives in the FOOTER (Resources) with a Demo
+// badge, not in the top nav — keeps the header lean while it is still an early demo.
 const navLinks = isDE ? [
     { text: 'Über',  href: prefix + '/about/',                      match: '/about' },
     { text: 'Docs',  href: prefix + '/quickstart/what-is-flowmcp/', match: '/quickstart' },
     { text: 'Blog',  href: prefix + '/blog/',                       match: '/blog' },
-    // { text: 'Configurator', href: prefix + '/configurator/', match: '/configurator' }, // Memo 121: demo-hidden, enable when public
 ] : [
     { text: 'About', href: prefix + '/about/',                      match: '/about' },
     { text: 'Docs',  href: prefix + '/quickstart/what-is-flowmcp/', match: '/quickstart' },
     { text: 'Blog',  href: prefix + '/blog/',                       match: '/blog' },
-    // { text: 'Configurator', href: prefix + '/configurator/', match: '/configurator' }, // Memo 121: demo-hidden, enable when public
 ];
 ---
 
