@@ -16,8 +16,8 @@ import payload from '../data/configurator-payload.json'
 const { lang = 'en' } = Astro.props
 
 const t = lang === 'de'
-    ? { title: 'Configurator', startWith: 'Starten mit:', sources: 'Quellen', source: 'Quelle', tools: 'Tools', tool: 'Tool', liveTested: 'live getestet', needsKey: 'braucht Key', local: 'lokal', cart: 'Dein Agent-Toolset', cartSubLine: 'Berlin Open Data · frei, nichts zu kaufen', exp2: 'Keine Installation — fertige Agent-Skill + kurze Anleitung.', cartEmpty: 'Noch nichts ausgewählt.', region: 'REGION', dataClass: 'DATENKLASSE', access: 'ZUGANG', category: 'KATEGORIE', clear: 'zurücksetzen', filterSources: 'Quellen filtern…', demo: 'DEMO-DATEN · JSON', exportBtn: 'Als Skill exportieren', readyOk: 'Bereit — kein Setup nötig', readyWarn: 'Setup nötig, bevor das läuft', selectedTools: 'AUSGEWÄHLTE TOOLS', tabSkill: 'Agent Skill', tabSel: 'flowmcp-Auswahl', tabCfg: 'Config JSON', copy: 'Kopieren', copied: 'Kopiert!', download: '.md laden', close: 'Schließen', emptyHint: 'Wähle Tools, dann hier exportieren.', dataSources: 'Datenquellen', legFree: 'frei · live getestet', legKey: 'braucht API-Key', legLocal: 'lokale Ressource', noResults: 'Keine Quellen für diese Filter.', filterN: '{n} Tools filtern…', selectAllTools: 'Alle wählen', deselectAllTools: 'Alle abwählen', segOff: 'Aus', segSome: 'Teils', segAll: 'Alle', allTools: 'Alle Tools', selectAllSources: 'Alle Tools wählen oder entfernen', selOf: '{n} von {m} gewählt', selOfTools: '{n} von {m} Tools gewählt', parameters: 'PARAMETER', required: 'erforderlich', optional: 'optional', subLine: 'Durchsuche FlowMCPs Datenquellen, wähle die Tools, die dein Agent braucht, und exportiere eine fertige Auswahl.', metaSources: 'offene Quellen', metaVerified: 'deterministisch verifiziert', modalTitle: 'Exportiere dein Agent-Toolset', howToUse: 'SO GEHT\'S', howToText: 'Füge die Agent-Skill in deinen Agenten ein oder kopiere die flowmcp-Auswahl in deine Config. Keyless-Tools laufen sofort; keyed-Tools brauchen ihren API-Key.', disclaimer: '„live getestet“ heißt: der deterministische Test war grün (HTTP 200 + Daten). Es ist KEINE Qualitätsbewertung — LLM-Grading steht noch aus.', allRegions: 'Alle Regionen', allSources: 'Alle Quellen', removeFilter: 'Filter entfernen', filtersBtn: 'Filter', toolset: 'Toolset', selected: 'ausgewählt', tapClose: '· zum Schließen daneben tippen ·', showMore: '{n} weitere Quellen zeigen', shownOf: '{shown} von {total} Quellen', scopedTo: 'Eingegrenzt auf', addRec: '{n} empfohlene hinzufügen', addRecDone: '{n} empfohlene hinzugefügt', allN: 'alle {n}', removeTool: 'Tool entfernen', regions: { Berlin: 'Berlin', Germany: 'Deutschland', global: 'Global' } }
-    : { title: 'Configurator', startWith: 'Start with:', sources: 'sources', source: 'source', tools: 'tools', tool: 'tool', liveTested: 'live-tested', needsKey: 'needs key', local: 'local', cart: 'Your agent toolset', cartSubLine: 'Berlin Open Data · free, nothing to buy', exp2: 'No install — get a ready-to-paste agent skill + short setup guide.', cartEmpty: 'Nothing selected yet.', region: 'REGION', dataClass: 'DATA CLASS', access: 'ACCESS', category: 'CATEGORY', clear: 'clear', filterSources: 'Filter sources…', demo: 'DEMO DATA · JSON', exportBtn: 'Export as Skill', readyOk: 'Ready to use — no setup needed', readyWarn: 'Setup needed before this runs', selectedTools: 'SELECTED TOOLS', tabSkill: 'Agent Skill', tabSel: 'flowmcp selection', tabCfg: 'Config JSON', copy: 'Copy', copied: 'Copied!', download: 'Download .md', close: 'Close', emptyHint: 'Select tools, then export here.', dataSources: 'Data sources', legFree: 'free · live-tested', legKey: 'needs API key', legLocal: 'local resource', noResults: 'No sources match these filters.', filterN: 'Filter {n} tools…', selectAllTools: 'Select all', deselectAllTools: 'Deselect all', segOff: 'Off', segSome: 'Some', segAll: 'All', allTools: 'All tools', selectAllSources: 'Select or clear all tools', selOf: '{n} of {m} selected', selOfTools: '{n} of {m} tools selected', parameters: 'PARAMETERS', required: 'required', optional: 'optional', subLine: "Search FlowMCP's data sources, pick the tools your agent needs, and export a ready-to-use selection.", metaSources: 'open sources', metaVerified: 'deterministically verified', modalTitle: 'Export your agent toolset', howToUse: 'HOW TO USE', howToText: 'Paste the Agent Skill into your agent, or copy the flowmcp selection into your config. Keyless tools run immediately; keyed tools need their API key.', disclaimer: '“live-tested” means the deterministic test passed (HTTP 200 + data). It is NOT a quality grade — LLM grading is still pending.', allRegions: 'All regions', allSources: 'All sources', removeFilter: 'remove filter', filtersBtn: 'Filters', toolset: 'Toolset', selected: 'selected', tapClose: '· tap outside to close ·', showMore: 'Show {n} more sources', shownOf: '{shown} of {total} sources', scopedTo: 'Scoped to', addRec: 'Add {n} recommended', addRecDone: '{n} recommended added', allN: 'all {n}', removeTool: 'Remove tool', regions: { Berlin: 'Berlin', Germany: 'Germany', global: 'Global' } }
+    ? { title: 'Data Configurator', startWith: 'Starten mit:', sources: 'Quellen', source: 'Quelle', tools: 'Tools', tool: 'Tool', liveTested: 'live getestet', needsKey: 'braucht Key', local: 'lokal', cart: 'Dein Agent-Toolset', cartSubLine: 'Berlin Open Data · frei, nichts zu kaufen', exp2: 'Keine Installation — fertige Agent-Skill + kurze Anleitung.', cartEmpty: 'Noch nichts ausgewählt.', region: 'REGION', dataClass: 'DATENKLASSE', access: 'ZUGANG', category: 'KATEGORIE', clear: 'zurücksetzen', filterSources: 'Quellen filtern…', demo: 'DEMO-DATEN · JSON', exportBtn: 'Als Skill exportieren', readyOk: 'Bereit — kein Setup nötig', readyWarn: 'Setup nötig, bevor das läuft', selectedTools: 'AUSGEWÄHLTE TOOLS', tabSkill: 'Agent Skill', tabSel: 'flowmcp-Auswahl', tabCfg: 'Config JSON', copy: 'Kopieren', copied: 'Kopiert!', download: '.md laden', close: 'Schließen', emptyHint: 'Wähle Tools, dann hier exportieren.', dataSources: 'Datenquellen', legFree: 'frei (keyless)', legLive: 'live getestet', legKey: 'braucht API-Key', legLocal: 'lokale Ressource', noResults: 'Keine Quellen für diese Filter.', filterN: '{n} Tools filtern…', selectAllTools: 'Alle wählen', deselectAllTools: 'Alle abwählen', segOff: 'Aus', segSome: 'Teils', segAll: 'Alle', allTools: 'Alle Tools', selectAllSources: 'Alle Tools wählen oder entfernen', selOf: '{n} von {m} gewählt', selOfTools: '{n} von {m} Tools gewählt', parameters: 'PARAMETER', required: 'erforderlich', optional: 'optional', subLine: 'Stell deinem KI-Agenten ein Toolset aus echten, offenen Berliner Datenquellen zusammen: durchsuchen, auswählen, exportieren. Noch eine frühe Demo.', metaSources: 'offene Quellen', metaVerified: 'live getestet', modalTitle: 'Exportiere dein Agent-Toolset', howToUse: 'SO GEHT\'S', howToText: 'Füge die Agent-Skill in deinen Agenten ein oder kopiere die flowmcp-Auswahl in deine Config. Keyless-Tools laufen sofort; keyed-Tools brauchen ihren API-Key.', disclaimer: 'Frühe Demo: Du kannst Datenquellen durchstöbern und ein Toolset zusammenstellen — der Export (Download / Kopieren) kommt bald.', allRegions: 'Alle Regionen', allSources: 'Alle Quellen', removeFilter: 'Filter entfernen', filtersBtn: 'Filter', toolset: 'Toolset', selected: 'ausgewählt', tapClose: '· zum Schließen daneben tippen ·', showMore: '{n} weitere Quellen zeigen', shownOf: '{shown} von {total} Quellen', scopedTo: 'Eingegrenzt auf', addRec: '{n} empfohlene hinzufügen', addRecDone: '{n} empfohlene hinzugefügt', allN: 'alle {n}', removeTool: 'Tool entfernen', provSource: 'Quelle', provLicense: 'Lizenz', demoBannerTitle: 'Das ist eine Demo', demoBannerText: 'Auswählen und ausprobieren geht schon — der Export (Download & Kopieren) kommt bald.', regions: { Berlin: 'Berlin', Germany: 'Deutschland', global: 'Global' } }
+    : { title: 'Data Configurator', startWith: 'Start with:', sources: 'sources', source: 'source', tools: 'tools', tool: 'tool', liveTested: 'live-tested', needsKey: 'needs key', local: 'local', cart: 'Your agent toolset', cartSubLine: 'Berlin Open Data · free, nothing to buy', exp2: 'No install — get a ready-to-paste agent skill + short setup guide.', cartEmpty: 'Nothing selected yet.', region: 'REGION', dataClass: 'DATA CLASS', access: 'ACCESS', category: 'CATEGORY', clear: 'clear', filterSources: 'Filter sources…', demo: 'DEMO DATA · JSON', exportBtn: 'Export as Skill', readyOk: 'Ready to use — no setup needed', readyWarn: 'Setup needed before this runs', selectedTools: 'SELECTED TOOLS', tabSkill: 'Agent Skill', tabSel: 'flowmcp selection', tabCfg: 'Config JSON', copy: 'Copy', copied: 'Copied!', download: 'Download .md', close: 'Close', emptyHint: 'Select tools, then export here.', dataSources: 'Data sources', legFree: 'free (keyless)', legLive: 'live-tested', legKey: 'needs API key', legLocal: 'local resource', noResults: 'No sources match these filters.', filterN: 'Filter {n} tools…', selectAllTools: 'Select all', deselectAllTools: 'Deselect all', segOff: 'Off', segSome: 'Some', segAll: 'All', allTools: 'All tools', selectAllSources: 'Select or clear all tools', selOf: '{n} of {m} selected', selOfTools: '{n} of {m} tools selected', parameters: 'PARAMETERS', required: 'required', optional: 'optional', subLine: "Assemble a toolset for your AI agent from real, open Berlin data sources: browse, pick, export. Still an early demo.", metaSources: 'open sources', metaVerified: 'live-tested', modalTitle: 'Export your agent toolset', howToUse: 'HOW TO USE', howToText: 'Paste the Agent Skill into your agent, or copy the flowmcp selection into your config. Keyless tools run immediately; keyed tools need their API key.', disclaimer: 'Early demo: browse the data sources and assemble a toolset — export (download / copy) is coming soon.', allRegions: 'All regions', allSources: 'All sources', removeFilter: 'remove filter', filtersBtn: 'Filters', toolset: 'Toolset', selected: 'selected', tapClose: '· tap outside to close ·', showMore: 'Show {n} more sources', shownOf: '{shown} of {total} sources', scopedTo: 'Scoped to', addRec: 'Add {n} recommended', addRecDone: '{n} recommended added', allN: 'all {n}', removeTool: 'Remove tool', provSource: 'Source', provLicense: 'License', demoBannerTitle: 'This is a demo', demoBannerText: 'Picking and exploring already works — export (download & copy) is coming soon.', regions: { Berlin: 'Berlin', Germany: 'Germany', global: 'Global' } }
 
 const { meta, accessClasses, categories, regions, collections, sources } = payload
 
@@ -51,13 +51,13 @@ const LUCIDE = {
 }
 const icon = ( name, size = 16 ) => `<svg class="ic" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${LUCIDE[ name ] || ''}</svg>`
 
-// status marker matching the legend exactly (T6): free=green dot, key=key icon,
-// local=square swatch; an extra check appears when the source is deterministically tested.
+// status marker = access only (Memo 127 follow-up): green dot = free/keyless, key icon =
+// needs key, square swatch = local resource. The "live-tested" check was dropped — every demo
+// source is live-tested, so the marker carried no information and only confused.
 const statusMarker = ( s ) => {
-    const ver = s.detVerified ? `<span class="cfg__veric" title="${t.liveTested}">${icon( 'check', 11 )}</span>` : ''
-    if( s.access === 'tool-key' ) { return `<span class="cfg__legkey" title="${t.needsKey}">${icon( 'key-round', 13 )}</span>${ver}` }
-    if( s.access === 'resource-local' ) { return `<span class="cfg__leglocal" title="${t.local}"></span>${ver}` }
-    return `<span class="cfg__dot cfg__dot--ok" title="${t.legFree}"></span>${ver}`
+    if( s.access === 'tool-key' ) { return `<span class="cfg__legkey" title="${t.needsKey}">${icon( 'key-round', 13 )}</span>` }
+    if( s.access === 'resource-local' ) { return `<span class="cfg__leglocal" title="${t.local}"></span>` }
+    return `<span class="cfg__dot cfg__dot--ok" title="${t.legFree}"></span>`
 }
 
 // FilterRail category taxonomy — canonical categories from the payload, only those that
@@ -72,9 +72,9 @@ const railRegions = [
     { id: 'global' }
 ].map( ( r ) => ( { ...r, label: t.regions[ r.id ], count: countRegion( r.id ) } ) )
 const railAccess = [
-    { id: 'tool-keyless', label: lang === 'de' ? 'Keyless (sofort nutzbar)' : 'Keyless (ready to use)', on: true },
-    { id: 'tool-key', label: lang === 'de' ? 'Braucht API-Key' : 'Needs API key' },
-    { id: 'resource-local', label: lang === 'de' ? 'Lokale Ressource' : 'Local resource' }
+    { id: 'tool-keyless', label: lang === 'de' ? 'Frei (keyless)' : 'Free (keyless)', on: true },
+    { id: 'tool-key', label: lang === 'de' ? 'Braucht Key' : 'Needs key' },
+    { id: 'resource-local', label: lang === 'de' ? 'Lokal' : 'Local' }
 ]
 
 // label maps handed to the client for dynamic headline/chips (T4)
@@ -97,7 +97,7 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
                 <span class="cfg__demobadge" title={t.disclaimer}>{t.demo}</span>
             </div>
             <p class="cfg__sub">{t.subLine}</p>
-            <div class="cfg__meta">{sources.length} {t.metaSources} · {totalTools} {t.tools} · {detCount} {t.metaVerified}</div>
+            <div class="cfg__meta">{sources.length} {t.metaSources} · {totalTools} {t.tools}</div>
         </header>
 
         <!-- sticky "Start with" toolbar (Memo 124 Kap 5) — pins below the nav on scroll -->
@@ -176,7 +176,7 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
                 </div>
                 <ul class="cfg__cards">
                     {sources.map( ( s ) => (
-                        <li class={`cfg__card cfg__card--${s.access}`} data-ns={s.namespace} data-access={s.access} data-region={s.region} data-category={s.category} data-keys={( s.keys || [] ).join( ',' )} data-verified={s.detVerified ? '1' : '0'} data-label={s.title} data-title={s.title.toLowerCase()} data-desc={( s.desc || '' ).toLowerCase()}>
+                        <li class={`cfg__card cfg__card--${s.access}`} data-ns={s.namespace} data-wire-ns={s.wireNamespace || s.namespace} data-bound={s.boundParams ? JSON.stringify( s.boundParams ) : ''} data-access={s.access} data-region={s.region} data-category={s.category} data-keys={( s.keys || [] ).join( ',' )} data-verified={s.detVerified ? '1' : '0'} data-label={s.title} data-title={s.title.toLowerCase()} data-desc={( s.desc || '' ).toLowerCase()}>
                             <div class="cfg__card-top">
                                 <div class="cfg__nsleft">
                                     <button type="button" class="cfg__expand" aria-label={lang === 'de' ? 'Tools anzeigen' : 'Show tools'} aria-expanded="false" data-expand><span class="cfg__chev" set:html={icon( 'chevron-right', 16 )} /></button>
@@ -192,6 +192,12 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
                             </div>
                             <p class="cfg__desc" title={s.desc}>{shortDesc( s.desc )}</p>
                             <div class="cfg__toolbox" hidden>
+                                {s.provenance && s.provenance.host ? (
+                                    <p class="cfg__prov">
+                                        {t.provSource}: <a href={s.provenance.docs || s.provenance.root || ( 'https://' + s.provenance.host )} target="_blank" rel="noopener" class="cfg__provlink">{s.provenance.host}</a>
+                                        {s.licenseToken ? <span class="cfg__provlic"> · {t.provLicense}: {s.licenseToken}</span> : null}
+                                    </p>
+                                ) : null}
                                 <div class="cfg__toolhead">
                                     <span class="cfg__toolfilter">
                                         <span set:html={icon( 'search', 13 )} />
@@ -288,11 +294,17 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
                     <div class="cfg__plabel">{t.howToUse}</div>
                     <p class="cfg__howtotext">{t.howToText}</p>
                 </div>
+                <!-- Prominent demo banner (Memo 127 follow-up): export is clearly demo-locked.
+                     Buttons stay in the DOM but are genuinely disabled (greyed), not overlaid. -->
+                <div class="cfg__demobanner" role="note">
+                    <span class="cfg__demobanner-ic" set:html={icon( 'sparkles', 18 )} />
+                    <span class="cfg__demobanner-txt"><strong>{t.demoBannerTitle}</strong> · {t.demoBannerText}</span>
+                </div>
                 <div class="cfg__modalfoot">
                     <span class="cfg__hint" data-modal-hint></span>
                     <span class="cfg__modalbtns">
-                        <button type="button" class="cfg__download" data-download>{t.download}</button>
-                        <button type="button" class="cfg__copy" data-cfg-copy>{t.copy}</button>
+                        <button type="button" class="cfg__download" data-download disabled aria-disabled="true">{t.download}</button>
+                        <button type="button" class="cfg__copy" data-cfg-copy disabled aria-disabled="true">{t.copy}</button>
                     </span>
                 </div>
             </div>
@@ -319,9 +331,23 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
         const plural = ( n, one, many ) => ( n === 1 ? one : many )
 
         const cards = Array.from( root.querySelectorAll( '.cfg__card' ) )
+        // the currently filtered/visible source set (Memo 127 F4) — the global Off/Some/All acts on this
+        const filteredCards = () => cards.filter( ( c ) => c.dataset.match !== '0' )
         const toolsOf = ( card ) => Array.from( card.querySelectorAll( '[data-tool-check]' ) )
         const isOn = ( b ) => b.getAttribute( 'aria-checked' ) === 'true' || b.getAttribute( 'aria-pressed' ) === 'true'
-        const setTool = ( b, on ) => { b.setAttribute( 'aria-checked', String( on ) ); b.innerHTML = svg( on ? 'square-check' : 'square', 15 ) }
+        // selection-order stamps (Memo 127 F3) — newest selection on top in the cart
+        let selSeq = 0
+        const selStamp = new Map()
+        const stampKey = ( ns, tool ) => ns + ' ' + tool
+        const stampOf = ( ns, tool ) => selStamp.get( stampKey( ns, tool ) ) || 0
+        const setTool = ( b, on ) => {
+            b.setAttribute( 'aria-checked', String( on ) )
+            b.innerHTML = svg( on ? 'square-check' : 'square', 15 )
+            const card = b.closest( '.cfg__card' )
+            const ns = card ? card.dataset.ns : ''
+            if( on ) { selStamp.set( stampKey( ns, b.dataset.tool ), ++selSeq ) }
+            else { selStamp.delete( stampKey( ns, b.dataset.tool ) ) }
+        }
         // Off/Some/All segment control (Memo 124 Kap 1, F2=A) — replaces the tri-state checkbox.
         // off and all are actionable; some is a display-only position (lights up on partial).
         const segState = ( sel, total ) => sel === 0 ? 'off' : ( sel === total ? 'all' : 'some' )
@@ -350,7 +376,10 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
         const selected = () => cards.map( ( card ) => {
             const names = toolsOf( card ).filter( isOn ).map( ( b ) => b.dataset.tool )
             if( names.length === 0 ) { return null }
-            return { ns: card.dataset.ns, names, title: card.dataset.label, access: card.dataset.access, keys: ( card.dataset.keys || '' ).split( ',' ).filter( Boolean ) }
+            // wireNs/bound carry the OParl fan-out mapping (Memo 127 F13): a synthetic district
+            // card (oparl-mitte) exports to the real wire namespace `oparl` + name="Berlin Mitte".
+            const bound = card.dataset.bound ? JSON.parse( card.dataset.bound ) : null
+            return { ns: card.dataset.ns, wireNs: card.dataset.wireNs || card.dataset.ns, bound, names, title: card.dataset.label, access: card.dataset.access, keys: ( card.dataset.keys || '' ).split( ',' ).filter( Boolean ) }
         } ).filter( Boolean )
 
         const renderCart = () => {
@@ -372,13 +401,13 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
             // Two-mode chips (Memo 124 Kap 2, F4=A) as full-width rows (Spec §6 ChipList):
             // name left (truncating), key icon + X on the right. all selected → one "ns · all N"
             // chip; partial → one "ns · tool" chip per selected tool.
-            const addChip = ( { ns, label, keyed, tool } ) => {
+            const addChip = ( { ns, label, keyed, tool, hover } ) => {
                 const c = document.createElement( 'div' )
                 c.className = 'cfg__chip-sel'
                 const txt = document.createElement( 'span' )
                 txt.className = 'cfg__chip-txt'
                 txt.textContent = label
-                txt.title = label
+                txt.title = hover || label
                 const right = document.createElement( 'span' )
                 right.className = 'cfg__chip-right'
                 if( keyed ) { right.innerHTML = svg( 'key-round', 12 ) }
@@ -394,14 +423,24 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
                 c.appendChild( right )
                 chips.appendChild( c )
             }
-            sel.forEach( ( x ) => {
+            // newest selection on top (Memo 127 F3): order sources by their most recent tool stamp,
+            // and within a partial source order the per-tool chips the same way.
+            const ordered = sel
+                .map( ( x ) => ( { x, recent: Math.max( ...x.names.map( ( n ) => stampOf( x.ns, n ) ), 0 ) } ) )
+                .sort( ( a, b ) => b.recent - a.recent )
+                .map( ( o ) => o.x )
+            ordered.forEach( ( x ) => {
                 const card = cards.find( ( c ) => c.dataset.ns === x.ns )
                 const total = card ? toolsOf( card ).length : x.names.length
                 const keyed = x.access !== 'tool-keyless'
                 if( x.names.length === total && total > 0 ) {
-                    addChip( { ns: x.ns, label: x.ns + ' · ' + T.allN.replace( '{n}', String( total ) ), keyed } )
+                    // F2=B: compact "ns · all N" chip; hover lists the tool names
+                    addChip( { ns: x.ns, label: x.ns + ' · ' + T.allN.replace( '{n}', String( total ) ), keyed, hover: x.names.join( ', ' ) } )
                 } else {
-                    x.names.forEach( ( n ) => addChip( { ns: x.ns, label: x.ns + ' · ' + n, keyed, tool: n } ) )
+                    x.names
+                        .slice()
+                        .sort( ( a, b ) => stampOf( x.ns, b ) - stampOf( x.ns, a ) )
+                        .forEach( ( n ) => addChip( { ns: x.ns, label: x.ns + ' · ' + n, keyed, tool: n } ) )
                 }
             } )
             const box = root.querySelector( '[data-readiness]' )
@@ -463,7 +502,7 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
         }
         // global Off/Some/All control (Memo 124 follow-up) — off = clear every selection,
         // all = select every tool in every source. Mirrors the per-card control catalog-wide.
-        const allToolBoxes = () => cards.flatMap( ( c ) => toolsOf( c ) )
+        const allToolBoxes = () => filteredCards().flatMap( ( c ) => toolsOf( c ) )
         const setGlobalSeg = () => {
             const seg = root.querySelector( '[data-global-seg]' )
             if( !seg ) { return }
@@ -532,6 +571,8 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
             if( rc ) { rc.textContent = active > 0 ? String( active ) : '' }
             updateHeadline()
             renderActiveChips()
+            // the global Off/Some/All ratio depends on which sources are visible (Memo 127 F4)
+            setGlobalSeg()
         }
 
         // ---- events (delegated) ----
@@ -595,7 +636,8 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
                 const s = seg.dataset.seg
                 if( s === 'some' ) { return }
                 if( seg.closest( '[data-global-seg]' ) ) {
-                    cards.forEach( ( card ) => { toolsOf( card ).forEach( ( b ) => setTool( b, s === 'all' ) ); syncCard( card ) } )
+                    // Memo 127 F4: act only on the filtered/visible sources, not the whole catalog
+                    filteredCards().forEach( ( card ) => { toolsOf( card ).forEach( ( b ) => setTool( b, s === 'all' ) ); syncCard( card ) } )
                     renderCart()
                     return
                 }
@@ -669,7 +711,7 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
             out.push( '' )
             out.push( '# FlowMCP Selection' )
             out.push( '' )
-            out.push( totalTools + ' tools across ' + sel.length + ' data sources, picked in the FlowMCP Configurator (demo; deterministically live-tested — not a quality grade).' )
+            out.push( totalTools + ' tools across ' + sel.length + ' data sources, picked in the FlowMCP Data Configurator (demo).' )
             out.push( '' )
             out.push( '## Trigger' )
             out.push( '' )
@@ -687,8 +729,10 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
             out.push( '' )
             sel.forEach( ( x ) => {
                 const tag = x.access === 'tool-keyless' ? 'keyless' : ( x.access === 'tool-key' ? ( 'needs key' + ( x.keys.length ? ': ' + x.keys.join( ', ' ) : '' ) ) : 'local resource' )
-                out.push( '### ' + x.ns + ( x.title ? ' — ' + x.title : '' ) + '  (' + tag + ')' )
-                x.names.forEach( ( n ) => out.push( '- `' + x.ns + '/tool/' + n + '`' ) )
+                const scope = x.bound && x.bound.name ? ' · scoped to ' + x.bound.name : ''
+                out.push( '### ' + x.ns + ( x.title ? ' — ' + x.title : '' ) + '  (' + tag + scope + ')' )
+                // fan-out sources wire-call the real namespace (e.g. oparl) with the bound param
+                x.names.forEach( ( n ) => out.push( '- `' + x.wireNs + '/tool/' + n + '`' + ( x.bound && x.bound.name ? '  — name: "' + x.bound.name + '"' : '' ) ) )
                 out.push( '' )
             } )
             out.push( '## Setup' )
@@ -708,11 +752,11 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
             out.push( '- NEVER pipe `flowmcp` output through `node -e` or guess flags.' )
             return out.join( '\n' )
         }
-        const buildSelection = ( sel ) => JSON.stringify( { selection: sel.map( ( x ) => ( { namespace: x.ns, tools: x.names } ) ) }, null, 2 )
+        const buildSelection = ( sel ) => JSON.stringify( { selection: sel.map( ( x ) => ( x.bound ? { namespace: x.wireNs, tools: x.names, params: x.bound } : { namespace: x.wireNs, tools: x.names } ) ) }, null, 2 )
         // valid .flowmcp/config.json (Memo 124 Kap 9) — root + envPath + tools[] using the
         // canonical `namespace/tool/name` id grammar + a configurator group + defaultGroup
         const buildConfig = ( sel ) => {
-            const tools = sel.flatMap( ( x ) => x.names.map( ( n ) => x.ns + '/tool/' + n ) )
+            const tools = [ ...new Set( sel.flatMap( ( x ) => x.names.map( ( n ) => x.wireNs + '/tool/' + n ) ) ) ]
             return JSON.stringify( {
                 root: '~/.flowmcp',
                 envPath: '~/.flowmcp/.env',
@@ -883,6 +927,12 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
     .cfg__status { display: inline-flex; align-items: center; gap: 4px; flex: 0 0 auto; }
     .cfg__veric { color: var( --status-ok ); display: inline-flex; }
     .cfg__veric svg { width: 11px; height: 11px; }
+    .cfg__veric--leg svg { width: 12px; height: 12px; }
+    /* provenance line in the expanded toolbox (Memo 127 Kap 3) — deliberately quiet, Bürger-first */
+    .cfg__prov { font-size: 11px; color: var( --cfg-faint ); margin: 0 0 0.5rem; line-height: 1.5; }
+    .cfg__provlink { color: var( --text-inactive ); text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 2px; }
+    .cfg__provlink:hover { color: var( --accent ); }
+    .cfg__provlic { color: var( --cfg-faint ); }
     /* Off/Some/All segment control (Memo 124 Kap 1, F2=A) — single selection marker, right-aligned */
     .cfg__seg { display: inline-flex; flex: 0 0 auto; margin-left: auto; border: 1px solid var( --border ); border-radius: 7px; overflow: hidden; background: var( --bg-canvas ); }
     .cfg__segbtn { font-size: 11px; font-weight: 600; color: var( --text-inactive ); background: none; border: 0; border-right: 1px solid var( --border ); padding: 3px 9px; cursor: pointer; line-height: 1.4; white-space: nowrap; }
@@ -990,6 +1040,13 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
     .cfg__modalfoot { display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; gap: 0.5rem; }
     .cfg__hint { font-size: 11px; color: var( --text-inactive ); }
     .cfg__modalbtns { display: flex; gap: 0.5rem; }
+    /* Prominent demo banner (Memo 127 follow-up) — clearly states export is coming soon */
+    .cfg__demobanner { display: flex; align-items: center; gap: 0.6rem; margin: 0.25rem 0 0.75rem; padding: 0.7rem 0.9rem; border: 1px solid var( --accent ); border-radius: 8px; background: var( --sidebar-active-bg ); color: var( --text-primary ); }
+    .cfg__demobanner-ic { color: var( --accent ); display: inline-flex; flex: 0 0 auto; }
+    .cfg__demobanner-txt { font-size: 13px; line-height: 1.45; }
+    .cfg__demobanner-txt strong { color: var( --accent ); font-weight: 700; }
+    /* genuinely greyed-out export buttons while in demo (Memo 127 follow-up) */
+    .cfg__download[disabled], .cfg__copy[disabled] { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
     .cfg__download { background: var( --bg-canvas ); color: var( --text-primary ); border: 1px solid var( --border ); border-radius: 8px; padding: 6px 12px; font-size: 13px; cursor: pointer; }
     .cfg__copy { background: var( --accent ); color: var( --bg-canvas ); border: 0; border-radius: 8px; padding: 6px 14px; font-size: 13px; font-weight: 700; cursor: pointer; }
 

@@ -19,6 +19,7 @@ const t = isDE ? {
     license: 'Lizenz',
     quickstart: 'Schnellstart',
     specification: 'Spezifikation',
+    configurator: 'Data Configurator',
     roadmap: 'Roadmap',
     team: 'Team',
     github: 'GitHub',
@@ -31,6 +32,7 @@ const t = isDE ? {
     license: 'License',
     quickstart: 'Quickstart',
     specification: 'Specification',
+    configurator: 'Data Configurator',
     roadmap: 'Roadmap',
     team: 'Team',
     github: 'GitHub',
@@ -51,6 +53,7 @@ const columns = [
         links: [
             { label: t.quickstart,    href: prefix + '/quickstart/quickstart/' },
             { label: t.specification, href: prefix + '/specification/overview/' },
+            { label: t.configurator,  href: prefix + '/configurator/', badge: 'Demo' },
         ],
     },
     {
@@ -75,7 +78,7 @@ const columns = [
                             {link.external ? (
                                 <a href={link.href} rel="noopener" target="_blank">{link.label}</a>
                             ) : (
-                                <a href={link.href}>{link.label}</a>
+                                <a href={link.href}>{link.label}{link.badge && <span class="pencil-footer__badge">{link.badge}</span>}</a>
                             )}
                         </li>
                     ) )}
@@ -158,6 +161,20 @@ const columns = [
 }
 .pencil-footer__col-list a:hover {
     color: var(--text-primary);
+}
+/* Memo 127 follow-up: Demo badge next to the Data Configurator link */
+.pencil-footer__badge {
+    display: inline-block;
+    margin-left: 0.4rem;
+    padding: 1px 6px;
+    background: var(--sidebar-active-bg);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    vertical-align: middle;
 }
 .pencil-footer__inner {
     max-width: 1100px;
