@@ -16,8 +16,8 @@ import payload from '../data/configurator-payload.json'
 const { lang = 'en' } = Astro.props
 
 const t = lang === 'de'
-    ? { title: 'Configurator', startWith: 'Starten mit:', sources: 'Quellen', source: 'Quelle', tools: 'Tools', tool: 'Tool', liveTested: 'live getestet', needsKey: 'braucht Key', local: 'lokal', cart: 'Dein Agent-Toolset', cartSubLine: 'Berlin Open Data · frei, nichts zu kaufen', exp2: 'Keine Installation — fertige Agent-Skill + kurze Anleitung.', cartEmpty: 'Noch nichts ausgewählt.', region: 'REGION', dataClass: 'DATENKLASSE', access: 'ZUGANG', category: 'KATEGORIE', clear: 'zurücksetzen', filterSources: 'Quellen filtern…', demo: 'DEMO-DATEN · JSON', exportBtn: 'Als Skill exportieren', readyOk: 'Bereit — kein Setup nötig', readyWarn: 'Setup nötig, bevor das läuft', selectedTools: 'AUSGEWÄHLTE TOOLS', tabSkill: 'Agent Skill', tabSel: 'flowmcp-Auswahl', tabCfg: 'Config JSON', copy: 'Kopieren', copied: 'Kopiert!', download: '.md laden', close: 'Schließen', emptyHint: 'Wähle Tools, dann hier exportieren.', dataSources: 'Datenquellen', legFree: 'frei · live getestet', legKey: 'braucht API-Key', legLocal: 'lokale Ressource', noResults: 'Keine Quellen für diese Filter.', filterN: '{n} Tools filtern…', selectAllTools: 'Alle wählen', deselectAllTools: 'Alle abwählen', segOff: 'Aus', segSome: 'Teils', segAll: 'Alle', selOf: '{n} von {m} gewählt', selOfTools: '{n} von {m} Tools gewählt', parameters: 'PARAMETER', required: 'erforderlich', optional: 'optional', subLine: 'Durchsuche FlowMCPs Datenquellen, wähle die Tools, die dein Agent braucht, und exportiere eine fertige Auswahl.', metaSources: 'offene Quellen', metaVerified: 'deterministisch verifiziert', modalTitle: 'Exportiere dein Agent-Toolset', howToUse: 'SO GEHT\'S', howToText: 'Füge die Agent-Skill in deinen Agenten ein oder kopiere die flowmcp-Auswahl in deine Config. Keyless-Tools laufen sofort; keyed-Tools brauchen ihren API-Key.', disclaimer: '„live getestet“ heißt: der deterministische Test war grün (HTTP 200 + Daten). Es ist KEINE Qualitätsbewertung — LLM-Grading steht noch aus.', allRegions: 'Alle Regionen', allSources: 'Alle Quellen', removeFilter: 'Filter entfernen', filtersBtn: 'Filter', toolset: 'Toolset', selected: 'ausgewählt', tapClose: '· zum Schließen daneben tippen ·', showMore: '{n} weitere Quellen zeigen', shownOf: '{shown} von {total} Quellen', scopedTo: 'Eingegrenzt auf', addRec: '{n} empfohlene hinzufügen', addRecDone: '{n} empfohlene hinzugefügt', allN: 'alle {n}', removeTool: 'Tool entfernen', regions: { Berlin: 'Berlin', Germany: 'Deutschland', global: 'Global' } }
-    : { title: 'Configurator', startWith: 'Start with:', sources: 'sources', source: 'source', tools: 'tools', tool: 'tool', liveTested: 'live-tested', needsKey: 'needs key', local: 'local', cart: 'Your agent toolset', cartSubLine: 'Berlin Open Data · free, nothing to buy', exp2: 'No install — get a ready-to-paste agent skill + short setup guide.', cartEmpty: 'Nothing selected yet.', region: 'REGION', dataClass: 'DATA CLASS', access: 'ACCESS', category: 'CATEGORY', clear: 'clear', filterSources: 'Filter sources…', demo: 'DEMO DATA · JSON', exportBtn: 'Export as Skill', readyOk: 'Ready to use — no setup needed', readyWarn: 'Setup needed before this runs', selectedTools: 'SELECTED TOOLS', tabSkill: 'Agent Skill', tabSel: 'flowmcp selection', tabCfg: 'Config JSON', copy: 'Copy', copied: 'Copied!', download: 'Download .md', close: 'Close', emptyHint: 'Select tools, then export here.', dataSources: 'Data sources', legFree: 'free · live-tested', legKey: 'needs API key', legLocal: 'local resource', noResults: 'No sources match these filters.', filterN: 'Filter {n} tools…', selectAllTools: 'Select all', deselectAllTools: 'Deselect all', segOff: 'Off', segSome: 'Some', segAll: 'All', selOf: '{n} of {m} selected', selOfTools: '{n} of {m} tools selected', parameters: 'PARAMETERS', required: 'required', optional: 'optional', subLine: "Search FlowMCP's data sources, pick the tools your agent needs, and export a ready-to-use selection.", metaSources: 'open sources', metaVerified: 'deterministically verified', modalTitle: 'Export your agent toolset', howToUse: 'HOW TO USE', howToText: 'Paste the Agent Skill into your agent, or copy the flowmcp selection into your config. Keyless tools run immediately; keyed tools need their API key.', disclaimer: '“live-tested” means the deterministic test passed (HTTP 200 + data). It is NOT a quality grade — LLM grading is still pending.', allRegions: 'All regions', allSources: 'All sources', removeFilter: 'remove filter', filtersBtn: 'Filters', toolset: 'Toolset', selected: 'selected', tapClose: '· tap outside to close ·', showMore: 'Show {n} more sources', shownOf: '{shown} of {total} sources', scopedTo: 'Scoped to', addRec: 'Add {n} recommended', addRecDone: '{n} recommended added', allN: 'all {n}', removeTool: 'Remove tool', regions: { Berlin: 'Berlin', Germany: 'Germany', global: 'Global' } }
+    ? { title: 'Configurator', startWith: 'Starten mit:', sources: 'Quellen', source: 'Quelle', tools: 'Tools', tool: 'Tool', liveTested: 'live getestet', needsKey: 'braucht Key', local: 'lokal', cart: 'Dein Agent-Toolset', cartSubLine: 'Berlin Open Data · frei, nichts zu kaufen', exp2: 'Keine Installation — fertige Agent-Skill + kurze Anleitung.', cartEmpty: 'Noch nichts ausgewählt.', region: 'REGION', dataClass: 'DATENKLASSE', access: 'ZUGANG', category: 'KATEGORIE', clear: 'zurücksetzen', filterSources: 'Quellen filtern…', demo: 'DEMO-DATEN · JSON', exportBtn: 'Als Skill exportieren', readyOk: 'Bereit — kein Setup nötig', readyWarn: 'Setup nötig, bevor das läuft', selectedTools: 'AUSGEWÄHLTE TOOLS', tabSkill: 'Agent Skill', tabSel: 'flowmcp-Auswahl', tabCfg: 'Config JSON', copy: 'Kopieren', copied: 'Kopiert!', download: '.md laden', close: 'Schließen', emptyHint: 'Wähle Tools, dann hier exportieren.', dataSources: 'Datenquellen', legFree: 'frei · live getestet', legKey: 'braucht API-Key', legLocal: 'lokale Ressource', noResults: 'Keine Quellen für diese Filter.', filterN: '{n} Tools filtern…', selectAllTools: 'Alle wählen', deselectAllTools: 'Alle abwählen', segOff: 'Aus', segSome: 'Teils', segAll: 'Alle', allTools: 'Alle Tools', selectAllSources: 'Alle Tools wählen oder entfernen', selOf: '{n} von {m} gewählt', selOfTools: '{n} von {m} Tools gewählt', parameters: 'PARAMETER', required: 'erforderlich', optional: 'optional', subLine: 'Durchsuche FlowMCPs Datenquellen, wähle die Tools, die dein Agent braucht, und exportiere eine fertige Auswahl.', metaSources: 'offene Quellen', metaVerified: 'deterministisch verifiziert', modalTitle: 'Exportiere dein Agent-Toolset', howToUse: 'SO GEHT\'S', howToText: 'Füge die Agent-Skill in deinen Agenten ein oder kopiere die flowmcp-Auswahl in deine Config. Keyless-Tools laufen sofort; keyed-Tools brauchen ihren API-Key.', disclaimer: '„live getestet“ heißt: der deterministische Test war grün (HTTP 200 + Daten). Es ist KEINE Qualitätsbewertung — LLM-Grading steht noch aus.', allRegions: 'Alle Regionen', allSources: 'Alle Quellen', removeFilter: 'Filter entfernen', filtersBtn: 'Filter', toolset: 'Toolset', selected: 'ausgewählt', tapClose: '· zum Schließen daneben tippen ·', showMore: '{n} weitere Quellen zeigen', shownOf: '{shown} von {total} Quellen', scopedTo: 'Eingegrenzt auf', addRec: '{n} empfohlene hinzufügen', addRecDone: '{n} empfohlene hinzugefügt', allN: 'alle {n}', removeTool: 'Tool entfernen', regions: { Berlin: 'Berlin', Germany: 'Deutschland', global: 'Global' } }
+    : { title: 'Configurator', startWith: 'Start with:', sources: 'sources', source: 'source', tools: 'tools', tool: 'tool', liveTested: 'live-tested', needsKey: 'needs key', local: 'local', cart: 'Your agent toolset', cartSubLine: 'Berlin Open Data · free, nothing to buy', exp2: 'No install — get a ready-to-paste agent skill + short setup guide.', cartEmpty: 'Nothing selected yet.', region: 'REGION', dataClass: 'DATA CLASS', access: 'ACCESS', category: 'CATEGORY', clear: 'clear', filterSources: 'Filter sources…', demo: 'DEMO DATA · JSON', exportBtn: 'Export as Skill', readyOk: 'Ready to use — no setup needed', readyWarn: 'Setup needed before this runs', selectedTools: 'SELECTED TOOLS', tabSkill: 'Agent Skill', tabSel: 'flowmcp selection', tabCfg: 'Config JSON', copy: 'Copy', copied: 'Copied!', download: 'Download .md', close: 'Close', emptyHint: 'Select tools, then export here.', dataSources: 'Data sources', legFree: 'free · live-tested', legKey: 'needs API key', legLocal: 'local resource', noResults: 'No sources match these filters.', filterN: 'Filter {n} tools…', selectAllTools: 'Select all', deselectAllTools: 'Deselect all', segOff: 'Off', segSome: 'Some', segAll: 'All', allTools: 'All tools', selectAllSources: 'Select or clear all tools', selOf: '{n} of {m} selected', selOfTools: '{n} of {m} tools selected', parameters: 'PARAMETERS', required: 'required', optional: 'optional', subLine: "Search FlowMCP's data sources, pick the tools your agent needs, and export a ready-to-use selection.", metaSources: 'open sources', metaVerified: 'deterministically verified', modalTitle: 'Export your agent toolset', howToUse: 'HOW TO USE', howToText: 'Paste the Agent Skill into your agent, or copy the flowmcp selection into your config. Keyless tools run immediately; keyed tools need their API key.', disclaimer: '“live-tested” means the deterministic test passed (HTTP 200 + data). It is NOT a quality grade — LLM grading is still pending.', allRegions: 'All regions', allSources: 'All sources', removeFilter: 'remove filter', filtersBtn: 'Filters', toolset: 'Toolset', selected: 'selected', tapClose: '· tap outside to close ·', showMore: 'Show {n} more sources', shownOf: '{shown} of {total} sources', scopedTo: 'Scoped to', addRec: 'Add {n} recommended', addRecDone: '{n} recommended added', allN: 'all {n}', removeTool: 'Remove tool', regions: { Berlin: 'Berlin', Germany: 'Germany', global: 'Global' } }
 
 const { meta, accessClasses, categories, regions, collections, sources } = payload
 
@@ -98,7 +98,6 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
             </div>
             <p class="cfg__sub">{t.subLine}</p>
             <div class="cfg__meta">{sources.length} {t.metaSources} · {totalTools} {t.tools} · {detCount} {t.metaVerified}</div>
-            <p class="cfg__disclaimer"><span class="cfg__disc-ic" set:html={icon( 'triangle-alert', 13 )} /> {t.disclaimer}</p>
         </header>
 
         <!-- sticky "Start with" toolbar (Memo 124 Kap 5) — pins below the nav on scroll -->
@@ -160,8 +159,14 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
             <!-- Catalog -->
             <main class="cfg__catalog">
                 <div class="cfg__cathead">
-                    <span class="cfg__cathl" data-headline>{t.dataSources} · {t.regions.Berlin}</span>
-                    <button type="button" class="cfg__addrec" data-add-recommended hidden></button>
+                    <span class="cfg__cathl">{t.dataSources}</span>
+                    <div class="cfg__gseg" role="group" data-global-seg aria-label={t.selectAllSources}>
+                        <div class="cfg__seg">
+                            <button type="button" class="cfg__segbtn cfg__segbtn--on" data-seg="off" aria-pressed="true">{t.segOff}</button>
+                            <button type="button" class="cfg__segbtn" data-seg="some" aria-pressed="false" tabindex="-1" aria-hidden="true">{t.segSome}</button>
+                            <button type="button" class="cfg__segbtn" data-seg="all" aria-pressed="false">{t.segAll}</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="cfg__legend">
                     <span><span class="cfg__dot cfg__dot--ok"></span> {t.legFree}</span>
@@ -259,7 +264,11 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
             <button type="button" class="cfg__mobar-btn" data-sheet-open><span set:html={icon( 'shopping-cart', 14 )} /> {t.toolset}</button>
         </div>
 
-        <footer class="cfg__note">{meta.note}</footer>
+        <!-- honesty note + the "live-tested" disclaimer live together at the bottom (Memo 124 follow-up) -->
+        <footer class="cfg__note">
+            <p class="cfg__disclaimer"><span class="cfg__disc-ic" set:html={icon( 'triangle-alert', 13 )} /> {t.disclaimer}</p>
+            <p class="cfg__notetext">{meta.note}</p>
+        </footer>
 
         <!-- Export modal -->
         <div class="cfg__modal" data-modal hidden>
@@ -360,20 +369,29 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
             const chips = root.querySelector( '[data-chips]' )
             root.querySelector( '[data-chips-label]' ).hidden = sel.length === 0
             chips.innerHTML = ''
-            // Two-mode chips (Memo 124 Kap 2, F4=A): all tools selected → one "ns · all N" chip;
-            // partial → one chip per selected tool. Key symbol stays on keyed-namespace chips.
+            // Two-mode chips (Memo 124 Kap 2, F4=A) as full-width rows (Spec §6 ChipList):
+            // name left (truncating), key icon + X on the right. all selected → one "ns · all N"
+            // chip; partial → one "ns · tool" chip per selected tool.
             const addChip = ( { ns, label, keyed, tool } ) => {
-                const c = document.createElement( 'span' )
+                const c = document.createElement( 'div' )
                 c.className = 'cfg__chip-sel'
-                c.innerHTML = ( keyed ? svg( 'key-round', 11 ) : '' ) + '<span class="cfg__chip-txt">' + label + '</span>'
+                const txt = document.createElement( 'span' )
+                txt.className = 'cfg__chip-txt'
+                txt.textContent = label
+                txt.title = label
+                const right = document.createElement( 'span' )
+                right.className = 'cfg__chip-right'
+                if( keyed ) { right.innerHTML = svg( 'key-round', 12 ) }
                 const rm = document.createElement( 'button' )
                 rm.type = 'button'
                 rm.className = 'cfg__chip-x'
                 rm.dataset.chipNs = ns
                 if( tool ) { rm.dataset.chipTool = tool }
                 rm.setAttribute( 'aria-label', tool ? T.removeTool : T.removeFilter )
-                rm.innerHTML = svg( 'x', 11 )
-                c.appendChild( rm )
+                rm.innerHTML = svg( 'x', 13 )
+                right.appendChild( rm )
+                c.appendChild( txt )
+                c.appendChild( right )
                 chips.appendChild( c )
             }
             sel.forEach( ( x ) => {
@@ -383,7 +401,7 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
                 if( x.names.length === total && total > 0 ) {
                     addChip( { ns: x.ns, label: x.ns + ' · ' + T.allN.replace( '{n}', String( total ) ), keyed } )
                 } else {
-                    x.names.forEach( ( n ) => addChip( { ns: x.ns, label: n, keyed, tool: n } ) )
+                    x.names.forEach( ( n ) => addChip( { ns: x.ns, label: x.ns + ' · ' + n, keyed, tool: n } ) )
                 }
             } )
             const box = root.querySelector( '[data-readiness]' )
@@ -400,7 +418,7 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
                 top.innerHTML = svg( 'triangle-alert', 14 ) + ' ' + T.readyWarn
                 legend.innerHTML = needs.map( ( x ) => x.ns + ' — ' + ( x.access === 'tool-key' ? ( x.keys.join( ', ' ) || T.needsKey ) : T.local ) ).join( '<br>' )
             }
-            updateRecommended()
+            setGlobalSeg()
         }
 
         // ---- filtering ----
@@ -438,23 +456,25 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
             return val
         }
         const updateHeadline = () => {
+            // headline is static "Data sources" now; the active region only drives the rail scope chip
             const regs = [ ...filters.region ]
             const regText = regs.length === 0 ? T.allRegions : regs.map( ( r ) => CFG.regions[ r ] || r ).join( ', ' )
-            root.querySelector( '[data-headline]' ).textContent = T.dataSources + ' · ' + regText
             root.querySelector( '[data-scope-label]' ).textContent = regs.length === 0 ? T.allRegions : ( T.scopedTo + ' ' + regText )
         }
-        // "Add N recommended" = keyless + deterministically-verified sources in the current view
-        const recCards = () => cards.filter( ( c ) => c.dataset.match === '1' && c.dataset.access === 'tool-keyless' && c.dataset.verified === '1' )
-        const updateRecommended = () => {
-            const btn = root.querySelector( '[data-add-recommended]' )
-            if( !btn ) { return }
-            const rec = recCards()
-            if( rec.length === 0 ) { btn.hidden = true; return }
-            btn.hidden = false
-            const allAdded = rec.every( ( c ) => { const ts = toolsOf( c ); return ts.length > 0 && ts.every( isOn ) } )
-            btn.classList.toggle( 'cfg__addrec--done', allAdded )
-            btn.disabled = allAdded
-            btn.innerHTML = ( allAdded ? svg( 'check', 13 ) : svg( 'sparkles', 13 ) ) + ' ' + ( allAdded ? T.addRecDone : T.addRec ).replace( '{n}', String( rec.length ) )
+        // global Off/Some/All control (Memo 124 follow-up) — off = clear every selection,
+        // all = select every tool in every source. Mirrors the per-card control catalog-wide.
+        const allToolBoxes = () => cards.flatMap( ( c ) => toolsOf( c ) )
+        const setGlobalSeg = () => {
+            const seg = root.querySelector( '[data-global-seg]' )
+            if( !seg ) { return }
+            const tools = allToolBoxes()
+            const on = tools.filter( isOn ).length
+            const state = on === 0 ? 'off' : ( on === tools.length ? 'all' : 'some' )
+            seg.querySelectorAll( '[data-seg]' ).forEach( ( b ) => {
+                const active = b.dataset.seg === state
+                b.classList.toggle( 'cfg__segbtn--on', active )
+                b.setAttribute( 'aria-pressed', String( active ) )
+            } )
         }
         const renderActiveChips = () => {
             // collect the active-filter specs once …
@@ -512,7 +532,6 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
             if( rc ) { rc.textContent = active > 0 ? String( active ) : '' }
             updateHeadline()
             renderActiveChips()
-            updateRecommended()
         }
 
         // ---- events (delegated) ----
@@ -550,7 +569,6 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
                 return
             }
             if( e.target.closest( '[data-showmore]' ) ) { mobileLimit = false; applyFilters(); return }
-            if( e.target.closest( '[data-add-recommended]' ) ) { recCards().forEach( ( c ) => { toolsOf( c ).forEach( ( b ) => setTool( b, true ) ); syncCard( c ) } ); renderCart(); return }
             if( e.target.closest( '[data-rail-toggle]' ) ) {
                 const tg = e.target.closest( '[data-rail-toggle]' )
                 const open = root.classList.toggle( 'cfg--railopen' )
@@ -570,14 +588,21 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
             }
             const tb = e.target.closest( '[data-tool-check]' )
             if( tb ) { setTool( tb, !isOn( tb ) ); syncCard( tb.closest( '.cfg__card' ) ); renderCart(); return }
-            // Off/Some/All segment control (Memo 124 Kap 1) — off=deselect all, all=select all, some=display-only
+            // Off/Some/All segment control (Memo 124) — off=deselect, all=select, some=display-only.
+            // The global control (catalog head) acts on every source; a per-card one on that card.
             const seg = e.target.closest( '[data-seg]' )
             if( seg ) {
-                const card = seg.closest( '.cfg__card' )
-                const tools = toolsOf( card )
                 const s = seg.dataset.seg
-                if( s === 'off' ) { tools.forEach( ( b ) => setTool( b, false ) ); syncCard( card ); renderCart() }
-                else if( s === 'all' ) { tools.forEach( ( b ) => setTool( b, true ) ); syncCard( card ); renderCart() }
+                if( s === 'some' ) { return }
+                if( seg.closest( '[data-global-seg]' ) ) {
+                    cards.forEach( ( card ) => { toolsOf( card ).forEach( ( b ) => setTool( b, s === 'all' ) ); syncCard( card ) } )
+                    renderCart()
+                    return
+                }
+                const card = seg.closest( '.cfg__card' )
+                toolsOf( card ).forEach( ( b ) => setTool( b, s === 'all' ) )
+                syncCard( card )
+                renderCart()
                 return
             }
             const sa = e.target.closest( '[data-selectall]' )
@@ -769,17 +794,19 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
     .cfg { --status-ok: #3fb950; --status-warn: #e3b341; --cfg-faint: #8b96a3; --cfg-elev: #1c2433; --cfg-elev-2: #131a24; --cfg-chip-bg: #21262d; max-width: 1200px; margin: var( --page-mt, 2rem ) auto var( --page-mb, 4rem ); padding-inline: var( --page-pad-x, 1.5rem ); font-family: var( --sl-font, "Inter", sans-serif ); }
     .cfg [hidden] { display: none !important; }
     .cfg :focus-visible { outline: 2px solid var( --accent ); outline-offset: 2px; border-radius: 4px; }
-    .cfg__intro { margin-bottom: 0.6rem; }
+    .cfg__intro { margin-bottom: 0.9rem; }
     /* sticky "Start with" toolbar (Memo 124 Kap 5) — spans the page so it stays pinned through
      * the whole catalog scroll; --cfg-toolbar-h reserves room so the rail/cart clear it. */
     .cfg { --cfg-toolbar-h: 3.1rem; }
-    .cfg__toolbar { position: sticky; top: var( --sl-nav-height, 4rem ); z-index: 30; background: var( --bg-canvas ); padding: 0.55rem 0; margin-bottom: 0.5rem; border-bottom: 1px solid var( --border ); }
-    .cfg__titlerow { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .cfg__toolbar { position: sticky; top: var( --sl-nav-height, 4rem ); z-index: 30; background: var( --bg-canvas ); padding: 0.7rem 0; margin-bottom: 0.6rem; border-bottom: 1px solid var( --border ); }
+    /* intro vertical rhythm (Memo 124 follow-up): even gaps title → sub → meta */
+    .cfg__titlerow { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.5rem; }
     .cfg__demobadge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; color: var( --accent ); background: var( --sidebar-active-bg ); border: 1px solid var( --border ); border-radius: 4px; padding: 3px 8px; white-space: nowrap; flex: 0 0 auto; cursor: help; }
     .cfg__h1 { font-size: 28px; font-weight: 700; color: var( --text-primary ); margin: 0; line-height: 1.2; }
-    .cfg__sub { font-size: 14px; font-weight: 400; color: var( --text-inactive ); margin: 0 0 0.6rem; max-width: 62ch; }
+    /* full-width sub-line like the Pencil (no ch cap) — single line on desktop (Memo 124 follow-up) */
+    .cfg__sub { font-size: 14px; font-weight: 400; color: var( --text-inactive ); margin: 0 0 0.4rem; }
     .cfg__meta { display: flex; align-items: center; gap: 0.5rem; font-size: 12px; color: var( --text-inactive ); flex-wrap: wrap; }
-    .cfg__disclaimer { display: flex; align-items: flex-start; gap: 6px; font-size: 11px; color: var( --cfg-faint ); margin: 0.5rem 0 0; max-width: 80ch; line-height: 1.5; }
+    .cfg__disclaimer { display: flex; align-items: flex-start; gap: 6px; font-size: 11px; color: var( --cfg-faint ); margin: 0; max-width: 80ch; line-height: 1.5; }
     .cfg__disc-ic { color: var( --status-warn ); flex: 0 0 auto; margin-top: 1px; }
     .cfg__starters { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-top: 0; }
     .cfg__starters-lbl { font-size: 12px; font-weight: 700; color: var( --text-inactive ); }
@@ -827,9 +854,9 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
      * the Pencil catalog head carries only the headline + AddRecommended button. */
     .cfg__catcount { font-size: 10px; color: var( --cfg-faint ); flex: 0 0 auto; margin-left: auto; }
     /* Add-recommended (Pencil KaUwo): idle = accent affordance, done = dimmed confirmation */
-    .cfg__addrec { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var( --accent ); background: var( --sidebar-active-bg ); border: 1px solid var( --accent ); border-radius: 6px; padding: 6px 12px; cursor: pointer; white-space: nowrap; }
-    .cfg__addrec:hover:not( :disabled ) { filter: brightness( 1.12 ); }
-    .cfg__addrec--done { color: var( --cfg-faint ); background: var( --bg-card ); border-color: var( --border ); opacity: 0.6; cursor: default; }
+    /* global Off/Some/All control in the catalog head (Memo 124 follow-up) — clear/select everything.
+     * No label: it aligns above the per-card controls, so its position conveys "all sources". */
+    .cfg__gseg { display: inline-flex; align-items: center; flex: 0 0 auto; }
     .cfg__activefilters { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0 0; }
     .cfg__activefilters:not( :empty ) { margin-bottom: 12px; }
     .cfg__rail > .cfg__activefilters { margin-top: 6px; }
@@ -919,16 +946,19 @@ const frontmatter = { title: t.title, description: t.subLine, template: 'splash'
     .cfg__readiness--warn .cfg__readiness-top { color: var( --status-warn ); }
     .cfg__readiness-top { font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
     .cfg__readiness-legend { font-size: 11px; color: var( --text-inactive ); line-height: 1.5; }
-    .cfg__chips { display: flex; flex-wrap: wrap; gap: 4px; }
-    .cfg__chip-sel { display: inline-flex; align-items: center; gap: 5px; max-width: 100%; font-size: 11px; color: var( --text-primary ); background: var( --bg-canvas ); border: 1px solid var( --border ); border-radius: 6px; padding: 2px 5px 2px 7px; }
-    .cfg__chip-sel > .ic { color: var( --status-warn ); flex: 0 0 auto; }
-    .cfg__chip-txt { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+    /* full-width chip rows (Spec §6 ChipList): name left (truncates), key + X right (Memo 124 follow-up) */
+    .cfg__chips { display: flex; flex-direction: column; gap: 6px; }
+    .cfg__chip-sel { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; font-size: 12px; color: var( --text-primary ); background: var( --bg-canvas ); border: 1px solid var( --border ); border-radius: 6px; padding: 7px 9px; }
+    .cfg__chip-txt { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cfg__chip-right { display: inline-flex; align-items: center; gap: 9px; flex: 0 0 auto; }
+    .cfg__chip-right > .ic { color: var( --status-warn ); }
     .cfg__chip-x { background: none; border: 0; padding: 0; cursor: pointer; color: var( --cfg-faint ); display: inline-flex; flex: 0 0 auto; }
     .cfg__chip-x:hover { color: var( --text-primary ); }
     .cfg__export { background: var( --accent ); color: var( --bg-canvas ); border: 0; border-radius: 8px; height: 42px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; flex: 0 0 auto; }
     .cfg__export:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    .cfg__note { font-size: 11px; color: var( --cfg-faint ); margin-top: 2rem; max-width: 80ch; line-height: 1.5; }
+    .cfg__note { margin-top: 2rem; max-width: 80ch; display: flex; flex-direction: column; gap: 0.6rem; }
+    .cfg__notetext { font-size: 11px; color: var( --cfg-faint ); line-height: 1.5; margin: 0; }
 
     /* Mobile bottom cart bar */
     .cfg__mobar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var( --bg-card ); border-top: 1px solid var( --border ); padding: 12px 16px; }
