@@ -24,23 +24,20 @@
 // Optional-Route (QS5 Discovery, derzeit nicht in Sidebar): /guides/schema-creation/
 
 
+// Memo 142: the docs site was reduced to the format/spec core. FAQ, Use Cases,
+// Schemas & Sources, the guides (Hackathon Kit / Agent Creation / GTFS Pilot), the
+// whole Reference section and the whole Ecosystem section were removed (moved to
+// .trash). Those routes now live in FORBIDDEN_ROUTES (Block 2: 404/redirect = PASS).
 const EN_ROUTES = [
     // About-Gruppe
     { path: '/about/',                       expectedMarker: 'About FlowMCP',           group: 'About',         locale: 'en' },
-    { path: '/about/faq/',                   expectedMarker: 'FAQ',                     group: 'About',         locale: 'en' },
-    { path: '/introduction/use-cases/',      expectedMarker: 'Use Cases',               group: 'About',         locale: 'en' },
-    { path: '/schemas-and-sources/',         expectedMarker: 'Schemas & Sources',       group: 'About',         locale: 'en' },
 
     // Get-Started-Gruppe
     { path: '/quickstart/quickstart/',       expectedMarker: 'Quickstart',              group: 'Get Started',   locale: 'en' },
     { path: '/introduction/for-llms/',       expectedMarker: 'For LLMs',                group: 'Get Started',   locale: 'en' },
-    { path: '/guides/hackathon-kit/',        expectedMarker: 'Hackathon Kit',           group: 'Get Started',   locale: 'en' },
-    { path: '/guides/agent-creation/',       expectedMarker: 'Agent Creation',          group: 'Get Started',   locale: 'en' },
-    { path: '/guides/gtfs-pilot/',           expectedMarker: 'GTFS Pilot',              group: 'Get Started',   locale: 'en' },
 
     // Concepts
     { path: '/concepts/schemas/',            expectedMarker: 'Schemas',                 group: 'Concepts',      locale: 'en' },
-    { path: '/concepts/tools/',              expectedMarker: 'Tools',                   group: 'Concepts',      locale: 'en' },
     { path: '/concepts/primitives/',         expectedMarker: 'Primitives',              group: 'Concepts',      locale: 'en' },
     { path: '/concepts/clients/',            expectedMarker: 'Clients',                 group: 'Concepts',      locale: 'en' },
 
@@ -51,15 +48,6 @@ const EN_ROUTES = [
     { path: '/specification/resources/',     expectedMarker: 'Resources',               group: 'Specification', locale: 'en' },
     { path: '/specification/validation-rules/', expectedMarker: 'Validation',           group: 'Specification', locale: 'en' },
 
-    // Reference
-    { path: '/reference/cli/',               expectedMarker: 'CLI',                     group: 'Reference',     locale: 'en' },
-    { path: '/reference/core-methods/',      expectedMarker: 'Core',                    group: 'Reference',     locale: 'en' },
-    { path: '/reference/mcp-server/',        expectedMarker: 'MCP Server',              group: 'Reference',     locale: 'en' },
-
-    // Ecosystem
-    { path: '/ecosystem/agentprobe/',        expectedMarker: 'AgentProbe',              group: 'Ecosystem',     locale: 'en' },
-    { path: '/ecosystem/x402/',              expectedMarker: 'x402',                    group: 'Ecosystem',     locale: 'en' },
-
     // Blog
     { path: '/blog/',                        expectedMarker: 'Blog',                    group: 'Blog',          locale: 'en' },
 
@@ -68,24 +56,16 @@ const EN_ROUTES = [
 ]
 
 
-// DE-Mirror: gleiche Pfade mit Prefix /de/. Optional-Flag uebernommen.
-// Die Marker werden gelockert (nutzen kleinere Tokens), weil viele DE-Seiten
-// neu hinzugefuegte Content-Items (hackathon-kit, agent-creation, gtfs-pilot,
-// schemas-and-sources) keine DE-Uebersetzung haben und Starlight diese als
-// 404 ausliefert — diese Routen werden als optional markiert.
-const DE_ONLY_OPTIONAL_PATHS = [
-    '/about/faq/',                 // DE-Faq existiert, aber Marker variiert
-    '/schemas-and-sources/',       // DE-Mirror existiert
+// Memo 142: routes removed from the site (and their DE mirrors). They now 404
+// (or redirect, for the ones with a repointed legacy redirect). Block 2 accepts
+// 404 / 3xx / 200+meta-refresh → these verify the reduction landed.
+const MEMO_142_REMOVED_PATHS = [
+    '/about/faq/',
     '/introduction/use-cases/',
-    '/introduction/for-llms/',
-    '/quickstart/quickstart/',
+    '/schemas-and-sources/',
     '/guides/hackathon-kit/',
     '/guides/agent-creation/',
     '/guides/gtfs-pilot/',
-    '/concepts/schemas/',
-    '/concepts/tools/',
-    '/concepts/primitives/',
-    '/concepts/clients/',
     '/reference/cli/',
     '/reference/core-methods/',
     '/reference/mcp-server/',
@@ -144,7 +124,11 @@ const FORBIDDEN_ROUTES = [
     '/de/concepts/schemas-skills/',
     '/de/concepts/schemas-tools/',
     '/de/concepts/schema-catalog/',
-    '/de/concepts/tag-search/'
+    '/de/concepts/tag-search/',
+
+    // Memo 142: reduced pages (EN + DE mirrors) — removed from the site.
+    ...MEMO_142_REMOVED_PATHS,
+    ...MEMO_142_REMOVED_PATHS.map( ( p ) => `/de${ p }` )
 ]
 
 

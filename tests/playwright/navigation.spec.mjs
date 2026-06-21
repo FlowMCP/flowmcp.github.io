@@ -14,12 +14,14 @@ test.describe( 'Navigation (Pencil-Layout REV-15)', () => {
         await expect( sidebar.getByText( /Get Started/i ).first() ).toBeAttached()
         await expect( sidebar.getByText( /Concepts/i ).first() ).toBeAttached()
         await expect( sidebar.getByText( /Specification/i ).first() ).toBeAttached()
-        await expect( sidebar.getByText( /Reference/i ).first() ).toBeAttached()
+        // Memo 142: Reference group removed; Grading is a surviving nav group.
+        await expect( sidebar.getByText( /Grading/i ).first() ).toBeAttached()
     } )
 
     test( '2. Landing zeigt Pencil-Hero + LogoStrip + StatsBar', async ( { page } ) => {
         await page.goto( '/' )
-        await expect( page.getByText( /Unified access to any data source/i ).first() ).toBeVisible()
+        // Memo 142: hero headline pivot to the schema-format positioning.
+        await expect( page.getByText( /Schema-driven data access/i ).first() ).toBeVisible()
         await expect( page.getByText( /Connects to/i ).first() ).toBeVisible()
         // Stats are dynamic (from refs.json); assert numeric pattern instead of fixed value
         await expect( page.getByText( /\b\d{3,}\b/ ).first() ).toBeVisible()
@@ -73,17 +75,16 @@ test.describe( 'Navigation (Pencil-Layout REV-15)', () => {
     } )
 
     test( '10. Linkkonsistenz — keine 404 von Hauptpfaden', async ( { page } ) => {
+        // Memo 142: removed pages (faq, reference/cli, schemas-and-sources) dropped;
+        // they 404 by design and are covered in phase-9 FORBIDDEN_ROUTES instead.
         const routes = [
             '/about/',
-            '/about/faq/',
             '/concepts/schemas/',
             '/concepts/tools/',
             '/concepts/primitives/',
             '/concepts/clients/',
             '/specification/overview/',
-            '/reference/cli/',
             '/blog/',
-            '/schemas-and-sources/',
         ]
         for( const route of routes ) {
             const response = await page.goto( route )
