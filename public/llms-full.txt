@@ -14,7 +14,6 @@ Spec: https://raw.githubusercontent.com/FlowMCP/flowmcp-spec/main/generated/llms
 
 Assume nothing silently, fake nothing, and document where the data comes from and under which rights. Correctness and provenance are what separate a schema that *passes* from one that can be *trusted*.
 
----
 
 ## No silent defaults; a 4xx is not a pass
 
@@ -75,7 +74,7 @@ A small workflow can fetch the URL, run a robots/legal check, and stamp these fi
 
 ## Related
 
-- `10-readable-interface.md`
+- `10-readable-interface.md` — designing the surface for the calling model with readable enums, names, and handler phases.
 
 ---
 
@@ -84,7 +83,6 @@ A small workflow can fetch the URL, run a robots/legal check, and stamp these fi
 
 Geo has a few conventions that everyone trips over once. Adopt the established defaults instead of inventing your own — it keeps schemas interoperable and spares the model a class of silent mistakes.
 
----
 
 ## Longitude-first bounding boxes
 
@@ -126,7 +124,7 @@ show as:    plz = "10115"       (familiar, but many PLZ per municipality)
 
 ## Related
 
-- `12-load-and-scale.md`
+- `12-load-and-scale.md` — choosing the load and storage strategy by data size and query ability.
 
 ---
 
@@ -135,7 +133,6 @@ show as:    plz = "10115"       (familiar, but many PLZ per municipality)
 
 Choose the load and storage strategy by **data size** and by the **query ability** of the source. A small static file and a large queryable corpus do not deserve the same machinery — match the mechanism to the data.
 
----
 
 ## Preload small static data into memory
 
@@ -189,7 +186,7 @@ Be precise about what the limit governs: the number of clauses is **not** the li
 
 ## Related
 
-- `13-geo-conventions.md`
+- `13-geo-conventions.md` — the established geo defaults that keep schemas interoperable and avoid silent mistakes.
 
 ---
 
@@ -200,7 +197,6 @@ The Best-Practice track is the third FlowMCP spec track, sitting alongside the n
 
 > This track is informative and advisory. It introduces no new normative keywords of its own and uses "should", never "MUST" — the normative-language conventions (MUST / SHOULD / MAY) are defined once in the Specification overview and are not redefined here.
 
----
 
 ## What this track is
 
@@ -266,7 +262,7 @@ Small, sharp learnings that do not warrant a full page:
 
 ## Related
 
-- `schema-creation/10-readable-interface.md`
+- `schema-creation/10-readable-interface.md` — designing the surface for the calling model with readable enums, names, and handler phases.
 
 ---
 
@@ -275,7 +271,6 @@ Small, sharp learnings that do not warrant a full page:
 
 Design the schema for the **model that calls it**, not for the API behind it. An upstream API often speaks in terse codes; the language model should not have to decode them. Translate at the edge so the surface the model sees is self-explaining.
 
----
 
 ## Human-readable enums
 
@@ -327,7 +322,7 @@ Reading the wrong shape raises no error — the handler just never fires. So whe
 
 ## Related
 
-- `14-correctness-license.md`
+- `14-correctness-license.md` — assuming nothing, faking nothing, and documenting data provenance and rights.
 
 ---
 
@@ -336,7 +331,6 @@ Reading the wrong shape raises no error — the handler just never fires. So whe
 
 Maintain recurring lists and value formats **once**, and inherit them everywhere. Duplicated reference data drifts: one copy gets a new entry, the others quietly fall behind. A single canonical source cannot drift against itself.
 
----
 
 ## Shared lists
 
@@ -390,7 +384,7 @@ Never force a key at the very start of a journey when a keyless path exists.
 
 ## Related
 
-- `10-readable-interface.md`
+- `10-readable-interface.md` — designing the surface for the calling model with readable enums, names, and handler phases.
 
 ---
 
@@ -859,10 +853,6 @@ Author guidance for each step is collected in the Schema Creation Guide and the 
 # "About Convention as a Schema Resource"
 /grading/about-convention
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
----
-
 The **About Resource** is a markdown Resource that describes what a namespace (or a selection) does, what it does not do, and which conventions it follows. It is a schema Resource — declared under `main.resources` with the reserved name `about`, authored as markdown rather than a `.mjs` module — not a namespace route. It exists because consumers (LLM graders, skill authors, third-party tools, dashboards) repeatedly need one uniform way to ask *"what does this namespace do, what doesn't it do, which conventions does it follow?"* without reading the schema source first; this **guessability argument** is the deep reason the name `about` is reserved. The chapter has three parts: the declaration contract, the content contract, and the detection and grading of About on the namespace and selection levels.
 
 ## The About Resource as a Schema Resource
@@ -987,26 +977,23 @@ The Schemas-Spec — particularly `13-resources.md` — defines the Resource pri
 
 ## Related
 
-- `00-overview.md`
-- `08-grading-model.md`
-- `13-resources.md`
-- `17-selections.md`
-- `10-domain-knowledge.md`
-- `12-personas-contract.md`
-- `13-skills.md`
-- `19-folder-layout.md`
-- `21-pre-conditions.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `13-resources.md` — local SQLite and Markdown data access alongside network tools.
+- `17-selections.md` — a named bundle of primitives an agent activates together.
+- `10-domain-knowledge.md` — how a selection's About Resource carries the group's domain knowledge.
+- `12-personas-contract.md` — how a grading entry references one of the four base personas and a lens.
+- `13-skills.md` — how namespace skills and leveled selection skills are graded differently.
+- `19-folder-layout.md` — the three top-level folders and timestamp-first naming grammar of the grading island.
+- `21-pre-conditions.md` — the universal rule blocking aggregate checks until every member schema is stable.
 
 ---
 
 # "Default Journey & Maximalism"
 /grading/default-journey
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification.
-
 This chapter anchors the **default journey** by which a schema enters the FlowMCP corpus, the **maximalism principle** that governs its endpoint coverage, the link to the **interoperability** main focus, and the **completeness validation** that feeds the `single-test` and `tools-aggregate-schema` Areas (see `04-phases-single.md`). The default position is unambiguous: more tools mean better interoperability. Reduction below the documented endpoint set MUST be justified, or it MUST cost points.
 
----
 
 ## Default Journey (binding)
 
@@ -1064,18 +1051,14 @@ Gap reporting is mandatory; gap penalisation is conditional on the absence of an
 
 ## Related
 
-- `00-overview.md`
-- `02-eligibility.md`
-- `04-phases-single.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `02-eligibility.md` — what is allowed to be part of a gradable schema before scoring begins.
+- `04-phases-single.md` — the six provider-side areas that grade one schema without group context.
 
 ---
 
 # "Determinism and Tier"
 /grading/determinism-and-tier
-
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
----
 
 The Grading-Spec rates every dimension along **two orthogonal axes**: *Determinism* (is the score reproducible?) and *Tier* (what is the highest grade it can reach?). Because the axes are independent, a dimension can be deterministic yet group-bound, or non-deterministic yet autonomous. Both values are carried separately in the grading entry as the fields `determinism` and `gradingTier` (see `08-grading-model.md`), and this page defines what each value means and how the two combine.
 
@@ -1084,7 +1067,6 @@ The Grading-Spec rates every dimension along **two orthogonal axes**: *Determini
 | Determinism | `deterministic` / `non-deterministic` | Reproducibility |
 | Tier | `autonomous` / `group-bound` | Maximum attainable grade (Ch. 7) |
 
----
 
 ## Axis 1 — Determinism
 
@@ -1278,23 +1260,19 @@ Cross-Refs:
 
 ## Related
 
-- `00-overview.md`
-- `04-phases-single.md`
-- `05-phases-selection.md`
-- `07-scoring-vs-grading.md`
-- `08-grading-model.md`
-- `09-security-and-development.md`
-- `18-flywheel-loop.md`
-- `21-pre-conditions.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `04-phases-single.md` — the six provider-side areas that grade one schema without group context.
+- `05-phases-selection.md` — the five selection-side areas that grade a curated group of namespaces.
+- `07-scoring-vs-grading.md` — why evidencing a single test stays separate from deriving a letter grade.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `09-security-and-development.md` — the security and development checks that carry high categorical-veto affinity.
+- `18-flywheel-loop.md` — the self-reinforcing import, grade, improve, export round-trip.
+- `21-pre-conditions.md` — the universal rule blocking aggregate checks until every member schema is stable.
 
 ---
 
 # "Domain Knowledge and Group Definition"
 /grading/domain-knowledge
-
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
----
 
 A **topic group** — a selection composed of several namespaces — develops conventions, shared vocabularies, and provider-specific quirks that are invisible from any single namespace in isolation. Grading at the `group-bound` tier MUST be validated against the group's **Domain-Knowledge content**, and that content lives in the selection's **About Resource** rather than a separate document — a binding identity rather than a loose association. This chapter sets the two thresholds under which a selection counts as a group, lists the seven mandatory sections the content must carry, and traces how it feeds the `domainConformance` and `personaUseCaseFit` dimensions.
 
@@ -1396,25 +1374,22 @@ A grading entry that uses Domain-Knowledge content records the resolved About Re
 
 ## Related
 
-- `00-overview.md`
-- `08-grading-model.md`
-- `09-security-and-development.md`
-- `05-phases-selection.md`
-- `06-determinism-and-tier.md`
-- `11-about-convention.md`
-- `12-personas-contract.md`
-- `13-skills.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `09-security-and-development.md` — the security and development checks that carry high categorical-veto affinity.
+- `05-phases-selection.md` — the five selection-side areas that grade a curated group of namespaces.
+- `06-determinism-and-tier.md` — the two axes that decide reproducibility and the highest grade a dimension can reach.
+- `11-about-convention.md` — the reserved About markdown Resource that describes what a namespace does.
+- `12-personas-contract.md` — how a grading entry references one of the four base personas and a lens.
+- `13-skills.md` — how namespace skills and leveled selection skills are graded differently.
 
 ---
 
 # "Eligibility"
 /grading/eligibility
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification.
-
 This chapter defines **what is allowed to be part of a gradable schema**. Eligibility is the upstream gate: an endpoint that is not eligible MUST NOT appear in a schema, and the chapter sets out the exclusion criteria, the access classes, the schema-splitting rule, and the target-audience priority. The maximalism principle in `01-default-journey.md` operates **inside** this eligibility boundary — "all admitted endpoints" means "all endpoints that pass the rules in this chapter".
 
----
 
 ## Read Focus
 
@@ -1524,21 +1499,18 @@ The detailed verification method belongs to the grader implementation and is out
 
 ## Related
 
-- `00-overview.md`
-- `01-default-journey.md`
-- `04-phases-single.md`
-- `20-entry-point-prompt.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `01-default-journey.md` — how a schema enters the corpus and why maximal endpoint coverage is the default.
+- `04-phases-single.md` — the six provider-side areas that grade one schema without group context.
+- `20-entry-point-prompt.md` — the first prompt that anchors a grading run to persona, schema, mode, and version.
 
 ---
 
 # "Entry-Point Prompt + Personas Obligation"
 /grading/entry-point-prompt
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
 Every grading run begins from an empty context, and an empty context needs a concrete starting signal. This chapter defines that signal: the entry-point prompt, the first prompt a grader pastes after `/clear`, which binds the persona, the selection or single schema, the mode, and the spec version into one block. It also fixes the personas obligation — when a persona is spec-mandatory versus merely conventional — so that Single- and Selection-Gradings stay anchored to the same evaluation lens.
 
----
 
 ## Entry-Point Prompt
 
@@ -1602,23 +1574,20 @@ The README in the grading repository carries the ready-to-use prompt with exampl
 
 ## Related
 
-- `00-overview.md`
-- `02-eligibility.md`
-- `12-personas-contract.md`
-- `16-selection-lockfile.md`
-- `21-pre-conditions.md`
-- `19-folder-layout.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `02-eligibility.md` — what is allowed to be part of a gradable schema before scoring begins.
+- `12-personas-contract.md` — how a grading entry references one of the four base personas and a lens.
+- `16-selection-lockfile.md` — the neutral selection definition and the frozen member-pin lock snapshot.
+- `21-pre-conditions.md` — the universal rule blocking aggregate checks until every member schema is stable.
+- `19-folder-layout.md` — the three top-level folders and timestamp-first naming grammar of the grading island.
 
 ---
 
 # "Flywheel Loop"
 /grading/flywheel-loop
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
 The grading process is a self-reinforcing flywheel: provider folders and selection definitions are imported into the workbench, graded by the provider-side and selection-side areas, and the graded state is exported back as `index.json`. Each turn improves the inputs to the next — a stronger schema lifts every selection that contains it, and every selection run surfaces the weakest schemas in a namespace. This chapter traces that round-trip end to end, names the three loops that keep it spinning, and lists the anti-patterns that break it.
 
----
 
 ## The Flywheel as an IN/OUT Round-Trip
 
@@ -1700,25 +1669,22 @@ The following patterns break the flywheel and are excluded by the spec:
 
 ## Related
 
-- `00-overview.md`
-- `06-determinism-and-tier.md`
-- `08-grading-model.md`
-- `19-folder-layout.md`
-- `21-pre-conditions.md`
-- `04-phases-single.md`
-- `05-phases-selection.md`
-- `11-about-convention.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `06-determinism-and-tier.md` — the two axes that decide reproducibility and the highest grade a dimension can reach.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `19-folder-layout.md` — the three top-level folders and timestamp-first naming grammar of the grading island.
+- `21-pre-conditions.md` — the universal rule blocking aggregate checks until every member schema is stable.
+- `04-phases-single.md` — the six provider-side areas that grade one schema without group context.
+- `05-phases-selection.md` — the five selection-side areas that grade a curated group of namespaces.
+- `11-about-convention.md` — the reserved About markdown Resource that describes what a namespace does.
 
 ---
 
 # "Folder Layout"
 /grading/folder-layout
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
 The grading data set is a workbench island organised under three top-level folders — `providers/`, `selections/`, and `shared-lists/` — with one folder per primitive and a timestamp-first naming grammar that makes the newest revision resolvable by a naive sort. Source files stay neutral (no in-source hashes), every hash binding and rollup lives in the derived, overwritable `index.json`, and content is never edited in place or deleted: a change writes a new file next to the old one. This chapter is the single source of truth for those paths; the addressing grammar, the folder↔namespace invariant, the universal `_gradings/` placement rule, and the per-schema lifecycle all build on it.
 
----
 
 ## Folder Layout
 
@@ -1866,29 +1832,24 @@ Old source files remain referenceable for historical gradings — they are not d
 
 ## Related
 
-- `00-overview.md`
-- `08-grading-model.md`
-- `15-versioning-axes.md`
-- `16-selection-lockfile.md`
-- `11-about-convention.md`
-- `21-pre-conditions.md`
-- `18-flywheel-loop.md`
-- `22-workbench-island.md`
-- `23-index-json.md`
-- `26-monitoring-track.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `15-versioning-axes.md` — how primitives are versioned by filename timestamp and bound by a canonical hash.
+- `16-selection-lockfile.md` — the neutral selection definition and the frozen member-pin lock snapshot.
+- `11-about-convention.md` — the reserved About markdown Resource that describes what a namespace does.
+- `21-pre-conditions.md` — the universal rule blocking aggregate checks until every member schema is stable.
+- `18-flywheel-loop.md` — the self-reinforcing import, grade, improve, export round-trip.
+- `22-workbench-island.md` — the walled-off working directory that never overwrites a shipped source.
+- `23-index-json.md` — the one rollup file per namespace and selection carrying status and grade.
+- `26-monitoring-track.md` — the deterministic GitHub board projecting each namespace's grading state.
 
 ---
 
 # "Grading Model"
 /grading/grading-model
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
----
-
 This page defines the **grading entry** — the single durable artefact a grader emits and the one data model that both skill families (Single-Schema-Validator and Selection-Validator) write into. A grading is an array of per-question evaluations that carries veto power, a tier trim (autonomous max `B` / group max `A`), and can be re-triggered by the user; a present Categorical Veto overrides all aggregation and yields `aggregateGrade = REJECTED`. Every grading entry MUST validate against the JSON-Schema annex `08-grading-model.schema.json`.
 
----
 
 ## Status Record vs. Grading Entry (NEW in 3.0.0)
 
@@ -2381,30 +2342,26 @@ if( rejected.aggregateGrade !== 'REJECTED' ) { throw new Error( 'rejected exampl
 
 ## Related
 
-- `00-overview.md`
-- `06-determinism-and-tier.md`
-- `07-scoring-vs-grading.md`
-- `09-security-and-development.md`
-- `10-domain-knowledge.md`
-- `12-personas-contract.md`
-- `13-skills.md`
-- `15-versioning-axes.md`
-- `16-selection-lockfile.md`
-- `19-folder-layout.md`
-- `22-workbench-island.md`
-- `23-index-json.md`
-- `08-grading-model.schema.json`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `06-determinism-and-tier.md` — the two axes that decide reproducibility and the highest grade a dimension can reach.
+- `07-scoring-vs-grading.md` — why evidencing a single test stays separate from deriving a letter grade.
+- `09-security-and-development.md` — the security and development checks that carry high categorical-veto affinity.
+- `10-domain-knowledge.md` — how a selection's About Resource carries the group's domain knowledge.
+- `12-personas-contract.md` — how a grading entry references one of the four base personas and a lens.
+- `13-skills.md` — how namespace skills and leveled selection skills are graded differently.
+- `15-versioning-axes.md` — how primitives are versioned by filename timestamp and bound by a canonical hash.
+- `16-selection-lockfile.md` — the neutral selection definition and the frozen member-pin lock snapshot.
+- `19-folder-layout.md` — the three top-level folders and timestamp-first naming grammar of the grading island.
+- `22-workbench-island.md` — the walled-off working directory that never overwrites a shipped source.
+- `23-index-json.md` — the one rollup file per namespace and selection carrying status and grade.
 
 ---
 
 # "Harness and `/goal`"
 /grading/harness-and-goal
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`.
-
 Non-deterministic grading runs inside a harness, and the harness is driven by a completion condition rather than a fixed step count. This chapter defines that harness, the completion-condition mechanism, and the surfacing convention that makes the run's progress visible to the transcript-only evaluator. Because each turn restarts from scratch, it also fixes the two-loop structure and the idempotency rule that keep state in files rather than in memory.
 
----
 
 ## The Harness
 
@@ -2458,22 +2415,19 @@ The prompt builder appends a **Goal-Block** (a fitting completion condition plus
 
 ## Related
 
-- `00-overview.md`
-- `08-grading-model.md`
-- `20-entry-point-prompt.md`
-- `23-index-json.md`
-- `24-selection-aggregate.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `20-entry-point-prompt.md` — the first prompt that anchors a grading run to persona, schema, mode, and version.
+- `23-index-json.md` — the one rollup file per namespace and selection carrying status and grade.
+- `24-selection-aggregate.md` — the eleventh area that grades a selection as a whole and gates Grade A.
 
 ---
 
 # "Namespace and Selection Rollup"
 /grading/index-json
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`.
-
 Status and grade live on the **namespace** level (and the **selection** level), not on a per-schema sidecar file: there is exactly **one `index.json` per namespace and one per selection**. The file is the rollup — a tree of `tool → schema → namespace` (provider flow) or `member → selection` (selection flow), where each node carries its newest grade (resolved via `resolveLatest`) and a rolled-up status. This chapter pins its structure: the two-part split between a recomputed live rollup and a frozen point-in-time snapshot, the two status vocabularies that must never be mixed, and the audit-trail and veto rules it inherits. It supersedes the former Kanban phase-status contract (see `14-kanban-data-contract.md`); the two salvaged rules from that contract — the audit trail and the irreversible veto — are restated normatively in Salvaged Rules: Audit Trail + Irreversible Veto.
 
----
 
 ## Two Natures: Live-Rollup and Frozen `lockSnapshot`
 
@@ -2669,24 +2623,19 @@ This record validates against `index.schema.json` with only `status` (+ `reason`
 
 ## Related
 
-- `00-overview.md`
-- `19-folder-layout.md`
-- `14-kanban-data-contract.md`
-- `16-selection-lockfile.md`
-- `21-pre-conditions.md`
-- `08-grading-model.md`
-- `24-selection-aggregate.md`
-- `26-monitoring-track.md`
-- `index.schema.json`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `19-folder-layout.md` — the three top-level folders and timestamp-first naming grammar of the grading island.
+- `14-kanban-data-contract.md` — the superseded phase-status contract, now replaced by the index.json rollup.
+- `16-selection-lockfile.md` — the neutral selection definition and the frozen member-pin lock snapshot.
+- `21-pre-conditions.md` — the universal rule blocking aggregate checks until every member schema is stable.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `24-selection-aggregate.md` — the eleventh area that grades a selection as a whole and gates Grade A.
+- `26-monitoring-track.md` — the deterministic GitHub board projecting each namespace's grading state.
 
 ---
 
 # "Kanban Data Contract (superseded)"
 /grading/kanban-data-contract
-
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`.
-
----
 
 This chapter is **superseded**: the earlier Kanban data contract — a per-phase status response with a `single`/`selection` lane separation — has been replaced by a single derived rollup file per namespace and per selection, the `index.json`, which carries node status, member resolution, the frozen lock snapshot, and the aggregate grade in one place. Consumers MUST read status from `index.json`; the old phase-status surface and its annex schema are no longer normative. Two principles survive the break and are restated here for traceability — the never-delete audit trail and the irreversible `rejected` veto — and now also govern the grading-monitoring board defined in `26-monitoring-track.md`.
 
@@ -2714,22 +2663,18 @@ A categorical veto produces the terminal node status `rejected`. This status is 
 
 ## Related
 
-- `14-kanban-data-contract.schema.json`
-- `23-index-json.md`
-- `22-workbench-island.md`
-- `26-monitoring-track.md`
-- `09-security-and-development.md`
+- `23-index-json.md` — the one rollup file per namespace and selection carrying status and grade.
+- `22-workbench-island.md` — the walled-off working directory that never overwrites a shipped source.
+- `26-monitoring-track.md` — the deterministic GitHub board projecting each namespace's grading state.
+- `09-security-and-development.md` — the security and development checks that carry high categorical-veto affinity.
 
 ---
 
 # "Grading-Monitoring Track"
 /grading/monitoring-track
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
 This chapter brings the grading-monitoring board back into scope and defines the grading-monitoring track that projects each namespace's grading state onto a deterministic GitHub board. It fixes the decoupling from the schema-development track, the one-grading-issue-per-namespace contract and its provider-proof metadata source, the deterministic board contract, and the island ↔ repo ↔ provider-proof data flow. The executable sync workflow, the proof producer, and the consuming skills are deferred to implementation phases; here only their contracts are written.
 
----
 
 ## Scope — the board is back
 
@@ -2868,12 +2813,12 @@ The two salvaged rules from `14-kanban-data-contract.md` remain normative and no
 
 ## Related
 
-- `22-workbench-island.md`
-- `23-index-json.md`
-- `19-folder-layout.md`
-- `06-determinism-and-tier.md`
-- `08-grading-model.md`
-- `14-kanban-data-contract.md`
+- `22-workbench-island.md` — the walled-off working directory that never overwrites a shipped source.
+- `23-index-json.md` — the one rollup file per namespace and selection carrying status and grade.
+- `19-folder-layout.md` — the three top-level folders and timestamp-first naming grammar of the grading island.
+- `06-determinism-and-tier.md` — the two axes that decide reproducibility and the highest grade a dimension can reach.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `14-kanban-data-contract.md` — the superseded phase-status contract, now replaced by the index.json rollup.
 
 ---
 
@@ -2884,7 +2829,6 @@ The Grading-Spec describes **how** FlowMCP schemas and selections are evaluated 
 
 Normative language (MUST/SHOULD/MAY) follows the conventions defined in the FlowMCP Schemas Specification /specification/00-overview/ (Conformance Language). This Grading-Spec does not re-define normative keywords.
 
----
 
 ## Conformance Language
 
@@ -3034,10 +2978,6 @@ The following are the spec's headline structural concepts, each defined in its o
 
 # "Personas Contract"
 /grading/personas-contract
-
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
----
 
 The Grading-Spec does not invent personas; it references the four generalised base personas maintained in the `flowmcp-spec` personas folder and pins down how a grading entry points at one. This chapter fixes the persona reference contract (`basePersonaId` plus an optional `lensId`), explains the **Lens** model that narrows a generalised persona to a domain without spawning a fifth one, and records which Areas must carry a persona. It also recognises a second, technical persona tier — three review lenses owned by the grading repository — used only for autonomous Task-A schema preparation.
 
@@ -3200,23 +3140,18 @@ content (identity, review focus, sign-off / block criteria) lives in the grading
 
 ## Related
 
-- `00-overview.md`
-- `08-grading-model.md`
-- `10-domain-knowledge.md`
-- `13-skills.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `10-domain-knowledge.md` — how a selection's About Resource carries the group's domain knowledge.
+- `13-skills.md` — how namespace skills and leveled selection skills are graded differently.
 
 ---
 
 # "Selection-Side Grading Areas"
 /grading/phases-selection
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
----
-
 A **selection** is a topic-oriented, curated collection of tools and skills assembled over several member namespaces — the fifth schema primitive defined in the FlowMCP Schemas Specification (see its `17-selections.md`). This page is the normative source for the **selection-side grading Areas**, which run on top of the provider-side Areas of `04-phases-single.md`: they presuppose that every member schema has already been graded on the provider side and reached the status `stable` (see the pre-condition below). The selection-side Areas produce `gradingTier = group-bound`, and only under this tier is grade **A** reachable (per `06-determinism-and-tier.md`).
 
----
 
 ## Prerequisite: Soft and Hard Thresholds
 
@@ -3310,26 +3245,23 @@ This tier is the **only** path to grade **A**. The provider-side Areas (`autonom
 
 ## Related
 
-- `00-overview.md`
-- `04-phases-single.md`
-- `06-determinism-and-tier.md`
-- `10-domain-knowledge.md`
-- `11-about-convention.md`
-- `12-personas-contract.md`
-- `13-skills.md`
-- `19-folder-layout.md`
-- `21-pre-conditions.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `04-phases-single.md` — the six provider-side areas that grade one schema without group context.
+- `06-determinism-and-tier.md` — the two axes that decide reproducibility and the highest grade a dimension can reach.
+- `10-domain-knowledge.md` — how a selection's About Resource carries the group's domain knowledge.
+- `11-about-convention.md` — the reserved About markdown Resource that describes what a namespace does.
+- `12-personas-contract.md` — how a grading entry references one of the four base personas and a lens.
+- `13-skills.md` — how namespace skills and leveled selection skills are graded differently.
+- `19-folder-layout.md` — the three top-level folders and timestamp-first naming grammar of the grading island.
+- `21-pre-conditions.md` — the universal rule blocking aggregate checks until every member schema is stable.
 
 ---
 
 # "Provider-Side Grading Areas"
 /grading/phases-single
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification.
-
 This chapter is the **normative source for the provider-side grading Areas** — the Areas that grade one **schema** inside one **namespace** without group context. Each Area is a self-contained grading rubric attached to the primitive it evaluates, written to a `_gradings/` folder next to that primitive (see `19-folder-layout.md`). The provider side produces the **base unit** of the FlowMCP corpus — one namespace with one or more schemas, namespace skills, and an About Resource — while higher-level grouping is defined separately in `05-phases-selection.md`. A schema graded only on the provider side has `gradingTier = autonomous`, whose maximum attainable grade is **B** (`06-determinism-and-tier.md`); grade A requires a `group-bound` contribution from the selection side.
 
----
 
 ## The Provider-Side Areas
 
@@ -3413,27 +3345,24 @@ The provider-side Areas produce `gradingTier = autonomous`. Per `06-determinism-
 
 ## Related
 
-- `00-overview.md`
-- `01-default-journey.md`
-- `02-eligibility.md`
-- `03-tos.md`
-- `05-phases-selection.md`
-- `06-determinism-and-tier.md`
-- `11-about-convention.md`
-- `12-personas-contract.md`
-- `13-skills.md`
-- `19-folder-layout.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `01-default-journey.md` — how a schema enters the corpus and why maximal endpoint coverage is the default.
+- `02-eligibility.md` — what is allowed to be part of a gradable schema before scoring begins.
+- `03-tos.md` — how Terms-of-Service links are checked as a due-diligence score, never a hard gate.
+- `05-phases-selection.md` — the five selection-side areas that grade a curated group of namespaces.
+- `06-determinism-and-tier.md` — the two axes that decide reproducibility and the highest grade a dimension can reach.
+- `11-about-convention.md` — the reserved About markdown Resource that describes what a namespace does.
+- `12-personas-contract.md` — how a grading entry references one of the four base personas and a lens.
+- `13-skills.md` — how namespace skills and leveled selection skills are graded differently.
+- `19-folder-layout.md` — the three top-level folders and timestamp-first naming grammar of the grading island.
 
 ---
 
 # "Universal Pre-Condition Obligation"
 /grading/pre-conditions
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
 An aggregate grade is only trustworthy if its members are themselves settled. This chapter states the one rule that guarantees that: any check spanning multiple schemas — a Selection-Grading or an About verification — is blocked until every member schema reads `gradingStatus: stable` in the frozen `lockSnapshot`. It is the single place where that universal pre-condition is defined; the Selection and About chapters point back here rather than restating it, and the chapter also pins the readiness ladder and per-Area dependency gates that decide when each Area becomes eligible to run.
 
----
 
 ## Pre-Conditions
 
@@ -3565,24 +3494,21 @@ its concrete implementation is a later-stage concern and is not pinned by this s
 
 ## Related
 
-- `00-overview.md`
-- `06-determinism-and-tier.md`
-- `08-grading-model.md`
-- `16-selection-lockfile.md`
-- `11-about-convention.md`
-- `15-versioning-axes.md`
-- `18-flywheel-loop.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `06-determinism-and-tier.md` — the two axes that decide reproducibility and the highest grade a dimension can reach.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `16-selection-lockfile.md` — the neutral selection definition and the frozen member-pin lock snapshot.
+- `11-about-convention.md` — the reserved About markdown Resource that describes what a namespace does.
+- `15-versioning-axes.md` — how primitives are versioned by filename timestamp and bound by a canonical hash.
+- `18-flywheel-loop.md` — the self-reinforcing import, grade, improve, export round-trip.
 
 ---
 
 # "Scope Allowlist + Public-only Principle"
 /grading/scope-whitelist
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
 The grading system covers only an explicit allowlist of FlowMCP constructs: Tools, Shared Lists, the `about` markdown resource, and Skills are gradable, while all other Resources, Prompts, and Procedures stay on-hold because they lack a clear grading methodology. A second, orthogonal boundary applies on top of that allowlist — the public-only principle restricts grading to publicly accessible data sources, leaving private or non-public interfaces to the schema author. This chapter defines both boundaries and the consequences they have for which areas run and how out-of-scope fields are answered.
 
----
 
 ## Scope
 
@@ -3627,24 +3553,19 @@ The two complement each other. A schema can satisfy the exclusion criteria and a
 
 ## Related
 
-- `00-overview.md`
-- `02-eligibility.md`
-- `08-grading-model.md`
-- `05-phases-selection.md`
-- `19-folder-layout.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `02-eligibility.md` — what is allowed to be part of a gradable schema before scoring begins.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `05-phases-selection.md` — the five selection-side areas that grade a curated group of namespaces.
+- `19-folder-layout.md` — the three top-level folders and timestamp-first naming grammar of the grading island.
 
 ---
 
 # "Scoring System vs. Grading System"
 /grading/scoring-vs-grading
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
----
-
 "Scoring" and "Grading" name two distinct sub-systems that this spec keeps strictly apart: the Scoring System evidences how a single test or dimension performs, while the Grading System derives a letter mark from a collection of those scores. Each carries its own independent version namespace, so a scoring update does not automatically imply a grading update — and vice versa. A grader, scorer, or aggregator that conforms to `gradingSpec/3.0.0` MUST keep both names — and both version strings — apart in every emitted artefact (grading entries, logs, error codes).
 
----
 
 ## Comparison Table
 
@@ -3711,25 +3632,20 @@ This Grading-Spec does NOT re-define the `prompts.json` / `scores.json` contract
 
 ## Related
 
-- `00-overview.md`
-- `06-determinism-and-tier.md`
-- `08-grading-model.md`
-- `04-phases-single.md`
-- `05-phases-selection.md`
-- `22-scoring-protocol.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `06-determinism-and-tier.md` — the two axes that decide reproducibility and the highest grade a dimension can reach.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `04-phases-single.md` — the six provider-side areas that grade one schema without group context.
+- `05-phases-selection.md` — the five selection-side areas that grade a curated group of namespaces.
+- `22-scoring-protocol.md` — the JSON formats exchanged between the CLI and an external grader.
 
 ---
 
 # "Security and Development"
 /grading/security-and-development
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
----
-
 Security and development discipline form an independent grading area with high veto affinity, and this page sets the binding rules for it. Three of the four Categorical-Veto triggers defined in `08-grading-model.md` originate here (`malicious-module`, `api-key-domain-mismatch`, `illegal-content`), while the fourth (`ai-security-veto`) is the non-deterministic counterpart that catches what the deterministic triggers miss. The checks below feed primarily `securityScore` (autonomous tier), plus `formattingCompliance` and the `outputSchemaConformance` sub-dimension "pipebarkeit"; they contribute to the `single-test` and `tools-aggregate-schema` Areas, and no check defined here raises the maximum attainable grade beyond `B` on its own.
 
----
 
 ## API-Key Hygiene (Deterministic)
 
@@ -3869,22 +3785,19 @@ Concrete weights, thresholds, and score-boost magnitudes belong in the `gradingS
 
 ## Related
 
-- `00-overview.md`
-- `07-scoring-vs-grading.md`
-- `08-grading-model.md`
-- `10-domain-knowledge.md`
-- `11-preload.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `07-scoring-vs-grading.md` — why evidencing a single test stays separate from deriving a letter grade.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `10-domain-knowledge.md` — how a selection's About Resource carries the group's domain knowledge.
+- `11-preload.md` — how a tool declares that its response is safe to cache.
 
 ---
 
 # "The `selection-aggregate` Area"
 /grading/selection-aggregate
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`.
-
 `selection-aggregate` is the eleventh grading area, and the one that grades a selection as a whole rather than any single primitive within it. It carries the selection-wide dimensions — thresholds, topic coherence, member-against-About conformance, persona fit, and the group-bound tier — that have no per-skill or per-About home. Without it there is no gate for Grade A, which is why this area, its output schema, template, and skill triad MUST exist alongside the ten areas already in place.
 
----
 
 ## Why this area exists
 
@@ -3947,26 +3860,23 @@ Like every area, `selection-aggregate` is backed by a skill triad — the three-
 
 ## Related
 
-- `00-overview.md`
-- `05-phases-selection.md`
-- `08-grading-model.md`
-- `10-domain-knowledge.md`
-- `11-about-convention.md`
-- `12-personas-contract.md`
-- `13-skills.md`
-- `23-index-json.md`
-- `25-harness-and-goal.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `05-phases-selection.md` — the five selection-side areas that grade a curated group of namespaces.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `10-domain-knowledge.md` — how a selection's About Resource carries the group's domain knowledge.
+- `11-about-convention.md` — the reserved About markdown Resource that describes what a namespace does.
+- `12-personas-contract.md` — how a grading entry references one of the four base personas and a lens.
+- `13-skills.md` — how namespace skills and leveled selection skills are graded differently.
+- `23-index-json.md` — the one rollup file per namespace and selection carrying status and grade.
+- `25-harness-and-goal.md` — the completion-condition harness that drives non-deterministic grading turn by turn.
 
 ---
 
 # "Selection Definition + `index.json.lockSnapshot`"
 /grading/selection-lockfile
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
 A Selection binds several schemas into a domain coverage, and a Selection grading must be reproducible against an exact set of member snapshots. Two artefacts carry that: the neutral `selection.json` holds only the intentional definition (members, skills, personas, trigger sentence) with no pinned hashes, while the frozen `index.json.lockSnapshot` records the member pins — the schema versions and hashes — captured once at grading start and preserved across rebuilds. This chapter defines both artefacts, the per-member `gradingStatus` they carry, and the pre-condition workflow that reads only the frozen snapshot.
 
----
 
 ## Selection Definition and Lock Snapshot
 
@@ -4083,24 +3993,19 @@ The annex schemas `selection.lock.schema.json` and `namespace.schema.json` are *
 
 ## Related
 
-- `00-overview.md`
-- `08-grading-model.md`
-- `15-versioning-axes.md`
-- `19-folder-layout.md`
-- `21-pre-conditions.md`
-- `18-flywheel-loop.md`
-- `11-about-convention.md`
-- `20-entry-point-prompt.md`
-- `selection.schema.json`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `15-versioning-axes.md` — how primitives are versioned by filename timestamp and bound by a canonical hash.
+- `19-folder-layout.md` — the three top-level folders and timestamp-first naming grammar of the grading island.
+- `21-pre-conditions.md` — the universal rule blocking aggregate checks until every member schema is stable.
+- `18-flywheel-loop.md` — the self-reinforcing import, grade, improve, export round-trip.
+- `11-about-convention.md` — the reserved About markdown Resource that describes what a namespace does.
+- `20-entry-point-prompt.md` — the first prompt that anchors a grading run to persona, schema, mode, and version.
 
 ---
 
-# "Skills: Namespace Skill vs. Selection Skill"
+# "Namespace Skill vs. Selection Skill"
 /grading/skills
-
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
----
 
 Skills come in two categories that grade very differently. A **namespace skill** covers exactly one namespace, validates at the `autonomous` tier without group context, and carries no level. A **selection skill** spans a selection of namespaces, validates at the `group-bound` tier against the group's Domain-Knowledge content, and carries an `L1`/`L2`/`L3` level that reflects its role — Signpost, Topic, or Usecase — not a namespace count. This chapter defines both categories, the `type` and grading-only `level` fields, their mandatory content and validation obligations, and the deterministic cross-reference rules that bind the selection-skill level chain together.
 
@@ -4272,24 +4177,21 @@ The Schemas-Spec rule `SKL018` (max 4 skills per selection / agent registration 
 
 ## Related
 
-- `00-overview.md`
-- `08-grading-model.md`
-- `11-about-convention.md`
-- `12-personas-contract.md`
-- `14-skills.md`
-- `05-phases-selection.md`
-- `10-domain-knowledge.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `11-about-convention.md` — the reserved About markdown Resource that describes what a namespace does.
+- `12-personas-contract.md` — how a grading entry references one of the four base personas and a lens.
+- `14-skills.md` — reusable instruction sets an agent can load and follow.
+- `05-phases-selection.md` — the five selection-side areas that grade a curated group of namespaces.
+- `10-domain-knowledge.md` — how a selection's About Resource carries the group's domain knowledge.
 
 ---
 
 # "Terms of Service"
 /grading/tos
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification.
-
 This chapter defines the **Terms-of-Service (ToS) handling** of the Grading-Spec. ToS handling is part of the **due-diligence** layer, not part of the eligibility gate — a missing ToS link does not disqualify a schema, it lowers the score. The chapter anchors the base due-diligence rule (`SHOULD`, not `MUST`), the "ToS attached" definition, the Root-Domain-Match algorithm, the central distinction between "we observe" and "we accept", and the grader role with its mandatory "grader assessment, not legally binding" disclaimer.
 
----
 
 ## Due-Diligence Base
 
@@ -4367,21 +4269,18 @@ The disclaimer is **non-optional**. A grading entry that contains a `legalAssess
 
 ## Related
 
-- `00-overview.md`
-- `02-eligibility.md`
-- `06-determinism-and-tier.md`
-- `08-grading-model.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `02-eligibility.md` — what is allowed to be part of a gradable schema before scoring begins.
+- `06-determinism-and-tier.md` — the two axes that decide reproducibility and the highest grade a dimension can reach.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
 
 ---
 
 # "Versioning + Canonical Hash"
 /grading/versioning-axes
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`. The binding source is the FlowMCP Schemas Specification v4.3.0.
-
 Every gradable primitive is versioned by a timestamp carried in its filename rather than by an in-source version key, so the newest revision is found by a naive sort and historical revisions stay referenceable. The same files are kept neutral: they carry only logical names, while the canonical sha256-8 hash that binds a grading to an exact content snapshot lives in the filename and the derived `index.json` — never inside the source. This chapter defines the timestamp naming axis, the out-of-source hash placement, and the canonical representation used to compute the hash.
 
----
 
 ## Timestamp Versioning
 
@@ -4434,22 +4333,19 @@ Reference implementation: `src/HashGenerator.mjs` (`computeSchemaHash` / `comput
 
 ## Related
 
-- `00-overview.md`
-- `08-grading-model.md`
-- `16-selection-lockfile.md`
-- `19-folder-layout.md`
-- `18-flywheel-loop.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `08-grading-model.md` — the grading entry data model, its veto power, and tier trim.
+- `16-selection-lockfile.md` — the neutral selection definition and the frozen member-pin lock snapshot.
+- `19-folder-layout.md` — the three top-level folders and timestamp-first naming grammar of the grading island.
+- `18-flywheel-loop.md` — the self-reinforcing import, grade, improve, export round-trip.
 
 ---
 
 # "Workbench Island"
 /grading/workbench-island
 
-> Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in `00-overview.md`.
-
 The grading workbench keeps its working files in a directory that is deliberately walled off from the shipped repositories. This chapter explains why that separation exists, how the internal naming scheme earns its verbosity, and how data crosses the boundary in both directions without ever overwriting a source. The result is a non-destructive round-trip — import, grade, improve, export — whose internal complexity never reaches the public artifacts.
 
----
 
 ## The Island Principle
 
@@ -4511,12 +4407,12 @@ The round-trip is the concrete shape of the flywheel loop described in `18-flywh
 
 ## Related
 
-- `00-overview.md`
-- `19-folder-layout.md`
-- `15-versioning-axes.md`
-- `23-index-json.md`
-- `18-flywheel-loop.md`
-- `26-monitoring-track.md`
+- `00-overview.md` — how FlowMCP schemas and selections are evaluated and graded.
+- `19-folder-layout.md` — the three top-level folders and timestamp-first naming grammar of the grading island.
+- `15-versioning-axes.md` — how primitives are versioned by filename timestamp and bound by a canonical hash.
+- `23-index-json.md` — the one rollup file per namespace and selection carrying status and grade.
+- `18-flywheel-loop.md` — the self-reinforcing import, grade, improve, export round-trip.
+- `26-monitoring-track.md` — the deterministic GitHub board projecting each namespace's grading state.
 
 ---
 
@@ -5702,7 +5598,6 @@ Details →
 
 An Agent is a complete, purpose-driven definition that bundles tools from multiple providers for a specific task. Unlike a plain tool list, an Agent is a full composition: it cherry-picks tools across providers, binds them to a specific LLM, defines a system prompt and behavioral guidelines, and ships with its own tests, explanatory prompts, instructional skills, and optional resources. The sections below cover the agent manifest format, how tool references are resolved, model binding, the system prompt, integrity verification through hashes, and the validation rules applied at activation.
 
----
 
 ## Purpose
 
@@ -6755,13 +6650,13 @@ export const agent = {
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 12-prompt-architecture.md
-- 14-skills.md
-- 17-selections.md
-- 16-id-schema.md
-- 10-tests.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 12-prompt-architecture.md — the two-tier prompt system for provider and agent workflows.
+- 14-skills.md — reusable instruction sets an agent can load and follow.
+- 17-selections.md — a named bundle of primitives an agent activates together.
+- 16-id-schema.md — the canonical namespace/type/name identifier for every primitive.
+- 10-tests.md — executable examples that document tools and capture real responses.
 
 ---
 
@@ -6770,7 +6665,6 @@ export const agent = {
 
 A Catalog is the top-level organizational unit in FlowMCP v3. It is a named directory containing a `registry.json` manifest that describes all shared lists, provider schemas, and agent definitions within that directory. Multiple catalogs can coexist side by side, enabling community, company-internal, and experimental tool collections to operate independently.
 
----
 
 ## Purpose
 
@@ -7157,12 +7051,12 @@ The command runs all CAT rules and reports errors and warnings. A catalog with a
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 03-shared-lists.md
-- 06-agents.md
-- 16-id-schema.md
-- 21-schema-lifecycle.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 03-shared-lists.md — versioned value sets that schemas reference instead of duplicating.
+- 06-agents.md — how an agent bundles tools, a model, and a prompt into one composition.
+- 16-id-schema.md — the canonical namespace/type/name identifier for every primitive.
+- 21-schema-lifecycle.md — the six stages a schema travels from idea to production.
 
 ---
 
@@ -7182,7 +7076,6 @@ flowchart LR
 
 The diagram shows the three components of a full ID separated by `/` delimiters, forming a single unambiguous reference string.
 
----
 
 ## Format
 
@@ -7585,13 +7478,13 @@ The ID schema provides a single, consistent format that replaces these context-s
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 18-prefill.md
-- 12-prompt-architecture.md
-- 14-skills.md
-- 17-selections.md
-- 15-catalog.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 18-prefill.md — placeholder substitution and pre-executed tool calls in skill content.
+- 12-prompt-architecture.md — the two-tier prompt system for provider and agent workflows.
+- 14-skills.md — reusable instruction sets an agent can load and follow.
+- 17-selections.md — a named bundle of primitives an agent activates together.
+- 15-catalog.md — the registry.json manifest that groups schemas, lists, and agents.
 
 ---
 
@@ -7694,11 +7587,11 @@ ToS change. FlowMCP recommends:
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 19-mcp-integration.md
-- 05-security.md
-- 21-schema-lifecycle.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 19-mcp-integration.md — the per-tool meta block and its mapping to MCP annotations.
+- 05-security.md — the trust boundary that keeps schema handlers off the network and filesystem.
+- 21-schema-lifecycle.md — the six stages a schema travels from idea to production.
 
 ---
 
@@ -7707,7 +7600,6 @@ ToS change. FlowMCP recommends:
 
 When FlowMCP runs as an MCP Server, each Tool is exposed to the agent with MCP-specific metadata that an MCP host can read before it decides whether and how to invoke the Tool. That metadata is declared once, per Tool, in a `meta` block, and the CLI/Core translates the relevant fields into MCP annotations at registration time. This page describes the `meta` block, how its fields map to MCP, and the behaviour of the search-related and loading-related fields.
 
----
 
 ## Meta Block (Required per Tool)
 
@@ -7784,12 +7676,12 @@ The structural rules for the `meta` block are defined alongside the other schema
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 09-validation-rules.md
-- 13-resources.md
-- 14-skills.md
-- 04-output-schema.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 09-validation-rules.md — the wayfinder mapping each rule family to its home page.
+- 13-resources.md — local SQLite and Markdown data access alongside network tools.
+- 14-skills.md — reusable instruction sets an agent can load and follow.
+- 04-output-schema.md — how a route declares its expected response shape.
 
 ---
 
@@ -7798,7 +7690,6 @@ The structural rules for the `meta` block are defined alongside the other schema
 
 This guide covers migrating schemas between FlowMCP versions in chronological order. Section 1 covers v1.2.0 to v2.0.0 migration, Section 2 covers v2.0.0 to v3.0.0, and Section 3 covers v3.0.0 to v4.0.0.
 
----
 
 ## Section 1: v1.2.0 to v2.0.0
 
@@ -8388,12 +8279,12 @@ export const schema = {
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 06-agents.md
-- 13-resources.md
-- 14-skills.md
-- 21-schema-lifecycle.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 06-agents.md — how an agent bundles tools, a model, and a prompt into one composition.
+- 13-resources.md — local SQLite and Markdown data access alongside network tools.
+- 14-skills.md — reusable instruction sets an agent can load and follow.
+- 21-schema-lifecycle.md — the six stages a schema travels from idea to production.
 
 ---
 
@@ -8402,7 +8293,6 @@ export const schema = {
 
 Output schemas make tool responses predictable. By declaring the expected shape of a response at the route level, an AI client knows in advance what fields it will receive and can reason about them without parsing guesswork. The sections below cover the output declaration format, the supported types and MIME-types, the standard response envelope, how output interacts with `postRequest` handlers, and the validation rules applied to every declaration.
 
----
 
 ## Purpose
 
@@ -8903,12 +8793,12 @@ The diagram shows the non-blocking validation flow: mismatches produce warnings 
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 02-parameters.md
-- 10-tests.md
-- 22-scoring-protocol.md
-- 19-mcp-integration.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 02-parameters.md — how a parameter places a value and validates it before the call.
+- 10-tests.md — executable examples that document tools and capture real responses.
+- 22-scoring-protocol.md — the JSON formats exchanged between the CLI and an external grader.
+- 19-mcp-integration.md — the per-tool meta block and its mapping to MCP annotations.
 
 ---
 
@@ -8922,7 +8812,6 @@ FlowMCP is a **Tool Catalog with pre-built API templates** and a **Knowledge Bas
 
 This document provides the conceptual foundation, positioning, terminology, and document index for the v4.3.0 specification.
 
----
 
 ## Conformance Language
 
@@ -9284,10 +9173,10 @@ The migration path from v1.2.0 to v2.0.0 is documented in `08-migration.md`.
 
 ## Related
 
-- 01-schema-format.md
-- 06-agents.md
-- 17-selections.md
-- 15-catalog.md
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 06-agents.md — how an agent bundles tools, a model, and a prompt into one composition.
+- 17-selections.md — a named bundle of primitives an agent activates together.
+- 15-catalog.md — the registry.json manifest that groups schemas, lists, and agents.
 
 ---
 
@@ -9296,7 +9185,6 @@ The migration path from v1.2.0 to v2.0.0 is documented in `08-migration.md`.
 
 A parameter declares where a value is placed in the outgoing API request and how it is validated before the call is made. Each tool parameter pairs a `position` block (placement) with a `z` block (validation); resource parameters reuse the same pairing without a `location` field, and skill input uses a simpler shape.
 
----
 
 ## Parameter Structure
 
@@ -9920,11 +9808,79 @@ See `14-skills.md` for the complete skill specification.
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 03-shared-lists.md
-- 04-output-schema.md
-- 18-prefill.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 03-shared-lists.md — versioned value sets that schemas reference instead of duplicating.
+- 04-output-schema.md — how a route declares its expected response shape.
+- 18-prefill.md — placeholder substitution and pre-executed tool calls in skill content.
+
+---
+
+# "Philosophy"
+/specification/philosophy
+
+> **Informative.** This chapter describes the worldview behind FlowMCP — why a schema exists, what a graded tool is worth, and how an agent is meant to find and call it. It is written in prose; the normative rules that operationalize these convictions live in the chapters it points to.
+
+FlowMCP rests on a small set of convictions about how an autonomous agent and an unfamiliar API should meet: that a schema is a contract rather than a cage, that a tool is graded before it is trusted, that nothing fails silently, and that everything in the configured folders is discoverable without a hidden ceremony. None of these convictions is decorative. Each one was paid for by a concrete failure that the project has lived through, and each later chapter turns the conviction into a rule. This chapter records the worldview so that it stays explicit as the specification grows.
+
+## The Guardrail (Highway) Analogy
+
+A schema is a guardrail, not a cage. FlowMCP does not try to drive the agent's car for it; it lines the highway so that the car can move fast on a road it has never seen. The whole point of the project is to let an agent drive an unfamiliar API at speed — without reading the provider's documentation, without guessing the authentication flow, without learning the parameter names by trial and error — and still not go off the cliff.
+
+A guardrail is a constraint that is cheap to set up and expensive to omit. The schema names the parameters, fixes their types, encodes the route, and labels the credentials a call needs. Inside that frame the agent is free; outside it, it drifts into invented endpoints, malformed requests, and silent wrong answers. The schema is never there to slow the agent down. It is there so that going fast is the same thing as staying on the road.
+
+## Schema as Contract — the Wall Socket
+
+Push the analogy one step further and the schema becomes a standardized socket. The agent plugs in without knowing the wiring behind the wall. It does not need to know whether the data comes from REST or GraphQL, whether the provider paginates by cursor or by offset, whether the timestamps are Unix seconds or ISO strings — the socket presents one shape, and the agent calls it the same way it calls every other tool in the catalog.
+
+This is why interoperability is the foreground concern, not an afterthought. A socket is only worth standardizing if a great many things can plug into it. FlowMCP's value grows with the number of other tools, agents, and MCP clients it can connect — through the CLI and through the MCP/A2A server alike (see 19-mcp-integration.md). A schema that only one caller can use is a custom wire; a schema that any conformant agent can call is a socket. The specification optimizes for the socket.
+
+## Grade Before Trust
+
+A schema that parses is not yet a tool worth trusting. Before a tool earns a place in the trusted catalog it is graded — first by a deterministic data pretest, then by non-deterministic scoring. The deterministic pretest is blunt and unforgiving on purpose: it actually calls the live endpoint and checks two things together, that the response is HTTP 200 **and** that the data is non-empty.
+
+That second clause exists because of a real failure class. A tool can answer HTTP 200 and still hand back nothing — an empty array, a null payload, a polite shell with no content. A pretest that checked only the status code would wave that tool through as healthy, and an agent would later build on a contract that returns air. The "200-but-empty" case is treated as a genuine failure, caught at grading time, so that a tool in the trusted catalog is one that has been observed to return real data, not merely a successful status line. The grading workflow and its scoring areas are described in 09-validation-rules.md.
+
+## No Silent Defaults — Fail Loudly
+
+FlowMCP never invents a value to paper over one that is missing. When a required parameter is absent, a credential is unset, or a configuration field is ambiguous, the system fails loudly rather than quietly substituting a plausible default and continuing. A silent default is a guess wearing the costume of a fact, and a guess that nobody was told about is the hardest kind of failure to find.
+
+The conviction is grounded in a specific incident. A routine that wrote a `.env` file silently — overwriting whatever was already there with default text — destroyed a user's real API keys, more than once, because the convenient default ran without ever asking. The lesson generalized into a project-wide rule: code that would write or assume on the user's behalf checks first and announces itself; it never overwrites or invents in silence. Loud failure is recoverable. Silent success on wrong data is not. The boundaries that enforce this around credentials and configuration are set out in 05-security.md.
+
+## Search, Then Call
+
+There is no hidden activation step. Every tool in the configured schema folders is immediately discoverable through search and list, and immediately callable through call. An agent does not register a tool, enable it, install it into a session, or perform any ceremony between finding a tool and using it — it searches the catalog, reads the required parameters and example from the search result, and calls. The interaction model is exactly two moves:
+
+| Step | Move | What it returns |
+|------|------|-----------------|
+| Discover | `search` / `list` | The matching tools, with their required parameters and a callable example |
+| Invoke | `call` | The live result of the tool, called directly |
+
+This was a deliberate simplification. An earlier model had an `add` or activation step between discovery and use, and that step was pure friction: a tool could be found yet not callable, which is a confusing state for a human and an outright trap for an autonomous agent. Removing it means the catalog the agent can see is exactly the catalog the agent can use.
+
+## Disabled, Not Broken
+
+The "search, then call" promise raises an obvious question: what about a tool whose credentials are missing? FlowMCP answers it by degrading gracefully. A tool that needs a key the environment does not have is not hidden and is not broken — it appears in the catalog clearly labeled, as `[disabled: missing KEY]`, naming the exact credential it is waiting for.
+
+This matters because the two failure modes it avoids are both worse. A hidden tool leaves the agent unable to discover a capability that exists; a tool that looks callable but throws an opaque error at call time leaves the agent debugging the framework instead of its task. A disabled-but-visible tool tells the truth: the capability exists, here is precisely what it needs to come online, and nothing about it is mysterious. Key-gating is honesty about credentials, not concealment of capability.
+
+## The Catalog Is Indexed, Not Re-Derived
+
+At scale, you read the index; you do not rebuild the world. FlowMCP can hold a large catalog of schemas, and the cost of treating that catalog naively is not theoretical. A namespace index already records, ahead of time, which schema owns which tool. The correct move when resolving a single tool is to consult that index and load the one schema it points to.
+
+The discipline was learned from a regression. A configurator path ignored the existing namespace index and loaded the entire catalog — hundreds of schemas — to satisfy a single tool call that needed exactly one. The fix was not a faster loader; it was to trust the index that was already there. The principle generalizes: precomputed structure exists to be read, not re-derived on every request, and an operation whose cost scales with the size of the whole catalog when it should scale with one entry is a bug, however correct its output happens to be.
+
+## A Home for Project Thinking
+
+These convictions are easy to hold while a project is small and easy to lose while it grows. A guardrail that nobody can name becomes bureaucracy; a rule whose original failure has been forgotten becomes a rule people quietly route around. This chapter exists so that does not happen — it is the place where FlowMCP's guiding ideas are written down, each one tied to the concrete failure that earned it, so the worldview stays explicit even as the normative chapters multiply. When a new rule is proposed, it can be measured against the philosophy recorded here; when an old rule is questioned, the incident behind it is on the record. The specification's letter lives in the chapters this page points to. Its spirit lives here.
+
+## Related
+
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 05-security.md — the trust boundary that keeps schema handlers off the network and filesystem.
+- 09-validation-rules.md — the wayfinder mapping each rule family to its home page.
+- 19-mcp-integration.md — the per-tool meta block and its mapping to MCP annotations.
 
 ---
 
@@ -9933,7 +9889,6 @@ See `14-skills.md` for the complete skill specification.
 
 Skill content carries two complementary template mechanisms that the runtime processes before handing the Skill to an agent. *Placeholders* are tokens embedded directly in the content — `{{type:reference}}` — that are substituted with tool descriptions, resource references, user input, or shared-list values at resolution time. *Prefill* goes one step further: a Skill can declare tool calls in a `prefill` array that the runtime executes up front, then embeds the live results into the content via `{{prefill:...}}` tokens, so the agent receives a Skill already populated with current data.
 
----
 
 ## Placeholder Syntax
 
@@ -10003,12 +9958,12 @@ This ensures the Skill is always delivered — even if some references are broke
 
 ## Related
 
-- 00-overview.md
-- 16-id-schema.md
-- 14-skills.md
-- 12-prompt-architecture.md
-- 17-selections.md
-- 02-parameters.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 16-id-schema.md — the canonical namespace/type/name identifier for every primitive.
+- 14-skills.md — reusable instruction sets an agent can load and follow.
+- 12-prompt-architecture.md — the two-tier prompt system for provider and agent workflows.
+- 17-selections.md — a named bundle of primitives an agent activates together.
+- 02-parameters.md — how a parameter places a value and validates it before the call.
 
 ---
 
@@ -10017,7 +9972,6 @@ This ensures the Skill is always delivered — even if some references are broke
 
 Some tools return data that barely moves — a full list of hospitals in a country, every memorial stone in a city, a reference table that is refreshed once a week. Re-fetching such a dataset on every call costs bandwidth and time for no benefit. The optional `preload` field lets a schema author declare that a tool's response is safe to cache and for how long, so a runtime can serve a stored copy instead of hitting the network each time. Caching always stays optional on the runtime's side: `preload` expresses intent, and the runtime decides whether to honour it. The sections below specify the field, its validation rules, the cache key derivation, the runtime cache flow, and the author guidelines for choosing a sensible time-to-live.
 
----
 
 ## The `preload` Field
 
@@ -10212,10 +10166,10 @@ The output schema (see 04-output-schema.md) describes the response shape regardl
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 13-resources.md
-- 10-tests.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 13-resources.md — local SQLite and Markdown data access alongside network tools.
+- 10-tests.md — executable examples that document tools and capture real responses.
 
 ---
 
@@ -10224,7 +10178,6 @@ The output schema (see 04-output-schema.md) describes the response shape regardl
 
 FlowMCP uses a two-tier prompt system to bridge deterministic tools with non-deterministic AI orchestration. **Provider-Prompts** explain how to use a single provider's tools effectively. **Agent-Prompts** compose tools from multiple providers into tested workflows. Both types use the `{{type:name}}` placeholder syntax for references and parameters. Provider-Prompts are defined in `main.prompts` with content loaded from external `.mjs` files via `contentFile`. Agent-Prompts are standalone `.mjs` files with `export const prompt = { ... }` containing inline content.
 
----
 
 ## Purpose
 
@@ -11125,12 +11078,12 @@ agents/
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 14-skills.md
-- 06-agents.md
-- 18-prefill.md
-- 16-id-schema.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 14-skills.md — reusable instruction sets an agent can load and follow.
+- 06-agents.md — how an agent bundles tools, a model, and a prompt into one composition.
+- 18-prefill.md — placeholder substitution and pre-executed tool calls in skill content.
+- 16-id-schema.md — the canonical namespace/type/name identifier for every primitive.
 
 ---
 
@@ -11139,7 +11092,6 @@ agents/
 
 Resources give a schema local, deterministic data access alongside its network tools. They map to the MCP `server.resource` primitive and live in `main.resources` next to `main.tools`. A resource is backed by a SQLite database (read-only in-memory or writable file-based), a remote SQLite file fetched over HTTPS, or a Markdown document — and the runtime exposes each through a small set of typed queries, with the auto-injected `runSql` and `describeTables` rounding out the query surface. Where a tool reaches out to a third-party API, a resource serves data that should always be available: reference tables, lookups, agent-collected results, and inline documentation.
 
----
 
 ## Why Resources Exist
 
@@ -12598,14 +12550,14 @@ The SQLite database `duneanalytics-templates.db` is not in the schema directory 
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 02-parameters.md
-- 04-output-schema.md
-- 11-preload.md
-- 05-security.md
-- 19-mcp-integration.md
-- 14-skills.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 02-parameters.md — how a parameter places a value and validates it before the call.
+- 04-output-schema.md — how a route declares its expected response shape.
+- 11-preload.md — how a tool declares that its response is safe to cache.
+- 05-security.md — the trust boundary that keeps schema handlers off the network and filesystem.
+- 19-mcp-integration.md — the per-tool meta block and its mapping to MCP annotations.
+- 14-skills.md — reusable instruction sets an agent can load and follow.
 
 ---
 
@@ -12614,7 +12566,6 @@ The SQLite database `duneanalytics-templates.db` is not in the schema directory 
 
 A FlowMCP schema is a single `.mjs` module that describes how to reach an API and turn its endpoints into tools. It splits into two named exports: a static, JSON-serializable `main` block that holds all declarative configuration, and an optional `handlers` factory that transforms requests and responses. The sections below walk through both exports, the tool and field definitions inside `main`, the naming conventions, and the constraints the runtime enforces at load time.
 
----
 
 ## Schema File Structure
 
@@ -13278,13 +13229,13 @@ export const handlers = ( { sharedLists } ) => ({
 
 ## Related
 
-- 00-overview.md
-- 02-parameters.md
-- 04-output-schema.md
-- 13-resources.md
-- 14-skills.md
-- 16-id-schema.md
-- 19-mcp-integration.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 02-parameters.md — how a parameter places a value and validates it before the call.
+- 04-output-schema.md — how a route declares its expected response shape.
+- 13-resources.md — local SQLite and Markdown data access alongside network tools.
+- 14-skills.md — reusable instruction sets an agent can load and follow.
+- 16-id-schema.md — the canonical namespace/type/name identifier for every primitive.
+- 19-mcp-integration.md — the per-tool meta block and its mapping to MCP annotations.
 
 ---
 
@@ -13295,7 +13246,6 @@ Every FlowMCP schema travels a defined path from an initial idea to a production
 
 A namespace candidate enters the picture even before the first stage. Before `stage:research`, a candidate lives as a **Prospect** on the Kanban board — identified as interesting but not yet confirmed as reachable or feasible. A Prospect sits upstream of the six stages and is not tracked within them; the act of verifying reachability and feasibility is what promotes it into `stage:research`.
 
----
 
 ## Lifecycle Stages
 
@@ -13417,12 +13367,12 @@ A primitive passes when at least one of its test cases returns a 2xx response wi
 
 ## Related
 
-- 00-overview.md
-- 20-validation-strategy.md
-- 22-scoring-protocol.md
-- 10-tests.md
-- 09-validation-rules.md
-- 15-catalog.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 20-validation-strategy.md — the deterministic and probabilistic layers behind the A-F grade.
+- 22-scoring-protocol.md — the JSON formats exchanged between the CLI and an external grader.
+- 10-tests.md — executable examples that document tools and capture real responses.
+- 09-validation-rules.md — the wayfinder mapping each rule family to its home page.
+- 15-catalog.md — the registry.json manifest that groups schemas, lists, and agents.
 
 ---
 
@@ -13431,7 +13381,6 @@ A primitive passes when at least one of its test cases returns a 2xx response wi
 
 Specification for grading FlowMCP v4 schemas via LLM evaluation. Documents the data formats exchanged between the CLI and an external Grader (e.g. Claude Code harness, third-party implementation).
 
----
 
 ## Purpose
 
@@ -13642,12 +13591,12 @@ A Grader MUST NOT:
 
 ## Related
 
-- 00-overview.md
-- 20-validation-strategy.md
-- 21-schema-lifecycle.md
-- 10-tests.md
-- 04-output-schema.md
-- 09-validation-rules.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 20-validation-strategy.md — the deterministic and probabilistic layers behind the A-F grade.
+- 21-schema-lifecycle.md — the six stages a schema travels from idea to production.
+- 10-tests.md — executable examples that document tools and capture real responses.
+- 04-output-schema.md — how a route declares its expected response shape.
+- 09-validation-rules.md — the wayfinder mapping each rule family to its home page.
 
 ---
 
@@ -13656,7 +13605,6 @@ A Grader MUST NOT:
 
 FlowMCP enforces a layered security model that prevents schema files from accessing the network, filesystem, or process environment. All potentially dangerous operations are restricted to the trusted core runtime. Dependencies are injected through a factory function pattern, and external libraries are gated by an allowlist.
 
----
 
 ## Trust Boundary
 
@@ -13992,26 +13940,18 @@ All violations in a single file are reported together (the scan does not stop at
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 09-validation-rules.md
-- 13-resources.md
-- 23-license-and-tos.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 09-validation-rules.md — the wayfinder mapping each rule family to its home page.
+- 13-resources.md — local SQLite and Markdown data access alongside network tools.
+- 23-license-and-tos.md — the three-layer model linking code, provider ToS, and data licenses.
 
 ---
 
 # "Selections"
 /specification/selections
 
-**Primitive:** Selection (5th primitive)
-
----
-
-## Overview
-
-A **Selection** is a named collection of Primitives (Tools, Resources, Prompts, Skills) that belong together thematically. Selections enable agents to activate a coherent set of capabilities with a single operation.
-
----
+A **Selection** is a named, thematically-coherent collection of Primitives (Tools, Resources, Prompts, Skills) that an agent can activate together in a single operation.
 
 ## Export Format
 
@@ -14127,13 +14067,13 @@ If a Selection includes inline-skill objects, the SelectionValidator additionall
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 16-id-schema.md
-- 06-agents.md
-- 18-prefill.md
-- 14-skills.md
-- 12-prompt-architecture.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 16-id-schema.md — the canonical namespace/type/name identifier for every primitive.
+- 06-agents.md — how an agent bundles tools, a model, and a prompt into one composition.
+- 18-prefill.md — placeholder substitution and pre-executed tool calls in skill content.
+- 14-skills.md — reusable instruction sets an agent can load and follow.
+- 12-prompt-architecture.md — the two-tier prompt system for provider and agent workflows.
 
 ---
 
@@ -14142,7 +14082,6 @@ If a Selection includes inline-skill objects, the SelectionValidator additionall
 
 Shared lists eliminate duplication of common value sets across schemas. Instead of every Etherscan schema maintaining its own chain list, they reference a single `evmChains` shared list that is versioned, validated, and centrally maintained. The sections below cover the list file format, the meta and field definitions, the dependency model between lists, how schemas reference and filter lists, how the runtime injects resolved data into handlers, and the validation rules that keep the registry consistent.
 
----
 
 ## Purpose
 
@@ -14681,12 +14620,12 @@ Each `.mjs` file contains exactly one shared list. Combining multiple lists in a
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 02-parameters.md
-- 15-catalog.md
-- 16-id-schema.md
-- 09-validation-rules.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 02-parameters.md — how a parameter places a value and validates it before the call.
+- 15-catalog.md — the registry.json manifest that groups schemas, lists, and agents.
+- 16-id-schema.md — the canonical namespace/type/name identifier for every primitive.
+- 09-validation-rules.md — the wayfinder mapping each rule family to its home page.
 
 ---
 
@@ -14695,7 +14634,6 @@ Each `.mjs` file contains exactly one shared list. Combining multiple lists in a
 
 Skills are reusable, self-contained instruction sets that an AI agent can load and follow. They map to the MCP `server.prompt` primitive and live in `.mjs` files, each with a structured `export const skill` object that pairs Markdown instructions with typed metadata. A skill declares the tools and resources it needs, the input it expects, and the output it produces, and its instructions reference those primitives through `{{tool:...}}`, `{{resource:...}}`, and `{{input:...}}` placeholders resolved at load time.
 
----
 
 ## Where Skills Fit
 
@@ -15616,13 +15554,13 @@ etherscan/
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 12-prompt-architecture.md
-- 18-prefill.md
-- 16-id-schema.md
-- 06-agents.md
-- 17-selections.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 12-prompt-architecture.md — the two-tier prompt system for provider and agent workflows.
+- 18-prefill.md — placeholder substitution and pre-executed tool calls in skill content.
+- 16-id-schema.md — the canonical namespace/type/name identifier for every primitive.
+- 06-agents.md — how an agent bundles tools, a model, and a prompt into one composition.
+- 17-selections.md — a named bundle of primitives an agent activates together.
 
 ---
 
@@ -15631,7 +15569,6 @@ etherscan/
 
 MCP Tasks describe long-running asynchronous operations — a query that takes thirty seconds to finish, a job that is submitted now and collected later. The underlying MCP protocol gives such operations a lifecycle of creation, polling, completion, and cancellation. FlowMCP does not yet model this lifecycle: task support is a reserved, forward-looking area of the specification, and this page documents what is held back and why.
 
----
 
 ## Why It Is Held Back
 
@@ -15656,10 +15593,10 @@ Schema authors MAY include an `async` field in tool definitions for forward comp
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 04-output-schema.md
-- 10-tests.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 04-output-schema.md — how a route declares its expected response shape.
+- 10-tests.md — executable examples that document tools and capture real responses.
 
 ---
 
@@ -15668,7 +15605,6 @@ Schema authors MAY include an `async` field in tool definitions for forward comp
 
 Tests are executable examples embedded in tool and resource query definitions. For agents, tests are prompts paired with expected tool usage and content assertions. They serve three purposes: they document what a tool or resource query can do, they provide the input data needed to capture real responses, and those captured responses become the basis for generating accurate output schemas. The sections below cover the test format for tools, resources, and agents, the design principles that keep tests useful, and the response-capture lifecycle that turns a test into an output schema.
 
----
 
 ## Purpose
 
@@ -16338,13 +16274,13 @@ See `14-skills.md` (One-Shot Design Principle) for authoring guidelines.
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 02-parameters.md
-- 04-output-schema.md
-- 06-agents.md
-- 22-scoring-protocol.md
-- 13-resources.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 02-parameters.md — how a parameter places a value and validates it before the call.
+- 04-output-schema.md — how a route declares its expected response shape.
+- 06-agents.md — how an agent bundles tools, a model, and a prompt into one composition.
+- 22-scoring-protocol.md — the JSON formats exchanged between the CLI and an external grader.
+- 13-resources.md — local SQLite and Markdown data access alongside network tools.
 
 ---
 
@@ -16355,7 +16291,6 @@ Every validation rule that `flowmcp schema-check` enforces carries a code, a sev
 
 A rule is defined in exactly one place. The page below it in the table is the authoritative home for that code prefix; nothing on this page duplicates those tables. What remains here is the cross-cutting material that belongs to the validation system as a whole — the meaning of each severity level and the shape of the CLI output.
 
----
 
 ## Rule Families
 
@@ -16429,16 +16364,16 @@ flowmcp schema-check --security etherscan/contracts.mjs
 
 ## Related
 
-- 00-overview.md
-- 01-schema-format.md
-- 05-security.md
-- 02-parameters.md
-- 06-agents.md
-- 13-resources.md
-- 14-skills.md
-- 16-id-schema.md
-- 17-selections.md
-- 20-validation-strategy.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 01-schema-format.md — how a schema declares its tools through main and handlers.
+- 05-security.md — the trust boundary that keeps schema handlers off the network and filesystem.
+- 02-parameters.md — how a parameter places a value and validates it before the call.
+- 06-agents.md — how an agent bundles tools, a model, and a prompt into one composition.
+- 13-resources.md — local SQLite and Markdown data access alongside network tools.
+- 14-skills.md — reusable instruction sets an agent can load and follow.
+- 16-id-schema.md — the canonical namespace/type/name identifier for every primitive.
+- 17-selections.md — a named bundle of primitives an agent activates together.
+- 20-validation-strategy.md — the deterministic and probabilistic layers behind the A-F grade.
 
 ---
 
@@ -16449,7 +16384,6 @@ Validation in FlowMCP works in two layers. A **deterministic** layer checks stru
 
 A separate **Grading-Spec** in the `flowmcp-grading` repository covers Single-Schema and Selection grading in more depth. The strategy described here remains the deterministic baseline; the Grading System defined by the Grading-Spec extends, and in places replaces, the simple A–F Grade System below. The Schemas-Spec remains the highest instance.
 
----
 
 ## Grade System
 
@@ -16553,8 +16487,8 @@ A Language Model calling tools from `etherscan-io/contracts` receives the tool l
 
 ## Related
 
-- 00-overview.md
-- 09-validation-rules.md
-- 22-scoring-protocol.md
-- 21-schema-lifecycle.md
-- 10-tests.md
+- 00-overview.md — mission, the two-channel catalog, and the knowledge framing.
+- 09-validation-rules.md — the wayfinder mapping each rule family to its home page.
+- 22-scoring-protocol.md — the JSON formats exchanged between the CLI and an external grader.
+- 21-schema-lifecycle.md — the six stages a schema travels from idea to production.
+- 10-tests.md — executable examples that document tools and capture real responses.
