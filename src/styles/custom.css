@@ -716,6 +716,16 @@ hr,
     opacity: 0.5;
 }
 
+/* Memo 144 K2 (T1): safety net for the faint post-intro overview divider. The
+   PRIMARY lever is source/generator removal (stripIntroRule in flowmcp-spec strips
+   the post-intro `---` from every chapter). This rule only catches the degenerate
+   case where a divider slips in as the very first content block — inter-section
+   dividers (which always follow a heading/prose) are intentionally preserved. */
+.sl-markdown-content > hr:first-child,
+.content-panel .sl-markdown-content > hr:first-child {
+    display: none !important;
+}
+
 .pagination-links {
     border-top: none !important;
     margin-top: 0 !important;

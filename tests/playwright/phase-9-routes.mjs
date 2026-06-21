@@ -29,11 +29,11 @@
 // whole Reference section and the whole Ecosystem section were removed (moved to
 // .trash). Those routes now live in FORBIDDEN_ROUTES (Block 2: 404/redirect = PASS).
 const EN_ROUTES = [
-    // About-Gruppe
-    { path: '/about/',                       expectedMarker: 'About FlowMCP',           group: 'About',         locale: 'en' },
+    // Get-Started-Gruppe (Memo 144 T9: About FlowMCP merged into Get Started; standalone About group removed)
+    { path: '/about/',                       expectedMarker: 'About FlowMCP',           group: 'Get Started',   locale: 'en' },
 
-    // Get-Started-Gruppe
-    { path: '/quickstart/quickstart/',       expectedMarker: 'Quickstart',              group: 'Get Started',   locale: 'en' },
+    // Memo 144 T8: sidebar label "CLI Setup" (Memo 060) now matches the page H1 "CLI Setup".
+    { path: '/quickstart/quickstart/',       expectedMarker: 'CLI Setup',               group: 'Get Started',   locale: 'en' },
     { path: '/introduction/for-llms/',       expectedMarker: 'For LLMs',                group: 'Get Started',   locale: 'en' },
 
     // Concepts
@@ -47,6 +47,8 @@ const EN_ROUTES = [
     { path: '/specification/parameters/',    expectedMarker: 'Parameters',              group: 'Specification', locale: 'en' },
     { path: '/specification/resources/',     expectedMarker: 'Resources',               group: 'Specification', locale: 'en' },
     { path: '/specification/validation-rules/', expectedMarker: 'Validation',           group: 'Specification', locale: 'en' },
+    // Memo 144 T12: new informative Philosophy chapter (Introduction group).
+    { path: '/specification/philosophy/',    expectedMarker: 'Philosophy',              group: 'Introduction',  locale: 'en' },
 
     // Blog
     { path: '/blog/',                        expectedMarker: 'Blog',                    group: 'Blog',          locale: 'en' },

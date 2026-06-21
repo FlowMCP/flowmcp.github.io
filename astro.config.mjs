@@ -239,26 +239,20 @@ export default defineConfig({
                 },
             ],
             sidebar: [
-                {
-                    label: 'About',
-                    translations: { de: 'Ueber FlowMCP' },
-                    collapsed: true,
-                    items: [
-                        // Memo 142 (REMOVE): FAQ, Use Cases, Schemas & Sources moved to
-                        // .trash/memo-142-reduction (default-out reduction principle).
-                        { label: 'About FlowMCP', translations: { de: 'Ueber FlowMCP' }, slug: 'about' },
-                    ],
-                },
+                // Memo 144 K7 (T9): the standalone "About" group is merged INTO "Get Started"
+                // (it was a single-item group; About FlowMCP is the natural first onboarding step).
                 // Memo 059 PRD-011: Quickstart + Guides merged into "Get Started" (B3/B7).
-                // Inline-Listing (Variant A) — flat list, no sub-group. AC-3: exactly 4 items.
+                // Inline-Listing (Variant A) — flat list, no sub-group.
                 // PRD-013 audit: DE-Mirror via Starlight `translations` keys — both locales
-                // render 6 groups with localized labels (Loslegen, Konzepte, etc.).
+                // render with localized labels (Loslegen, Konzepte, etc.).
                 // Memo 060 PRD-016 (QS3 + LM1): "Quickstart" -> "CLI Setup", For LLMs aufgenommen.
                 {
                     label: 'Get Started',
                     translations: { de: 'Loslegen' },
                     collapsed: true,
                     items: [
+                        // Memo 144 K7 (T9): About FlowMCP merged in from the removed standalone group.
+                        { label: 'About FlowMCP', translations: { de: 'Ueber FlowMCP' }, slug: 'about' },
                         // Memo 060 PRD-016 (QS3): "Quickstart" -> "CLI Setup" (DE bewusst englisch, analog "Tag Search").
                         // Memo 142 (REMOVE): Hackathon Kit, Agent Creation, GTFS Pilot -> .trash/memo-142-reduction.
                         { label: 'CLI Setup', translations: { de: 'CLI Setup' }, slug: 'quickstart/quickstart' },

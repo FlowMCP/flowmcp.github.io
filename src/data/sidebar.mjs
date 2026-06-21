@@ -14,8 +14,15 @@ const MANIFEST_PATH = resolve( __dirname, 'manifest.json' )
 const GROUP_LABELS = {
     introduction: { en: 'Introduction', de: 'Einfuehrung' },
     specification: { en: 'Core Specification', de: 'Kern-Spezifikation' },
+    primitives: { en: 'Primitives', de: 'Primitive' },
     guides: { en: 'Guides', de: 'Leitfaeden' }
 }
+
+
+// Memo 144 K5 (T4): deterministic spec-section group order. The six primitives form
+// their own group between Core Specification and Guides. Fixed order so the nav does
+// not depend on manifest `order` values (mirrors GRADING_GROUP_ORDER).
+const SPEC_GROUP_ORDER = [ 'introduction', 'specification', 'primitives', 'guides' ]
 
 
 // Memo 087 PRD-P2-C (F4=A): grading sidebar sub-groups. Order is fixed so the
@@ -211,7 +218,13 @@ class SidebarLoader {
                 slug: `specification/${ file.slug }`
             } )
         } )
-        return Object.values( groups )
+        // Memo 144 K5 (T4): order groups by SPEC_GROUP_ORDER; any unlisted group
+        // falls to the end in first-encounter order (loud-safe, no silent drop).
+        const ordered = SPEC_GROUP_ORDER
+            .filter( ( key ) => groups[ key ] )
+            .map( ( key ) => groups[ key ] )
+        const rest = Object.values( groups ).filter( ( group ) => !SPEC_GROUP_ORDER.includes( group.key ) )
+        return [ ...ordered, ...rest ]
     }
 
 
