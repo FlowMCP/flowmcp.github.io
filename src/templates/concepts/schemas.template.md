@@ -6,6 +6,8 @@ description: What a FlowMCP schema is, how it is structured, and how the schema 
 <span style="display:none" data-pagefind-meta="section">Concepts</span>
 <!-- PAGEFIND-META-END -->
 
+The schema is the core building block of FlowMCP. This page explains what a schema is, how it is structured from primitives, and how the schema inventory is organised.
+
 ## What is a Schema?
 
 A schema is the complete blueprint for accessing a single data provider — for example the German Weather Service, Deutsche Bahn, or a sharing system like nextbike. One schema per provider, multiple tools per schema. The schema translates between the provider's API and the AI agent, so the agent can query the data in a structured way without having to read the API documentation itself.

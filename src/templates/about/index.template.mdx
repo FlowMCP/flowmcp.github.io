@@ -6,9 +6,9 @@ description: What FlowMCP is, why it exists, and where it stands today.
 <span style="display:none" data-pagefind-meta="section">About</span>
 {/* PAGEFIND-META-END */}
 
-> *FlowMCP normalises hundreds of data sources into a searchable library of AI-ready tools — so your agents can search, combine, and answer without turning you into an integrations maintainer.*
+> *FlowMCP is a schema format for standardising data-source access — write the connection to an API once, and every AI agent reuses it through one uniform interface.*
 
-FlowMCP started as a way to attach multiple data sources to a single MCP server. Today it is a schema library — **{{stats.count_schemas}} production-ready definitions, {{stats.count_unique_datasources}} data sources, {{stats.count_tools}} callable tools** — all routed through one auditable engine. AI agents call FlowMCP, never the underlying APIs directly. Your API keys stay in your control.
+FlowMCP started as a way to attach multiple data sources to a single MCP server. Today it is a **format**: a way to describe, normalise, and unify the tools an AI agent uses to reach a data source. A schema is written once and reused everywhere, so the model never has to re-figure-out how an API connects. The request can be reshaped before and after the call, so tools from very different sources end up looking alike to the model — and the schema is kept separate from its grading and its security test, so you can load a schema and run the security check on its own. AI agents call FlowMCP, never the underlying APIs directly, and your API keys stay in your control.
 
 ## What FlowMCP is — and isn't
 
@@ -17,7 +17,7 @@ FlowMCP started as a way to attach multiple data sources to a single MCP server.
 | Aspect | Description |
 |--------|-------------|
 | **Primitive idea** | A flow of data — from heterogeneous sources, through normalised schemas, into AI pipelines |
-| **Schema library** | {{stats.count_schemas}} schemas (v4 production), {{stats.count_unique_datasources}} data sources, {{stats.count_tools}} tool routes |
+| **Schema format** | One declaration shape for any data source; the same format drives the CLI, MCP server mode, and the add-on toolkits |
 | **Primary use** | CLI tool — no MCP client holds {{stats.count_tools}} tools in context, the CLI loads them dynamically |
 | **Secondary use** | MCP server mode still supported, but not the default |
 | **Key isolation** | Keys live in FlowMCP, never in the AI context — the AI sees calls and answers, never credentials |
@@ -30,7 +30,8 @@ FlowMCP started as a way to attach multiple data sources to a single MCP server.
 
 | Misconception | Reality |
 |---------------|---------|
-| "An MCP server" | No — CLI-first. MCP server mode is optional. |
+| "An MCP server" | No — a format. MCP server mode is one optional consumer of it; the CLI is the default. |
+| "A Swagger / OpenAPI spec" | More than that. Swagger describes a single API; FlowMCP unifies access *across* sources — reshaping the request before and after the call, and keeping schema, grading, and security separate. |
 | "A crypto library" | Started there, broadened with open data since October 2025. |
 | "An API wrapper collection" | No — the engine is central, schemas are thin declarations. One engine audit covers thousands of endpoints. |
 | "An API key manager" | Not primary. Key management is a side effect of separating AI from key. |
@@ -58,8 +59,8 @@ FlowMCP makes this preparation **once, for all**:
 
 Two scenarios that show FlowMCP + AI in action — not how to build an agent, but how FlowMCP turns scattered data into one answer.
 
-- **Deep Research** — A research tool or planning software connects an agent. The agent queries FlowMCP for relevant data sources across open data portals, government APIs, and crypto catalogs in seconds. [Read full case →](/introduction/use-cases/#use-case-1-deep-research)
-- **Mobility — Catching the Connection** — A live trip planner combines static GTFS (via the `geo-gtfs-toolkit` v4.1 add-on) with real-time delay data. One CLI call, one answer. [Read full case →](/introduction/use-cases/#use-case-2-mobility--catching-the-connection)
+- **Deep Research** — A research tool or planning software connects an agent. The agent queries FlowMCP for relevant data sources across open data portals, government APIs, and crypto catalogs in seconds.
+- **Mobility — Catching the Connection** — A live trip planner combines static GTFS (via the `geo-gtfs-toolkit` v4.1 add-on) with real-time delay data. One CLI call, one answer.
 
 ## Production posture
 

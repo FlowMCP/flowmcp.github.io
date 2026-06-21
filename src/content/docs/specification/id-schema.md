@@ -6,16 +6,13 @@ spec_file: "16-id-schema.md"
 order: 16
 section: "Specification"
 normative: true
-source_commit: "236dbb3"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/236dbb3/spec/v4.3.0/16-id-schema.md"
-generated_at: "2026-06-21T11:44:44.465Z"
+source_commit: "42b4603"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/42b4603/spec/v4.3.0/16-id-schema.md"
+generated_at: "2026-06-21T01:06:21.418Z"
 generated_from: "spec/v4.3.0/16-id-schema.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.3.0/16-id-schema.md."
 ---
-<aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/16-id-schema.md.
-</aside>
 
 A FlowMCP catalog exposes three MCP primitives — Tools, Resources, and Skills (prompts) — across potentially hundreds of schemas from dozens of providers, and references to those primitives turn up everywhere: group definitions, skill placeholders, registry entries, CLI commands, and cross-schema dependencies. Without a unified scheme, a bare name like `lookupItem` is ambiguous — is it a tool, a resource, or a prompt, and which provider owns it? The ID schema removes that ambiguity by giving every tool, resource, prompt, and shared list exactly one canonical, human-readable, resolvable identifier built from a namespace, a type discriminator, and a name.
 

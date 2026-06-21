@@ -42,7 +42,7 @@ flowmcp search <provider>
 flowmcp call <namespace.toolName> '{"param":"wert"}'
 ```
 
-Die CLI uebernimmt Validierung, Environment-Lookup und HTTP-Execution End-to-End. Fuer programmatische Nutzung steht derselbe Flow ueber die Core-API zur Verfuegung — siehe [Programmatic API](/de/reference/core-methods/).
+Die CLI uebernimmt Validierung, Environment-Lookup und HTTP-Execution End-to-End. Fuer programmatische Nutzung steht derselbe Flow ueber die Core-API zur Verfuegung.
 
 ## Resources
 
@@ -89,4 +89,4 @@ Spec: [Agents](/specification/agents/).
 
 Die obigen Primitive laufen alle auf einer bewussten Trennung: Die FlowMCP-Engine, die Schemas und die Daten-Betreiber sind drei eigenstaendige Ebenen, und jede ist fuer etwas anderes zustaendig. Die Engine bewegt und signiert jeden Request, Schemas deklarieren nur, wie eine Quelle erreicht wird, und der Betreiber besitzt die Daten und deren Bedingungen. Diese Trennung macht das Modell vertrauenswuerdig — ein Community-Schema kann nie ueber seine Deklaration hinausgreifen, das Engine-Audit deckt jeden Call gleich ab, und die Bedingungen eines Anbieters werden auf dem Weg nicht still umgedeutet.
 
-Die kanonische Erklaerung dieses Drei-Ebenen-Modells, inkl. dem, was FlowMCP bewusst *nicht* tut, steht auf [Schemas & Quellen](/de/schemas-and-sources/).
+Die kanonische Erklaerung dieses Drei-Ebenen-Modells, inkl. dem, was FlowMCP bewusst *nicht* tut, steht auf [Schemas](/de/concepts/schemas/).

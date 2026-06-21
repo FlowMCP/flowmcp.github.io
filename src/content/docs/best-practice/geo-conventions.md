@@ -6,16 +6,13 @@ spec_file: "13-geo-conventions.md"
 order: 13
 section: "Best Practice"
 normative: false
-source_commit: "236dbb3"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/236dbb3/best-practice/0.1.0/schema-creation/13-geo-conventions.md"
-generated_at: "2026-06-21T11:44:44.465Z"
+source_commit: "42b4603"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/42b4603/best-practice/0.1.0/schema-creation/13-geo-conventions.md"
+generated_at: "2026-06-21T01:06:21.418Z"
 generated_from: "best-practice/0.1.0/schema-creation/13-geo-conventions.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: best-practice/0.1.0/schema-creation/13-geo-conventions.md."
 ---
-<aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: best-practice/0.1.0/schema-creation/13-geo-conventions.md.
-</aside>
 
 Geo has a few conventions that everyone trips over once. Adopt the established defaults instead of inventing your own — it keeps schemas interoperable and spares the model a class of silent mistakes.
 

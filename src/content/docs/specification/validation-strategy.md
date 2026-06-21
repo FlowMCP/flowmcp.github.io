@@ -6,16 +6,13 @@ spec_file: "20-validation-strategy.md"
 order: 20
 section: "Specification"
 normative: true
-source_commit: "236dbb3"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/236dbb3/spec/v4.3.0/20-validation-strategy.md"
-generated_at: "2026-06-21T11:44:44.465Z"
+source_commit: "42b4603"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/42b4603/spec/v4.3.0/20-validation-strategy.md"
+generated_at: "2026-06-21T01:06:21.418Z"
 generated_from: "spec/v4.3.0/20-validation-strategy.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.3.0/20-validation-strategy.md."
 ---
-<aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/20-validation-strategy.md.
-</aside>
 
 Validation in FlowMCP works in two layers. A **deterministic** layer checks structural correctness — that the schema is well-formed and every primitive declares the fields it must. A **probabilistic** layer adds an LLM-based quality judgement on top of a structurally clean schema. Together the two layers produce a **Grade Report** that assigns a single letter grade (A–F), which is the record this page defines.
 

@@ -135,23 +135,24 @@ export default defineConfig({
         '/concepts/agents-overview/':    '/concepts/primitives/',
         '/de/concepts/agents-overview/': '/de/concepts/primitives/',
 
-        '/docs/usage/cli/':              '/reference/cli/',
-        '/docs/usage/mcp-server/':       '/reference/mcp-server/',
+        // Memo 142: Reference section removed; legacy URLs repoint to surviving pages.
+        '/docs/usage/cli/':              '/quickstart/quickstart/',
+        '/docs/usage/mcp-server/':       '/specification/mcp-integration/',
 
         '/docs/guides/schema-creation/':    '/guides/schema-creation/',
         '/docs/guides/examples/':           '/guides/examples/',
         '/docs/guides/server-integration/': '/guides/server-integration/',
 
-        '/docs/reference/core-methods/':    '/reference/core-methods/',
-        '/docs/reference/cli-reference/':   '/reference/cli/',
-        '/reference/cli-reference/':        '/reference/cli/',
-        '/de/reference/cli-reference/':     '/de/reference/cli/',
-        '/docs/reference/troubleshooting/': '/about/faq/',
-        '/reference/troubleshooting/':      '/about/faq/',
-        '/de/reference/troubleshooting/':   '/de/about/faq/',
+        '/docs/reference/core-methods/':    '/quickstart/quickstart/',
+        '/docs/reference/cli-reference/':   '/quickstart/quickstart/',
+        '/reference/cli-reference/':        '/quickstart/quickstart/',
+        '/de/reference/cli-reference/':     '/de/quickstart/quickstart/',
+        '/docs/reference/troubleshooting/': '/about/',
+        '/reference/troubleshooting/':      '/about/',
+        '/de/reference/troubleshooting/':   '/de/about/',
 
-        '/docs/ecosystem/agentprobe/':      '/ecosystem/agentprobe/',
-        '/docs/ecosystem/x402/':            '/ecosystem/x402/',
+        '/docs/ecosystem/agentprobe/':      '/specification/overview/',
+        '/docs/ecosystem/x402/':            '/specification/overview/',
 
         '/docs/specification/overview/':            '/specification/overview/',
         '/docs/specification/schema-format/':       '/specification/schema-format/',
@@ -166,7 +167,7 @@ export default defineConfig({
         '/docs/specification/migration/':           '/specification/migration/',
         '/docs/specification/security/':            '/specification/security/',
         '/docs/specification/output-schema/':       '/specification/output-schema/',
-        '/docs/specification/route-tests/':         '/specification/route-tests/',
+        '/docs/specification/route-tests/':         '/specification/tests/',
         '/docs/specification/preload/':             '/specification/preload/',
         '/docs/specification/groups-prompts/':      '/specification/groups-prompts/',
         '/docs/specification/tests/':               '/specification/tests/',
@@ -181,12 +182,12 @@ export default defineConfig({
         '/de/introduction/about/': '/de/about/',
         '/introduction/why/': '/about/',
         '/de/introduction/why/': '/de/about/',
-        '/introduction/faq/': '/about/faq/',
-        '/de/introduction/faq/': '/de/about/faq/',
+        '/introduction/faq/': '/about/',
+        '/de/introduction/faq/': '/de/about/',
 
-        // PRD-015: License & ToS FAQ → Schemas & Sources (Memo 060 Phase 4)
-        '/license-faq/':    '/schemas-and-sources/',
-        '/de/license-faq/': '/de/schemas-and-sources/',
+        // PRD-015 (Memo 060) → Memo 142: License & ToS FAQ now points to the spec license page.
+        '/license-faq/':    '/specification/license-and-tos/',
+        '/de/license-faq/': '/de/specification/license-and-tos/',
     },
     integrations: [
         starlight({
@@ -243,11 +244,9 @@ export default defineConfig({
                     translations: { de: 'Ueber FlowMCP' },
                     collapsed: true,
                     items: [
+                        // Memo 142 (REMOVE): FAQ, Use Cases, Schemas & Sources moved to
+                        // .trash/memo-142-reduction (default-out reduction principle).
                         { label: 'About FlowMCP', translations: { de: 'Ueber FlowMCP' }, slug: 'about' },
-                        { label: 'FAQ', translations: { de: 'Haeufige Fragen' }, slug: 'about/faq' },
-                        { label: 'Use Cases', translations: { de: 'Anwendungsfaelle' }, slug: 'introduction/use-cases' },
-                        // Memo 060 PRD-016 (LM1): For LLMs verschoben von About-Gruppe nach Get Started.
-                        { label: 'Schemas & Sources', translations: { de: 'Schemas & Quellen' }, slug: 'schemas-and-sources' },
                     ],
                 },
                 // Memo 059 PRD-011: Quickstart + Guides merged into "Get Started" (B3/B7).
@@ -261,11 +260,9 @@ export default defineConfig({
                     collapsed: true,
                     items: [
                         // Memo 060 PRD-016 (QS3): "Quickstart" -> "CLI Setup" (DE bewusst englisch, analog "Tag Search").
+                        // Memo 142 (REMOVE): Hackathon Kit, Agent Creation, GTFS Pilot -> .trash/memo-142-reduction.
                         { label: 'CLI Setup', translations: { de: 'CLI Setup' }, slug: 'quickstart/quickstart' },
                         { label: 'For LLMs', translations: { de: 'Fuer LLMs' }, slug: 'introduction/for-llms' },
-                        { label: 'Hackathon Kit', translations: { de: 'Hackathon-Kit' }, slug: 'guides/hackathon-kit' },
-                        { label: 'Agent Creation', translations: { de: 'Agent-Erstellung' }, slug: 'guides/agent-creation' },
-                        { label: 'GTFS Pilot', translations: { de: 'GTFS-Pilot' }, slug: 'guides/gtfs-pilot' },
                     ],
                 },
                 // Memo 060 PRD-007 (Phase 2): Concepts reduziert auf 4 Eintraege
@@ -293,43 +290,11 @@ export default defineConfig({
                 ...gradingGroup,
                 // Memo 108: Best Practice nav group (advisory track) + badge.
                 ...bestPracticeGroup,
-                {
-                    label: 'Reference',
-                    translations: { de: 'Referenz' },
-                    collapsed: true,
-                    items: [
-                        { label: 'CLI Usage', translations: { de: 'CLI-Nutzung' }, slug: 'reference/cli' },
-                        { label: 'Programmatic API', translations: { de: 'Programmatic API' }, slug: 'reference/core-methods' },
-                        { label: 'MCP Server Mode', translations: { de: 'MCP Server Mode' }, slug: 'reference/mcp-server' },
-                    ],
-                },
-                {
-                    label: 'Ecosystem',
-                    translations: { de: 'Oekosystem' },
-                    collapsed: true,
-                    // Memo 064 Phase 4 PRD-011: badge objects replaced by
-                    // parenthesis qualifiers in the label text (no badge styling).
-                    items: [
-                        {
-                            label: 'AgentProbe (External)',
-                            translations: { de: 'AgentProbe (External)' },
-                            slug: 'ecosystem/agentprobe',
-                        },
-                        {
-                            label: 'x402 (Experimental)',
-                            translations: { de: 'x402 (Experimental)' },
-                            slug: 'ecosystem/x402',
-                        },
-                        // Memo 064 Phase 4 PRD-011: third ecosystem element.
-                        // geo-gtfs-toolkit has no dedicated ecosystem page yet —
-                        // link to the existing in-site GTFS Pilot guide.
-                        {
-                            label: 'GTFS (Add-on)',
-                            translations: { de: 'GTFS (Add-on)' },
-                            slug: 'guides/gtfs-pilot',
-                        },
-                    ],
-                },
+                // Memo 142 (REMOVE): the whole "Reference" (CLI/Programmatic API/MCP
+                // Server Mode) and "Ecosystem" (AgentProbe/x402/GTFS) nav groups are
+                // removed; their pages moved to .trash/memo-142-reduction. FlowMCP is a
+                // format/specification — the add-on/ecosystem surface is the Drumherum,
+                // not the core message.
                 // Memo 064 Phase 4 PRD-011: lone top-level Blog sidebar entry
                 // removed. Blog has its own /blog/ section (BlogIndexLayout).
                 // Memo 059 PRD-011 (B4/B5): Roadmap + Team removed from sidebar.

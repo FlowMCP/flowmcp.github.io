@@ -283,40 +283,12 @@ class SpecSync {
 
 
     static #injectEditWarning( { content, fileEntry } ) {
-        const fmMatch = content.match( /^---\n([\s\S]*?)\n---\n?/ )
-        if( !fmMatch ) {
-            return content
-        }
-        const fmBlock = fmMatch[ 0 ]
-        const body = content.slice( fmBlock.length )
-
-        const warning = fileEntry.edit_warning
-            ? fileEntry.edit_warning
-            : SpecSync.#extractWarningFromBody( { fmBlockBody: fmMatch[ 1 ] } )
-        const warningText = warning
-            ? warning
-            : `This file is auto-generated from flowmcp-spec. Do not edit directly.`
-
-        const aside = `<aside class="edit-warning" role="note">\n` +
-            `  <strong>Auto-generated:</strong> ${SpecSync.#escapeHtml( warningText )}\n` +
-            `</aside>\n\n`
-
-        return `${fmBlock}${aside}${body.replace( /^\n+/, '' )}`
-    }
-
-
-    static #extractWarningFromBody( { fmBlockBody } ) {
-        const match = fmBlockBody.match( /^edit_warning:\s*"?([^"\n]+)"?\s*$/m )
-        return match ? match[ 1 ].trim() : ''
-    }
-
-
-    static #escapeHtml( str ) {
-        return str
-            .replace( /&/g, '&amp;' )
-            .replace( /</g, '&lt;' )
-            .replace( />/g, '&gt;' )
-            .replace( /"/g, '&quot;' )
+        // Memo 142 (AUTOGEN): drop the visible "Auto-generated" aside from every
+        // synced page. The edit-warning provenance is retained in the frontmatter
+        // (`edit_warning:` / `generated_from:`) and the public mirror copy; the
+        // reader-facing boilerplate is removed. Returning content unchanged keeps
+        // the content collection byte-identical to the public mirror.
+        return content
     }
 
 

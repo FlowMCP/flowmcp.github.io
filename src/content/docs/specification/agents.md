@@ -6,16 +6,13 @@ spec_file: "06-agents.md"
 order: 6
 section: "Specification"
 normative: true
-source_commit: "236dbb3"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/236dbb3/spec/v4.3.0/06-agents.md"
-generated_at: "2026-06-21T11:44:44.465Z"
+source_commit: "42b4603"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/42b4603/spec/v4.3.0/06-agents.md"
+generated_at: "2026-06-21T01:06:21.418Z"
 generated_from: "spec/v4.3.0/06-agents.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.3.0/06-agents.md."
 ---
-<aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/06-agents.md.
-</aside>
 
 An Agent is a complete, purpose-driven definition that bundles tools from multiple providers for a specific task. Unlike a plain tool list, an Agent is a full composition: it cherry-picks tools across providers, binds them to a specific LLM, defines a system prompt and behavioral guidelines, and ships with its own tests, explanatory prompts, instructional skills, and optional resources. The sections below cover the agent manifest format, how tool references are resolved, model binding, the system prompt, integrity verification through hashes, and the validation rules applied at activation.
 

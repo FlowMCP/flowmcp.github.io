@@ -6,16 +6,13 @@ spec_file: "21-schema-lifecycle.md"
 order: 21
 section: "Specification"
 normative: false
-source_commit: "236dbb3"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/236dbb3/spec/v4.3.0/21-schema-lifecycle.md"
-generated_at: "2026-06-21T11:44:44.465Z"
+source_commit: "42b4603"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/42b4603/spec/v4.3.0/21-schema-lifecycle.md"
+generated_at: "2026-06-21T01:06:21.418Z"
 generated_from: "spec/v4.3.0/21-schema-lifecycle.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.3.0/21-schema-lifecycle.md."
 ---
-<aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/21-schema-lifecycle.md.
-</aside>
 
 Every FlowMCP schema travels a defined path from an initial idea to a production deployment, and this page is the canonical description of that path: the six lifecycle stages, the special rules for static and migrated schemas, and the policy for handling schemas where only some primitives pass. It is the recommended way to develop a schema, and where other lifecycle descriptions in the project (README files, runbooks, skill documentation) disagree, this page is authoritative.
 

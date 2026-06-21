@@ -22,8 +22,6 @@ Weil echte Fragen im Alltag nie einfach sind.
 
 Eine einzelne Datenquelle liefert eine einzelne Antwort. Erst die Kombination macht die Antwort wirklich nuetzlich. Genau das machen unsere Schemas moeglich.
 
-Konkrete Beispiele: [Use Cases →](/de/introduction/use-cases/)
-
 ## Brauche ich einen API-Key?
 
 Fuer die meisten unserer Schemas nicht. Wir starten bewusst mit Datenquellen, die **ohne API-Key** frei zugaenglich sind — Wetterdaten, OEPNV-Fahrplaene, Geocoding, Fahrrad-Sharing und mehr.

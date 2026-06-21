@@ -6,16 +6,13 @@ spec_file: "00-overview.md"
 order: 0
 section: "Grading"
 normative: false
-source_commit: "236dbb3"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/236dbb3/grading/3.0.0/00-overview.md"
-generated_at: "2026-06-21T11:44:44.465Z"
+source_commit: "42b4603"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/42b4603/grading/3.0.0/00-overview.md"
+generated_at: "2026-06-21T01:06:21.418Z"
 generated_from: "grading/3.0.0/00-overview.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: grading/3.0.0/00-overview.md."
 ---
-<aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/00-overview.md.
-</aside>
 
 The Grading-Spec describes **how** FlowMCP schemas and selections are evaluated and graded — the phases, the Scoring System, the Grading System, the categorical veto, tiers, skills, and domain knowledge. It is a separate, independently versioned document layered on top of the FlowMCP Schemas Specification, which remains the highest authority for what a schema, a selection, and the primitives actually are. This overview sets the conformance language, the document hierarchy, the guiding interoperability focus, and the chapter map for the rest of the spec.
 

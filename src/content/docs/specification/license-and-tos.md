@@ -6,16 +6,13 @@ spec_file: "23-license-and-tos.md"
 order: 23
 section: "Specification"
 normative: true
-source_commit: "236dbb3"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/236dbb3/spec/v4.3.0/23-license-and-tos.md"
-generated_at: "2026-06-21T11:44:44.465Z"
+source_commit: "42b4603"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/42b4603/spec/v4.3.0/23-license-and-tos.md"
+generated_at: "2026-06-21T01:06:21.418Z"
 generated_from: "spec/v4.3.0/23-license-and-tos.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.3.0/23-license-and-tos.md."
 ---
-<aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/23-license-and-tos.md.
-</aside>
 
 FlowMCP sits between its own code, the third-party APIs a schema calls, and the data those APIs return — and each of those carries its own legal terms. The purpose of this page is to draw a clear line around what FlowMCP takes responsibility for and what it deliberately leaves to the user: FlowMCP records and links the relevant Terms of Services and data licenses, but it never interprets or certifies them. The page describes that three-layer model, the optional schema fields that carry the links, and where responsibility for compliance ultimately rests.
 
