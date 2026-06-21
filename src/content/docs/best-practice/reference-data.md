@@ -6,16 +6,13 @@ spec_file: "11-reference-data.md"
 order: 11
 section: "Best Practice"
 normative: false
-source_commit: "236dbb3"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/236dbb3/best-practice/0.1.0/schema-creation/11-reference-data.md"
-generated_at: "2026-06-21T11:44:44.465Z"
+source_commit: "42b4603"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/42b4603/best-practice/0.1.0/schema-creation/11-reference-data.md"
+generated_at: "2026-06-21T01:06:21.418Z"
 generated_from: "best-practice/0.1.0/schema-creation/11-reference-data.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: best-practice/0.1.0/schema-creation/11-reference-data.md."
 ---
-<aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: best-practice/0.1.0/schema-creation/11-reference-data.md.
-</aside>
 
 Maintain recurring lists and value formats **once**, and inherit them everywhere. Duplicated reference data drifts: one copy gets a new entry, the others quietly fall behind. A single canonical source cannot drift against itself.
 

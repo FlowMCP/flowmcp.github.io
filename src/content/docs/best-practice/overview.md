@@ -6,16 +6,13 @@ spec_file: "01-overview.md"
 order: 1
 section: "Best Practice"
 normative: false
-source_commit: "236dbb3"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/236dbb3/best-practice/0.1.0/01-overview.md"
-generated_at: "2026-06-21T11:44:44.465Z"
+source_commit: "42b4603"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/42b4603/best-practice/0.1.0/01-overview.md"
+generated_at: "2026-06-21T01:06:21.418Z"
 generated_from: "best-practice/0.1.0/01-overview.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: best-practice/0.1.0/01-overview.md."
 ---
-<aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: best-practice/0.1.0/01-overview.md.
-</aside>
 
 The Best-Practice track is the third FlowMCP spec track, sitting alongside the normative **Specification** and the **Grading** spec. Where those two define what a schema *is* and how it is *evaluated*, this track is **advisory and non-normative**: it gathers the recommendations and hard-won learnings for writing good schemas, not compliance rules. Nothing on these pages can disqualify a schema — they raise quality systematically, beyond the mere absence of errors.
 

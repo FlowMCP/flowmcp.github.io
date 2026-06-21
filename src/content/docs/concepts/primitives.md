@@ -42,7 +42,7 @@ flowmcp search <provider>
 flowmcp call <namespace.toolName> '{"param":"value"}'
 ```
 
-The CLI handles validation, environment lookup, and HTTP execution end to end. For programmatic use, the same flow is available via the core API — see [Programmatic API](/reference/core-methods/).
+The CLI handles validation, environment lookup, and HTTP execution end to end. For programmatic use, the same flow is available via the core API.
 
 ## Resources
 
@@ -89,4 +89,4 @@ Spec: [Agents](/specification/agents/).
 
 The primitives above all run on top of a deliberate separation: the FlowMCP engine, the schemas, and the data operators are three distinct layers, and each is responsible for a different thing. The engine moves and signs every request, schemas only declare how to reach a source, and the operator owns the data and its terms. Keeping these apart is what makes the model trustworthy — a community-contributed schema can never reach beyond its declaration, the engine audit covers every call the same way, and no provider's terms get silently reinterpreted along the path.
 
-The canonical explanation of this three-layer model, including what FlowMCP deliberately does *not* do, lives on [Schemas & Sources](/schemas-and-sources/).
+The canonical explanation of this three-layer model, including what FlowMCP deliberately does *not* do, lives on [Schemas](/concepts/schemas/).

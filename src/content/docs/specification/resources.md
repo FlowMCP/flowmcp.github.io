@@ -6,16 +6,13 @@ spec_file: "13-resources.md"
 order: 13
 section: "Specification"
 normative: true
-source_commit: "236dbb3"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/236dbb3/spec/v4.3.0/13-resources.md"
-generated_at: "2026-06-21T11:44:44.465Z"
+source_commit: "42b4603"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/42b4603/spec/v4.3.0/13-resources.md"
+generated_at: "2026-06-21T01:06:21.418Z"
 generated_from: "spec/v4.3.0/13-resources.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.3.0/13-resources.md."
 ---
-<aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/13-resources.md.
-</aside>
 
 Resources give a schema local, deterministic data access alongside its network tools. They map to the MCP `server.resource` primitive and live in `main.resources` next to `main.tools`. A resource is backed by a SQLite database (read-only in-memory or writable file-based), a remote SQLite file fetched over HTTPS, or a Markdown document — and the runtime exposes each through a small set of typed queries, with the auto-injected `runSql` and `describeTables` rounding out the query surface. Where a tool reaches out to a third-party API, a resource serves data that should always be available: reference tables, lookups, agent-collected results, and inline documentation.
 

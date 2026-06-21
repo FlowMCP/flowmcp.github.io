@@ -6,6 +6,8 @@ description: Wo man Schemas und Agents nutzen kann, welche Clients was unterstue
 <span style="display:none" data-pagefind-meta="section">Concepts</span>
 <!-- PAGEFIND-META-END -->
 
+FlowMCP-Schemas funktionieren mit jedem MCP-kompatiblen Client. Diese Seite behandelt das zugrunde liegende Protokoll, welche Clients was unterstuetzen und was der Betrieb ueber die CLI bringt.
+
 ## MCP — Das verbindende Protokoll
 
 Das **Model Context Protocol (MCP)** ist der Standard, ueber den KI-Clients auf Tools zugreifen. Es definiert, wie Tools beschrieben, aufgerufen und wie Ergebnisse zurueckgeliefert werden. Ueber 100 Clients unterstuetzen MCP bereits — von Claude ueber ChatGPT bis Cursor.
@@ -38,7 +40,7 @@ Diese 16 Clients unterstuetzen Elicitation — der Agent kann Rueckfragen stelle
 
 Mehr dazu: [Integration Guide](/de/guides/integration/)
 
-Fuer die Commandline-Schnittstelle — Tools im Terminal suchen, aktivieren und aufrufen — siehe die [FlowMCP CLI-Nutzung](/de/reference/cli/) Referenz.
+Fuer die Commandline-Schnittstelle — Tools im Terminal suchen, aktivieren und aufrufen — siehe den [Schnellstart](/de/quickstart/quickstart/).
 
 ## Welcher Client fuer wen?
 

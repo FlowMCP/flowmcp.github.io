@@ -6,6 +6,8 @@ description: Where to use schemas and agents, which clients support what, and wh
 <span style="display:none" data-pagefind-meta="section">Concepts</span>
 <!-- PAGEFIND-META-END -->
 
+FlowMCP schemas work with any MCP-compatible client. This page covers the protocol they rely on, which clients support what, and what running them through the CLI gives you.
+
 ## MCP — The Connecting Protocol
 
 The **Model Context Protocol (MCP)** is the standard through which AI clients access tools. It defines how tools are described, called, and how results are returned. Over 100 clients support MCP already — from Claude to ChatGPT to Cursor.
@@ -38,7 +40,7 @@ These 16 clients support Elicitation — the agent can ask follow-up questions f
 
 More: [Integration Guide](/guides/integration/)
 
-For the command-line interface — searching, activating, and calling tools from your shell — see the [FlowMCP CLI Usage](/reference/cli/) reference.
+For the command-line interface — searching, activating, and calling tools from your shell — see the [Quickstart](/quickstart/quickstart/) guide.
 
 ## Which Client for Whom?
 

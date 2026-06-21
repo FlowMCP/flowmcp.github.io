@@ -6,17 +6,11 @@ description: "Create your first FlowMCP schema and call an API in 5 minutes"
 <span style="display:none" data-pagefind-meta="section">Get Started</span>
 {/* PAGEFIND-META-END */}
 
-import { Aside } from '@astrojs/starlight/components'
 import InstallNote from '../../../components/InstallNote.astro'
 import refs from '../../../data/refs.json'
 
 export const schemaCount = refs?.stats?.count_schemas ?? '—'
 export const toolCount = refs?.stats?.count_tools ?? '—'
-
-<Aside type="tip" title="Hackathon participants">
-    Building at a hackathon? Copy the Hackathon Kit skill snippet and drop it into your AI assistant's context — there is nothing to install and no command to re-run. It walks your agent through scaffolding an MCP server in under 60 seconds.
-    [Read the full Hackathon Kit →](/guides/hackathon-kit/)
-</Aside>
 
 ## Install the CLI
 
@@ -48,7 +42,7 @@ Two commands and you have a live API call — there is no activation step. The C
 - **npm** — comes with Node.js
 
 :::note[Embedding FlowMCP in your own code?]
-The CLI is the fastest path for setup, hackathons, and exploring the catalog. If you want to embed FlowMCP directly in a Node.js application — load schemas, validate them, and call APIs programmatically — use the core library instead. The full method reference, including running your schema as an MCP server, lives on the [Programmatic API](/reference/core-methods/) page.
+The CLI is the fastest path for setup, hackathons, and exploring the catalog. If you want to embed FlowMCP directly in a Node.js application — load schemas, validate them, and call APIs programmatically — use the core library instead.
 :::
 
 ## What's Next
@@ -59,10 +53,6 @@ Write your own schema for an API not in the catalog. See [Schema Creation](/guid
 
 :::note[Schema Creation]
 Learn the full schema format with authentication, parameters, and handlers. See [Schema Creation](/guides/schema-creation/).
-:::
-
-:::note[CLI Reference]
-Search, list, and call {schemaCount} pre-built schemas from the command line. See [CLI Usage](/reference/cli/).
 :::
 
 :::note[Examples]

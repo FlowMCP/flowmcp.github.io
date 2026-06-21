@@ -6,9 +6,9 @@ description: Was FlowMCP ist, warum es existiert, und wo es heute steht.
 <span style="display:none" data-pagefind-meta="section">Ueber FlowMCP</span>
 {/* PAGEFIND-META-END */}
 
-> *FlowMCP normalisiert hunderte Datenquellen zu einer durchsuchbaren Library aus AI-bereiten Tools — damit deine Agenten suchen, kombinieren und antworten können, ohne dass du sie zu Integrations-Maintainern machst.*
+> *FlowMCP ist ein Schema-Format zur Standardisierung des Datenquellen-Zugangs — den Anschluss an eine API einmal schreiben, und jeder KI-Agent nutzt ihn über ein einheitliches Interface wieder.*
 
-FlowMCP begann als Versuch, mehrere Datenquellen an einen einzigen MCP-Server anzubinden. Heute ist es eine Schema-Library — **373 produktionsreife Definitionen, 291 Datenquellen, 1608 aufrufbare Tools** — alle ueber eine zentrale, auditierbare Engine geleitet. AI-Agenten rufen FlowMCP — nie die zugrundeliegenden APIs direkt. Deine API-Keys bleiben in deiner Kontrolle.
+FlowMCP begann als Versuch, mehrere Datenquellen an einen einzigen MCP-Server anzubinden. Heute ist es ein **Format**: eine Art, die Tools zu beschreiben, zu normalisieren und zu vereinheitlichen, mit denen ein KI-Agent eine Datenquelle erreicht. Ein Schema wird einmal geschrieben und überall wiederverwendet, sodass das Modell nie neu herausfinden muss, wie eine API sich anschließt. Der Request kann vor und nach dem Aufruf umgeformt werden, sodass Tools sehr unterschiedlicher Quellen für das Modell gleich aussehen — und das Schema bleibt getrennt von seinem Grading und seinem Security-Test, sodass du ein Schema laden und den Security-Check separat fahren kannst. KI-Agenten rufen FlowMCP, nie die zugrundeliegenden APIs direkt, und deine API-Keys bleiben in deiner Kontrolle.
 
 ## Was FlowMCP ist — und nicht ist
 
@@ -17,7 +17,7 @@ FlowMCP begann als Versuch, mehrere Datenquellen an einen einzigen MCP-Server an
 | Aspekt | Beschreibung |
 |--------|--------------|
 | **Primitive Idee** | Ein Fluss von Daten — aus heterogenen Quellen, durch normalisierte Schemas, in AI-Pipelines |
-| **Schema-Library** | 373 Schemas (v4-Produktion), 291 Datenquellen, 1608 Tool-Routes |
+| **Schema-Format** | Eine Deklarations-Form für jede Datenquelle; dasselbe Format treibt die CLI, den MCP-Server-Modus und die Add-on-Toolkits |
 | **Primaerer Use** | CLI-Tool — kein MCP-Client haelt 1608 Tools im Kontext, die CLI laedt sie dynamisch |
 | **Sekundaerer Use** | MCP-Server-Modus weiter unterstuetzt, aber nicht der Default |
 | **Key-Isolation** | Keys leben in FlowMCP, nie im AI-Kontext — die AI sieht Calls und Antworten, nie Credentials |
@@ -30,7 +30,8 @@ FlowMCP begann als Versuch, mehrere Datenquellen an einen einzigen MCP-Server an
 
 | Missverstaendnis | Realitaet |
 |------------------|-----------|
-| "Ein MCP-Server" | Nein — CLI-First. MCP-Server-Modus ist optional. |
+| "Ein MCP-Server" | Nein — ein Format. Der MCP-Server-Modus ist ein optionaler Konsument davon; die CLI ist der Default. |
+| "Eine Swagger-/OpenAPI-Spec" | Mehr als das. Swagger beschreibt eine einzelne API; FlowMCP vereinheitlicht den Zugang *über* Quellen hinweg — formt den Request vor und nach dem Aufruf um und haelt Schema, Grading und Security getrennt. |
 | "Eine Krypto-Library" | Begann dort, ist seit Oktober 2025 mit Open Data deutlich breiter. |
 | "Eine API-Wrapper-Sammlung" | Nein — Engine ist zentral, Schemas sind duenne Deklarationen. Ein Audit der Engine deckt Tausende Endpunkte ab. |
 | "Ein API-Key-Manager" | Nicht primaer. Key-Management ist Nebenprodukt der Trennung AI ↔ Key. |
@@ -58,8 +59,8 @@ FlowMCP macht diese Vorbereitung **einmal, fuer alle**:
 
 Zwei Szenarien, die FlowMCP + AI im Einsatz zeigen — nicht wie man einen Agent baut, sondern wie FlowMCP aus verstreuten Daten eine Antwort macht.
 
-- **Deep Research** — Eine Recherche- oder Planungssoftware bindet einen Agent an. Der Agent fragt FlowMCP nach passenden Datenquellen ueber Open-Data-Portale, Behoerden-APIs und Krypto-Kataloge — in Sekunden. [Voller Case →](/de/introduction/use-cases/#use-case-1-deep-research)
-- **Mobility — Anschluss erreichen** — Ein Live-Reiseplaner kombiniert statische GTFS-Daten (ueber das `geo-gtfs-toolkit` v4.1 Add-on) mit Echtzeit-Verspaetungen. Ein CLI-Call, eine Antwort. [Voller Case →](/de/introduction/use-cases/#use-case-2-mobility--anschluss-erreichen)
+- **Deep Research** — Eine Recherche- oder Planungssoftware bindet einen Agent an. Der Agent fragt FlowMCP nach passenden Datenquellen ueber Open-Data-Portale, Behoerden-APIs und Krypto-Kataloge — in Sekunden.
+- **Mobility — Anschluss erreichen** — Ein Live-Reiseplaner kombiniert statische GTFS-Daten (ueber das `geo-gtfs-toolkit` v4.1 Add-on) mit Echtzeit-Verspaetungen. Ein CLI-Call, eine Antwort.
 
 ## Production-Posture
 

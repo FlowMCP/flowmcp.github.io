@@ -6,6 +6,8 @@ description: Was ein FlowMCP-Schema ist, wie es aufgebaut ist und wie das Schema
 <span style="display:none" data-pagefind-meta="section">Concepts</span>
 <!-- PAGEFIND-META-END -->
 
+Das Schema ist der zentrale Baustein von FlowMCP. Diese Seite erklaert, was ein Schema ist, wie es aus Primitiven aufgebaut ist und wie das Schema-Inventar organisiert ist.
+
 ## Was ist ein Schema?
 
 Ein Schema ist der vollstaendige Bauplan fuer den Zugriff auf einen einzelnen Datenanbieter — zum Beispiel den Deutschen Wetterdienst, die Deutsche Bahn oder ein Sharing-System wie nextbike. Ein Schema pro Anbieter, mehrere Tools pro Schema. Das Schema uebersetzt zwischen der API des Anbieters und dem KI-Agenten, sodass der Agent die Daten strukturiert abfragen kann, ohne die API-Dokumentation selbst lesen zu muessen.

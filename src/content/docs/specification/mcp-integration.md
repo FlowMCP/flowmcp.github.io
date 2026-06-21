@@ -6,16 +6,13 @@ spec_file: "19-mcp-integration.md"
 order: 19
 section: "Specification"
 normative: true
-source_commit: "236dbb3"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/236dbb3/spec/v4.3.0/19-mcp-integration.md"
-generated_at: "2026-06-21T11:44:44.465Z"
+source_commit: "42b4603"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/42b4603/spec/v4.3.0/19-mcp-integration.md"
+generated_at: "2026-06-21T01:06:21.418Z"
 generated_from: "spec/v4.3.0/19-mcp-integration.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.3.0/19-mcp-integration.md."
 ---
-<aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/19-mcp-integration.md.
-</aside>
 
 When FlowMCP runs as an MCP Server, each Tool is exposed to the agent with MCP-specific metadata that an MCP host can read before it decides whether and how to invoke the Tool. That metadata is declared once, per Tool, in a `meta` block, and the CLI/Core translates the relevant fields into MCP annotations at registration time. This page describes the `meta` block, how its fields map to MCP, and the behaviour of the search-related and loading-related fields.
 

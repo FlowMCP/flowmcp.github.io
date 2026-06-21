@@ -21,8 +21,10 @@ test.describe( 'Header copy-markdown button', () => {
         await context.grantPermissions( [ 'clipboard-read', 'clipboard-write' ] )
     } )
 
-    test( 'A. exactly one header copy button on Hackathon Kit', async ( { page } ) => {
-        await page.goto( '/guides/hackathon-kit/' )
+    // Memo 142: the Hackathon Kit guide was removed; the header copy button is a
+    // generic per-page feature, so these assert it on a surviving content page.
+    test( 'A. exactly one header copy button on Quickstart', async ( { page } ) => {
+        await page.goto( '/quickstart/quickstart/' )
 
         const buttons = page.locator( 'button[data-header-copy]' )
         await expect( buttons ).toHaveCount( 1 )
@@ -30,7 +32,7 @@ test.describe( 'Header copy-markdown button', () => {
     } )
 
     test( 'B. click copies page markdown and shows feedback', async ( { page } ) => {
-        await page.goto( '/guides/hackathon-kit/' )
+        await page.goto( '/quickstart/quickstart/' )
 
         const button = page.locator( 'button[data-header-copy]' ).first()
         await button.click()
@@ -39,11 +41,11 @@ test.describe( 'Header copy-markdown button', () => {
 
         const clipboardText = await page.evaluate( () => navigator.clipboard.readText() )
         expect( clipboardText.length ).toBeGreaterThan( 500 )
-        expect( clipboardText.toLowerCase() ).toContain( 'hackathon' )
+        expect( clipboardText.toLowerCase() ).toContain( 'flowmcp' )
     } )
 
     test( 'C. button state reverts after 2s', async ( { page } ) => {
-        await page.goto( '/guides/hackathon-kit/' )
+        await page.goto( '/quickstart/quickstart/' )
 
         const button = page.locator( 'button[data-header-copy]' ).first()
         await button.click()

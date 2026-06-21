@@ -6,16 +6,13 @@ spec_file: "15-versioning-axes.md"
 order: 15
 section: "Grading"
 normative: true
-source_commit: "236dbb3"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/236dbb3/grading/3.0.0/15-versioning-axes.md"
-generated_at: "2026-06-21T11:44:44.465Z"
+source_commit: "42b4603"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/42b4603/grading/3.0.0/15-versioning-axes.md"
+generated_at: "2026-06-21T01:06:21.418Z"
 generated_from: "grading/3.0.0/15-versioning-axes.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: grading/3.0.0/15-versioning-axes.md."
 ---
-<aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: grading/3.0.0/15-versioning-axes.md.
-</aside>
 
 > Conformance language (MUST/SHOULD/MAY) follows BCP 14 [RFC2119]/[RFC8174] as defined in [`00-overview.md`](/grading/overview/). The binding source is the FlowMCP Schemas Specification v4.3.0.
 

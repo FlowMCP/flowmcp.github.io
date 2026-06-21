@@ -6,16 +6,13 @@ spec_file: "03-shared-lists.md"
 order: 3
 section: "Specification"
 normative: true
-source_commit: "236dbb3"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/236dbb3/spec/v4.3.0/03-shared-lists.md"
-generated_at: "2026-06-21T11:44:44.465Z"
+source_commit: "42b4603"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/42b4603/spec/v4.3.0/03-shared-lists.md"
+generated_at: "2026-06-21T01:06:21.418Z"
 generated_from: "spec/v4.3.0/03-shared-lists.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.3.0/03-shared-lists.md."
 ---
-<aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/03-shared-lists.md.
-</aside>
 
 Shared lists eliminate duplication of common value sets across schemas. Instead of every Etherscan schema maintaining its own chain list, they reference a single `evmChains` shared list that is versioned, validated, and centrally maintained. The sections below cover the list file format, the meta and field definitions, the dependency model between lists, how schemas reference and filter lists, how the runtime injects resolved data into handlers, and the validation rules that keep the registry consistent.
 

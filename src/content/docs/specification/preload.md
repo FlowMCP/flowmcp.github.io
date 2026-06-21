@@ -6,16 +6,13 @@ spec_file: "11-preload.md"
 order: 11
 section: "Specification"
 normative: true
-source_commit: "236dbb3"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/236dbb3/spec/v4.3.0/11-preload.md"
-generated_at: "2026-06-21T11:44:44.465Z"
+source_commit: "42b4603"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/42b4603/spec/v4.3.0/11-preload.md"
+generated_at: "2026-06-21T01:06:21.418Z"
 generated_from: "spec/v4.3.0/11-preload.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.3.0/11-preload.md."
 ---
-<aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/11-preload.md.
-</aside>
 
 Some tools return data that barely moves — a full list of hospitals in a country, every memorial stone in a city, a reference table that is refreshed once a week. Re-fetching such a dataset on every call costs bandwidth and time for no benefit. The optional `preload` field lets a schema author declare that a tool's response is safe to cache and for how long, so a runtime can serve a stored copy instead of hitting the network each time. Caching always stays optional on the runtime's side: `preload` expresses intent, and the runtime decides whether to honour it. The sections below specify the field, its validation rules, the cache key derivation, the runtime cache flow, and the author guidelines for choosing a sensible time-to-live.
 

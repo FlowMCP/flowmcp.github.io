@@ -6,16 +6,13 @@ spec_file: "01-schema-format.md"
 order: 1
 section: "Specification"
 normative: true
-source_commit: "236dbb3"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/236dbb3/spec/v4.3.0/01-schema-format.md"
-generated_at: "2026-06-21T11:44:44.465Z"
+source_commit: "42b4603"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/42b4603/spec/v4.3.0/01-schema-format.md"
+generated_at: "2026-06-21T01:06:21.418Z"
 generated_from: "spec/v4.3.0/01-schema-format.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.3.0/01-schema-format.md."
 ---
-<aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/01-schema-format.md.
-</aside>
 
 A FlowMCP schema is a single `.mjs` module that describes how to reach an API and turn its endpoints into tools. It splits into two named exports: a static, JSON-serializable `main` block that holds all declarative configuration, and an optional `handlers` factory that transforms requests and responses. The sections below walk through both exports, the tool and field definitions inside `main`, the naming conventions, and the constraints the runtime enforces at load time.
 

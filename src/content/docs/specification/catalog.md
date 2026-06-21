@@ -6,16 +6,13 @@ spec_file: "15-catalog.md"
 order: 15
 section: "Specification"
 normative: true
-source_commit: "236dbb3"
-source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/236dbb3/spec/v4.3.0/15-catalog.md"
-generated_at: "2026-06-21T11:44:44.465Z"
+source_commit: "42b4603"
+source_url: "https://github.com/FlowMCP/flowmcp-spec/blob/42b4603/spec/v4.3.0/15-catalog.md"
+generated_at: "2026-06-21T01:06:21.418Z"
 generated_from: "spec/v4.3.0/15-catalog.md"
 generator: "scripts/generate-docs-payload.mjs"
 edit_warning: "This file is auto-generated. Source: spec/v4.3.0/15-catalog.md."
 ---
-<aside class="edit-warning" role="note">
-  <strong>Auto-generated:</strong> This file is auto-generated. Source: spec/v4.3.0/15-catalog.md.
-</aside>
 
 A Catalog is the top-level organizational unit in FlowMCP v3. It is a named directory containing a `registry.json` manifest that describes all shared lists, provider schemas, and agent definitions within that directory. Multiple catalogs can coexist side by side, enabling community, company-internal, and experimental tool collections to operate independently.
 
