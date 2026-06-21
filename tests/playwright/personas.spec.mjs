@@ -1,12 +1,13 @@
 import { test, expect } from '@playwright/test'
 
 test.describe( 'Persona-E2E-Pfade (Memo 045 REV-15 Kap. 2)', () => {
-    test( 'Hackathon-Builder — Landing -> Docs -> Quickstart', async ( { page } ) => {
+    test( 'Hackathon-Builder — Landing -> Docs -> CLI Setup', async ( { page } ) => {
         await page.goto( '/' )
         await expect( page ).toHaveTitle( /FlowMCP/ )
+        // Memo 144 T8: the quickstart page H1 is now "CLI Setup" (matches its sidebar label).
         await page.goto( '/quickstart/quickstart/' )
         const heading = page.locator( 'h1' ).first()
-        await expect( heading ).toContainText( /Quickstart/i )
+        await expect( heading ).toContainText( /CLI Setup/i )
     } )
 
     test( 'AI-Engineer — Landing -> Specification', async ( { page } ) => {
