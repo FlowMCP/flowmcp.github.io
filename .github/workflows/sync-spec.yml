@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   sync:
@@ -45,6 +46,8 @@ jobs:
       # derived from flowmcp-spec.
       - name: Sync, commit and push (race-safe)
         working-directory: flowmcp.github.io
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -60,6 +63,14 @@ jobs:
             git commit -m "chore: sync spec from flowmcp-spec [auto]"
             if git push origin HEAD:"$BRANCH"; then
               echo "Pushed on attempt $attempt."
+              # A push made with GITHUB_TOKEN does NOT trigger deploy.yml's
+              # `on: push` (GitHub loop-protection), so synced spec changes would
+              # never go live on their own. Explicitly dispatch the deploy
+              # workflow. (Alternative: push these changes with a PAT instead of
+              # GITHUB_TOKEN, which would trigger `on: push` naturally.)
+              if [ "$BRANCH" = "main" ]; then
+                gh workflow run deploy.yml --ref "$BRANCH" || echo "::warning::deploy dispatch failed; site may not redeploy until next push"
+              fi
               exit 0
             fi
             echo "Push rejected on attempt $attempt — concurrent push moved $BRANCH. Resetting to remote and re-syncing."

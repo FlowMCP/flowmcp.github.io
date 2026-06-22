@@ -1,10 +1,9 @@
 ---
-// Memo 060 PRD-005 (Phase 1a.4): Standalone-Page wurde zu einem duennen
-// Wrapper um BlogPostLayout.astro reduziert. getStaticPaths bleibt hier,
-// damit Astro die Routen aus der `blog`-Content-Collection generiert; die
-// eigentliche Render-Logik (Title + Author + Tags + Reading-Progress +
-// Custom-TOC + Share + Related-Posts) lebt jetzt im Layout und wird ueber
-// <StarlightPage> in den Starlight-Frame eingebettet.
+// Thin wrapper around BlogPostLayout.astro. getStaticPaths stays here so
+// Astro generates the routes from the `blog` content collection; the actual
+// render logic (Title + Author + Tags + Reading-Progress + Custom-TOC +
+// Share + Related-Posts) lives in the layout and is embedded via
+// <StarlightPage> into the Starlight frame.
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro'
 import { getCollection } from 'astro:content'
 

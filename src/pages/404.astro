@@ -1,9 +1,8 @@
 ---
-// 404 Page — Memo 064 Phase 4 PRD-010
+// 404 Page
 // Pagefind search removed (locked decision). Page reduced to clear links:
 // home + the main areas. Pagefind remains the GLOBAL Starlight search
 // (SearchCustom.astro override) — only the 404 usage was removed here.
-// History: Memo 057 PRD-03 introduced the (now removed) search field.
 ---
 
 <html lang="en">
@@ -46,7 +45,7 @@
     </main>
 
     <style>
-        /* PRD-07: Skip-Link visible on focus */
+        /* Skip-Link visible on focus */
         .skip-link {
             position: absolute;
             top: -40px;
@@ -65,9 +64,9 @@
             outline-offset: 2px;
         }
 
-        /* Memo 059 PRD-005 (A13, A14, A15):
-         *   - logo (via /logo.svg) renders in Babyblau by default
-         *   - --notfound-accent is the Babyblau brand colour (was purple #8c5dff)
+        /* Brand colour tokens:
+         *   - logo (via /logo.svg) renders in baby blue by default
+         *   - --notfound-accent is the baby blue brand colour
          *   - --notfound-muted aligns with --color-text-secondary token in custom.css */
         :root {
             --notfound-bg: #0e0f12;

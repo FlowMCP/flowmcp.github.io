@@ -1,9 +1,8 @@
 ---
-// Memo 060 PRD-005 (Phase 1a.5): Standalone-Page wurde zu einem duennen
-// Wrapper um BlogIndexLayout.astro reduziert. Die eigentliche Render-Logik
-// (Featured + Filter + Grid) lebt jetzt im Layout und wird ueber
-// <StarlightPage> in den Starlight-Frame eingebettet — damit greift der
-// globale Header.astro mit funktionaler Pagefind-Search + LanguageSelect.
+// Thin wrapper around BlogIndexLayout.astro. The actual render logic
+// (Featured + Filter + Grid) lives in the layout and is embedded via
+// <StarlightPage> into the Starlight frame — so the global Header.astro
+// with the functional Pagefind search + LanguageSelect applies.
 import BlogIndexLayout from '../../layouts/BlogIndexLayout.astro'
 ---
 <BlogIndexLayout lang="en" />

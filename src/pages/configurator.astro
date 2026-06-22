@@ -1,8 +1,8 @@
 ---
-// Memo 121 Phase 5 (PRD-008): thin wrapper around ConfiguratorLayout.astro.
-// The render logic lives in the layout, embedded via <StarlightPage> so the
-// global Header.astro / Footer.astro apply unchanged (integration constraint,
-// Memo 121 Kap. 2). Mirrors the src/pages/blog/index.astro pattern.
+// Thin wrapper around ConfiguratorLayout.astro. The render logic lives in
+// the layout, embedded via <StarlightPage> so the global Header.astro /
+// Footer.astro apply unchanged (integration constraint). Mirrors the
+// src/pages/blog/index.astro pattern.
 import ConfiguratorLayout from '../layouts/ConfiguratorLayout.astro'
 ---
 <ConfiguratorLayout lang="en" />

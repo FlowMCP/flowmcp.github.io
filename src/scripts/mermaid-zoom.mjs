@@ -1,7 +1,6 @@
-// Mermaid-Zoom — Memo 088 Kap. 5 (Phase 2)
-// Lightbox fuer rehype-mermaid inline-svg. Kein .mermaid-Wrapper:
-// rehype-mermaid rendert bare <svg id="mermaid-…">. Vanilla, keine Dependency.
-// Portiert aus cli/memo-toolkit/editor/src/MemoView.mjs (:8047-8082).
+// Mermaid zoom
+// Lightbox for rehype-mermaid inline SVG. No .mermaid wrapper:
+// rehype-mermaid renders a bare <svg id="mermaid-…">. Vanilla, no dependency.
 
 const OVERLAY_ID = 'flowmcp-mermaid-overlay'
 const TARGET_SELECTOR = '.sl-markdown-content svg[id^="mermaid"]'
@@ -26,11 +25,11 @@ const openOverlay = ( svgEl ) => {
     const overlay = ensureOverlay()
     const stage = overlay.querySelector( '.mermaid-overlay__stage' )
     const clone = svgEl.cloneNode( true )
-    // ID NICHT entfernen: rehype-mermaid bettet die Theme-Styles als
-    // id-skopierte Regeln ein (`#mermaid-N .node rect { fill: … }`). Ohne die ID
-    // greift keine Regel mehr und das SVG faellt auf SVG-Default fill:#000 zurueck
-    // (schwarze Boxen). Das Duplikat-ID-Risiko ist unkritisch (Original liegt
-    // unsichtbar hinter dem Overlay).
+    // Do NOT remove the ID: rehype-mermaid embeds the theme styles as
+    // id-scoped rules (`#mermaid-N .node rect { fill: … }`). Without the ID no
+    // rule matches and the SVG falls back to the SVG default fill:#000
+    // (black boxes). The duplicate-ID risk is harmless (the original sits
+    // invisibly behind the overlay).
     clone.removeAttribute( 'style' )
     clone.style.width = '100%'
     clone.style.height = '100%'
