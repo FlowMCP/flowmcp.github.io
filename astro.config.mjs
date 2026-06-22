@@ -252,7 +252,7 @@ export default defineConfig({
                     collapsed: true,
                     items: [
                         // Memo 144 K7 (T9): About FlowMCP merged in from the removed standalone group.
-                        { label: 'About FlowMCP', translations: { de: 'Ueber FlowMCP' }, slug: 'about' },
+                        { label: 'About', translations: { de: 'Ueber' }, slug: 'about' },
                         // Memo 060 PRD-016 (QS3): "Quickstart" -> "CLI Setup" (DE bewusst englisch, analog "Tag Search").
                         // Memo 142 (REMOVE): Hackathon Kit, Agent Creation, GTFS Pilot -> .trash/memo-142-reduction.
                         { label: 'CLI Setup', translations: { de: 'CLI Setup' }, slug: 'quickstart/quickstart' },
