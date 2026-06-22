@@ -30,7 +30,9 @@
 // .trash). Those routes now live in FORBIDDEN_ROUTES (Block 2: 404/redirect = PASS).
 const EN_ROUTES = [
     // Get-Started-Gruppe (Memo 144 T9: About FlowMCP merged into Get Started; standalone About group removed)
-    { path: '/about/',                       expectedMarker: 'About FlowMCP',           group: 'Get Started',   locale: 'en' },
+    // Marker is a body phrase, not the title: the title was shortened to "About",
+    // which now also appears in the global sidebar nav and would false-pass anywhere.
+    { path: '/about/',                       expectedMarker: 'FlowMCP started as',      group: 'Get Started',   locale: 'en' },
 
     // Memo 144 T8: sidebar label "CLI Setup" (Memo 060) now matches the page H1 "CLI Setup".
     { path: '/quickstart/quickstart/',       expectedMarker: 'CLI Setup',               group: 'Get Started',   locale: 'en' },
