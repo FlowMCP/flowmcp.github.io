@@ -1745,12 +1745,12 @@ Once **≥1** schema in the folder parses and exposes `main.namespace`, that fie
 
 #### Provider-proof location
 
-The committed, CI-visible per-namespace grade/status rollup — the **provider-proof** `providers/<ns>/grade.json` — lives **inside the provider folder** in `flowmcp-schemas-private` (Memo 093 Kap. 4, F10). It is distinct from the island-local `index.json`:
+The committed, CI-visible per-namespace grade/status rollup — the **provider-proof** `providers/<ns>/grade.json` — lives **inside the provider folder** in the schemas repository. It is distinct from the island-local `index.json`:
 
 | Artefact | Location | Nature | CI-visible |
 |----------|----------|--------|------------|
 | `index.json` | `grading-data/providers/<ns>/` (the island) | born + rebuilt on the workbench, gitignored | no |
-| `grade.json` (provider-proof) | `flowmcp-schemas-private/providers/<ns>/` (the repo) | exported, committed, per-namespace rollup | yes |
+| `grade.json` (provider-proof) | the schemas repository, `providers/<ns>/` | exported, committed, per-namespace rollup | yes |
 
 The full data flow (where each is born, where it is committed, what the board sync reads) is specified in `26-monitoring-track.md`.
 
@@ -2505,7 +2505,7 @@ The grading-monitoring board columns (see `26-monitoring-track.md`) are driven b
 
 ## Which `index.json` CI reads (exported, repo-resident copy)
 
-`index.json` is **born and rebuilt inside the workbench island** (`grading-data/`), which is gitignored and never CI-visible. The copy that CI and the board sync read is the **exported, repo-resident** per-namespace rollup committed into the provider folder of `flowmcp-schemas-private` (the **provider-proof** `providers/<ns>/grade.json`; see `19-folder-layout.md` and the full data flow in `26-monitoring-track.md`). The island-local `index.json` is **never** CI-visible. The producer/sync detail lives in `26-monitoring-track.md`; this chapter only pins the location rule.
+`index.json` is **born and rebuilt inside the workbench island** (`grading-data/`), which is gitignored and never CI-visible. The copy that CI and the board sync read is the **exported, repo-resident** per-namespace rollup committed into the provider folder of the schemas repository (the **provider-proof** `providers/<ns>/grade.json`; see `19-folder-layout.md` and the full data flow in `26-monitoring-track.md`). The island-local `index.json` is **never** CI-visible. The producer/sync detail lives in `26-monitoring-track.md`; this chapter only pins the location rule.
 
 ## Idempotency backref: `githubIssue` / `boardColumn`
 
@@ -2605,7 +2605,7 @@ When every schema in a folder fails the import validate gate, the namespace roll
   "updatedAt": "2026-06-02T09-00-00Z",
   "status": "blocked",
   "reason": "validation-failed",
-  "githubIssue": "FlowMCP/flowmcp-schemas-private#1234",
+  "githubIssue": "FlowMCP/schemas#1234",
   "boardColumn": "Blocked"
 }
 ```
@@ -2721,7 +2721,7 @@ The grading-issue metadata is sourced **only** from the provider-proof `provider
 
 ### Provider grade = `namespaceAggregate`
 
-The **provider grade is the `namespaceAggregate`** — the namespace-level rollup grade (Memo 093 F3/F4). A per-schema grade **rolls up** into the namespace aggregate; the per-schema grade is **not** the gate. This resolves the schema-spec conflict where the schema-lifecycle chapter implied a per-schema grade gate: that chapter now consumes the `namespaceAggregate`.
+The **provider grade is the `namespaceAggregate`** — the namespace-level rollup grade. A per-schema grade **rolls up** into the namespace aggregate; the per-schema grade is **not** the gate. This resolves the schema-spec conflict where the schema-lifecycle chapter implied a per-schema grade gate: that chapter now consumes the `namespaceAggregate`.
 
 ### Where the namespace name comes from
 
@@ -2766,13 +2766,13 @@ A `kanban-readonly` consumer reads the proof / board and answers "which provider
 This is the explicit data-flow contract: where `index.json` is born, where it is committed, and what CI reads.
 
 1. **Island** (`~/.flowmcp/grading` = `grading-data/`) is an internal workbench, **not a repo**. It is gitignored and **never CI-visible**. Grading runs here; `index.json` is **born and rebuilt** here (see `22-workbench-island.md` and `23-index-json.md`).
-2. **Repo** (`flowmcp-schemas-private`) holds the neutral source `.mjs` and **receives** the committed **provider-proof** `providers/<ns>/grade.json` — the CI-visible, per-namespace grade/status rollup (Memo 093 F10).
+2. **Repo** (the schemas repository) holds the neutral source `.mjs` and **receives** the committed **provider-proof** `providers/<ns>/grade.json` — the CI-visible, per-namespace grade/status rollup.
 3. The **export step** (`grading export`, the OUT side of `22-workbench-island.md`) lands the proof into the provider folder of the repo. CI reads the **repo-resident** proof, **never** the island-local `index.json`.
-4. A **push on the provider-proof** triggers the deterministic sync workflow (Memo 093 F10, decision A). The push is the event; the sync is the deterministic reaction.
+4. A **push on the provider-proof** triggers the deterministic sync workflow. The push is the event; the sync is the deterministic reaction.
 
 ### Island compared to Repo
 
-| Aspect | Island (`grading-data/`) | Repo (`flowmcp-schemas-private`) |
+| Aspect | Island (`grading-data/`) | Repo (the schemas repository) |
 |--------|--------------------------|----------------------------------|
 | Nature | internal workbench, not a repo | versioned source repository |
 | Structure | verbose (timestamp + hash, per-primitive folders) | neutral `.mjs` + per-namespace `providers/<ns>/grade.json` |
@@ -2795,7 +2795,7 @@ flowchart TD
     I --> J[kanban-readonly: which provider next]
 ```
 
-The diagram mirrors the Soll-Ablauf of Memo 093 Kap. 10: `Backlog → import → {parse?} → blocked-node | grade+aggregate → provider-proof → git push → deterministic sync → 1 issue/namespace + board → kanban-readonly`. The only non-deterministic node is `grade 6 areas`.
+The diagram mirrors the data flow: `Backlog → import → {parse?} → blocked-node | grade+aggregate → provider-proof → git push → deterministic sync → 1 issue/namespace + board → kanban-readonly`. The only non-deterministic node is `grade 6 areas`.
 
 ## Relationship to the superseded Kanban Data Contract
 
@@ -4399,7 +4399,7 @@ Up to and including `gradingSpec/2.0.x`, the import gate was a **hard gate**: a 
 Workbench flows back toward the source:
 
 - The **primary hand-off is the `index.json`** — the complete graded state (status, grade, member resolution, lock snapshot).
-- The export lands the per-namespace rollup as the committed, CI-visible **provider-proof** `providers/<ns>/grade.json` inside the provider folder of the source repo (`flowmcp-schemas-private`); CI reads that **repo-resident** copy, never the island-local `index.json`. The data flow is specified in `26-monitoring-track.md`.
+- The export lands the per-namespace rollup as the committed, CI-visible **provider-proof** `providers/<ns>/grade.json` inside the provider folder of the source schemas repository; CI reads that **repo-resident** copy, never the island-local `index.json`. The data flow is specified in `26-monitoring-track.md`.
 - Optionally, the clean schema `.mjs` files (resolved via `resolveLatest`, names stripped) MAY accompany the export.
 - The export **MUST NOT overwrite the source**; it writes into a fresh export folder.
 
