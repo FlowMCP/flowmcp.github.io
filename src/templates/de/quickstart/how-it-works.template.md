@@ -90,7 +90,7 @@ Die Schema-Schicht ist dein Arbeitsbereich. Alles andere wird von der Runtime ue
 
 ## Schema-Anatomie
 
-Jedes FlowMCP v4.3.0 Schema nutzt das **Two-Export-Pattern**:
+Jedes FlowMCP v{{spec.currentVersion}} Schema nutzt das **Two-Export-Pattern**:
 
 ### main (erforderlich)
 
@@ -227,5 +227,5 @@ Schemas, die versuchen Module zu importieren, auf das Dateisystem zuzugreifen od
 :::
 
 :::note
-Fuer die vollstaendige Spezifikation einschliesslich aller Validierungsregeln, Parameterformate und Sicherheitsdetails, siehe die [Spezifikation v4.3.0](/de/specification/overview/).
+Fuer die vollstaendige Spezifikation einschliesslich aller Validierungsregeln, Parameterformate und Sicherheitsdetails, siehe die [Spezifikation v{{spec.currentVersion}}](/de/specification/overview/).
 :::

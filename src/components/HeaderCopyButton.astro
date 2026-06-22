@@ -1,5 +1,5 @@
 ---
-// HeaderCopyButton.astro — Memo 064 Phase 4 PRD-009
+// HeaderCopyButton.astro
 // ONE small icon-only button injected on the heading line of every content page
 // (via the PageTitle override). Click copies the page content as Markdown.
 //
@@ -128,8 +128,8 @@ const labels = LABELS[ lang ]
     const getPageMarkdown = async ( slug ) => {
         if( !slug ) { throw new Error( 'HeaderCopyButton: missing slug' ) }
         const trimmed = slug.replace( /^\/+|\/+$/g, '' )
-        // Memo 069 PRD-002: the slug comes from the URL pathname, so a directory
-        // page like /about/ yields slug "about". The generator
+        // The slug comes from the URL pathname, so a directory page like
+        // /about/ yields slug "about". The generator
         // (generate-markdown-map.mjs) writes index pages as {dir}/index.md, so
         // "about" → about/index.md, not about.md. Try the direct file first, then
         // fall back to the {slug}/index.md variant for directory-index pages.
